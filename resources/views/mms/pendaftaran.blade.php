@@ -1,9 +1,13 @@
 @extends('mms.app')
 
 @section('content')
+
+@include('errors.error_list')
+
 <div class="well">
 	<h1>Form Pendaftaran</h1>
 	<br>
+
 	{!! Form::open(['action' => ['PendaftaranController@store'], 'id' => 'wadah']) !!}	
 		
 	{!! Form::close() !!}
@@ -34,7 +38,7 @@
 			}
 
 			$(	"<div class='form-group'>"+
-					"<label for='id_question_"+json.id+"'>"+json.question+" :</label><br>"+					
+					"<label for='id_question_"+json.id+"'>"+json.question+" :</label><br>"+				
 						html[0].replace("[name]", "id_question_"+json.id)+
 						options+
 						html[1]+	    		

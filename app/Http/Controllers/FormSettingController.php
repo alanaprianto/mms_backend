@@ -7,6 +7,7 @@ use Request;
 use App\Http\Requests;
 use App\Http\Requests\FormSettingRequest;
 use App\Form_setting;
+use Datatables;
 
 class FormSettingController extends Controller
 {
@@ -17,7 +18,7 @@ class FormSettingController extends Controller
      */
     public function index()
     {        
-        $search = \Request::get('search');
+        // $search = \Request::get('search');
 
         // if ( !empty ( $search ) ) {            
         //     $fsettings = Form_setting::where('name','like','%'.$search.'%')
@@ -27,18 +28,22 @@ class FormSettingController extends Controller
         // }
         
         // return $search;
-        $fsettings = Form_setting::where('name','like','%'.$search.'%')
-            ->paginate(7); 
+        // $fsettings = Form_setting::where('name','like','%'.$search.'%')
+        //     ->paginate(7); 
 
-        if (Request::ajax()) {                                
-            // return $search;
-            return view('form.setting.settings', compact('fsettings'));
-        }
+        // if (Request::ajax()) {                    
+            
+        //     return view('form.setting.settings', compact('fsettings'));
+        // }
 
-        $deleted = false;
-        return view('form.setting.index', compact('fsettings', 'deleted'));
+        // return view('form.setting.index', compact('fsettings'));
+        return view('form.setting.index');
     }
-    
+
+    public function indexAjax() {        
+        $fr = Form_setting::select(['id', 'name', 'description', 'html_tag']);
+        return Datatables::of($fr)->make(true);
+    }
 
     /**
      * Show the form for creating a new resource.

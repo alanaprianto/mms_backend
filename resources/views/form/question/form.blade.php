@@ -14,6 +14,11 @@
 </div>
 
 <div class="form-group">
+	{!! Form::label('order', 'Order Question:') !!}
+	{!! Form::text('order', 0, ['class' => 'form-control']) !!}		
+</div>
+
+<div class="form-group">
 	{!! Form::label('description', 'Description:') !!}
 	{!! Form::textarea('description', null, ['class' => 'form-control']) !!}		
 </div>

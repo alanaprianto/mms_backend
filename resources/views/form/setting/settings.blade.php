@@ -1,12 +1,3 @@
-<script type="text/javascript" class="init">
-  
-
-$(document).ready(function() {
-  $('#example').DataTable();
-} );
-
-
-  </script>
 <table class="table">
     
     <tbody><tr>

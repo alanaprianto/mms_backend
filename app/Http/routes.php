@@ -11,18 +11,28 @@
 |
 */
 
-Route::group(['prefix' => 'crud/form/'], function () {
-	Route::resource('setting', 'FormSettingController');
-  Route::resource('question', 'FormQuestionController');
-	Route::resource('question_group', 'FormQuestionGroupController');	
-	Route::resource('answer', 'FormAnswerController');
-	Route::resource('result', 'FormResultController');
-});
-
-
 Route::get('/', 'MmsController@index');
-Route::get('pendaftaran1', 'PendaftaranController@index');
-Route::post('pendaftaran1', 'PendaftaranController@store');
+
+// Auth
+Route::get('login', 'LoginController@index');
+Route::get('register1', 'PendaftaranController@index');
+Route::post('register1', 'PendaftaranController@store');
+
+// Mms crud
+Route::group(['prefix' => 'crud/form/'], function () {
+  Route::resource('setting', 'FormSettingController');
+  Route::resource('question', 'FormQuestionController');
+  Route::resource('question_group', 'FormQuestionGroupController'); 
+  Route::resource('answer', 'FormAnswerController');
+  Route::resource('result', 'FormResultController');
+  // Route::group(['prefix' => 'ajax/'], function () {
+  //   Route::get('setting', 'FormSettingController@indexAjax');
+  //   Route::get('question', 'FormQuestionController@indexAjax');
+  //   Route::get('question_group', 'FormQuestionGroupController@indexAjax');
+  //   Route::resource('answer', 'FormAnswerController@indexAjax');
+  //   Route::resource('result', 'FormResultController@indexAjax');
+  // });
+});
 
 Menu::make('MyNavBar', function($menu){
 

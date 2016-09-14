@@ -8,7 +8,7 @@ class Form_question extends Model
 {
 	protected  $table = "form_question";
 
-    protected $appends = ['setting', 'list_answer',];
+    protected $appends = ['setting', 'list_answer', 'group_name',];
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +16,7 @@ class Form_question extends Model
      * @var array
      */
     protected $fillable = [
-        'question', 'group_question', 'answer_type', 'description',        
+        'question', 'group_question', 'answer_type', 'description', 'order',
     ];
 
     /**
@@ -67,5 +67,13 @@ class Form_question extends Model
         $answers = Form_answer::where('question_id', '=', $id)->get();        
         
         return $answers;
+    }
+
+    public function getGroupNameAttribute() 
+    {
+        $id = $this->attributes['group_question'];
+        $group = Form_question_group::findOrFail($id);
+
+        return $group->name;
     }
 }

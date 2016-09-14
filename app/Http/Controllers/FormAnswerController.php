@@ -9,6 +9,7 @@ use App\Form_answer;
 use App\Form_question;
 use App\Form_setting;
 use App\Http\Requests\FormAnswerRequest;
+use Datatables;
 
 class FormAnswerController extends Controller
 {
@@ -22,14 +23,22 @@ class FormAnswerController extends Controller
         $search = \Request::get('search');
         
         $fanswers = Form_answer::where('answer','like','%'.$search.'%')->paginate(7);
+        
+        // if (Request::ajax()) {                                            
+        //     return view('form.answer.answers', compact('fanswers'));
+        // }
+        
+        // $deleted = false;
+        
+        return view('form.answer.index');
+    }
 
-        if (Request::ajax()) {                                            
-            return view('form.answer.answers', compact('fanswers'));
-        }
-        
-        $deleted = false;
-        
-        return view('form.answer.index', compact('fanswers', 'deleted'));
+    public function indexAjax() {        
+        $fr = Form_answer::
+                leftJoin('form_question', 'form_answer.question_id', '=', 'form_question.id')
+                ->leftJoin('form_setting', 'form_answer.options_type', '=', 'form_setting.id')
+                ->select(['form_answer.id', 'form_answer.answer', 'form_answer.description', 'form_answer.options_type', 'form_question.question', 'form_setting.name']);        
+        return Datatables::of($fr)->make(true);
     }
 
     /**

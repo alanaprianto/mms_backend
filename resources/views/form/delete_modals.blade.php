@@ -33,8 +33,11 @@
     name = button.data('name');
 
     var modal = $(this);
-    modal.find('.modal-body').text('Delete Record ' + name + ' ?');
+    modal.find('.modal-body').text('Delete Record ' + id + ' ?');
     modal.find('.modal-footer .form-control').val(id);
+
+    console.log("ASDAD");
+
   })
 
   $('#submit_delete').on('click', function (event) {

@@ -10,6 +10,7 @@ use App\Form_question;
 use App\Form_answer;
 use App\User;
 use App\Http\Requests\FormResultRequest;
+use Datatables;
 
 class FormResultController extends Controller
 {
@@ -32,6 +33,14 @@ class FormResultController extends Controller
 
         // return $fanswers[0]->question;
         return view('form.result.index', compact('fresults'));
+    }
+
+    public function indexAjax() {                
+        $fr = Form_result::
+                leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
+                ->leftJoin('users', 'form_result.id_user', '=', 'users.id')                
+                ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.username', 'form_result.id_question']);        
+        return Datatables::of($fr)->make(true);
     }
 
     /**
@@ -57,7 +66,7 @@ class FormResultController extends Controller
     public function store(FormResultRequest $request)
     {
         $input = $request->all();
-        
+         
         Form_result::create($input);
 
         return redirect('/crud/form/result');

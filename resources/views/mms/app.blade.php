@@ -4,7 +4,7 @@
     <title>Kadin MMS</title>    
     
     <!-- Bootstrap core CSS -->
-    <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">            
+    <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">        
     <style type="text/css">
         div.feature {
         position: relative;
@@ -22,15 +22,28 @@
             opacity: 0; /* Fix to make div clickable in IE */
             filter: alpha(opacity=1); /* Fix to make div clickable in IE */
         }
+
+        body {
+            margin:0;     /* This is used to reset any browser-default margins */
+            height:100vh; /* This is needed to overcome a Chrome bug. */
+            width:100vw;  /* As above. */
+            min-height: 50vh;
+        }
+
+        #pages {
+            height:100vh;            
+            padding-right: 0; 
+            padding-left: 0;
+        }
     </style>
     @yield('styles')
 </head>
-<body id="page-top">
-<div class="container">
+<body>
+<div id="pages" class="container">
     <nav class="navbar navbar-default">
-        <div class="container-fluid">       
+        <div class="container">       
             <div class="navbar-collapse feature">
-                <a href="#home"></a>
+                <a href="{{ url('/') }}"></a>
                 <div class="col-md-2 fluid">
                     <img alt="Brand" src="{{ asset('resources/img/LogoKadin.gif') }}">    
                 </div>
@@ -51,24 +64,24 @@
                     </button> 
                 </form>
                 <ul class="nav navbar-nav navbar-right" style="margin-right:30px;">
-                    <li id="info"><a href="info">Info</a></li>
+                    <li><a href="info">Info</a></li>
                     <li class="dropdown"><a class="dropbtn" data-toggle="dropdown" href="pendaftaran">Pendaftaran <span class="caret"></a>
                     <ul class="dropdown-menu">
-                        <li id="pendaftaran1"><a href="pendaftaran1">Pendaftaran Anggota Biasa</a></li>
-                        <li id="pendaftaran2"><a href="pendaftaran2">Pendaftaran Anggota Luar Biasa</a></li>
+                        <li><a href="register1">Pendaftaran Anggota Biasa</a></li>
+                        <li><a href="register2">Pendaftaran Anggota Luar Biasa</a></li>
                     </ul>
                     </li>
-                    <li id="login"><a href="login">Login</a></li>
-                    <li id="help"><a href="help">Help</a></li>                        
+                    <li><a href="login">Login</a></li>
+                    <li><a href="help">Help</a></li>                        
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-    <div class="col-md-12" style="padding-right: 0; padding-left: 0;">
-        <div id="content" class="col-md-8" style="height: 500px;">
+    <div class="col-md-12">
+        <div id="content" class="col-md-8">
             @yield('content')
         </div>
-        <div id="sidebar" class="col-md-4" style="height: 500px; padding-top:0;">
+        <div id="sidebar" class="col-md-4">
             <div class="well">
                 <h2>Sidebar</h2>
             </div>
@@ -95,25 +108,6 @@
     for (var i = 0; i < classname.length; i++) {
         classname[i].addEventListener('click', getHome, false);
     }
-
-    $(window).on('load', function(e) {              
-        var element = document.getElementById("content");
-        
-        resizeElementHeight(element);
-    });
-
-    function resizeElementHeight(element) {
-        var height = 0;
-        var body = window.document.body;
-        if (window.innerHeight) {
-            height = window.innerHeight;
-        } else if (body.parentElement.clientHeight) {
-            height = body.parentElement.clientHeight;
-        } else if (body && body.clientHeight) {
-            height = body.clientHeight;
-        }
-        element.style.height = ((height - element.offsetTop) + "px");
-    }    
 </script>
 @yield('scripts') 
 </body>

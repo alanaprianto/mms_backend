@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Form_result extends Model
 {
     protected  $table = "form_result";
+
+    protected $appends = ['answer_type'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -30,5 +33,13 @@ class Form_result extends Model
     public function user()
     {
         return $this->hasOne('App\User', 'id', 'id_user');
+    }
+
+    public function getAnswerTypeAttribute() 
+    {
+        $id = $this->attributes['id_question'];        
+        $name = Form_question::findOrFail($id)->type->name;         
+
+        return $name;
     }
 }

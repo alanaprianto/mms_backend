@@ -39,6 +39,7 @@ class Form_answer extends Model
     {
         $id = $this->attributes['options_type'];        
         $options_tag = Form_setting::findOrFail($id)->html_tag; 
+        // $options = Form_setting::findOrFail($id); 
 
         return $options_tag;
     }

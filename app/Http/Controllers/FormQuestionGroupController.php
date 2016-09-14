@@ -7,6 +7,7 @@ use Request;
 use App\Http\Requests;
 use App\Form_question_group;
 use App\Http\Requests\FormQuestionGroupRequest;
+use Datatables;
 
 class FormQuestionGroupController extends Controller
 {
@@ -27,6 +28,11 @@ class FormQuestionGroupController extends Controller
                 
         $deleted = false;
         return view('form.questiongroup.index', compact('fqgroups', 'deleted'));
+    }
+
+    public function indexAjax() {        
+        $fr = Form_question_group::select(['id', 'name', 'description']);
+        return Datatables::of($fr)->make(true);
     }
 
     /**

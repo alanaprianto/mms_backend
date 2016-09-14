@@ -3,15 +3,14 @@
     <head>
         <title>MMS Backend</title>
            
+        <!-- Bootstrap Core CSS -->
         <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('resources/assets/css/simple-sidebar.css') }}" rel="stylesheet">
-
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-
-        <script src="{{ asset('resources/assets/js/jquery-3.1.0.min.js') }}"></script>
-        <script src="{{ asset('resources/assets/js/bootstrap.js') }}"></script>        
+        <!-- Simple Sidebar CSS -->
+        <link href="{{ asset('resources/assets/css/simple-sidebar.css') }}" rel="stylesheet">            
+        <!-- Datatables CSS -->
+        <link href="{{ asset('resources/assets/css/jquery.dataTables.min.css') }}" rel="stylesheet">  
+        <!-- Toastr -->
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">   
     </head>
     <body>
         <div id="wrapper">    
@@ -36,6 +35,17 @@
             </div>
                         
         </div>
-        
+
+        <!-- JQuery -->
+        <script src="{{ asset('resources/assets/js/jquery-3.1.0.min.js') }}"></script>
+        <!-- Bootstrap JS -->
+        <script src="{{ asset('resources/assets/js/bootstrap.js') }}"></script>                
+        <!-- DataTables -->
+        <script src="{{ asset('resources/assets/js/datatables/jquery.dataTables.min.js') }}"></script>  
+        <script src="{{ asset('resources/assets/js/datatables/dataTables.bootstrap.js') }}"></script>
+        <script src="{{ asset('resources/assets/js/datatables/dataTables.bootstrap.min.js') }}"></script>
+        <!-- Toastr -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
+        @stack('scripts')
     </body>
 </html>

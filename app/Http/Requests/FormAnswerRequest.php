@@ -24,7 +24,7 @@ class FormAnswerRequest extends Request
     public function rules()
     {
         return [
-            'answer' => 'required|min:3',
+            'answer' => 'required',
             'question_id' => 'required', 
             'description' => 'required',
             'options_type' => 'required',

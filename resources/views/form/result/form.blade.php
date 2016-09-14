@@ -22,6 +22,15 @@
 </div>
 
 <script type="text/javascript">
+	var fr = "{{ $fr }}";
+	$(window).on('load', function(e) {              
+        if (fr) {
+        	console.log("fr exist; fr = "+fr);
+        } else {
+        	console.log("fr not exist");
+        }
+    });
+
 	function setAnswerType() {    	
 		var type = document.getElementById("id_question").value;			
 
@@ -49,8 +58,8 @@
 			}
 
 	    	$("<p id='answer_par'>"+
-	    		"<label for='answer_type'> Jawaban "+data.question+" :</label><br>"+
-	    		html[0]+
+	    		"<label for='answer_value'> Jawaban "+data.question+" :</label><br>"+
+	    		html[0].replace("[name]", "answer_value")+
 	    		options+
 	    		html[1]+	    		
 	    	  "</p>").appendTo(element);		    	      

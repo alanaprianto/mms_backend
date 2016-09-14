@@ -149,6 +149,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
         Lavary\Menu\ServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -206,6 +207,7 @@ return [
         'Form' => Illuminate\Html\FormFacade::class, 
         'Html' => Illuminate\Html\HtmlFacade::class, 
         'Menu' => Lavary\Menu\Facade::class,
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
 
     ],
 

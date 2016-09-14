@@ -9,6 +9,7 @@ use App\Form_question;
 use App\Form_question_group;
 use App\Form_setting;
 use App\Http\Requests\FormQuestionRequest;
+use Datatables;
 
 class FormQuestionController extends Controller
 {
@@ -32,6 +33,11 @@ class FormQuestionController extends Controller
         return view('form.question.index', compact('fquestions', 'deleted'));
     }
     
+    public function indexAjax() {                
+        $fr = Form_question::orderBy('order', 'asc')->get();
+        return Datatables::of($fr)->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
