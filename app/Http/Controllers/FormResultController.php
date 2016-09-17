@@ -39,7 +39,7 @@ class FormResultController extends Controller
         $fr = Form_result::
                 leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
                 ->leftJoin('users', 'form_result.id_user', '=', 'users.id')                
-                ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.username', 'form_result.id_question']);        
+                ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.id_question']);        
         return Datatables::of($fr)->make(true);
     }
 

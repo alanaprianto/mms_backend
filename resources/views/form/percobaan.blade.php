@@ -1,24 +1,25 @@
-@extends('mms.app')
+@extends('app')
 
 @section('content')	
 	<div class="well">
-		<h1>Form Pendaftaran</h1>
+		<h1>Form Percobaan</h1>
 		<br>
 
 		@include('errors.error_list')
 		
-		{!! Form::open(['action' => ['PendaftaranController@store'], 'id' => 'wadah']) !!}	
+		{!! Form::open(['action' => ['PendaftaranController@percobaanstore'], 'id' => 'percobaan']) !!}	
 			
-		{!! Form::close() !!}
+		{!! Form::close() !!}		
 	</div>
 @stop
 
-@section('scripts')
+@push('scripts')
 	<script type="text/javascript">
+		var element = document.getElementById("percobaan");
 		$(window).on('load', function(e) {		
 			var data = JSON.parse("{{ $fquestions }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
-			
-			var element = document.getElementById("wadah");
+						
+			console.log(data);
 		    for (i=0; i<data.length; i++) {
 		    	var json = data[i];
 
@@ -72,9 +73,7 @@
 				"</div>").appendTo(element);
 	    });
 
-	    function setFormQuestion(json, html, qid) {
-	    	var element = document.getElementById("wadah");
-
+	    function setFormQuestion(json, html, qid) {	    	
 	    	var list_answer = json.list_answer;					
 			var options = "";
 			if (list_answer.length>0) {					
@@ -92,4 +91,4 @@
 				"</div>").appendTo(element);
 	    }
 	</script>
-@stop
+@endpush

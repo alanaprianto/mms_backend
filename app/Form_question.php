@@ -8,7 +8,7 @@ class Form_question extends Model
 {
 	protected  $table = "form_question";
 
-    protected $appends = ['setting', 'list_answer', 'group_name',];
+    protected $appends = ['setting', 'list_answer', 'group_name', 'question_type', 'rules_detail'];
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +16,7 @@ class Form_question extends Model
      * @var array
      */
     protected $fillable = [
-        'question', 'group_question', 'answer_type', 'description', 'order',
+        'question', 'group_question', 'answer_type', 'description', 'order', 'type', 'rules',
     ];
 
     /**
@@ -28,11 +28,19 @@ class Form_question extends Model
     }
 
     /**
-     * Get the type record associated with the question.
+     * Get the setting record associated with the question.
      */
-    public function type()
+    public function setting()
     {
         return $this->belongsTo('App\Form_setting', 'answer_type', 'id');
+    }
+
+    /**
+     * Get the type record associated with the question.
+     */
+    public function qtype()
+    {
+        return $this->belongsTo('App\Form_type', 'type', 'id');
     }
 
     /**
@@ -49,6 +57,14 @@ class Form_question extends Model
     public function result()
     {
         return $this->hasMany('App\Form_result', 'id_question', 'id');
+    }
+
+    /**
+     * Get the setting record associated with the question.
+     */
+    public function rules()
+    {
+        return $this->belongsToMany('App\Form_setting', 'rules', 'id');
     }
 
     public function getSettingAttribute()
@@ -75,5 +91,30 @@ class Form_question extends Model
         $group = Form_question_group::findOrFail($id);
 
         return $group->name;
+    }
+
+    public function getQuestionTypeAttribute()
+    {
+        // return $this->attributes['writing'] == 'yes';        
+
+        $id = $this->attributes['type'];        
+        $type = Form_type::findOrFail($id);        
+        
+        return $type;
+    }
+
+    public function getRulesDetailAttribute() 
+    {
+        $string = $this->attributes['rules'];    
+        $ids = explode(", ", $string);
+
+        $errors = array_filter($ids);
+
+        if (empty($errors)) {
+            return null;
+        }
+        $rules = Form_rules::whereIn('id', $ids)->get();        
+        
+        return $rules;
     }
 }

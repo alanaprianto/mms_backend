@@ -8,8 +8,10 @@ use App\Http\Requests;
 use App\Form_question;
 use App\Form_question_group;
 use App\Form_setting;
+use App\Form_type;
 use App\Http\Requests\FormQuestionRequest;
 use Datatables;
+use App\Form_rules;
 
 class FormQuestionController extends Controller
 {
@@ -22,15 +24,14 @@ class FormQuestionController extends Controller
     {
         $search = \Request::get('search');
 
-        $fquestions = Form_question::where('question','like','%'.$search.'%')->paginate(7);
+        $fquestions = Form_question::where('question','like','%abcde%')->paginate(7);
 
-        if (Request::ajax()) {                                            
-            return view('form.question.questions', compact('fquestions'));
-        }
-
-        $deleted = false;
+        // if (Request::ajax()) {                                            
+        //     return view('form.question.questions', compact('fquestions'));
+        // }        
         
-        return view('form.question.index', compact('fquestions', 'deleted'));
+        // return implode("|", $fquestions->rules_detail->parameter);        
+        return view('form.question.index', compact('fquestions'));
     }
     
     public function indexAjax() {                
@@ -47,9 +48,11 @@ class FormQuestionController extends Controller
     {
         $gqs = Form_question_group::pluck('name', 'id');
         $ats = Form_setting::pluck('name', 'id');
+        $types = Form_type::pluck('name', 'id');
+        $rules = Form_rules::get();
 
-        // return $gqs;
-        return view('form.question.create', compact('gqs', 'ats'));
+        // return $rules;
+        return view('form.question.create', compact('gqs', 'ats', 'types', 'rules'));
     }
 
     /**
@@ -60,8 +63,15 @@ class FormQuestionController extends Controller
      */
     public function store(FormQuestionRequest $request)
     {
-        $input = $request->all();
+        if ($request['order'] == "") {
+            $request['order'] = "0";
+        }
+        
+        $rules = implode (", ", $request['rules']);
+        $request['rules'] = $rules;
 
+        $input = $request->all();
+        // return $input;
         Form_question::create($input);
 
         return redirect('/crud/form/question');
@@ -97,8 +107,17 @@ class FormQuestionController extends Controller
         $fq = Form_question::findOrFail($id);
         $gqs = Form_question_group::pluck('name', 'id');
         $ats = Form_setting::pluck('name', 'id');
+        $types = Form_type::pluck('name', 'id');
+        $rules = Form_rules::get();
                 
-        return view('form.question.edit', compact('fq', 'gqs', 'ats')); 
+        $data = array();
+        if (!empty($fq->rules_detail)) {
+            foreach ($fq->rules_detail as $key => $value) {
+                $data[] = $value->id;
+            }
+        }        
+        
+        return view('form.question.edit', compact('fq', 'gqs', 'ats', 'types', 'rules', 'data')); 
     }
 
     /**
@@ -110,6 +129,9 @@ class FormQuestionController extends Controller
      */
     public function update(FormQuestionRequest $request, $id)
     {
+        $rules = implode (", ", $request['rules']);
+        $request['rules'] = $rules;
+
         $fq = Form_question::findOrFail($id);
 
         $fq->update($request->all());
@@ -137,5 +159,5 @@ class FormQuestionController extends Controller
         }
         
         return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
-    }
+    }    
 }

@@ -26,7 +26,7 @@ class FormQuestionRequest extends Request
         return [
             'question' => 'required|min:5',
             'group_question' => 'required',
-            'answer_type' => 'required',
+            'answer_type' => 'required',            
         ];
     }
 }

@@ -96,7 +96,7 @@ $(function() {
       { "data" : "question" },
       { "data" : "answer_type" },
       { "data" : "answer_value" },        
-      { "data" : "username"},        
+      { "data" : "name"},        
       { "data" : "id"}    
     ],
     "columnDefs": [            

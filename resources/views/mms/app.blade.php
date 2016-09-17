@@ -71,7 +71,12 @@
                         <li><a href="register2">Pendaftaran Anggota Luar Biasa</a></li>
                     </ul>
                     </li>
-                    <li><a href="login">Login</a></li>
+                    @if(Auth::check())
+                        <li><a href="profile">{{ Auth::user()->name }}</a></li>
+                        <li><a href="logout">Logout</a></li>
+                    @else
+                        <li><a href="login">Login</a></li>
+                    @endif                    
                     <li><a href="help">Help</a></li>                        
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -109,6 +114,6 @@
         classname[i].addEventListener('click', getHome, false);
     }
 </script>
-@yield('scripts') 
+@yield('scripts')
 </body>
 </html>

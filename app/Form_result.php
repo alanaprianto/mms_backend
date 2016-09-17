@@ -38,7 +38,7 @@ class Form_result extends Model
     public function getAnswerTypeAttribute() 
     {
         $id = $this->attributes['id_question'];        
-        $name = Form_question::findOrFail($id)->type->name;         
+        $name = Form_question::findOrFail($id)->setting->name;         
 
         return $name;
     }

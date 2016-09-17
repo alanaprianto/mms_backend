@@ -1,25 +1,20 @@
 @extends('app')
-
 @section('content')
-
-<h1> Form Question </h1>
+<h1> Form Rules </h1>
 <br><br>
-
+  
 <div class="nopadding" align="left">
-  <a href='question/create' class="btn btn-primary btn-md"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
+  <a href='rules/create' class="btn btn-primary btn-md"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
 </div>  
 <br>
-  
-<table class="table table-bordered" id="question-table" width=100%>
+
+<table class="table table-bordered" id="rules-table" width=100%>
   <thead>
     <tr>
-      <th>Question</th>    
-      <th>Group Question</th>
-      <th>Question Type</th>
-      <th>Answer Type</th>
-      <th>Rules</th>      
-      <th>Order</th>
-      <th>Options</th>
+      <th>Name</th>    
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Options</th>      
     </tr>        
   </thead>
 </table>
@@ -83,38 +78,41 @@ $('#submit_delete').on('click', function (event) {
       toastr.error(data.msg);
     }
 
-    var ref = $('#question-table').DataTable();
+    var ref = $('#rules-table').DataTable();
     ref.ajax.reload(null, false);    
   });
 });
 
-$(function() {  
-    $('#question-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ url('crud/form/ajax/question')}}",
-        columns: [   
-            { "data" : "question" },
-            { "data" : "group_name" },
-            { "data" : "question_type.name" },
-            { "data" : "setting.name" },
-            { "data" : "rules_detail[].name" },            
-            { "data" : "order" },
-            { "data" : "id" },            
-        ], 
-        "columnDefs": [            
-            {
-                // The `data` parameter refers to the data for the cell (defined by the
-                // `data` option, which defaults to the column being worked with, in
-                // this case `data: 0`.
-                "render": function ( data, type, row ) {
-                	return '<a href="question/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.question+'" data-url="question"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>';                  
-                    // return data +' ('+ row[3]+')';
-                },
-                "targets": 6
-            }
-        ]
-    });
+$(function() {
+  $('#rules-table').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: "{{ url('crud/form/ajax/rules')}}",
+    columns: [            
+      { "data" : "name" },
+      { "data" : "parameter" },
+      { "data" : "description" },        
+      { "data" : "id"}    
+    ],
+    "columnDefs": [            
+      {
+        // The `data` parameter refers to the data for the cell (defined by the
+        // `data` option, which defaults to the column being worked with, in
+        // this case `data: 0`.
+        "render": function ( data, type, row ) {
+        return '<a href="rules/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="rules"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>';
+        },
+        "targets": 3
+      },
+      // {        
+      //   "render": function ( data, type, row ) {
+      //   return '<p>"'+row.html_tag+'"</p>';
+      //   },
+      //   "targets": 2
+      // }
+    ]
+  });
 });
+
 </script>
 @endpush

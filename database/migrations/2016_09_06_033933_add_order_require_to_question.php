@@ -14,7 +14,8 @@ class AddOrderRequireToQuestion extends Migration
     {
         Schema::table('form_question', function ($table) {                    
             $table->integer('order')->nullable();        
-            $table->boolean('require')->nullable();
+            $table->text('rules')->nullable();
+            $table->text('type')->nullable();
         });
     }
 
@@ -28,6 +29,7 @@ class AddOrderRequireToQuestion extends Migration
         Schema::table('form_question', function ($table) {                    
             $table->dropColumn('order');            
             $table->dropColumn('require');
+            $table->dropColumn('type');
         });
     }
 }

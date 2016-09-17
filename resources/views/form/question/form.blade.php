@@ -9,13 +9,28 @@
 </div>
 
 <div class="form-group">
+	{!! Form::label('type', 'Question Type:') !!}
+	{!! Form::select('type', $types, null, ['class' => 'form-control']) !!}		
+</div>
+
+<div class="form-group">
 	{!! Form::label('answer_type', 'Answer Type:') !!}
 	{!! Form::select('answer_type', $ats, null, ['class' => 'form-control']) !!}		
 </div>
 
 <div class="form-group">
+	{!! Form::label('rules', 'Question Rules:') !!}
+	<p>
+	@foreach ($rules as $key => $rule)				
+		<?php $checked = array_diff($rule->id, $data); ?>
+		{{ $rule->id }}	
+        {!! Form::checkbox('rules[]', $rule->id, $rules) !!}  {{$rule->name}}<p>
+    @endforeach
+</div> 
+
+<div class="form-group">
 	{!! Form::label('order', 'Order Question:') !!}
-	{!! Form::text('order', 0, ['class' => 'form-control']) !!}		
+	{!! Form::text('order', null, ['class' => 'form-control']) !!}		
 </div>
 
 <div class="form-group">

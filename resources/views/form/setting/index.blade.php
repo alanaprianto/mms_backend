@@ -39,6 +39,11 @@
   </div>
 </div>
 
+<p>
+    {{ Form::label('email', 'Email Address') }}
+    {{ Form::text('email', null, array('placeholder' => 'awesome@awesome.com')) }}
+</p>
+
 @stop
 
 @push('scripts')
@@ -105,14 +110,12 @@ $(function() {
         },
         "targets": 3
       },
-      {
-        "type": "string", 
-        "targets": 2
-        // "render": function ( data, type, row ) {
-        // return '<pre>'+row.html_tag+'</pre>';
-        // },
-        // "targets": 2
-      }
+      // {        
+      //   "render": function ( data, type, row ) {
+      //   return '<p>"'+row.html_tag+'"</p>';
+      //   },
+      //   "targets": 2
+      // }
     ]
   });
 });

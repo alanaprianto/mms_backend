@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class FormAnswerRequest extends Request
+class FormTypeRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class FormAnswerRequest extends Request
     public function rules()
     {
         return [
-            'answer' => 'required',
-            'question_id' => 'required',             
-            'options_type' => 'required',
+            'name' => 'required|min:3'            
         ];
     }
 }
