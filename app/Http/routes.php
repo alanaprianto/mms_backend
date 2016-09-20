@@ -28,7 +28,7 @@ Route::group(['prefix' => 'crud/form/'], function () {
   Route::resource('setting', 'FormSettingController');
   Route::resource('type', 'FormTypeController');
   Route::resource('rules', 'FormRulesController');
-  Route::resource('question', 'FormQuestionController');
+  Route::resource('question', 'FormQuestionController');  
   Route::resource('question_group', 'FormQuestionGroupController'); 
   Route::resource('answer', 'FormAnswerController');
   Route::resource('result', 'FormResultController');
@@ -41,6 +41,7 @@ Route::group(['prefix' => 'crud/form/'], function () {
     Route::get('answer', 'FormAnswerController@indexAjax');
     Route::get('result', 'FormResultController@indexAjax');
   });
+  Route::get('question/whereSetting/{id}', 'FormQuestionController@whereSetting');
 });
 
 // Crud Navigation Bar

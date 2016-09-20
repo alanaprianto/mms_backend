@@ -24,7 +24,7 @@ class FormQuestionController extends Controller
     {
         $search = \Request::get('search');
 
-        $fquestions = Form_question::where('question','like','%abcde%')->paginate(7);
+        $fquestions = Form_question::where('question','like','%'.$search.'%')->paginate(7);
 
         // if (Request::ajax()) {                                            
         //     return view('form.question.questions', compact('fquestions'));
@@ -34,7 +34,7 @@ class FormQuestionController extends Controller
         return view('form.question.index', compact('fquestions'));
     }
     
-    public function indexAjax() {                
+    public function indexAjax() {    
         $fr = Form_question::orderBy('order', 'asc')->get();
         return Datatables::of($fr)->make(true);
     }
@@ -67,8 +67,10 @@ class FormQuestionController extends Controller
             $request['order'] = "0";
         }
         
-        $rules = implode (", ", $request['rules']);
-        $request['rules'] = $rules;
+        if ($request['rules']) {
+            $rules = implode (", ", $request['rules']);
+            $request['rules'] = $rules;
+        }        
 
         $input = $request->all();
         // return $input;
@@ -159,5 +161,24 @@ class FormQuestionController extends Controller
         }
         
         return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
-    }    
+    }   
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $settingid
+     * @return \Illuminate\Http\Response
+     */
+    public function whereSetting($settingid)
+    {
+        // return $id;
+        $fq = Form_question::where('answer_type','=',$settingid)->get();
+
+        if (Request::ajax()) {                                            
+            return \Response::json($fq);
+        }
+        
+        return \Response::json($fq);
+        return redirect('/crud/form/question');
+    } 
 }

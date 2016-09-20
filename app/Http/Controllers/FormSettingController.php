@@ -78,6 +78,15 @@ class FormSettingController extends Controller
      */
     public function show($id)
     {
+        // return $id;
+        // $fs = Form_setting::findOrFail($id);
+        $fs = Form_setting::where('name','like','%'.$id.'%')->get();
+
+        if (Request::ajax()) {                                            
+            return \Response::json($fs);
+        }
+        
+        return \Response::json($fq);
         return redirect('/crud/form/setting');
     }
 

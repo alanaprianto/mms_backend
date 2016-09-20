@@ -38,12 +38,6 @@
     </div>
   </div>
 </div>
-
-<p>
-    {{ Form::label('email', 'Email Address') }}
-    {{ Form::text('email', null, array('placeholder' => 'awesome@awesome.com')) }}
-</p>
-
 @stop
 
 @push('scripts')

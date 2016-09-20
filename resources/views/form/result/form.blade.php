@@ -21,16 +21,7 @@
 	{!! Form::submit($submitButtonText, ['class' => 'btn btn-primary form-control']) !!}	
 </div>
 
-<script type="text/javascript">
-	var fr = "{{ $fr }}";
-	$(window).on('load', function(e) {              
-        if (fr) {
-        	console.log("fr exist; fr = "+fr);
-        } else {
-        	console.log("fr not exist");
-        }
-    });
-
+<script type="text/javascript">	
 	function setAnswerType() {    	
 		var type = document.getElementById("id_question").value;			
 

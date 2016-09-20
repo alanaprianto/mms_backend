@@ -1,6 +1,6 @@
 @extends('mms.app')
 
-@section('content')	
+@section('content')		
 	<div class="well">
 		<h1>Form Pendaftaran</h1>
 		<br>
@@ -30,6 +30,8 @@
 		    	var equal4 = type.toUpperCase() === "DIVIDER TITLE";
 		    	var equal5 = type.toUpperCase() === "DIVIDER";
 		    	var equal6 = type.toUpperCase() === "QUESTION";
+		    	var equal7 = type.toUpperCase() === "NAME";
+		    	var equal8 = type.toUpperCase() === "EMAIL";
 
 		    	var html = "";
 		    	var qid = "";
@@ -38,17 +40,17 @@
 		    		html = json.question_type.html_tag.split(";");
 		    		qid = "username";		    
 
-		    		setFormQuestion(json, html, qid)		
+		    		setFormQuestion(json, html, qid);		
 		    	} else if (equal2) {
 		    		html = json.question_type.html_tag.split(";");
 		    		qid = "password_confirmation";		 
 
-		    		setFormQuestion(json, html, qid)   		
+		    		setFormQuestion(json, html, qid);  		
 		    	} else if (equal3) {
 		    		html = json.question_type.html_tag.split(";");
 		    		qid = "password";		    
 
-		    		setFormQuestion(json, html, qid)		
+		    		setFormQuestion(json, html, qid);		
 		    	} else if (equal4) {
 		    		html = json.question_type.html_tag.replace("[divider]", json.question);;		    		
 
@@ -56,6 +58,23 @@
 
 		    		$(html).appendTo(element);
 
+		    	} else if (equal5) {
+		    		html = json.question_type.html_tag.replace("[divider]", "");
+
+		    		console.log(html);
+
+		    		$(html).appendTo(element);
+
+		    	} else if (equal7) {
+		    		html = json.question_type.html_tag.split(";");
+		    		qid = "name";		    
+
+		    		setFormQuestion(json, html, qid);
+		    	} else if (equal8) {
+		    		html = json.question_type.html_tag.split(";");
+		    		qid = "email";		    
+
+		    		setFormQuestion(json, html, qid);
 		    	} else {
 		    		var setting = json.setting;
 					html = setting.html_tag.split(";");	
@@ -85,7 +104,7 @@
 			}
 
 			$(	"<div class='form-group'>"+
-					"<label for='qid'>"+json.question+" :</label><br>"+				
+					"<label for='"+qid+"'>"+json.question+" :</label><br>"+				
 						html[0].replace("[name]", qid)+
 						options+
 						html[1]+	    		

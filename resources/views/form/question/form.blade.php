@@ -21,9 +21,7 @@
 <div class="form-group">
 	{!! Form::label('rules', 'Question Rules:') !!}
 	<p>
-	@foreach ($rules as $key => $rule)				
-		<?php $checked = array_diff($rule->id, $data); ?>
-		{{ $rule->id }}	
+	@foreach ($rules as $key => $rule)						
         {!! Form::checkbox('rules[]', $rule->id, $rules) !!}  {{$rule->name}}<p>
     @endforeach
 </div> 

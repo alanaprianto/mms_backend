@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 
+use GuzzleHttp\Exception\RequestException;
+
 class PendaftaranController extends Controller
 {
     /**
@@ -44,10 +46,10 @@ class PendaftaranController extends Controller
     public function store(FormResultRequest $request)
     {        
         $input = $request->all();        
-        
-        $name = $input['id_question_5'];
+        // return $input;
+        $name = $input['name'];
         $username = $input['username'];
-        $email = $input['id_question_4'];
+        $email = $input['email'];
         $password1 = $input['password'];
         $password2 = $input['password_confirmation'];
 
@@ -70,6 +72,24 @@ class PendaftaranController extends Controller
 
             if ($validator->passes()) {
 
+                try {
+                    $client = new \GuzzleHttp\Client(['base_uri' => 'http://110.74.178.215:3000/api/']);             
+
+                    $response = $client->request('POST', 'v1/users.create', [
+                            'headers' => [
+                                'X-Auth-Token' => '6iurmF1SaKq682NFy8HDF2lxXA3tWFcGkkvw8JSQpyR',
+                                'X-User-Id' => 'S3L2dshaFzbkhHs9W',
+                                'Content-type' => 'application/json'
+                            ],
+                            'json' => ['name' => $name, 'email' => $email, 'password' => $password1, 'username' => $username]
+                        ]);                                          
+                } catch (RequestException $e) {                    
+                    $response = json_decode($e->getResponse()->getBody(true));                
+                    return Redirect::to('register1')
+                        ->withErrors(['message' => $response->error])
+                        ->withInput(Input::except(['id_question_19', 'id_question_20']));
+                }    
+                
                 $user = new User;
 
                 $user->name = $name;
@@ -80,12 +100,11 @@ class PendaftaranController extends Controller
                 $user->no_kta = "0";
                 $user->no_rn = "0";                
 
-                $user->save(); 
-                                
+                $user->save();                                         
             } else {                
                 return Redirect::to('register1')
-                    ->withErrors($validator)
-                    ->withInput(Input::except(['password', 'password_confirmation']));
+                    ->withInput(Input::except(['password', 'password_confirmation']))
+                    ->withErrors($validator);
             }
 
         $datas = array();
@@ -152,6 +171,10 @@ class PendaftaranController extends Controller
                 $rules["password_confirmation"] = implode("|", $parameter);
             } else if (str_contains($type, "Password")) {
                 $rules["password"] = implode("|", $parameter);
+            } else if (str_contains($type, "Name")) {
+                $rules["name"] = implode("|", $parameter);
+            } else if (str_contains($type, "Email")) {
+                $rules["email"] = implode("|", $parameter);
             } else {
                 $rules["id_question_{$value->id}"] = implode("|", $parameter);
             }            
@@ -176,6 +199,10 @@ class PendaftaranController extends Controller
                 $names["password_confirmation"] = $value->question;   
             } else if (str_contains($type, "Password")) {                
                 $names["password"] = $value->question;   
+            } else if (str_contains($type, "Name")) {                
+                $names["name"] = $value->question;   
+            } else if (str_contains($type, "Email")) {   
+                $names["email"] = $value->question;   
             } else {
                 $names["id_question_{$value->id}"] = $value->question;   
             }                                          
