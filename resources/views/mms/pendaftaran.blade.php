@@ -1,16 +1,25 @@
 @extends('mms.app')
 
 @section('content')		
-	<div class="well">
-		<h1>Form Pendaftaran</h1>
-		<br>
+<section class="mbr-section" id="msg-box8-0" style="background-color: rgb(40, 38, 44); padding-top: 160px; padding-bottom: 120px;">
 
-		@include('errors.error_list')
-		
-		{!! Form::open(['action' => ['PendaftaranController@store'], 'id' => 'wadah']) !!}	
+    <div class="mbr-overlay" style="opacity: 0.5; background-color: rgb(34, 34, 34);">
+
+    </div>
+    <div class="container">
+        <div class="well" style="margin-top: -100px; margin-left: 100px; margin-right:100px; margin-bottom:-80px;">
+			<h2>Form Pendaftaran</h2>
+			<br>
 			
-		{!! Form::close() !!}
-	</div>
+			@include('errors.error_list')
+			
+			{!! Form::open(['action' => ['PendaftaranController@store'], 'id' => 'wadah']) !!}	
+				
+			{!! Form::close() !!}			
+		</div>
+    </div>
+
+</section>	
 @stop
 
 @section('scripts')
@@ -52,16 +61,12 @@
 
 		    		setFormQuestion(json, html, qid);		
 		    	} else if (equal4) {
-		    		html = json.question_type.html_tag.replace("[divider]", json.question);;		    		
-
-		    		console.log(html);
+		    		html = json.question_type.html_tag.replace("[divider]", json.question);	
 
 		    		$(html).appendTo(element);
 
 		    	} else if (equal5) {
-		    		html = json.question_type.html_tag.replace("[divider]", "");
-
-		    		console.log(html);
+		    		html = json.question_type.html_tag.replace("[divider]", "");		    		
 
 		    		$(html).appendTo(element);
 
@@ -87,7 +92,7 @@
 		    }	   
 
 		    $(	"<div class='form-group'>"+
-					"<input class='btn btn-primary form-control' type='submit' value='submit'>"+
+					"<input class='btn btn-primary form-control' type='submit' value='Submit'>"+
 				"</div>").appendTo(element);
 	    });
 
@@ -103,8 +108,21 @@
 				}	    
 			}
 
+			var rules = json.rules_detail;
+			var req = "";			
+			if (rules) {
+				for (var i = rules.length - 1; i >= 0; i--) {
+					var rule = rules[i]
+					if (rule.name.toUpperCase()==="REQUIRED") {
+						req = "<font color='red' size='6'>*</font>";
+					}
+				}
+			}			
+			
+
 			$(	"<div class='form-group'>"+
-					"<label for='"+qid+"'>"+json.question+" :</label><br>"+				
+					"<label for='"+qid+"'>"+json.question+" :</label>"+
+						req+"<br>"+
 						html[0].replace("[name]", qid)+
 						options+
 						html[1]+	    		

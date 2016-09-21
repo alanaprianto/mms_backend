@@ -1,30 +1,38 @@
 @extends('mms.app')
 
 @section('content')	
+<section class="mbr-section" id="msg-box8-0" style="background-color: rgb(40, 38, 44); padding-top: 160px; padding-bottom: 120px;">
 
-	<div class="well">
-		<h1>Form Login</h1>
-		<br>
+    <div class="mbr-overlay" style="opacity: 0.5; background-color: rgb(34, 34, 34);">
 
-		@include('errors.error_list')
+    </div>
+    <div class="container">
+        <div class="well" style="margin-top: -100px; margin-left: 100px; margin-right:100px; margin-bottom:-80px;">
+			<h2>Form Login</h2>
+			<br>
 
-		{!! Form::open(['action' => ['LoginController@login'], 'id' => 'wadah']) !!}			
-			<div class="form-group">
-				{!! Form::label('username', 'Username :') !!}
-				{!! Form::text('username', null, ['class' => 'form-control']) !!}
-			</div>
+			@include('errors.error_list')
 
-			<div class="form-group">
-				{!! Form::label('password', 'Password :') !!}
-				{!! Form::password('password', ['class' => 'form-control']) !!}
-			</div>												
+			{!! Form::open(['action' => ['LoginController@login'], 'id' => 'wadah']) !!}			
+				<div class="form-group">
+					{!! Form::label('username', 'Username :') !!}
+					{!! Form::text('username', null, ['class' => 'form-control']) !!}
+				</div>
 
-			<div class="form-group">
-				{!! Form::submit('Submit!', ['class' => 'btn btn-primary form-control']) !!}
-			</div>		
-			
-		{!! Form::close() !!}
-	</div>
+				<div class="form-group">
+					{!! Form::label('password', 'Password :') !!}
+					{!! Form::password('password', ['class' => 'form-control']) !!}
+				</div>												
+
+				<div class="form-group">
+					{!! Form::submit('Submit!', ['class' => 'btn btn-primary form-control']) !!}
+				</div>		
+				
+			{!! Form::close() !!}
+		</div>
+    </div>
+
+</section>		
 @stop
 
 @section('scripts')	

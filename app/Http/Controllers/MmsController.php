@@ -14,13 +14,7 @@ class MmsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {            
-    	$contents = "HOME";	
-    	if (Request::ajax()) {                       
-    		$contents = "HOME (Ajax Request)";
-            return view('mms.home-content', compact('contents'));
-        }
-
-		return view('mms.home', compact('contents'));
+    {                	
+		return view('mms.home');
     }
 }
