@@ -7,7 +7,7 @@
 
     </div>
     <div class="container">
-        <div class="well" style="margin-top: -100px; margin-left: 100px; margin-right:100px; margin-bottom:-80px;">
+        <div class="card card-block" style="margin-top: -100px; margin-left: 100px; margin-right:100px; margin-bottom:-80px;">
 			<h2>Form Login</h2>
 			<br>
 
@@ -25,7 +25,7 @@
 				</div>												
 
 				<div class="form-group">
-					{!! Form::submit('Submit!', ['class' => 'btn btn-primary form-control']) !!}
+					{!! Form::submit('Submit', ['class' => 'btn btn-primary form-control']) !!}
 				</div>		
 				
 			{!! Form::close() !!}

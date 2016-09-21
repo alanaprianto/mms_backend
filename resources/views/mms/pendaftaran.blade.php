@@ -7,7 +7,7 @@
 
     </div>
     <div class="container">
-        <div class="well" style="margin-top: -100px; margin-left: 100px; margin-right:100px; margin-bottom:-80px;">
+        <div class="card card-block" style="margin-top: -100px; margin-left: 100px; margin-right:100px; margin-bottom:-80px;">
 			<h2>Form Pendaftaran</h2>
 			<br>
 			
