@@ -8,15 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{{ asset('resources/assets/mainassets/images/icon144-128x128-10.png') }}" type="image/x-icon">
 
-    <!-- Bootstrap core CSS -->
-    <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    {{--<!-- Bootstrap core CSS -->--}}
+    {{--<link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">--}}
 
     {{--main assets--}}
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic&amp;subset=latin" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic&amp;subset=latin">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900">
 
-    <link href="{{ asset('resources/assets/mainassets/et-line-font-plugin/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/assets/mainassets/et-line-font-plugin/style.css') }}" rel="stylesheet" >
     <link href="{{ asset('resources/assets/mainassets/bootstrap-material-design-font/css/material.css') }}" rel="stylesheet">
     <link href="{{ asset('resources/assets/mainassets/tether/tether.min.css') }}" rel="stylesheet">
     <link href="{{ asset('resources/assets/mainassets/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -104,10 +104,10 @@
     </div>
 </section>
 
-<script src="{{ asset('resources/assets/js/jquery-3.1.0.min.js') }}"></script>
-<script src="{{ asset('resources/assets/js/bootstrap.js') }}"></script>
+{{--<script src="{{ asset('resources/assets/js/jquery-3.1.0.min.js') }}"></script>--}}
+{{--<script src="{{ asset('resources/assets/js/bootstrap.js') }}"></script>--}}
 {{--mainassets--}}
-<script src="{{ asset('resources/assets/mainassets/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('resources/assets/mainassets/web/assets/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('resources/assets/mainassets/tether/tether.min.js') }}"></script>
 <script src="{{ asset('resources/assets/mainassets/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('resources/assets/mainassets/smooth-scroll/SmoothScroll.js') }}"></script>
