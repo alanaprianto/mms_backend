@@ -22,25 +22,28 @@ class FormResultController extends Controller
     public function index()
     {        
         
-        $fresults = Form_result::whereHas('question', function ($q) {
-            $search = \Request::get('search');
-            $q->where('question', 'like', '%'.$search.'%');
-        })->paginate(7);                
+        // $fresults = Form_result::whereHas('question', function ($q) {
+        //     $search = \Request::get('search');
+        //     $q->where('question', 'like', '%'.$search.'%');
+        // })->paginate(7);                
 
-        if (Request::ajax()) {                                            
-            return view('form.result.results', compact('fresults'));
-        }        
+        // if (Request::ajax()) {                                            
+        //     return view('form.result.results', compact('fresults'));
+        // }        
 
-        // return $fanswers[0]->question;
-        return view('form.result.index', compact('fresults'));
+        // // return $fanswers[0]->question;
+        // return view('form.result.index', compact('fresults'));
+        $notifs = \Request::get('notifs');
+        return view('form.result.index', compact('notifs'));
     }
 
     public function indexAjax() {                
         $fr = Form_result::
                 leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
                 ->leftJoin('users', 'form_result.id_user', '=', 'users.id')                
-                ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.id_question']);        
+                ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.trackingcode', 'form_result.id_question']);        
         return Datatables::of($fr)->make(true);
+        // ->where('form_result.id_user', '=', '13')
     }
 
     /**
@@ -54,7 +57,8 @@ class FormResultController extends Controller
         $fas = Form_answer::pluck('answer', 'id');
         $users = User::pluck('username', 'id');
         
-        return view('form.result.create', compact('fqs', 'fas', 'users'));
+        $notifs = \Request::get('notifs');
+        return view('form.result.create', compact('fqs', 'fas', 'users', 'notifs'));
     }
 
     /**
@@ -79,7 +83,7 @@ class FormResultController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    {      
         return redirect('/crud/form/result');
     }
 
@@ -96,7 +100,8 @@ class FormResultController extends Controller
         $fas = Form_answer::pluck('answer', 'id');
         $users = User::pluck('username', 'id');
         
-        return view('form.result.edit', compact('fr', 'fqs', 'fas', 'users'));
+        $notifs = \Request::get('notifs');
+        return view('form.result.edit', compact('fr', 'fqs', 'fas', 'users', 'notifs'));
     }
 
     /**

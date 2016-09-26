@@ -9,10 +9,12 @@ use App\Form_question;
 use App\Http\Requests\FormResultRequest;
 use App\Form_result;
 use App\User;
+use App\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 use GuzzleHttp\Exception\RequestException;
 
@@ -34,7 +36,7 @@ class PendaftaranController extends Controller
         //     return view('mms.pendaftaran-content', compact('fquestions'));
         // }
         
-		return view('mms.pendaftaran', compact('fquestions'));
+		return view('mms.pendaftaran-content', compact('fquestions'));
     }
     
     /**
@@ -47,11 +49,11 @@ class PendaftaranController extends Controller
     {        
         $input = $request->all();        
         // return $input;
-        $name = $input['name'];
-        $username = $input['username'];
-        $email = $input['email'];
-        $password1 = $input['password'];
-        $password2 = $input['password_confirmation'];
+        // $name = $input['name'];
+        // $username = $input['username'];
+        // $email = $input['email'];
+        // $password1 = $input['password'];
+        // $password2 = $input['password_confirmation'];
 
         // if ($password1 != $password2) {
         //     return Redirect::to('register1')
@@ -72,35 +74,24 @@ class PendaftaranController extends Controller
 
             if ($validator->passes()) {
 
-                try {
-                    $client = new \GuzzleHttp\Client(['base_uri' => 'http://110.74.178.215:3000/api/']);             
+                $random_string = md5(microtime());
+                $first = substr($random_string, 0, 4);
+                $last = substr($random_string, -4);
+                $code = $first.$last;                                                        
 
-                    $response = $client->request('POST', 'v1/users.create', [
-                            'headers' => [
-                                'X-Auth-Token' => '6iurmF1SaKq682NFy8HDF2lxXA3tWFcGkkvw8JSQpyR',
-                                'X-User-Id' => 'S3L2dshaFzbkhHs9W',
-                                'Content-type' => 'application/json'
-                            ],
-                            'json' => ['name' => $name, 'email' => $email, 'password' => $password1, 'username' => $username]
-                        ]);                                          
-                } catch (RequestException $e) {                    
-                    $response = json_decode($e->getResponse()->getBody(true));                
-                    return Redirect::to('register1')
-                        ->withErrors(['message' => $response->error])
-                        ->withInput(Input::except(['id_question_19', 'id_question_20']));
-                }    
-                
-                $user = new User;
+                $admins = User::where('role', '=', '1')->get();
+                $data = array();
+                foreach ($admins as $key => $admin) {
+                    $notif = new Notification;
 
-                $user->name = $name;
-                $user->username = $username;
-                $user->email = $email;
-                $user->password = Hash::make($password1);
-                $user->role = "0";
-                $user->no_kta = "0";
-                $user->no_rn = "0";                
+                    $notif->target = $admin->id;
+                    $notif->sendercode = $code;
+                    $notif->value = "New submitted form";
+                    $notif->active = true;
+                    
+                    $notif->save();
+                }
 
-                $user->save();                                         
             } else {                
                 return Redirect::to('register1')
                     ->withInput(Input::except(['password', 'password_confirmation']))
@@ -119,8 +110,11 @@ class PendaftaranController extends Controller
                         $form_result->answer_value = implode (", ", $value);
                     } else {
                         $form_result->answer_value = $value;
+                        if (str_contains($value, '@')) {
+                            $email = $value;
+                        }
                     }                    
-                    $form_result->id_user = $user->id;
+                    $form_result->trackingcode = $code;
 
                     $datas[] = $form_result;
                 }
@@ -130,7 +124,7 @@ class PendaftaranController extends Controller
         }
         //$input = $request->get('id_question');
         
-        // return $datas;
+        // return $email;
         foreach ($datas as $data) {
             // $asdad = json_encode($data);
             // return $asdad;
@@ -141,11 +135,16 @@ class PendaftaranController extends Controller
             $fr->id_question = $data->id_question;
             $fr->answer_value = $data->answer_value;
             $fr->id_user = !empty($data->id_user) ? $data->id_user : '0';
+            $fr->trackingcode = $code;
 
             $fr->save();                        
         }
 
-        return redirect('/');   
+        Mail::send('emails.trackingcode', ['code' => $code], function($message) use ($email) {
+            $message->to($email)->subject('Kadin Registration');
+        });
+
+        return redirect('/')->withSuccess("Thank you for Registering. The message containing your tracking code has been sent to your email."); 
     }
 
     public function rules() {
@@ -227,7 +226,15 @@ class PendaftaranController extends Controller
         // if (Request::ajax()) {                                            
         //     return view('mms.pendaftaran-content', compact('fquestions'));
         // }
+        $random_string = md5(microtime());
+        $first = substr($random_string, 0, 4);
+        $last = substr($random_string, -4);
+        $code = $first.$last;
+        $array = [$random_string, $first, $last];
+        // dd($code);
 
+        $code = "d734b7d7";
+        return view('emails.trackingcode', compact('code'));
         return view('form.percobaan', compact('fquestions'));
     }
 
@@ -288,4 +295,5 @@ class formResult {
     public $id_question;
     public $answer_value;
     public $id_user;
+    public $trackingcode;
 }

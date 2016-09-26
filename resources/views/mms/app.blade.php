@@ -45,17 +45,17 @@ asdf<!DOCTYPE html>
                         <div class="hamburger-icon"></div>
                     </button>
                     <ul class="nav-dropdown collapse pull-xs-right nav navbar-nav navbar-toggleable-sm" id="exCollapsingNavbar">
-                        <li class="nav-item"><a class="nav-link link" href="{{ url('/') }}">Beranda</a></li>
-                        <li class="nav-item dropdown open"><a class="nav-link link dropdown-toggle" href="#" data-toggle="dropdown-submenu" aria-expanded="true">Pendaftaran</a>
+                        <li class="nav-item"><a class="nav-link link" href="{{ url('/') }}">Beranda</a></li>                        
+                        @if(Auth::check())
+                            <li class="nav-item"><a class="nav-link link" href="profile">{{ Auth::user()->name }}</a></li>
+                            <li class="nav-item"><a class="nav-link link" href="logout">Logout</a></li>
+                        @else
+                            <li class="nav-item dropdown open"><a class="nav-link link dropdown-toggle" href="#" data-toggle="dropdown-submenu" aria-expanded="true">Pendaftaran</a>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="register1">Pendaftaran Anggota Biasa</a>
                                 <a class="dropdown-item" href="register2">Pendaftaran Anggota Luar Biasa</a>
                             </div>
                         </li>
-                        @if(Auth::check())
-                            <li class="nav-item"><a class="nav-link link" href="profile">{{ Auth::user()->name }}</a></li>
-                            <li class="nav-item"><a class="nav-link link" href="logout">Logout</a></li>
-                        @else
                             <li class="nav-item"><a class="nav-link link" href="login">Masuk</a></li>
                         @endif                          
                         <li class="nav-item"><a class="nav-link link" href="help">Bantuan</a></li></ul>

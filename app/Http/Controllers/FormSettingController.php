@@ -8,9 +8,10 @@ use App\Http\Requests;
 use App\Http\Requests\FormSettingRequest;
 use App\Form_setting;
 use Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class FormSettingController extends Controller
-{
+{    
     /**
      * Display a listing of the resource.
      *
@@ -36,8 +37,9 @@ class FormSettingController extends Controller
         //     return view('form.setting.settings', compact('fsettings'));
         // }
 
-        // return view('form.setting.index', compact('fsettings'));
-        return view('form.setting.index');
+        // return view('form.setting.index', compact('fsettings'));               
+        $notifs = \Request::get('notifs');
+        return view('form.setting.index', compact('notifs'));
     }
 
     public function indexAjax() {        
@@ -52,7 +54,8 @@ class FormSettingController extends Controller
      */
     public function create()
     {        
-        return view('form.setting.create');
+        $notifs = \Request::get('notifs');
+        return view('form.setting.create', compact('notifs'));
     }
 
     /**
@@ -101,7 +104,8 @@ class FormSettingController extends Controller
         $fsetting = Form_setting::findOrFail($id);
 
         // return $fsetting;
-        return view('form.setting.edit', compact('fsetting')); 
+        $notifs = \Request::get('notifs');
+        return view('form.setting.edit', compact('fsetting', 'notifs')); 
     }
 
     /**

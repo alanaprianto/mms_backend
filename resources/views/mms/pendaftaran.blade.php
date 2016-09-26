@@ -24,6 +24,12 @@
 
 @section('scripts')
 	<script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", function(event) { 
+		  	function asdad(value) {
+		    	console.log(value);
+		    }
+		});
+
 		$(window).on('load', function(e) {		
 			var data = JSON.parse("{{ $fquestions }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
 			
@@ -94,6 +100,8 @@
 		    $(	"<div class='form-group'>"+
 					"<input class='btn btn-primary form-control' type='submit' value='Submit'>"+
 				"</div>").appendTo(element);
+
+		    asdad("asdad");
 	    });
 
 	    function setFormQuestion(json, html, qid) {
@@ -117,8 +125,7 @@
 						req = "<font color='red' size='6'>*</font>";
 					}
 				}
-			}			
-			
+			}									
 
 			$(	"<div class='form-group'>"+
 					"<label for='"+qid+"'>"+json.question+" :</label>"+
@@ -126,7 +133,7 @@
 						html[0].replace("[name]", qid)+
 						options+
 						html[1]+	    		
-				"</div>").appendTo(element);
-	    }
+				"</div>").appendTo(element);			
+	    }		         
 	</script>
 @stop

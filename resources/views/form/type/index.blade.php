@@ -1,4 +1,9 @@
-@extends('app')
+@extends('form.app')
+
+@section('sidebar')
+  @include('form.type.sidebar')
+@stop
+
 @section('content')
 <h1> Form Type </h1>
 <br><br>

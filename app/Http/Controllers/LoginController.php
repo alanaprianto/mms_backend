@@ -40,7 +40,7 @@ class LoginController extends Controller
 		$validator = Validator::make(Input::all(), $rules);
 
 		if ($validator->fails()) {
-		    return Redirect::to('login')
+		    return redirect('/')
 		        ->withErrors($validator) // send back all errors to the login form
 		        ->withInput(Input::except('password')); // send back the input (not the password) so that we can repopulate the form
 		}
@@ -54,13 +54,24 @@ class LoginController extends Controller
 	    // attempt to do the login
 	    if (Auth::attempt($userdata)) {
 	        
-	        return redirect('/');
+            if (Auth::user()->role=="1") {
+                // return "admin";
+                          
+                // return view('form.app', compact('notifs'));                              
+                return redirect('/crud/form/setting');
+            } else {
+                return redirect('/')
+                ->withErrors(['message' => 'Invalid Username or Password']) // send back all errors to the login form
+                ->withInput(Input::except('password')); // send back the input (not the password) so that we can repopulate the form
+            }	        
 
 	    } else {        
 
-	        // validation not successful, send back to form 
-	        return Redirect::to('login');
-
+	        // validation not successful, send back to form        
+            return redirect('/login')
+                ->withErrors(['message' => 'Invalid Username or Password']) // send back all errors to the login form
+                ->withInput(Input::except('password')); // send back the input (not the password) so that we can repopulate the form
+            
 	    }
     }
 

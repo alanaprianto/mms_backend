@@ -18,16 +18,18 @@ class FormQuestionGroupController extends Controller
      */
     public function index()
     {
-        $search = \Request::get('search');
+        // $search = \Request::get('search');
         
-        $fqgroups = Form_question_group::where('name','like','%'.$search.'%')->paginate(7);
+        // $fqgroups = Form_question_group::where('name','like','%'.$search.'%')->paginate(7);
 
-        if (Request::ajax()) {                                            
-            return view('form.question.questions', compact('fquestions'));
-        }
+        // if (Request::ajax()) {                                            
+        //     return view('form.question.questions', compact('fquestions'));
+        // }
                 
-        $deleted = false;
-        return view('form.questiongroup.index', compact('fqgroups', 'deleted'));
+        // $deleted = false;
+        // return view('form.questiongroup.index', compact('fqgroups', 'deleted'));
+        $notifs = \Request::get('notifs');
+        return view('form.questiongroup.index', compact('notifs'));
     }
 
     public function indexAjax() {        
@@ -42,7 +44,9 @@ class FormQuestionGroupController extends Controller
      */
     public function create()
     {
-        return view('form.questiongroup.create');
+        $notifs = \Request::get('notifs');
+
+        return view('form.questiongroup.create', compact('notifs'));
     }
 
     /**
@@ -82,7 +86,9 @@ class FormQuestionGroupController extends Controller
         $fqg = Form_question_group::findOrFail($id);
 
         // return $fsetting;
-        return view('form.questiongroup.edit', compact('fqg')); 
+
+        $notifs = \Request::get('notifs');
+        return view('form.questiongroup.edit', compact('fqg', 'notifs')); 
     }
 
     /**

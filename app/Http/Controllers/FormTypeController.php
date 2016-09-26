@@ -18,7 +18,9 @@ class FormTypeController extends Controller
      */
     public function index()
     {
-        return view('form.type.index');
+        // return view('form.type.index');
+        $notifs = \Request::get('notifs');
+        return view('form.type.index', compact('notifs'));
     }
 
     public function indexAjax() {        
@@ -32,8 +34,9 @@ class FormTypeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('form.type.create');
+    {           
+        $notifs = \Request::get('notifs');
+        return view('form.type.create1', compact('notifs'));
     }
 
     /**
@@ -73,7 +76,8 @@ class FormTypeController extends Controller
         $ftype = Form_type::findOrFail($id);
 
         // return $ftype;
-        return view('form.type.edit', compact('ftype')); 
+        $notifs = \Request::get('notifs');
+        return view('form.type.edit', compact('ftype', 'notifs')); 
     }
 
     /**

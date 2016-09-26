@@ -1,4 +1,8 @@
-@extends('app')
+@extends('form.app')
+
+@section('sidebar')
+  @include('form.result.sidebar')
+@stop
 
 @section('content')
 
@@ -16,7 +20,8 @@
 	    <th>Question</th>            
 	    <th>Answer Type</th>    
 	    <th>Answer Value</th>    
-	    <th>User</th>    
+	    <th>User</th>
+      <th>Tracking Code</th>
 	    <th>Options</th>      
     </tr>        
   </thead>
@@ -97,6 +102,7 @@ $(function() {
       { "data" : "answer_type" },
       { "data" : "answer_value" },        
       { "data" : "name"},        
+      { "data" : "trackingcode"},
       { "data" : "id"}    
     ],
     "columnDefs": [            
@@ -107,7 +113,7 @@ $(function() {
         "render": function ( data, type, row ) {
         return '<a href="result/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="result"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>';
         },
-        "targets": 4
+        "targets": 5
       }
     ]
   });

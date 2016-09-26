@@ -22,7 +22,7 @@
 	{!! Form::label('rules', 'Question Rules:') !!}
 	<p>
 	@foreach ($rules as $key => $rule)						
-        {!! Form::checkbox('rules[]', $rule->id, $rules) !!}  {{$rule->name}}<p>
+        {!! Form::checkbox('rules[]', $rule->id, false) !!}  {{$rule->name}}<p>
     @endforeach
 </div> 
 
@@ -37,5 +37,5 @@
 </div>
 
 <div class="form-group">
-	{!! Form::submit($submitButtonText, ['class' => 'btn btn-primary form-control']) !!}	
+	{!! Form::submit($submitButtonText, ['class' => 'btn btn-primary full-width']) !!}	
 </div>

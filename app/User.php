@@ -31,4 +31,20 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Form_result', 'id', 'id_user');
     }
+
+    /**
+     * Get the role record associated with the user.
+     */
+    public function myrole()
+    {
+        return $this->belongsTo('App\Role', 'role', 'id');
+    }
+
+    /**
+     * Get the notif record associated with the user.
+     */
+    public function notif()
+    {
+        return $this->hasMany('App\Role', 'id', 'target');
+    }
 }

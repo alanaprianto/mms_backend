@@ -80,7 +80,7 @@ class Form_question extends Model
     public function getListAnswerAttribute() 
     {
         $id = $this->attributes['id'];        
-        $answers = Form_answer::where('question_id', '=', $id)->get();        
+        $answers = Form_answer::where('question_id', '=', $id)->orderBy('id', 'asc')->get();        
         
         return $answers;
     }

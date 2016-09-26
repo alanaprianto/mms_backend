@@ -18,7 +18,9 @@ class FormRulesController extends Controller
      */
     public function index()
     {
-        return view('form.rules.index');
+        // return view('form.rules.index');
+        $notifs = \Request::get('notifs');
+        return view('form.rules.index', compact('notifs'));
     }
 
     public function indexAjax() {        
@@ -33,7 +35,8 @@ class FormRulesController extends Controller
      */
     public function create()
     {
-        return view('form.rules.create');
+        $notifs = \Request::get('notifs');
+        return view('form.rules.create', compact('notifs'));
     }
 
     /**
@@ -73,7 +76,9 @@ class FormRulesController extends Controller
         $frules = Form_rules::findOrFail($id);
 
         // return $frules;
-        return view('form.rules.edit', compact('frules')); 
+
+        $notifs = \Request::get('notifs');
+        return view('form.rules.edit', compact('frules', 'notifs')); 
     }
 
     /**

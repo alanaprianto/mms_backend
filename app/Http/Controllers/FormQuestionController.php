@@ -22,16 +22,17 @@ class FormQuestionController extends Controller
      */
     public function index()
     {
-        $search = \Request::get('search');
+        // $search = \Request::get('search');
 
-        $fquestions = Form_question::where('question','like','%'.$search.'%')->paginate(7);
+        // $fquestions = Form_question::where('question','like','%'.$search.'%')->paginate(7);
 
         // if (Request::ajax()) {                                            
         //     return view('form.question.questions', compact('fquestions'));
         // }        
         
-        // return implode("|", $fquestions->rules_detail->parameter);        
-        return view('form.question.index', compact('fquestions'));
+        // return implode("|", $fquestions->rules_detail->parameter);    
+        $notifs = \Request::get('notifs');
+        return view('form.question.index', compact('notifs'));
     }
     
     public function indexAjax() {    
@@ -52,7 +53,9 @@ class FormQuestionController extends Controller
         $rules = Form_rules::get();
 
         // return $rules;
-        return view('form.question.create', compact('gqs', 'ats', 'types', 'rules'));
+
+        $notifs = \Request::get('notifs');
+        return view('form.question.create', compact('gqs', 'ats', 'types', 'rules', 'notifs'));
     }
 
     /**
@@ -119,7 +122,8 @@ class FormQuestionController extends Controller
             }
         }        
         
-        return view('form.question.edit', compact('fq', 'gqs', 'ats', 'types', 'rules', 'data')); 
+        $notifs = \Request::get('notifs');
+        return view('form.question.edit', compact('fq', 'gqs', 'ats', 'types', 'rules', 'data', 'notifs')); 
     }
 
     /**
@@ -130,9 +134,11 @@ class FormQuestionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(FormQuestionRequest $request, $id)
-    {
-        $rules = implode (", ", $request['rules']);
-        $request['rules'] = $rules;
+    {        
+        if ($request['rules']) {
+            $rules = implode (", ", $request['rules']);
+            $request['rules'] = $rules;
+        }    
 
         $fq = Form_question::findOrFail($id);
 

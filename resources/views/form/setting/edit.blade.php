@@ -1,4 +1,8 @@
-@extends('app')
+@extends('form.app')
+
+@section('sidebar')
+  @include('form.setting.sidebar') 
+@stop
 
 @section('content')
 	<h1>Edit: {!! $fsetting->name !!}</h1>

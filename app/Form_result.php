@@ -16,7 +16,7 @@ class Form_result extends Model
      * @var array
      */
     protected $fillable = [
-        'id_question', 'id_user', 'answer_value',
+        'id_question', 'id_user', 'answer_value', 'trackingcode',
     ];
 
     /**
@@ -33,6 +33,14 @@ class Form_result extends Model
     public function user()
     {
         return $this->hasOne('App\User', 'id', 'id_user');
+    }
+
+    /**
+     * Get the user record associated with the result.
+     */
+    public function answer()
+    {
+        return $this->hasOne('App\Form_answer', 'id', 'answer_value');
     }
 
     public function getAnswerTypeAttribute() 

@@ -1,4 +1,8 @@
-@extends('app')
+@extends('form.app')
+
+@section('sidebar')
+  @include('form.result.sidebar')
+@stop
 
 @section('content')
 	<h1>Edit: {!! $fr->description !!}</h1>

@@ -1,4 +1,8 @@
-@extends('app')
+@extends('form.app')
+
+@section('sidebar')
+  @include('form.rules.sidebar')
+@stop
 
 @section('content')
 	<h1>Create New Form Rules</h1>

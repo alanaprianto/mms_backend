@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'MmsController@index');
+Route::get('404', 'MmsController@notfound');
 
 // Auth
 Route::get('login', 'LoginController@show');
@@ -19,12 +20,14 @@ Route::post('login', 'LoginController@login');
 Route::get('logout', 'LoginController@logout');
 Route::get('register1', 'PendaftaranController@index');
 Route::post('register1', 'PendaftaranController@store');
+Route::get('register/{code}', 'MmsController@register');
+Route::post('register', 'MmsController@createuser');
 
 Route::get('percobaan', 'PendaftaranController@percobaan');
 Route::post('percobaan', 'PendaftaranController@percobaanstore');
 
 // Mms crud
-Route::group(['prefix' => 'crud/form/'], function () {
+Route::group(['prefix' => 'crud/form/', 'middleware' => 'auth.role'], function () {
   Route::resource('setting', 'FormSettingController');
   Route::resource('type', 'FormTypeController');
   Route::resource('rules', 'FormRulesController');
@@ -32,6 +35,9 @@ Route::group(['prefix' => 'crud/form/'], function () {
   Route::resource('question_group', 'FormQuestionGroupController'); 
   Route::resource('answer', 'FormAnswerController');
   Route::resource('result', 'FormResultController');
+  Route::resource('user', 'UserController');
+  Route::get('notif/all', 'NotifController@notifall');
+  Route::get('notif/{id}', 'NotifController@notif');
   Route::group(['prefix' => 'ajax/'], function () {
     Route::get('setting', 'FormSettingController@indexAjax');
     Route::get('type', 'FormTypeController@indexAjax');
@@ -40,19 +46,23 @@ Route::group(['prefix' => 'crud/form/'], function () {
     Route::get('question_group', 'FormQuestionGroupController@indexAjax');
     Route::get('answer', 'FormAnswerController@indexAjax');
     Route::get('result', 'FormResultController@indexAjax');
+    Route::get('user', 'UserController@indexAjax');
+    Route::get('userresult/{id}', 'NotifController@userresultAjax');
+    Route::get('notifresult/{id}', 'NotifController@notifresultAjax');
+    Route::get('notifuser/{id}', 'NotifController@notifuserAjax');
   });
   Route::get('question/whereSetting/{id}', 'FormQuestionController@whereSetting');
 });
 
 // Crud Navigation Bar
-Menu::make('MyNavBar', function($menu){
+// Menu::make('MyNavBar', function($menu){
 
-  $menu->add('Form Setting', array('action'  => 'FormSettingController@index'));
-  $menu->add('Form Type', array('action'  => 'FormTypeController@index'));
-  $menu->add('Form Rules', array('action'  => 'FormRulesController@index'));
-  $menu->add('Form Question', array('action'  => 'FormQuestionController@index'));
-  $menu->add('Form Question Group', array('action'  => 'FormQuestionGroupController@index'));
-  $menu->add('Form Answer', array('action'  => 'FormAnswerController@index'));
-  $menu->add('Form Result', array('action'  => 'FormResultController@index'));  
+//   $menu->add('Form Setting', array('action'  => 'FormSettingController@index'));
+//   $menu->add('Form Type', array('action'  => 'FormTypeController@index'));
+//   $menu->add('Form Rules', array('action'  => 'FormRulesController@index'));
+//   $menu->add('Form Question', array('action'  => 'FormQuestionController@index'));
+//   $menu->add('Form Question Group', array('action'  => 'FormQuestionGroupController@index'));
+//   $menu->add('Form Answer', array('action'  => 'FormAnswerController@index'));
+//   $menu->add('Form Result', array('action'  => 'FormResultController@index'));  
 
-});
+// });

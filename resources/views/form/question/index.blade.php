@@ -1,4 +1,8 @@
-@extends('app')
+@extends('form.app')
+
+@section('sidebar')
+  @include('form.question.sidebar')
+@stop
 
 @section('content')
 

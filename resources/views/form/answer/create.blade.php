@@ -1,4 +1,8 @@
-@extends('app')
+@extends('form.app')
+
+@section('sidebar')
+  @include('form.answer.sidebar')
+@stop
 
 @section('content')
 	<h1>Create New Form Answer</h1>

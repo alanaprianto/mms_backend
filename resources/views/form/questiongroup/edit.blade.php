@@ -1,4 +1,8 @@
-@extends('app')
+@extends('form.app')
+
+@section('sidebar')
+  @include('form.questiongroup.sidebar')
+@stop
 
 @section('content')
 	<h1>Edit: {!! $fqg->name !!}</h1>

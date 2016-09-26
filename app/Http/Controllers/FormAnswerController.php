@@ -28,9 +28,10 @@ class FormAnswerController extends Controller
         //     return view('form.answer.answers', compact('fanswers'));
         // }
         
-        // $deleted = false;
-        
-        return view('form.answer.index');
+        // $deleted = false;        
+
+        $notifs = \Request::get('notifs');
+        return view('form.answer.index', compact('notifs'));        
     }
 
     public function indexAjax() {        
@@ -51,7 +52,8 @@ class FormAnswerController extends Controller
         $fqs = Form_question::pluck('question', 'id');        
         $ats = Form_setting::where('name', 'like', '%Option%')->pluck('name', 'id');
 
-        return view('form.answer.create', compact('fqs', 'ats'));
+        $notifs = \Request::get('notifs');
+        return view('form.answer.create', compact('fqs', 'ats', 'notifs'));
     }
 
     /**
@@ -94,7 +96,8 @@ class FormAnswerController extends Controller
         $fqs = Form_question::pluck('question', 'id');        
         $ats = Form_setting::where('name', 'like', '%Option%')->pluck('name', 'id');
 
-        return view('form.answer.edit', compact('fa', 'fqs', 'ats')); 
+        $notifs = \Request::get('notifs');
+        return view('form.answer.edit', compact('fa', 'fqs', 'ats', 'notifs')); 
     }
 
     /**

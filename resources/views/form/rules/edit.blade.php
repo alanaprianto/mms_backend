@@ -1,4 +1,8 @@
-@extends('app')
+@extends('form.app')
+
+@section('sidebar')
+  @include('form.rules.sidebar')
+@stop
 
 @section('content')
 	<h1>Edit: {!! $frules->name !!}</h1>
