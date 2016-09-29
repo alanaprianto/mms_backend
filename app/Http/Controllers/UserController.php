@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\User;
 use App\Notification;
 use Datatables;
+use App\Form_result;
 
 class UserController extends Controller
 {
@@ -31,8 +32,8 @@ class UserController extends Controller
         $fr = Form_result::
                 leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
                 ->leftJoin('users', 'form_result.id_user', '=', 'users.id')
-                ->where('form_result.id', '=', $id)
-                ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.trackingcode', 'form_result.id_question']);        
+                ->where('form_result.id', '=', $id)->get();
+                // ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.trackingcode', 'form_result.id_question']);        
         return Datatables::of($fr)->make(true);
     }
 

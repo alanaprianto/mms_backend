@@ -100,7 +100,7 @@ $(function() {
     columns: [       
       { "data" : "question" },
       { "data" : "answer_type" },
-      { "data" : "answer_value" },        
+      { "data" : "answer" },        
       { "data" : "name"},        
       { "data" : "trackingcode"},
       { "data" : "id"}    

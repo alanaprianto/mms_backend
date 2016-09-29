@@ -1,6 +1,9 @@
-@extends('app')
+<html>
+<head>
+  <title>Percobaan</title>
+</head>
+<body>
 
-@section('content')	
 	<div class="well">
 		<h1>Form Percobaan</h1>
 		<br>
@@ -11,9 +14,9 @@
 			
 		{!! Form::close() !!}		
 	</div>
-@stop
 
-@push('scripts')
+	<!-- JQuery -->
+    <script src="{{ asset('resources/assets/js/jquery-3.1.0.min.js') }}"></script>
 	<script type="text/javascript">
 		var element = document.getElementById("percobaan");
 		$(window).on('load', function(e) {		
@@ -91,4 +94,5 @@
 				"</div>").appendTo(element);
 	    }
 	</script>
-@endpush
+</body>
+</html>

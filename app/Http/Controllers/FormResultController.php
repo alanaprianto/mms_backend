@@ -40,8 +40,8 @@ class FormResultController extends Controller
     public function indexAjax() {                
         $fr = Form_result::
                 leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
-                ->leftJoin('users', 'form_result.id_user', '=', 'users.id')                
-                ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.trackingcode', 'form_result.id_question']);        
+                ->leftJoin('users', 'form_result.id_user', '=', 'users.id')->get();
+                // ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.trackingcode', 'form_result.id_question']);        
         return Datatables::of($fr)->make(true);
         // ->where('form_result.id_user', '=', '13')
     }

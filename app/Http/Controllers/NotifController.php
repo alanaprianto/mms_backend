@@ -40,7 +40,8 @@ class NotifController extends Controller
                 leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
                 ->leftJoin('users', 'form_result.id_user', '=', 'users.id')
                 ->where('form_result.trackingcode', '=', $code)
-                ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.trackingcode', 'form_result.id_question']);        
+                ->select(['form_question.question', 'form_result.answer_value', 'form_result.trackingcode', 'form_result.id_question',
+                        'form_result.created_at']);        
         return Datatables::of($fr)->make(true);        
     }
 

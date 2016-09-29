@@ -58,13 +58,13 @@
                 </div>          
                 <ul class="nav navbar-top-links navbar-right">                                        
                     <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">                            
                             <i class="fa fa-bell"></i>  
-                                <span class="label label-primary">
-                                    @if (count($notifs) > 0)
-                                        {{ count($notifs) }}
-                                    @endif
-                                </span>
+                                @if (count($notifs) > 0)
+                                    <span class="label label-primary">
+                                        {{ count($notifs) }}                                    
+                                    </span>
+                                @endif
                         </a>
                         <ul class="dropdown-menu dropdown-alerts">
                             @foreach ($notifs->slice(0, 3) as $key=>$notif)

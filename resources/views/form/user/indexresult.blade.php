@@ -92,11 +92,14 @@ $('#submit_delete').on('click', function (event) {
 });
 
 $(function() {
+  var ajax = "{{ url('crud/form/ajax/userresultAjax/')}}/{{ $id }}";
+  console.log(ajax);
+
   $('#result-table').DataTable({
     processing: true,
     serverSide: true,
     iDisplayLength: 50,
-    ajax: "{{ url('crud/form/ajax/userresultAjax/')}}/{{ $id }}",
+    ajax: ajax,
     columns: [       
       { "data" : "question" },
       { "data" : "answer_type" },

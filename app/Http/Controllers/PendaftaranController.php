@@ -144,7 +144,7 @@ class PendaftaranController extends Controller
             $message->to($email)->subject('Kadin Registration');
         });
 
-        return redirect('/')->withSuccess("Thank you for Registering. The message containing your tracking code has been sent to your email."); 
+        return redirect('/register1success'); 
     }
 
     public function rules() {
@@ -222,20 +222,24 @@ class PendaftaranController extends Controller
         $fquestions = Form_question::whereHas('group', function ($q) {        
             $q->where('name', 'like', '%Percobaan%');
         })->orderBy('order', 'asc')->get();
+        
+        $notifs = null;
 
-        // if (Request::ajax()) {                                            
-        //     return view('mms.pendaftaran-content', compact('fquestions'));
-        // }
+        // return view('form.percobaan', compact('fquestions', 'notifs'));
+
         $random_string = md5(microtime());
         $first = substr($random_string, 0, 4);
         $last = substr($random_string, -4);
         $code = $first.$last;
-        $array = [$random_string, $first, $last];
-        // dd($code);
+        $array = [$random_string, $first, $last];        
+        // return $code;
 
-        $code = "d734b7d7";
-        return view('emails.trackingcode', compact('code'));
-        return view('form.percobaan', compact('fquestions'));
+        // $code = "d734b7d7";
+        // return view('emails.trackingcode', compact('code'));
+
+        $fresult = Form_result::where('id_user', '=', '29')->get();
+
+        return $fresult;
     }
 
     /**
@@ -247,7 +251,7 @@ class PendaftaranController extends Controller
     public function percobaanstore(FormResultRequest $request)
     {                
         $input = $request->all();
-        // return $input;
+        return $input;
 
         $datas = array();
         foreach ($input as $key => $value) {
@@ -288,6 +292,10 @@ class PendaftaranController extends Controller
         }
 
         return redirect('/crud/form/result');         
+    }
+
+    public function success() {
+        return view('mms.pendaftaran-success');
     }
 }
 

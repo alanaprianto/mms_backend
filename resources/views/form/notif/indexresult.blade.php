@@ -17,10 +17,9 @@
 <table class="table table-bordered" id="result-table" width=100%>
   <thead>
     <tr>      
-      <th>Question</th>            
-      <th>Answer Type</th>    
-      <th>Answer Value</th>    
-      <th>User</th>
+      <th>Question</th>                  
+      <th>Answer Value</th>        
+      <th>Submitted At</th>  
       <th>Tracking Code</th>      
     </tr>        
   </thead>
@@ -98,11 +97,10 @@ $(function() {
     iDisplayLength: 50,
     ajax: "{{ url('crud/form/ajax/notifresult/')}}/{{ $code }}",
     columns: [       
-      { "data" : "question" },
-      { "data" : "answer_type" },
-      { "data" : "answer_value" },        
-      { "data" : "name"},        
-      { "data" : "trackingcode"},      
+      { "data" : "question" },      
+      { "data" : "answer_value" },     
+      { "data" : "created_at"},                  
+      { "data" : "trackingcode"},            
     ],    
   });
 });

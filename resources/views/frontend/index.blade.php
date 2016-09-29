@@ -1060,7 +1060,9 @@
   <script type="text/javascript">
     $('#register').on('click', function (event) {  
       var url =  "{{ url('/register1/')}}";
-      $('.content').html("<iframe src="+url+" frameborder='0' scrolling='no' onload='resizeIframe(this)'></iframe>");
+      $('.content').html("<div class='c-content-box c-size-md c-bg-white'><div class='container'><div class='row'><div class='col-sm-12'>"+
+        "<p><div class='row'><iframe src="+url+" frameborder='0' width='100%' onload='resizeIframe(this)' style='margin-top:30px;'></iframe>"+
+            "</div></p></div></div></div></div>");
       // $.ajax({
       //   type:'GET',
       //   url :"{{ url('/register1/')}}",        

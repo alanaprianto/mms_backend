@@ -46,7 +46,9 @@ class MmsController extends Controller
     {                           
         $results = Form_result::where('trackingcode', '=', $code)->get();
         if (count($results)<=0) {
-            return redirect('/');
+          return redirect('/');
+        } if ($results[0]->id_user) {
+          return redirect('/');
         }
 
         $name = Form_result::whereHas('question', function ($q) use ($code) {            

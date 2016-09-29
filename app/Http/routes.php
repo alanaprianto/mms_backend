@@ -20,6 +20,7 @@ Route::post('login', 'LoginController@login');
 Route::get('logout', 'LoginController@logout');
 Route::get('register1', 'PendaftaranController@index');
 Route::post('register1', 'PendaftaranController@store');
+Route::get('register1success', 'PendaftaranController@success');
 Route::get('register/{code}', 'MmsController@register');
 Route::post('register', 'MmsController@createuser');
 
@@ -47,7 +48,7 @@ Route::group(['prefix' => 'crud/form/', 'middleware' => 'auth.role'], function (
     Route::get('answer', 'FormAnswerController@indexAjax');
     Route::get('result', 'FormResultController@indexAjax');
     Route::get('user', 'UserController@indexAjax');
-    Route::get('userresult/{id}', 'NotifController@userresultAjax');
+    Route::get('userresultAjax/{id}', 'UserController@userresultAjax');
     Route::get('notifresult/{id}', 'NotifController@notifresultAjax');
     Route::get('notifuser/{id}', 'NotifController@notifuserAjax');
   });
