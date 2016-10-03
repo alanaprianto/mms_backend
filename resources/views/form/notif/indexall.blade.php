@@ -18,7 +18,7 @@
               <img alt="image" class="img-circle" src="img/a2.jpg">
             </a>
             <div class="media-body ">
-              <small class="pull-right">2h ago</small>
+              <small class="pull-right">{{ $notif->crt_human }}</small>
               {{ $notif->value }}<br>
               <small class="text-muted">{{ $notif->created_at }}</small>
             </div>

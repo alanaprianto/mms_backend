@@ -32,5 +32,5 @@ class AuthRole
 
         $request->attributes->add(['notifs' => $notifs]);
         return $next($request);
-    }
+    }    
 }

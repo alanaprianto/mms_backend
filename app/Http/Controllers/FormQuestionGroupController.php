@@ -28,7 +28,7 @@ class FormQuestionGroupController extends Controller
                 
         // $deleted = false;
         // return view('form.questiongroup.index', compact('fqgroups', 'deleted'));
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.questiongroup.index', compact('notifs'));
     }
 
@@ -44,7 +44,7 @@ class FormQuestionGroupController extends Controller
      */
     public function create()
     {
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
 
         return view('form.questiongroup.create', compact('notifs'));
     }
@@ -87,7 +87,7 @@ class FormQuestionGroupController extends Controller
 
         // return $fsetting;
 
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.questiongroup.edit', compact('fqg', 'notifs')); 
     }
 

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 use GuzzleHttp\Exception\RequestException;
 
@@ -35,7 +36,7 @@ class PendaftaranController extends Controller
         // if (Request::ajax()) {                                            
         //     return view('mms.pendaftaran-content', compact('fquestions'));
         // }
-        
+        // return $fquestions;
 		return view('mms.pendaftaran-content', compact('fquestions'));
     }
     
@@ -105,7 +106,20 @@ class PendaftaranController extends Controller
 
             try {
                 if (!empty($keys[2])) {
-                    $form_result->id_question = $keys[2];                    
+                    // id question
+                    if (str_contains($keys[2], "Provinsi")) {
+                        $form_result->id_question = "Provinsi";
+                    } else if (str_contains($keys[2], "KabKot")) {
+                        $form_result->id_question = "Kabupaten / Kota";
+                    } else if (str_contains($keys[2], "Alamat")) {
+                        $form_result->id_question = "Alamat Lengkap";
+                    } else if (str_contains($keys[2], "KodePos")) {
+                        $form_result->id_question = "Kode Pos";
+                    } else {
+                        $form_result->id_question = $keys[2];
+                    }
+
+                    // answer value
                     if (is_array($value)) {
                         $form_result->answer_value = implode (", ", $value);
                     } else {
@@ -113,7 +127,9 @@ class PendaftaranController extends Controller
                         if (str_contains($value, '@')) {
                             $email = $value;
                         }
-                    }                    
+                    }  
+
+                    // tracking code                  
                     $form_result->trackingcode = $code;
 
                     $datas[] = $form_result;
@@ -141,6 +157,7 @@ class PendaftaranController extends Controller
         }
 
         Mail::send('emails.trackingcode', ['code' => $code], function($message) use ($email) {
+            $message->from('no-reply@kadin-indonesia.org', 'no-reply');
             $message->to($email)->subject('Kadin Registration');
         });
 
@@ -174,6 +191,11 @@ class PendaftaranController extends Controller
                 $rules["name"] = implode("|", $parameter);
             } else if (str_contains($type, "Email")) {
                 $rules["email"] = implode("|", $parameter);
+            } else if (str_contains($type, "Address")) {
+                $rules["id_question_Provinsi"] = implode("|", $parameter);
+                $rules["id_question_KabKot"] = implode("|", $parameter);
+                $rules["id_question_Alamat"] = implode("|", $parameter);
+                $rules["id_question_KodePos"] = implode("|", $parameter);
             } else {
                 $rules["id_question_{$value->id}"] = implode("|", $parameter);
             }            
@@ -202,6 +224,11 @@ class PendaftaranController extends Controller
                 $names["name"] = $value->question;   
             } else if (str_contains($type, "Email")) {   
                 $names["email"] = $value->question;   
+            } else if (str_contains($type, "Address")) {   
+                $names["id_question_Provinsi"] = "Provinsi";   
+                $names["id_question_KabKot"] = "Kabupaten / Kota";
+                $names["id_question_Alamat"] = "Alamat Lengkap";
+                $names["id_question_KodePos"] = "Kode Pos";
             } else {
                 $names["id_question_{$value->id}"] = $value->question;   
             }                                          
@@ -239,7 +266,13 @@ class PendaftaranController extends Controller
 
         $fresult = Form_result::where('id_user', '=', '29')->get();
 
-        return $fresult;
+        // return $fresult;
+        
+        $datetime = Carbon::createFromFormat('Y-m-d H:i:s', '2016-09-29 04:33:52')->diffForHumans();
+        // return $datetime;
+
+        $notifs = \App\Helpers\Notifs::getNotifs();
+        return $notifs[0]->crt_human;
     }
 
     /**

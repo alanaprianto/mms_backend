@@ -1,0 +1,5 @@
+<div class="panel panel-default">
+	   <div class="panel-body">
+                A programmer, computer programmer, developer, dev, coder, or software engineer is a person who writes computer software. The term computer programmer can refer to a specialist in one area of computer programming or to a generalist who writes code for many kinds of software. One who practices or professes a formal approach to programming may also be known as a programmer analyst. A programmer's primary computer language (Assembly, COBOL, C, C++, C#, Java, Lisp, Python, etc.) is often prefixed to these titles, and those who work in a Web environment often prefix their titles with Web. The term programmer can be used to refer to a software developer, Web developer, mobile applications developer, embedded firmware developer, software engineer, computer scientist, or software analyst. 
+</div>
+	</div>

@@ -3,10 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Notification extends Model
 {
     protected  $table = "notifications";
+
+    protected $appends = ['crt_human'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -22,5 +26,12 @@ class Notification extends Model
     public function user()
     {
         return $this->belongsTo('App\User', 'target', 'id');
+    }
+
+    public function getCrtHumanAttribute()
+    {
+        $crtat = $this->attributes['created_at'];
+
+        return Carbon::createFromFormat('Y-m-d H:i:s', $crtat)->diffForHumans();        
     }
 }

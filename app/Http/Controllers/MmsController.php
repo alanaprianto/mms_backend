@@ -12,6 +12,9 @@ use App\User;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
+use App\Provinsi;
+use App\Daerah;
+use DB;
 
 class MmsController extends Controller
 {
@@ -62,7 +65,7 @@ class MmsController extends Controller
         $compclass = Form_result::whereHas('question', function ($q) use ($code) {            
             $q->where('trackingcode', '=', $code)
               ->where('question', 'like', '%Bentuk Perusahaan%');
-            })->first()->answer->answer;
+            })->first()->answer;
         $compname = Form_result::whereHas('question', function ($q) use ($code) {            
             $q->where('trackingcode', '=', $code)
               ->where('question', 'like', '%Nama Perusahaan%');
@@ -134,5 +137,29 @@ class MmsController extends Controller
         }
         
         return redirect('/login');
+    }
+
+    /**
+     * Menampilkan list provinsi
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listProvinsi()
+    {                 
+      $prov = Provinsi::get();
+
+      return $prov;
+    }
+
+    /**
+     * Menampilkan list daerah
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listDaerah($id)
+    {                 
+      $daerah = Daerah::where(DB::raw('CAST(id AS TEXT)'), 'like', $id.'%')->get();
+
+      return $daerah;
     }
 }

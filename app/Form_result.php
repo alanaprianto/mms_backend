@@ -9,7 +9,7 @@ class Form_result extends Model
 {
     protected  $table = "form_result";
 
-    protected $appends = ['answer_type', 'answer'];
+    protected $appends = ['answer_type', 'answer', 'question'];
 
     /**
      * The attributes that are mass assignable.
@@ -46,10 +46,23 @@ class Form_result extends Model
 
     public function getAnswerTypeAttribute() 
     {
-        $id = $this->attributes['id_question'];        
-        $name = Form_question::findOrFail($id)->setting->name;         
+        $id = $this->attributes['id_question'];  
 
-        return $name;
+        $request = ['id_question' => $id];        
+
+        $validator = Validator::make($request, [
+            'id_question' => 'integer',            
+        ]);
+
+        if ($validator->passes()) {
+            $name = Form_question::find($id);
+            if ($name) {
+                return $name->setting->name;
+            }
+
+            return null;
+        }                    
+        return null;
     }
 
     public function getAnswerAttribute() 
@@ -66,6 +79,28 @@ class Form_result extends Model
             $answers = Form_answer::find($id);
             if ($answers) {
                 return $answers->answer;
+            }
+
+            return $id;
+        }   
+
+        return $id;     
+    }
+
+    public function getQuestionAttribute() 
+    {
+        $id = $this->attributes['id_question'];    
+
+        $request = ['id_question' => $id];        
+
+        $validator = Validator::make($request, [
+            'id_question' => 'integer',            
+        ]);
+
+        if ($validator->passes()) {
+            $question = Form_question::find($id);
+            if ($question) {
+                return $question->question;
             }
 
             return $id;

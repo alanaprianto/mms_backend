@@ -29,7 +29,7 @@
 	<script src="{{ asset('resources/assets/js/bootstrap.js') }}"></script>
 
 	<script type="text/javascript">
-		$(window).on('load', function(e) {		
+		$(window).on('load', function(e) {					
 			var data = JSON.parse("{{ $fquestions }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
 			
 			var element = document.getElementById("wadah");
@@ -42,10 +42,10 @@
 		    	var equal2 = type.toUpperCase() === "CONFIRM PASSWORD";
 		    	var equal3 = type.toUpperCase() === "PASSWORD";
 		    	var equal4 = type.toUpperCase() === "DIVIDER TITLE";
-		    	var equal5 = type.toUpperCase() === "DIVIDER";
-		    	var equal6 = type.toUpperCase() === "QUESTION";
-		    	var equal7 = type.toUpperCase() === "NAME";
-		    	var equal8 = type.toUpperCase() === "EMAIL";
+		    	var equal5 = type.toUpperCase() === "DIVIDER";		    	
+		    	var equal6 = type.toUpperCase() === "NAME";
+		    	var equal7 = type.toUpperCase() === "EMAIL";
+		    	var equal8 = type.toUpperCase() === "ADDRESS";
 
 		    	var html = "";
 		    	var qid = "";
@@ -75,16 +75,55 @@
 
 		    		$(html).appendTo(element);
 
-		    	} else if (equal7) {
+		    	} else if (equal6) {
 		    		html = json.question_type.html_tag.split(";");
 		    		qid = "name";		    
 
 		    		setFormQuestion(json, html, qid);
-		    	} else if (equal8) {
+		    	} else if (equal7) {
 		    		html = json.question_type.html_tag.split(";");
 		    		qid = "email";		    
 
 		    		setFormQuestion(json, html, qid);
+		    	} else if (equal8) {
+		    		var rules = json.rules_detail;
+					var req = "";			
+					if (rules) {
+						for (var u = rules.length - 1; u >= 0; u--) {
+							var rule = rules[u]
+							if (rule.name.toUpperCase()==="REQUIRED") {
+								req = "<font color='red' size='3'>*</font>";
+							}
+						}
+					}	
+
+		    		$(	"<div class='form-group'>"+
+							"<label for=id_question_Provinsi>Provinsi</label>"+
+							req+
+							"<select class=form-control name='id_question_Provinsi' id='provinsi' onchange='setDaerah(this.value)'>"+	
+							"</select>"+
+						"</div>").appendTo(element);
+
+					$(	"<div class='form-group'>"+
+							"<label for='id_question_KabKot'>Kabupaten / Kota</label>"+
+							req+
+							"<select class=form-control name='id_question_KabKot' id='daerah'>"+
+							"</select>"+
+						"</div>").appendTo(element);
+
+					$(	"<div class='form-group'>"+
+							"<label for='id_question_Alamat'>Alamat Lengkap</label>"+
+							req+
+							"<textarea class=form-control name='id_question_Alamat'></textarea>"+	
+						"</div>").appendTo(element);
+
+					$(	"<div class='form-group'>"+
+							"<label for='id_question_KodePos'>Kode Pos</label>"+
+							req+
+							"<input type=text class=form-control name='id_question_KodePos'>"+							
+						"</div>").appendTo(element);		
+
+					setProvinsi();
 		    	} else {
 		    		var setting = json.setting;
 					html = setting.html_tag.split(";");	
@@ -133,5 +172,37 @@
 						html[1]+	    		
 				"</div>").appendTo(element);
 	    }
+
+	    function setProvinsi() {	    	
+	    	$.ajax({
+				url: "{{ url('ajax/listprovinsi') }}"
+			}).done(function(datas) {
+				var element = document.getElementById("provinsi");
+				for (u=0; u<datas.length; u++) {
+					$("<option value='"+datas[u].id+"'>"+datas[u].provinsi+"</option>").appendTo(element);
+				}															
+			});  	    	
+	    }
+
+	    function setDaerah(value) {    	
+			$.ajax({
+		        url: "{{ url('ajax/listdaerah') }}" + "/" + value
+		    }).done(function(datas) {  
+		    	clearElement();     		  
+		    	var element = document.getElementById("daerah");  			    	
+				for (u = 0; u < datas.length; u++) { 				   	
+					$("<option value='"+datas[u].id+"'>"+datas[u].daerah+"</option>").appendTo(element);
+				}						    	      		    	
+		    });   
+		}
+
+		function clearElement() {
+	    	var select = document.getElementById("daerah");
+			var i;
+		    for(i = select.options.length - 1 ; i >= 0 ; i--)
+		    {
+		        select.remove(i);
+		    }
+	    }   
 	</script>
 </body>

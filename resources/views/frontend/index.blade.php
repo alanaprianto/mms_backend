@@ -191,7 +191,10 @@
                   <!--sub menu-->
                   <div class="sub_menu_wrap type_2 clearfix">
                     <ul>
-                      <li><a href="profile">Profile</a></li>
+                      <li><a id="profil" href="#profile">Profile</a></li>
+                      @if(Auth::user()->role==1)
+                        <li><a href="{{ url('/crud/form/setting/')}}">Admin Panel</a></li>
+                      @endif
                       <li><a href="logout">Logout</a></li>                      
                     </ul>
                   </div>
@@ -1062,16 +1065,14 @@
       var url =  "{{ url('/register1/')}}";
       $('.content').html("<div class='c-content-box c-size-md c-bg-white'><div class='container'><div class='row'><div class='col-sm-12'>"+
         "<p><div class='row'><iframe src="+url+" frameborder='0' width='100%' onload='resizeIframe(this)' style='margin-top:30px;'></iframe>"+
-            "</div></p></div></div></div></div>");
-      // $.ajax({
-      //   type:'GET',
-      //   url :"{{ url('/register1/')}}",        
-      //   success: function(data) {
-      //     console.log('success', data);          
-      //   },
-      //   error:function(exception){alert('Exeption:'+exception);}
-      // }); 
-      // event.preventDefault();
+            "</div></p></div></div></div></div>");      
+    });
+
+    $('#profil').on('click', function (event) {  
+      var url =  "{{ url('/profile/')}}";
+      $('.content').html("<div class='c-content-box c-size-md c-bg-white'><div class='container'><div class='row'><div class='col-sm-12'>"+
+        "<p><div class='row'><iframe src="+url+" frameborder='0' width='100%' onload='resizeIframe(this)' style='margin-top:30px;'></iframe>"+
+            "</div></p></div></div></div></div>");      
     });
 
     function resizeIframe(obj) {

@@ -24,8 +24,13 @@ Route::get('register1success', 'PendaftaranController@success');
 Route::get('register/{code}', 'MmsController@register');
 Route::post('register', 'MmsController@createuser');
 
-Route::get('percobaan', 'PendaftaranController@percobaan');
-Route::post('percobaan', 'PendaftaranController@percobaanstore');
+// Profile
+Route::get('profile', 'ProfileController@index');
+Route::get('profile/edit', 'ProfileController@edit');
+
+// Get Territory
+Route::get('ajax/listprovinsi', 'MmsController@listProvinsi');
+Route::get('ajax/listdaerah/{id}', 'MmsController@listDaerah');
 
 // Mms crud
 Route::group(['prefix' => 'crud/form/', 'middleware' => 'auth.role'], function () {
@@ -37,6 +42,7 @@ Route::group(['prefix' => 'crud/form/', 'middleware' => 'auth.role'], function (
   Route::resource('answer', 'FormAnswerController');
   Route::resource('result', 'FormResultController');
   Route::resource('user', 'UserController');
+  Route::resource('member', 'MemberController');
   Route::get('notif/all', 'NotifController@notifall');
   Route::get('notif/{id}', 'NotifController@notif');
   Route::group(['prefix' => 'ajax/'], function () {
@@ -49,11 +55,17 @@ Route::group(['prefix' => 'crud/form/', 'middleware' => 'auth.role'], function (
     Route::get('result', 'FormResultController@indexAjax');
     Route::get('user', 'UserController@indexAjax');
     Route::get('userresultAjax/{id}', 'UserController@userresultAjax');
+    Route::get('member', 'MemberController@indexAjax');
+    Route::get('memberresultAjax/{id}', 'MemberController@memberresultAjax');
     Route::get('notifresult/{id}', 'NotifController@notifresultAjax');
     Route::get('notifuser/{id}', 'NotifController@notifuserAjax');
   });
   Route::get('question/whereSetting/{id}', 'FormQuestionController@whereSetting');
 });
+
+// Percobaan
+Route::get('percobaan', 'PendaftaranController@percobaan');
+Route::post('percobaan', 'PendaftaranController@percobaanstore');
 
 // Crud Navigation Bar
 // Menu::make('MyNavBar', function($menu){

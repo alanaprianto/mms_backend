@@ -38,7 +38,7 @@ class FormSettingController extends Controller
         // }
 
         // return view('form.setting.index', compact('fsettings'));               
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.setting.index', compact('notifs'));
     }
 
@@ -54,7 +54,7 @@ class FormSettingController extends Controller
      */
     public function create()
     {        
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.setting.create', compact('notifs'));
     }
 
@@ -104,7 +104,7 @@ class FormSettingController extends Controller
         $fsetting = Form_setting::findOrFail($id);
 
         // return $fsetting;
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.setting.edit', compact('fsetting', 'notifs')); 
     }
 

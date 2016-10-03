@@ -19,7 +19,7 @@ class FormRulesController extends Controller
     public function index()
     {
         // return view('form.rules.index');
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.rules.index', compact('notifs'));
     }
 
@@ -35,7 +35,7 @@ class FormRulesController extends Controller
      */
     public function create()
     {
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.rules.create', compact('notifs'));
     }
 
@@ -77,7 +77,7 @@ class FormRulesController extends Controller
 
         // return $frules;
 
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.rules.edit', compact('frules', 'notifs')); 
     }
 

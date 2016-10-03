@@ -30,8 +30,8 @@ class FormQuestionController extends Controller
         //     return view('form.question.questions', compact('fquestions'));
         // }        
         
-        // return implode("|", $fquestions->rules_detail->parameter);    
-        $notifs = \Request::get('notifs');
+        // return implode("|", $fquestions->rules_detail->parameter);           
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.question.index', compact('notifs'));
     }
     
@@ -54,7 +54,7 @@ class FormQuestionController extends Controller
 
         // return $rules;
 
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.question.create', compact('gqs', 'ats', 'types', 'rules', 'notifs'));
     }
 
@@ -122,7 +122,7 @@ class FormQuestionController extends Controller
             }
         }        
         
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.question.edit', compact('fq', 'gqs', 'ats', 'types', 'rules', 'data', 'notifs')); 
     }
 
@@ -160,7 +160,7 @@ class FormQuestionController extends Controller
         try {
             $fq->delete();
             $deleted = true;
-            $deletedMsg = "Data " . $fq->answer . " is deleted";      
+            $deletedMsg = "Data " . $fq->question . " is deleted";      
         }catch(\Exception $e){
             $deleted = false;
             $deletedMsg = "Error while deleting data";      

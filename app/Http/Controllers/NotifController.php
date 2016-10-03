@@ -23,7 +23,7 @@ class NotifController extends Controller
         $notif->active=false;
         $notif->save();
 
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         
         if ($notif->senderid) {
         	$user = User::findOrFail($notif->senderid);
@@ -35,13 +35,12 @@ class NotifController extends Controller
         return view('form.notif.indexresult', compact('notifs', 'code'));                
     }
 
-    public function notifresultAjax($code) {
-        $fr = Form_result::
-                leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
-                ->leftJoin('users', 'form_result.id_user', '=', 'users.id')
-                ->where('form_result.trackingcode', '=', $code)
-                ->select(['form_question.question', 'form_result.answer_value', 'form_result.trackingcode', 'form_result.id_question',
-                        'form_result.created_at']);        
+    public function notifresultAjax($code) {        
+        $fr = Form_result::where('trackingcode', '=', $code)->get();
+                // leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
+                // leftJoin('users', 'form_result.id_user', '=', 'users.id')
+                // ->select(['form_question.question', 'form_result.answer_value', 'form_result.trackingcode', 'form_result.id_question',
+                //         'form_result.created_at']);        
         return Datatables::of($fr)->make(true);        
     }
 
@@ -54,7 +53,7 @@ class NotifController extends Controller
 
     public function notifall()
     {                           
-        $notifs = \Request::get('notifs');        
+        $notifs = \App\Helpers\Notifs::getNotifs();        
 
        	return view('form.notif.indexall', compact('notifs'));
     }

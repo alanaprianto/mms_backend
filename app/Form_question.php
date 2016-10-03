@@ -8,7 +8,7 @@ class Form_question extends Model
 {
 	protected  $table = "form_question";
 
-    protected $appends = ['setting', 'list_answer', 'group_name', 'question_type', 'rules_detail'];
+    protected $appends = ['setting', 'list_answer', 'group_name', 'question_type', 'rules_detail',];
 
     /**
      * The attributes that are mass assignable.
@@ -116,5 +116,5 @@ class Form_question extends Model
         $rules = Form_rules::whereIn('id', $ids)->get();        
         
         return $rules;
-    }
+    }    
 }

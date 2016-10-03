@@ -5,7 +5,7 @@
 
 <div class="form-group">
 	{!! Form::label('options_type', 'Options Type:') !!}
-	{!! Form::select('options_type', $ats, null, ['class' => 'form-control', 'onchange' => 'asdad(this.options[this.selectedIndex].innerHTML)']) !!}		
+	{!! Form::select('options_type', $ats, null, ['class' => 'form-control', 'onchange' => 'setQuestion(this.options[this.selectedIndex].innerHTML)']) !!}		
 </div>
 
 <div class="form-group">

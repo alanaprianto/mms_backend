@@ -20,9 +20,9 @@ class FormAnswerController extends Controller
      */
     public function index()
     {
-        $search = \Request::get('search');
+        // $search = \Request::get('search');
         
-        $fanswers = Form_answer::where('answer','like','%'.$search.'%')->paginate(7);
+        // $fanswers = Form_answer::where('answer','like','%'.$search.'%')->paginate(7);
         
         // if (Request::ajax()) {                                            
         //     return view('form.answer.answers', compact('fanswers'));
@@ -30,7 +30,7 @@ class FormAnswerController extends Controller
         
         // $deleted = false;        
 
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.answer.index', compact('notifs'));        
     }
 
@@ -52,7 +52,7 @@ class FormAnswerController extends Controller
         $fqs = Form_question::pluck('question', 'id');        
         $ats = Form_setting::where('name', 'like', '%Option%')->pluck('name', 'id');
 
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.answer.create', compact('fqs', 'ats', 'notifs'));
     }
 
@@ -96,7 +96,7 @@ class FormAnswerController extends Controller
         $fqs = Form_question::pluck('question', 'id');        
         $ats = Form_setting::where('name', 'like', '%Option%')->pluck('name', 'id');
 
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.answer.edit', compact('fa', 'fqs', 'ats', 'notifs')); 
     }
 

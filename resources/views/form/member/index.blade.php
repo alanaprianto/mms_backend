@@ -1,23 +1,23 @@
 @extends('form.app')
 
 @section('sidebar')
-  @include('form.user.sidebar') 
+  @include('form.member.sidebar') 
 @stop
 
 @section('content')
-<h1> Users Index </h1>
+<h1> Member Index </h1>
 <br><br>
   
-<div class="nopadding" align="left">
-  <a href='user/create' class="btn btn-primary btn-md"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
+<!-- <div class="nopadding" align="left">
+  <a href='member/create' class="btn btn-primary btn-md"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
 </div>  
-<br>
+<br> -->
 
-<table class="table table-bordered" id="user-table" width=100%>
+<table class="table table-bordered" id="member-table" width=100%>
   <thead>
     <tr>
       <th>Name</th>    
-      <th>Username</th>
+      <th>Member name</th>
       <th>Email</th>      
       <th>Options</th>      
     </tr>        
@@ -83,16 +83,16 @@ $('#submit_delete').on('click', function (event) {
       toastr.error(data.msg);
     }
 
-    var ref = $('#user-table').DataTable();
+    var ref = $('#member-table').DataTable();
     ref.ajax.reload(null, false);    
   });
 });
 
 $(function() {
-  $('#user-table').DataTable({
+  $('#member-table').DataTable({
     processing: true,
     serverSide: true,
-    ajax: "{{ url('crud/form/ajax/user')}}",
+    ajax: "{{ url('crud/form/ajax/member')}}",
     columns: [            
       { "data" : "name" },
       { "data" : "username" },
@@ -104,9 +104,9 @@ $(function() {
         // The `data` parameter refers to the data for the cell (defined by the
         // `data` option, which defaults to the column being worked with, in
         // this case `data: 0`.
-        // <a href="user/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>
+        // <a href="member/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>
         "render": function ( data, type, row ) {
-        return '<a href="user/'+row.id+'" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Detail</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="user"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>';
+        return '<a href="member/'+row.id+'" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Detail</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="member"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>';
         },
         "targets": 3
       },

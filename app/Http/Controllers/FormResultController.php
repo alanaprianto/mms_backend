@@ -32,15 +32,15 @@ class FormResultController extends Controller
         // }        
 
         // // return $fanswers[0]->question;
-        // return view('form.result.index', compact('fresults'));
-        $notifs = \Request::get('notifs');
+        // return view('form.result.index', compact('fresults'));        
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.result.index', compact('notifs'));
     }
 
     public function indexAjax() {                
         $fr = Form_result::
-                leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
-                ->leftJoin('users', 'form_result.id_user', '=', 'users.id')->get();
+                // leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
+                leftJoin('users', 'form_result.id_user', '=', 'users.id')->get();
                 // ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.trackingcode', 'form_result.id_question']);        
         return Datatables::of($fr)->make(true);
         // ->where('form_result.id_user', '=', '13')
@@ -57,7 +57,7 @@ class FormResultController extends Controller
         $fas = Form_answer::pluck('answer', 'id');
         $users = User::pluck('username', 'id');
         
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.result.create', compact('fqs', 'fas', 'users', 'notifs'));
     }
 
@@ -100,7 +100,7 @@ class FormResultController extends Controller
         $fas = Form_answer::pluck('answer', 'id');
         $users = User::pluck('username', 'id');
         
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.result.edit', compact('fr', 'fqs', 'fas', 'users', 'notifs'));
     }
 

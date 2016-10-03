@@ -1,12 +1,12 @@
 @extends('form.app')
 
 @section('sidebar')
-  @include('form.user.sidebar')
+  @include('form.member.sidebar')
 @stop
 
 @section('content')
 
-<h1> Detail {{ $user->username }}</h1>
+<h1> Detail {{ $member->username }}</h1>
 <br><br>
 
 <table class="table table-bordered" id="result-table" width=100%>
@@ -45,7 +45,7 @@
 
 @push('scripts')
 <script>
-  var urlAjax = "{{ url('crud/form/ajax/userresultAjax/')}}/{{ $user->id }}";
+  var urlAjax = "{{ url('crud/form/ajax/memberresultAjax/')}}/{{ $member->id }}";
   $('#myModal').on('show.bs.modal', function (event) {  
     var button = $(event.relatedTarget) // Button that triggered the modal    
     url = button.data('url');

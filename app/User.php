@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Form_answer;
 
 class User extends Authenticatable
 {
@@ -12,8 +13,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'email', 'password', 'role', 'no_kta', 'no_rn', 'password_confirmation',
+        'name', 'username', 'email', 'password', 'role', 'no_kta', 'no_rn', 'password_confirmation', 'territory',
     ];
+
+    protected $appends = ['territory_name'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -46,5 +49,14 @@ class User extends Authenticatable
     public function notif()
     {
         return $this->hasMany('App\Role', 'id', 'target');
+    }
+
+    public function getTerritoryNameAttribute()
+    {
+        $terr = $this->attributes['territory'];        
+        if ($terr) {
+            return Form_answer::find($terr)->answer;
+        }
+        return "Location Not Found";
     }
 }

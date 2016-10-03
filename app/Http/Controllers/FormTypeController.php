@@ -19,7 +19,7 @@ class FormTypeController extends Controller
     public function index()
     {
         // return view('form.type.index');
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.type.index', compact('notifs'));
     }
 
@@ -35,7 +35,7 @@ class FormTypeController extends Controller
      */
     public function create()
     {           
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.type.create1', compact('notifs'));
     }
 
@@ -76,7 +76,7 @@ class FormTypeController extends Controller
         $ftype = Form_type::findOrFail($id);
 
         // return $ftype;
-        $notifs = \Request::get('notifs');
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('form.type.edit', compact('ftype', 'notifs')); 
     }
 

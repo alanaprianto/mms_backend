@@ -6,14 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\User;
-use App\Notification;
 use Datatables;
 use App\Form_result;
-use App\Role;
-use App\Http\Requests\UserRequest;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class MemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,26 +17,22 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {                
-        $u = User::get();
-        // return $u;
+    {
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.user.index', compact('notifs'));
+        return view('form.member.index', compact('notifs'));
     }
 
-    public function indexAjax() {        
-        $fr = User::where('role', '<>', '2')->GET();
+     public function indexAjax() {        
+        $fr = User::where('role', '=', '2')->get();
         // ->select(['id', 'name', 'username', 'email']);
         return Datatables::of($fr)->make(true);
-    }    
+    }
 
-    public function userresultAjax($id) {        
+    public function memberresultAjax($id) {        
         $fr = Form_result::
                 leftJoin('users', 'form_result.id_user', '=', 'users.id')
                 ->where('form_result.id_user', '=', $id)->get();
                 // leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
-                // ->leftJoin('users', 'form_result.id_user', '=', 'users.id')
-                // ->where('form_result.id_user', '=', $id)->get();
                 // ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.trackingcode', 'form_result.id_question']);        
         return Datatables::of($fr)->make(true);
     }
@@ -52,9 +44,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $role = Role::where('id', '<>', 2)->pluck('name', 'id');
-        $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.user.create', compact('notifs', 'role'));
+        //
     }
 
     /**
@@ -63,19 +53,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(Request $request)
     {
-        $input = $request->except('password_confirmation');
-        if (!$input['territory']) {
-            $input['territory'] = "0";
-        }
-        $input['no_kta'] = "0";
-        $input['no_rn'] = "0";
-        $input['password'] = Hash::make($input['password']);
-
-        User::create($input);
-        
-        return redirect('/crud/form/user');
+        //
     }
 
     /**
@@ -87,8 +67,8 @@ class UserController extends Controller
     public function show($id)
     {
         $notifs = \App\Helpers\Notifs::getNotifs();        
-        $user = User::find($id);        
-        return view('form.user.indexresult', compact('notifs', 'user'));
+        $member = User::find($id);        
+        return view('form.member.indexresult', compact('notifs', 'member'));
     }
 
     /**

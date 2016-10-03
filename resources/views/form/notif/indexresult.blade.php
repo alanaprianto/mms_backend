@@ -9,11 +9,6 @@
 <h1> Form Result </h1>
 <br><br>
 
-<div class="nopadding" align="left">
-  <a href='result/create' class="btn btn-primary btn-md"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
-</div>  
-<br>
-
 <table class="table table-bordered" id="result-table" width=100%>
   <thead>
     <tr>      
@@ -97,7 +92,7 @@ $(function() {
     iDisplayLength: 50,
     ajax: "{{ url('crud/form/ajax/notifresult/')}}/{{ $code }}",
     columns: [       
-      { "data" : "question" },      
+      { "data" : "question_name" },      
       { "data" : "answer_value" },     
       { "data" : "created_at"},                  
       { "data" : "trackingcode"},            
