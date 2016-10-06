@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use App\Form_question_group;
 
 use GuzzleHttp\Exception\RequestException;
 
@@ -164,6 +167,146 @@ class PendaftaranController extends Controller
         return redirect('/register1success'); 
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexii()
+    {        
+        $user = Auth::user();
+        $fr = Form_result::                
+                where('id_user', '=', $user->id)
+                ->where('id_question', '=', "1")
+                ->first()->answer;
+        $btk = Str::upper($fr);
+
+        $tahap2 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->id;
+        $tahap3 = Form_question_group::where('name', 'like', '%Tahap 3%')->first()->id;
+
+        // $fquestions = Form_question::whereHas('group', function ($q) use($btk) {        
+        //     $q->whereIn('name', 'like', '%'.$btk.'%')
+        //     ->where('name', 'like', '%Pendaftaran%');
+        // })->orderBy('order', 'asc')->get();
+        
+        $fquestions = Form_question::whereIn('group_question', [1, $tahap2, $tahap3])->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();      
+        $fresults = Form_result::where('id_user', '=', $user->id)->get();
+        // return $fresults;
+        return view('mms.tahapii-content', compact('fquestions', 'fresults'));
+    }
+
+    public function storeii(FormResultRequest $request)
+    {        
+        $input = $request->all();           
+
+        // return $input;
+        $rules = $this->rules();        
+        $attributeNames = $this->names();
+        $rules["email"] = "required";
+        $rules = [];
+
+        // Create a new validator instance.
+        $validator = Validator::make($input, $rules);
+        $validator->setAttributeNames($attributeNames);
+
+        $userid = Auth::user()->id;
+        $username = Auth::user()->username;
+
+        if ($validator->passes()) {            
+            $admins = User::where('role', '=', '1')->get();
+            $data = array();
+            foreach ($admins as $key => $admin) {
+                $notif = new Notification;
+
+                $notif->target = $admin->id;
+                $notif->senderid = $userid;
+                $notif->value = "User ".$username." updated his/her profile";
+                $notif->active = true;
+                    
+                $notif->save();
+            }
+
+        } else {                
+            return Redirect::to('registerii')
+                ->withInput(Input::except(['password', 'password_confirmation']))
+                ->withErrors($validator);
+        }
+
+        $datas = array();
+        foreach ($input as $key => $value) {
+            $keys = explode("_", $key);
+            $form_result = new formResult;
+
+            try {
+                if (!empty($keys[2])) {
+                    // id question
+                    if (str_contains($keys[2], "Provinsi")) {
+                        $form_result->id_question = "Provinsi";
+                    } else if (str_contains($keys[2], "KabKot")) {
+                        $form_result->id_question = "Kabupaten / Kota";
+                    } else if (str_contains($keys[2], "Alamat")) {
+                        $form_result->id_question = "Alamat Lengkap";
+                    } else if (str_contains($keys[2], "KodePos")) {
+                        $form_result->id_question = "Kode Pos";
+                    } else {
+                        $form_result->id_question = $keys[2];
+                    }
+
+                    // answer value
+                    if (is_array($value)) {
+                        $form_result->answer_value = implode (", ", $value);
+                    } else {
+                        $form_result->answer_value = $value;
+                        if (str_contains($value, '@')) {
+                            $email = $value;
+                        }
+                    }                      
+                    
+                    if ($form_result->answer_value!="") {
+                        $datas[] = $form_result;
+                    }                     
+                }
+            } catch (\ErrorException $e) {
+                return "Exception ".$e;
+            }              
+        }
+        
+        // return $datas;
+        $terr = "";
+        foreach ($datas as $data) {            
+            $fr = Form_result::where('id_user', '=', $userid)->where('id_question', '=', $data->id_question)->first();
+            if ($fr) {
+                $fr->update([
+                    'id_question' => $data->id_question,
+                    'answer_value' => $data->answer_value,
+                    'id_user' => $userid,                    
+                ]);
+            } else {
+                $fr = new Form_result;
+
+                $fr->id_question = $data->id_question;
+                $fr->answer_value = $data->answer_value;
+                $fr->id_user = $userid;                
+
+                $fr->save(); 
+            }
+
+            if ($data->id_question=="Provinsi") {
+                $terr = $data->answer_value;
+            } else if ($data->id_question=="Kabupaten / Kota") {
+                $terr = $data->answer_value;
+            }
+        }
+
+
+        $user = Auth::user();
+        $user->update([
+                'territory' => $terr
+            ])
+
+        return redirect('/profile'); 
+    }
+
     public function rules() {
 
         $fquestions = Form_question::whereHas('group', function ($q) {        
@@ -235,97 +378,7 @@ class PendaftaranController extends Controller
         }
 
         return $names;
-    }
-
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function percobaan()
-    {        
-        
-        $fquestions = Form_question::whereHas('group', function ($q) {        
-            $q->where('name', 'like', '%Percobaan%');
-        })->orderBy('order', 'asc')->get();
-        
-        $notifs = null;
-
-        // return view('form.percobaan', compact('fquestions', 'notifs'));
-
-        $random_string = md5(microtime());
-        $first = substr($random_string, 0, 4);
-        $last = substr($random_string, -4);
-        $code = $first.$last;
-        $array = [$random_string, $first, $last];        
-        // return $code;
-
-        // $code = "d734b7d7";
-        // return view('emails.trackingcode', compact('code'));
-
-        $fresult = Form_result::where('id_user', '=', '29')->get();
-
-        // return $fresult;
-        
-        $datetime = Carbon::createFromFormat('Y-m-d H:i:s', '2016-09-29 04:33:52')->diffForHumans();
-        // return $datetime;
-
-        $notifs = \App\Helpers\Notifs::getNotifs();
-        return $notifs[0]->crt_human;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function percobaanstore(FormResultRequest $request)
-    {                
-        $input = $request->all();
-        return $input;
-
-        $datas = array();
-        foreach ($input as $key => $value) {
-            $keys = explode("_", $key);
-            $form_result = new formResult;
-
-            try {
-                if (!empty($keys[2])) {
-                    $form_result->id_question = $keys[2];                    
-                    if (is_array($value)) {
-                        $form_result->answer_value = implode (", ", $value);
-                    } else {
-                        $form_result->answer_value = $value;
-                    }                    
-                    $form_result->id_user = "12";
-
-                    $datas[] = $form_result;
-                }
-            } catch (\ErrorException $e) {
-                
-            }              
-        }
-        //$input = $request->get('id_question');
-        
-        // return $datas;
-        foreach ($datas as $data) {
-            // $asdad = json_encode($data);
-            // return $asdad;
-            // Form_result::create($asdad);
-
-            $fr = new Form_result;
-
-            $fr->id_question = $data->id_question;
-            $fr->answer_value = $data->answer_value;
-            $fr->id_user = '12';
-
-            $fr->save();                        
-        }
-
-        return redirect('/crud/form/result');         
-    }
+    }    
 
     public function success() {
         return view('mms.pendaftaran-success');

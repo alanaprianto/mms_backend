@@ -102,6 +102,17 @@ class MemberController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $member = User::findOrFail($id);         
+
+        try {
+            $member->delete();
+            $deleted = true;
+            $deletedMsg = "Data " . $member->name . " is deleted";      
+        }catch(\Exception $e){
+            $deleted = false;
+            $deletedMsg = "Error while deleting data";      
+        }
+        
+        return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
     }
 }

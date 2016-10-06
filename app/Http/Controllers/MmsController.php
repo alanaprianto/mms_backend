@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Provinsi;
 use App\Daerah;
 use DB;
+use Image;
 
 class MmsController extends Controller
 {
@@ -46,7 +47,7 @@ class MmsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function register($code)
-    {                           
+    {               
         $results = Form_result::where('trackingcode', '=', $code)->get();
         if (count($results)<=0) {
           return redirect('/');
@@ -54,26 +55,26 @@ class MmsController extends Controller
           return redirect('/');
         }
 
-        $name = Form_result::whereHas('question', function ($q) use ($code) {            
-            $q->where('trackingcode', '=', $code)
-              ->where('question', 'like', '%Nama Penanggung Jawab%');
-            })->first()->answer_value;
-        $email = Form_result::whereHas('question', function ($q) use ($code) {            
-            $q->where('trackingcode', '=', $code)
-              ->where('question', 'like', '%Email Penanggung Jawab%');
-            })->first()->answer_value;
-        $compclass = Form_result::whereHas('question', function ($q) use ($code) {            
-            $q->where('trackingcode', '=', $code)
-              ->where('question', 'like', '%Bentuk Perusahaan%');
-            })->first()->answer;
-        $compname = Form_result::whereHas('question', function ($q) use ($code) {            
-            $q->where('trackingcode', '=', $code)
-              ->where('question', 'like', '%Nama Perusahaan%');
-            })->first()->answer_value;
-        $territory = Form_result::whereHas('question', function ($q) use ($code) {            
-            $q->where('trackingcode', '=', $code)
-              ->where('question', 'like', '%Kabupaten / Kota%');
-            })->first()->answer_value;
+        $name = "";
+        $email = "";
+        $compclass = "";
+        $compname = "";
+        $territory = "";
+        foreach ($results as $key => $result) {
+            $question = $result->question;
+            if (str_contains($question, "Nama Penanggung Jawab")) {
+                $name = $result->answer;                
+            } else if (str_contains($question, "Email Penanggung Jawab")) {
+                $email = $result->answer;
+            } else if (str_contains($question, "Bentuk Perusahaan")) {
+                $compclass = $result->answer;
+            } else if (str_contains($question, "Nama Perusahaan")) {
+                $compname = $result->answer;
+            } else if (str_contains($question, "Kabupaten / Kota")) {
+                $territory = $result->answer_value;
+            }
+        }
+
         return view('mms.register', compact('code', 'name', 'email', 'compclass', 'compname', 'territory'));
     }    
 
@@ -134,8 +135,12 @@ class MmsController extends Controller
         foreach ($results as $key => $result) {
             $result->id_user = $user->id;
             $result->save();
-        }
-        
+        }            
+
+        $file = storage_path() . '/app/photoprofile/default-profile.png';
+        $img = Image::make($file);
+        $img->save(storage_path() . '/app/photoprofile'.'/'.$user->username.'.jpg');
+
         return redirect('/login');
     }
 
@@ -162,4 +167,17 @@ class MmsController extends Controller
 
       return $daerah;
     }
+
+    public function images($filename)
+    {
+        $file = storage_path() . '/app/photoprofile'.'/'.$filename;
+
+        if(!\File::exists($file)) {            
+            $file = storage_path() . '/app/photoprofile/default-profile.png';
+        }
+        
+        $img = Image::make($file);
+
+        return $img->response('jpg');
+    }    
 }

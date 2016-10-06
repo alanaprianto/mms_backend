@@ -22,7 +22,7 @@
                 <img class="logo-name" src="{{ asset('resources/img/icon144-128x128-10.png') }}"/>
 
             </div>
-            <h3>Your Account has been Succesfully Created!</h3>            
+            <h3>Your Form has been Succesfully Saved!</h3>            
             <p>Check your E-Mail for further information.</p>
             
             <p class="m-t"> <small>© 2016</small> </p>

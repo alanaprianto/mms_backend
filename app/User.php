@@ -3,7 +3,8 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Form_answer;
+use App\Daerah;
+use App\Provinsi;
 
 class User extends Authenticatable
 {
@@ -55,7 +56,17 @@ class User extends Authenticatable
     {
         $terr = $this->attributes['territory'];        
         if ($terr) {
-            return Form_answer::find($terr)->answer;
+            $daerah = Daerah::find($terr);
+            if ($daerah) {
+                return $daerah->daerah;
+            } else {
+                $provinsi = Provinsi::find($terr);
+                if ($provinsi) {
+                    return $provinsi->provinsi;
+                } else {
+                    return "Location Not Found";
+                }
+            }
         }
         return "Location Not Found";
     }

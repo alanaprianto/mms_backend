@@ -54,10 +54,10 @@ class Form_question extends Model
     /**
      * Get the result record associated with the question.
      */
-    public function result()
-    {
-        return $this->hasMany('App\Form_result', 'id_question', 'id');
-    }
+    // public function result()
+    // {
+    //     return $this->hasMany('App\Form_result', 'id_question', 'id');
+    // }
 
     /**
      * Get the setting record associated with the question.

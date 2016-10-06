@@ -27,14 +27,17 @@
     	var type1 = value.split(" ");
     	var type = type1[1];
 		
+		console.log("type = "+type);
 		$.ajax({
 	        url: "{{ url('crud/form/setting/') }}" + "/" + type
 	    }).done(function(datas) {
 	    	var id = "";
 	    	for (i = 0; i < datas.length; i++) { 
 	    		var data = datas[i];
+	    		console.log("Data = "+data);
 			    if (data.name.indexOf("Options") == -1) {
 					id = data.id;
+					console.log("ID = "+ id);
 	    		}
 			}		    		    	
 	    	$.ajax({

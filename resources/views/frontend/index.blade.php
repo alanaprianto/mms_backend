@@ -1063,19 +1063,44 @@
   <script type="text/javascript">
     $('#register').on('click', function (event) {  
       var url =  "{{ url('/register1/')}}";
-      $('.content').html("<div class='c-content-box c-size-md c-bg-white'><div class='container'><div class='row'><div class='col-sm-12'>"+
-        "<p><div class='row'><iframe src="+url+" frameborder='0' width='100%' onload='resizeIframe(this)' style='margin-top:30px;'></iframe>"+
-            "</div></p></div></div></div></div>");      
+      $('.content').html(
+        "<div class='c-content-box c-size-md c-bg-white'>"+
+          "<div class='container'>"+
+            "<div class='row'>"+
+              "<div class='col-sm-12'>"+
+                "<p>"+
+                  "<div class='row'>"+
+                    "<iframe src="+url+" frameborder='0' width='100%' onload='resizeIframe(this)' style='margin-top:30px;'>"+
+                    "</iframe>"+
+                  "</div>"+
+                "</p>"+
+              "</div>"+
+            "</div>"+
+          "</div>"+
+        "</div>");      
     });
 
     $('#profil').on('click', function (event) {  
       var url =  "{{ url('/profile/')}}";
-      $('.content').html("<div class='c-content-box c-size-md c-bg-white'><div class='container'><div class='row'><div class='col-sm-12'>"+
-        "<p><div class='row'><iframe src="+url+" frameborder='0' width='100%' onload='resizeIframe(this)' style='margin-top:30px;'></iframe>"+
-            "</div></p></div></div></div></div>");      
+      $('.content').html(
+        "<div class='c-content-box c-size-md c-bg-white'>"+
+          "<div class='container'>"+
+            "<div class='row'>"+
+              "<div class='col-sm-12'>"+
+                "<p>"+
+                  "<div class='row'>"+
+                    "<iframe src="+url+" frameborder='0' width='100%' onload='resizeIframe(this)' style='margin-top:30px;'>"+
+                    "</iframe>"+
+                  "</div>"+
+                "</p>"+
+              "</div>"+
+            "</div>"+
+          "</div>"+
+        "</div>");      
     });
 
     function resizeIframe(obj) {
+      console.log(obj.contentWindow.document.body.scrollHeight);
       obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
     }
   </script>

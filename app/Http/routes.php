@@ -18,15 +18,33 @@ Route::get('404', 'MmsController@notfound');
 Route::get('login', 'LoginController@show');
 Route::post('login', 'LoginController@login');
 Route::get('logout', 'LoginController@logout');
+
+// Register
 Route::get('register1', 'PendaftaranController@index');
 Route::post('register1', 'PendaftaranController@store');
 Route::get('register1success', 'PendaftaranController@success');
 Route::get('register/{code}', 'MmsController@register');
 Route::post('register', 'MmsController@createuser');
 
-// Profile
-Route::get('profile', 'ProfileController@index');
-Route::get('profile/edit', 'ProfileController@edit');
+// Authenticated
+Route::group(['middleware' => 'auth'], function() {
+  // Profile
+  Route::get('profile', 'ProfileController@index');
+  Route::get('profile/edit', 'ProfileController@edit');
+  Route::get('profile/indexAjax/{id}', 'ProfileController@indexAjax');
+  Route::get('profile/tahapiiAjax/{id}', 'ProfileController@tahapiiAjax');
+  Route::get('profile/tahapiiiAjax/{id}', 'ProfileController@tahapiiiAjax');  
+
+  // Register 2
+  Route::get('registerii', 'PendaftaranController@indexii');
+  Route::post('registerii', 'PendaftaranController@storeii');
+
+  // Photo profile
+  Route::get('images/{filename}', 'MmsController@images');
+
+  // KTA
+  Route::get('profile/requestkta/', 'ProfileController@requestkta');
+});
 
 // Get Territory
 Route::get('ajax/listprovinsi', 'MmsController@listProvinsi');
@@ -64,8 +82,8 @@ Route::group(['prefix' => 'crud/form/', 'middleware' => 'auth.role'], function (
 });
 
 // Percobaan
-Route::get('percobaan', 'PendaftaranController@percobaan');
-Route::post('percobaan', 'PendaftaranController@percobaanstore');
+Route::get('percobaan', 'PercobaanController@percobaan');
+Route::post('percobaan', 'PercobaanController@percobaanstore');
 
 // Crud Navigation Bar
 // Menu::make('MyNavBar', function($menu){

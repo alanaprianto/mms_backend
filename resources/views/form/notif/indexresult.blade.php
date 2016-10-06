@@ -92,8 +92,8 @@ $(function() {
     iDisplayLength: 50,
     ajax: "{{ url('crud/form/ajax/notifresult/')}}/{{ $code }}",
     columns: [       
-      { "data" : "question_name" },      
-      { "data" : "answer_value" },     
+      { "data" : "question" },      
+      { "data" : "answer" },     
       { "data" : "created_at"},                  
       { "data" : "trackingcode"},            
     ],    

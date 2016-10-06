@@ -29,7 +29,7 @@ class UserController extends Controller
     }
 
     public function indexAjax() {        
-        $fr = User::where('role', '<>', '2')->GET();
+        $fr = User::where('role', '<>', '2')->get();
         // ->select(['id', 'name', 'username', 'email']);
         return Datatables::of($fr)->make(true);
     }    

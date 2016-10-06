@@ -89,6 +89,7 @@ $('#submit_delete').on('click', function (event) {
 });
 
 $(function() {
+  var url = "{{ url('crud/form/user/')}}";
   $('#user-table').DataTable({
     processing: true,
     serverSide: true,
@@ -107,7 +108,7 @@ $(function() {
         // this case `data: 0`.
         // <a href="user/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>        
         "render": function ( data, type, row ) {        
-        return '<a href="user/'+row.id+'" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Detail</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="user"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>';
+        return '<a href="'+url+'/'+row.id+'" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Detail</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="user"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>';
         },
         "targets": 3
       },

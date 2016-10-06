@@ -6,13 +6,13 @@
     	<div class="col-md-12">
     		<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h1>Form Pendaftaran</h1>
+					<h1>Update Profile Information</h1>
 				</div>
 				<div>					
 					<div class="ibox-content profile-content">
 						@include('errors.error_list')
 
-						{!! Form::open(['action' => ['PendaftaranController@store'], 'id' => 'wadah']) !!}	
+						{!! Form::open(['action' => ['PendaftaranController@storeii'], 'id' => 'wadah']) !!}	
 								
 						{!! Form::close() !!}
                     </div>
@@ -25,11 +25,12 @@
 
 @push('scripts')
 	<script type="text/javascript">
+		var data = JSON.parse("{{ $fquestions }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+		var answers = JSON.parse("{{ $fresults }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+
 		$(window).on('load', function(e) {		
-			// console.log($(window).contentWindow.document.body.scrollHeight);
-						
-			var data = JSON.parse("{{ $fquestions }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
-			
+			// console.log($(window).contentWindow.document.body.scrollHeight);							
+
 			var element = document.getElementById("wadah");
 		    for (i=0; i<data.length; i++) {
 		    	var json = data[i];
@@ -46,23 +47,23 @@
 		    	var equal8 = type.toUpperCase() === "ADDRESS";
 
 		    	var html = "";
-		    	var qid = "";
+		    	var qid = "";		    	
 
 		    	if (equal1) {
 		    		html = json.question_type.html_tag.split(";");
 		    		qid = "username";		    
 
-		    		setFormQuestion(json, html, qid);		
+		    		setFormQuestion(json, html, qid)		
 		    	} else if (equal2) {
 		    		html = json.question_type.html_tag.split(";");
 		    		qid = "password_confirmation";		 
 
-		    		setFormQuestion(json, html, qid);  		
+		    		setFormQuestion(json, html, qid)  		
 		    	} else if (equal3) {
 		    		html = json.question_type.html_tag.split(";");
 		    		qid = "password";		    
 
-		    		setFormQuestion(json, html, qid);		
+		    		setFormQuestion(json, html, qid)		
 		    	} else if (equal4) {
 		    		html = json.question_type.html_tag.replace("[divider]", json.question);	
 
@@ -77,12 +78,12 @@
 		    		html = json.question_type.html_tag.split(";");
 		    		qid = "name";		    
 
-		    		setFormQuestion(json, html, qid);
+		    		setFormQuestion(json, html, qid)
 		    	} else if (equal7) {
 		    		html = json.question_type.html_tag.split(";");
 		    		qid = "email";		    
 
-		    		setFormQuestion(json, html, qid);
+		    		setFormQuestion(json, html, qid)
 		    	} else if (equal8) {
 		    		var rules = json.rules_detail;
 					var req = "";			
@@ -94,6 +95,24 @@
 							}
 						}
 					}	
+
+					var valueP = "";
+					var valueK = "";
+					var valueA = "";
+					var valuePos = "";
+
+					for (var u = answers.length - 1; u >= 0; u--) {
+						var answer = answers[u];
+				    	if (answer.question == "Provinsi") {
+				    		valueP = answer.answer_value;
+				    	} else if (answer.question == "Kabupaten / Kota") {
+				    		valueK = answer.answer_value;
+				    	} else if (answer.question == "Alamat Lengkap") {
+				    		valueA = answer.answer_value;
+				    	} else if (answer.question == "Kode Pos") {
+				    		valuePos = answer.answer_value;
+				    	}
+				    }											
 
 		    		$(	"<div class='form-group'>"+
 							"<label for=id_question_Provinsi>Provinsi</label>"+
@@ -112,25 +131,24 @@
 					$(	"<div class='form-group'>"+
 							"<label for='id_question_Alamat'>Alamat Lengkap</label>"+
 							req+
-							"<textarea class=form-control name='id_question_Alamat'></textarea>"+	
+							"<textarea class=form-control name='id_question_Alamat'>"+valueA+"</textarea>"+	
 						"</div>").appendTo(element);
 
 					$(	"<div class='form-group'>"+
 							"<label for='id_question_KodePos'>Kode Pos</label>"+
 							req+
-							"<input type=text class=form-control name='id_question_KodePos'>"+							
+							"<input type=text class=form-control name='id_question_KodePos' value='"+valuePos+"'>"+
 						"</div>").appendTo(element);		
 
-					setProvinsi();
+					setProvinsi(valueP, valueK);
 		    	} else {
 		    		var setting = json.setting;
 					html = setting.html_tag.split(";");	
 
 					qid = "id_question_"+json.id;
 
-					setFormQuestion(json, html, qid)
-		    	}		    	
-		    	
+					setFormQuestion(json, html, qid);
+		    	}		    			    		
 		    }	   
 
 		    $(	"<div class='form-group'>"+
@@ -139,14 +157,32 @@
 	    });
 
 	    function setFormQuestion(json, html, qid) {
+
 	    	var element = document.getElementById("wadah");
 
 	    	var list_answer = json.list_answer;					
 			var options = "";
+
+			var value = "";
+
+			for (var u = answers.length - 1; u >= 0; u--) {
+				var answer = answers[u];
+		    	if (answer.question == json.question) {
+		    		value = answer.answer_value;
+		    	} 		    		
+		    }
+
 			if (list_answer.length>0) {					
 				for (u = 0; u < list_answer.length; u++) { 			
 					var answer = list_answer[u];
-					options += answer.options_tag.replace("[value]", answer.id).replace("[answer]", answer.answer).replace("[name]", qid)
+					options += answer.options_tag
+								.replace("[value]", answer.id)
+								.replace("[answer]", answer.answer)
+								.replace("[name]", qid);
+
+					if (answer.id == value) {
+						options.replace(">", " selected='selected'>");
+					}
 				}	    
 			}
 
@@ -160,36 +196,63 @@
 					}
 				}
 			}			
-			
 
+			var text_value = "";
+			var input_value = ">";
+			if (html[0].indexOf("textarea") !== -1) {
+				text_value = value;				
+			} else if (html[0].indexOf("select") == -1) {
+				input_value = " value='"+value+"'>";						
+			}
+
+			console.log("<div class='form-group'>"+
+					"<label for='"+qid+"'>"+json.question+" :</label>"+
+						req+"<br>"+
+						html[0].replace("[name]", qid).replace(">", input_value)+
+						options+
+						text_value+
+						html[1]+	    						
+				"</div>");
 			$(	"<div class='form-group'>"+
 					"<label for='"+qid+"'>"+json.question+" :</label>"+
 						req+"<br>"+
-						html[0].replace("[name]", qid)+
+						html[0].replace("[name]", qid).replace(">", input_value)+
 						options+
-						html[1]+	    		
+						text_value+
+						html[1]+	    						
 				"</div>").appendTo(element);
 	    }
 
-	    function setProvinsi() {	    	
+	    function setProvinsi(selected, daerah) {	    	
 	    	$.ajax({
 				url: "{{ url('ajax/listprovinsi') }}"
 			}).done(function(datas) {
 				var element = document.getElementById("provinsi");
-				for (u=0; u<datas.length; u++) {
-					$("<option value='"+datas[u].id+"'>"+datas[u].provinsi+"</option>").appendTo(element);
+				for (u=0; u<datas.length; u++) {					
+					if (datas[u].id==selected) {						
+						$(
+							"<option value='"+datas[u].id+"' selected='selected'>"+datas[u].provinsi+"</option>"
+							).appendTo(element);
+						setDaerah(selected, daerah);
+					} else {						
+						$("<option value='"+datas[u].id+"'>"+datas[u].provinsi+"</option>").appendTo(element);
+					}					
 				}															
 			});  	    	
 	    }
 
-	    function setDaerah(value) {    	
+	    function setDaerah(value, selected) {    		    	
 			$.ajax({
 		        url: "{{ url('ajax/listdaerah') }}" + "/" + value
 		    }).done(function(datas) {  
 		    	clearElement();     		  
 		    	var element = document.getElementById("daerah");  			    	
-				for (u = 0; u < datas.length; u++) { 				   	
-					$("<option value='"+datas[u].id+"'>"+datas[u].daerah+"</option>").appendTo(element);
+				for (u = 0; u < datas.length; u++) { 		
+					if (datas[u].id==selected) {
+						$("<option value='"+datas[u].id+"' selected='selected'>"+datas[u].daerah+"</option>").appendTo(element);
+					} else {
+						$("<option value='"+datas[u].id+"'>"+datas[u].daerah+"</option>").appendTo(element);
+					}	   						
 				}						    	      		    	
 		    });   
 		}

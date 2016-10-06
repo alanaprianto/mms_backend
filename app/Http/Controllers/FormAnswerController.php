@@ -109,6 +109,7 @@ class FormAnswerController extends Controller
      */
     public function update(FormAnswerRequest $request, $id)
     {
+        return $request->all();
         $fa = Form_answer::findOrFail($id);
 
         $fa->update($request->all());

@@ -30,7 +30,7 @@
                         <div class="dropdown profile-element">
                             <a href="" data-toggle="modal" data-target="#profileimgModal">
                                 <span>
-                                    <img alt="image" class="img-circle" src="{{ asset('resources/img/') }}/{{ Auth::user()->username}}.jpg" height="48" width="48" />
+                                    <img alt="image" class="img-circle" src="{{ url('/images') }}/{{ Auth::user()->username}}.jpg" height="48" width="48" />
                                 </span>
                             </a>                            
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -45,7 +45,7 @@
                             </ul>
                         </div>
                         <div class="logo-element">
-                            IN+
+                            <img class="logo-name" src="{{ asset('resources/img/icon144-128x128-10.png') }}" height="48" width="48"/>
                         </div>
                     </li>                    
                     @yield('sidebar')                            
@@ -118,7 +118,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="image-crop">
-                            <img src="{{ asset('resources/img/') }}/{{ Auth::user()->username}}.jpg">
+                            <img src="{{ url('/images') }}/{{ Auth::user()->username}}.jpg">
                         </div>
                     </div>
                     <div class="col-md-6">

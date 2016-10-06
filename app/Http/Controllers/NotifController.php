@@ -18,7 +18,7 @@ class NotifController extends Controller
      */
     public function notif($id)
     {                           
-        $notif = Notification::findOrFail($id);
+        $notif = Notification::find($id);
 
         $notif->active=false;
         $notif->save();
@@ -26,8 +26,11 @@ class NotifController extends Controller
         $notifs = \App\Helpers\Notifs::getNotifs();
         
         if ($notif->senderid) {
-        	$user = User::findOrFail($notif->senderid);
-        	$id = $user->id;	
+        	$user = User::find($notif->senderid);            
+            $id = "0";
+            if ($user) {
+        	   $id = $user->id;	            
+            }
         	return view('form.notif.indexuser', compact('notifs', 'id'));
         }
 
@@ -46,8 +49,8 @@ class NotifController extends Controller
 
     public function notifuserAjax($id) {        
         $fr = User::
-        		where('id', '=', $id)
-        		->select(['id', 'name', 'username', 'email']);
+        		where('id', '=', $id)->get();
+        		// ->select(['id', 'name', 'username', 'email']);
         return Datatables::of($fr)->make(true);
     }
 
