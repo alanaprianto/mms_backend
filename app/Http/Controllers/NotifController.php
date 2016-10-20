@@ -57,7 +57,7 @@ class NotifController extends Controller
     public function notifall()
     {                           
         $notifs = \App\Helpers\Notifs::getNotifs();        
-
+        
        	return view('form.notif.indexall', compact('notifs'));
     }
 }

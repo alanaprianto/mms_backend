@@ -20,7 +20,7 @@ class AuthRole
         if (!Auth::guard($guard)->check()) {                    
             return redirect('/');
         } else {                            
-            if (Auth::user()->role!=1) {
+            if (Auth::user()->role==2) {
                 return redirect('/');
             }            
         }

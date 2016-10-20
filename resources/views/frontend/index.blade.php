@@ -185,8 +185,8 @@
                   </div>
                 </li>
                 <li class="menu_4"><a href="page_contact.html">Hubungi kami<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
-                </li>
-                @if(Auth::check())                                      
+                </li>                
+                @if(Auth::check())                  
                   <li class="menu_4"><a href="#">{{ Auth::user()->name }}<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
                   <!--sub menu-->
                   <div class="sub_menu_wrap type_2 clearfix">
@@ -194,6 +194,12 @@
                       <li><a id="profil" href="#profile">Profile</a></li>
                       @if(Auth::user()->role==1)
                         <li><a href="{{ url('/crud/form/setting/')}}">Admin Panel</a></li>
+                      @elseif (Auth::user()->role==3)
+                        <li><a href="{{ url('/dashboard/pusat')}}">Dashboard</a></li>
+                        @elseif (Auth::user()->role==4)
+                        <li><a href="{{ url('/dashboard/provinsi')}}">Dashboard</a></li>
+                        @elseif (Auth::user()->role==5)
+                        <li><a href="{{ url('/dashboard/daerah')}}">Dashboard</a></li>
                       @endif
                       <li><a href="logout">Logout</a></li>                      
                     </ul>

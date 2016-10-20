@@ -87,7 +87,7 @@ class UserController extends Controller
     public function show($id)
     {
         $notifs = \App\Helpers\Notifs::getNotifs();        
-        $user = User::find($id);        
+        $user = User::find($id);
         return view('form.user.indexresult', compact('notifs', 'user'));
     }
 

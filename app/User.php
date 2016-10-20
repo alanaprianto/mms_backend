@@ -17,7 +17,7 @@ class User extends Authenticatable
         'name', 'username', 'email', 'password', 'role', 'no_kta', 'no_rn', 'password_confirmation', 'territory',
     ];
 
-    protected $appends = ['territory_name'];
+    protected $appends = ['territory_name', 'trackingcode'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -52,9 +52,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Role', 'id', 'target');
     }
 
+    public function kta()
+    {
+        return $this->hasOne('App\Kta', 'owner', 'id');
+    }
+    
     public function getTerritoryNameAttribute()
     {
-        $terr = $this->attributes['territory'];        
+        $terr = $this->attributes['territory'];
         if ($terr) {
             $daerah = Daerah::find($terr);
             if ($daerah) {
@@ -69,5 +74,16 @@ class User extends Authenticatable
             }
         }
         return "Location Not Found";
+    }
+
+    public function getTrackingcodeAttribute()
+    {        
+        $id = $this->attributes['id'];        
+        $code = Form_result::where('id_user', '=', $id)->first();
+        if ($code) {
+            return $code->trackingcode;;
+        } else {
+            return null;
+        }        
     }
 }

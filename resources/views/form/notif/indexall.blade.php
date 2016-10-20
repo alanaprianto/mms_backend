@@ -15,7 +15,7 @@
         @foreach ($notifs as $key=>$notif)
           <div class="feed-element">
             <a href="{{ url('/crud/form/notif') }}/{{ $notif->id }}" class="pull-left">
-              <img alt="image" class="img-circle" src="img/a2.jpg">
+              <img alt="image" class="img-circle" src="{{ url('/images') }}/{{ $notif->sender_uname }}">
             </a>
             <div class="media-body ">
               <small class="pull-right">{{ $notif->crt_human }}</small>

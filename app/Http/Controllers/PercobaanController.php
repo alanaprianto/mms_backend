@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Form_question;
+use App\Form_result;
+use Carbon\Carbon;
 
 class PercobaanController extends Controller
 {
@@ -42,7 +45,12 @@ class PercobaanController extends Controller
         // return $datetime;
 
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return $notifs[0]->crt_human;
+        // return $notifs[0]->crt_human;
+
+        // $code = "ASDADWKWK";
+        // return view('emails.trackingcode', compact('code'));
+
+        return view('percobaan');
     }
 
     /**

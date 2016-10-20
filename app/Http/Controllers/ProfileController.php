@@ -12,6 +12,8 @@ use App\Form_question_group;
 use Illuminate\Support\Str;
 use App\Form_question;
 use Image;
+use Carbon\Carbon;
+use App\Kta;
 
 class ProfileController extends Controller
 {
@@ -50,7 +52,12 @@ class ProfileController extends Controller
             $percentage = ($completed/$required) * 100;                
         }         
 
-        $kta = $user->no_kta;
+        if ($user->kta) {
+            $kta = $user->kta->kta;
+        } else {
+            $kta = "";
+        }
+
 		return view('mms.profile.profile', compact('required', 'completed', 'percentage', 'kta'));
     }
 
@@ -123,12 +130,43 @@ class ProfileController extends Controller
 
     public function requestkta() {
         $user = Auth::user();        
+        $kta = Kta::find($user->id);
 
-        $user->update([
-            'no_kta' => 'requested'
-            ]);
+        if ($kta) {
+            return redirect('profile');
+        } else {
+            $kta = new Kta;
+            
+            $kta->owner = $user->id;
+            $kta->kta = 'requested';
+            $kta->requested_at = new Carbon();
+            $kta->granted_at = "";
+
+            $kta->save();
+
+            $idProv = str_limit(Auth::user()->territory, 3);
+            $idSender = Auth::user()->id;
+            $provinsi = User::where('role', '=', '4')->where('territory', '=', $idProv)->get();
+            $data = array();
+            foreach ($provinsi as $key => $prov) {
+                $notif = new Notification;
+
+                $notif->target = $prov->id;
+                $notif->senderid = $idSender;
+                $notif->value = "New Request KTA";
+                $notif->active = true;
+                    
+                $notif->save();
+            }
+            
+            return redirect('profile');
+        }
+
+        // $user->update([
+        //     'no_kta' => 'requested'
+        //     ]);
 
 
-        return redirect('profile');
+        // return redirect('profile');
     }
 }

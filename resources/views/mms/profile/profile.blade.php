@@ -16,7 +16,7 @@
                             <div class="ibox-content col-centered">
                                 <img alt="image" class="img-responsive" src="{{ url('/images') }}/{{ Auth::user()->username}}.jpg">
                             </div>
-                            <div class="ibox-content profile-content">
+                            <div class="ibox-content profile-content">                                                            
                                 <h4><strong>{{ Auth::user()->username }}</strong></h4>
                                 <p><i class="fa fa-map-marker"></i> {{ Auth::user()->territory_name }}</p>
                                 <br>
@@ -111,7 +111,7 @@
         </div>
 
         <div id="kta" class="hidden">     
-            @if ($kta=="0")            
+            @if ($kta=="")            
             <table class="main" width="100%" cellpadding="0" cellspacing="0">
                 <tbody>
                     <tr>
@@ -170,6 +170,50 @@
                     </tr>
                 </tbody>
             </table>
+            @else
+            <table class="main" width="100%" cellpadding="0" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td class="alert alert-good">
+                            KTA
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-wrap">
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td class="content-block">
+                                            KTA Anda telah Dibuat!.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="content-block">
+                                            Permintaan KTA anda telah berhasil digenerate. Berikut adalah nomor KTA Anda
+                                            <br><br>
+                                            <div class="form-group">                            
+                                                <input type="text" id="thekta" class="form-control" value="{{ $kta }}" style="text-align:center; font-size: 24px; font-family: monospace;" readonly>
+                                            </div>                       
+                                            <br>                                                
+                                            <div class="text-center">
+                                                <button type="button" class="btn btn-white" data-dismiss="modal">Copy</button>
+                                                <button type="button" class="btn btn-success">Print KTA</button>
+                                            </div>                                  
+                                            <br><br>
+                                            Mohon diperhatikan, Nomor KTA bersifat abadi atau nomor yang anda miliki tidak akan digenerate lagi. Bila nomor KTA anda tidak tervalidasi, kemungkinan nomor KTA anda telah habis masa berlaku. Gunakan fitur perpanjangan KTA untuk memperpanjang masa berlaku KTA anda.                                            
+                                        </td>
+                                    </tr>                                    
+                                    <tr>
+                                        <td class="content-block">
+                                            Terima Kasih atas kepercayaan anda pada kami.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             @endif   
         </div>      
 @stop
@@ -198,7 +242,8 @@
         var profile = document.getElementById("profile");
         var title = document.getElementById("judul");
 
-        title.innerHTML = "<h3>Profile</h3><br>"
+        title.innerHTML = "<h3>Profile</h3><br>";
+        title.style.visibility='visible';
         element.innerHTML = profile.innerHTML;
         loadTable("profile-table", "{{ url('profile/indexAjax/')}}"+"/"+"{{ Auth::user()->id }}");
         loadTable("tahap2-table", "{{ url('profile/tahapiiAjax/')}}"+"/"+"{{ Auth::user()->id }}");
@@ -210,7 +255,7 @@
         var kta = document.getElementById("kta");
         var title = document.getElementById("judul");        
 
-        title.remove();
+        title.style.visibility='hidden'
         element.innerHTML = kta.innerHTML;
 
     });
@@ -220,7 +265,8 @@
         var overview = document.getElementById("overview");
         var title = document.getElementById("judul");
 
-        title.innerHTML = "<h3>Overview</h3><br>"
+        title.innerHTML = "<h3>Overview</h3><br>";
+        title.style.visibility='visible';
         element.innerHTML = overview.innerHTML;            
 
         loadTable("profile-table", "{{ url('profile/indexAjax/')}}"+"/"+"{{ Auth::user()->id }}");

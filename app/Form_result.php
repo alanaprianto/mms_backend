@@ -93,6 +93,18 @@ class Form_result extends Model
             $answers = Form_answer::find($id);
             if ($answers) {
                 return $answers->answer;
+            } else {
+                $daerah = Daerah::find($id);
+                if ($daerah) {
+                    return $daerah->daerah;
+                } else {
+                    $provinsi = Provinsi::find($id);
+                    if ($provinsi) {
+                        return $provinsi->provinsi;
+                    } else {
+                        return $id;
+                    }
+                }
             }
 
             return $id;

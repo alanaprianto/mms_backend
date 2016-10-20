@@ -15,7 +15,7 @@
 
         @include('errors.error_list')
                  
-        {!! Form::open(['action' => ['MmsController@createuser'], 'class' => 'm-t']) !!}
+        {!! Form::open(['action' => ['PendaftaranController@createuser'], 'class' => 'm-t']) !!}
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Tracking Code" name="trackingcode" value="{{ $code }}">
             </div>

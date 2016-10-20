@@ -23,8 +23,8 @@ Route::get('logout', 'LoginController@logout');
 Route::get('register1', 'PendaftaranController@index');
 Route::post('register1', 'PendaftaranController@store');
 Route::get('register1success', 'PendaftaranController@success');
-Route::get('register/{code}', 'MmsController@register');
-Route::post('register', 'MmsController@createuser');
+Route::get('register/{code}', 'PendaftaranController@register');
+Route::post('register', 'PendaftaranController@createuser');
 
 // Authenticated
 Route::group(['middleware' => 'auth'], function() {
@@ -35,12 +35,14 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('profile/tahapiiAjax/{id}', 'ProfileController@tahapiiAjax');
   Route::get('profile/tahapiiiAjax/{id}', 'ProfileController@tahapiiiAjax');  
 
-  // Register 2
+  // Register tahap 2
   Route::get('registerii', 'PendaftaranController@indexii');
   Route::post('registerii', 'PendaftaranController@storeii');
 
-  // Photo profile
-  Route::get('images/{filename}', 'MmsController@images');
+  // Image
+  Route::get('images/{filename}', 'ImageController@images');
+  Route::get('image-upload','ImageController@imageUpload');
+  Route::post('image-upload','ImageController@imageUploadPost');
 
   // KTA
   Route::get('profile/requestkta/', 'ProfileController@requestkta');
@@ -79,6 +81,42 @@ Route::group(['prefix' => 'crud/form/', 'middleware' => 'auth.role'], function (
     Route::get('notifuser/{id}', 'NotifController@notifuserAjax');
   });
   Route::get('question/whereSetting/{id}', 'FormQuestionController@whereSetting');
+});
+
+Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role'], function () {
+  Route::get('daerah', 'KadinDaerahController@dashboard');
+  Route::get('daerah/pendaftaran', 'KadinDaerahController@pendaftaran');
+  Route::get('daerah/submitted', 'KadinDaerahController@submittedForms');
+  Route::delete('daerah/submitted/delete/{code}', 'KadinDaerahController@submittedFormsDelete');
+  Route::get('daerah/submitted/{code}', 'KadinDaerahController@submittedFormDetail');
+  Route::get('daerah/ajax/submittedforms', 'KadinDaerahController@ajaxForms');
+  Route::get('daerah/ajax/submittedforms/{code}', 'KadinDaerahController@ajaxFormDetail');
+  Route::get('daerah/member', 'KadinDaerahController@member');
+  Route::get('daerah/member/{id}', 'KadinDaerahController@memberDetail');
+  Route::get('daerah/ajax/members', 'KadinDaerahController@ajaxMembers');
+  Route::get('daerah/ajax/members/{id}', 'KadinDaerahController@ajaxMemberDetail');
+  Route::get('daerah/member/validate/{id}', 'KadinDaerahController@memberValidate');
+  Route::get('daerah/profile', 'KadinDaerahController@profile');  
+  Route::get('daerah/notif/all', 'KadinDaerahController@notifall');
+  Route::get('daerah/notif/{id}', 'KadinDaerahController@notif');
+  Route::get('daerah/ajax/notifresult/{id}', 'KadinDaerahController@notifresultAjax');
+  Route::get('daerah/ajax/notifuser/{id}', 'KadinDaerahController@notifuserAjax');
+
+  Route::get('provinsi', 'KadinProvinsiController@dashboard');
+  Route::get('provinsi/profile', 'KadinProvinsiController@profile');
+  Route::get('provinsi/kta/list', 'KadinProvinsiController@ktaList');
+  Route::get('provinsi/kta/list/{id}', 'KadinProvinsiController@ktaListDetail');
+  Route::get('provinsi/kta/request', 'KadinProvinsiController@ktaRequest');
+  Route::get('provinsi/kta/request/{id}', 'KadinProvinsiController@ktaRequestDetail');
+  Route::get('provinsi/kta/cancel', 'KadinProvinsiController@ktaCancel');
+  Route::get('provinsi/kta/cancel/{id}', 'KadinProvinsiController@ktaCancelDetail');
+  Route::get('provinsi/kta/cancelkta/{id}', 'KadinProvinsiController@cancelKta');  
+  Route::post('provinsi/kta/insertkta/', 'KadinProvinsiController@insertKta');
+  Route::get('provinsi/ajax/kta', 'KadinProvinsiController@ajaxKta');
+  Route::get('provinsi/ajax/ktacancelled', 'KadinProvinsiController@ajaxKtaCancel');
+  Route::get('provinsi/ajax/ktalist', 'KadinProvinsiController@ajaxKtaList');
+  Route::get('provinsi/notif/all', 'KadinProvinsiController@notifall');
+  Route::get('provinsi/notif/{id}', 'KadinProvinsiController@notif');  
 });
 
 // Percobaan
