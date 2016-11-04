@@ -23,6 +23,7 @@ Route::get('logout', 'LoginController@logout');
 Route::get('register1', 'PendaftaranController@index');
 Route::post('register1', 'PendaftaranController@store');
 Route::get('register1success', 'PendaftaranController@success');
+Route::get('register1pay', 'PendaftaranController@pay1');
 Route::get('register/{code}', 'PendaftaranController@register');
 Route::post('register', 'PendaftaranController@createuser');
 
@@ -55,7 +56,7 @@ Route::get('ajax/listdaerah/{id}', 'MmsController@listDaerah');
 // Mms crud
 Route::group(['prefix' => 'crud/form/', 'middleware' => 'auth.role'], function () {
   Route::resource('setting', 'FormSettingController');
-  Route::resource('type', 'FormTypeController');
+  Route::resource('types', 'FormTypeController');
   Route::resource('rules', 'FormRulesController');
   Route::resource('question', 'FormQuestionController');  
   Route::resource('question_group', 'FormQuestionGroupController'); 
@@ -67,7 +68,7 @@ Route::group(['prefix' => 'crud/form/', 'middleware' => 'auth.role'], function (
   Route::get('notif/{id}', 'NotifController@notif');
   Route::group(['prefix' => 'ajax/'], function () {
     Route::get('setting', 'FormSettingController@indexAjax');
-    Route::get('type', 'FormTypeController@indexAjax');
+    Route::get('types', 'FormTypeController@indexAjax');
     Route::get('rules', 'FormRulesController@indexAjax');
     Route::get('question', 'FormQuestionController@indexAjax');
     Route::get('question_group', 'FormQuestionGroupController@indexAjax');

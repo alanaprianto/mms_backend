@@ -2,7 +2,7 @@
     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">CRUD Forms</span><span class="fa arrow"></span></a>
     <ul class="nav nav-second-level">      
       <li><a href="{{ url('crud/form/setting')}}">Form Setting</a></li>
-      <li><a href="{{ url('crud/form/type')}}">Form Type</a></li>
+      <li><a href="{{ url('crud/form/types')}}">Form Type</a></li>
       <li><a href="{{ url('crud/form/rules')}}">Form Rules</a></li>
       <li class="active"><a href="{{ url('crud/form/question')}}">Form Question</a></li>
       <li><a href="{{ url('crud/form/question_group')}}">Form Question Group</a></li>

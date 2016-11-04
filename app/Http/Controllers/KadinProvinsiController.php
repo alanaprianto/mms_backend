@@ -64,7 +64,9 @@ class KadinProvinsiController extends Controller
     {
     	$notifs = \App\Helpers\Notifs::getNotifs();
 
-        $kta = Kta::where('kta', '=', 'requested')->get();
+        $terr = Auth::user()->territory;
+        $owner = User::where('territory', 'like', $terr.'%')->where('role', '=', 2)->pluck('id');        
+        $kta = Kta::where('kta', '=', 'requested')->whereIn('owner', $owner)->get();
 
         $carbon = new Carbon();
         $monthsago = $carbon->subMonths(6)->month;
@@ -130,7 +132,9 @@ class KadinProvinsiController extends Controller
     public function ktaCancel() {
         $notifs = \App\Helpers\Notifs::getNotifs();
 
-        $kta = Kta::where('kta', '=', 'cancelled')->get();
+        $terr = Auth::user()->territory;
+        $owner = User::where('territory', 'like', $terr.'%')->where('role', '=', 2)->pluck('id');        
+        $kta = Kta::where('kta', '=', 'cancelled')->whereIn('owner', $owner)->get();        
 
         $carbon = new Carbon();
         $monthsago = $carbon->subMonths(6)->month;
@@ -202,7 +206,9 @@ class KadinProvinsiController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
 
-        $kta = Kta::where('kta', '<>', 'requested')->where('kta', '<>', 'cancelled')->get();
+        $terr = Auth::user()->territory;
+        $owner = User::where('territory', 'like', $terr.'%')->where('role', '=', 2)->pluck('id');        
+        $kta = Kta::where('kta', '<>', 'requested')->where('kta', '<>', 'cancelled')->whereIn('owner', $owner)->get();        
 
         $carbon = new Carbon();
         $monthsago = $carbon->subMonths(6)->month;

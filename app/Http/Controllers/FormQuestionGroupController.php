@@ -61,7 +61,7 @@ class FormQuestionGroupController extends Controller
 
         Form_question_group::create($input);
 
-        return redirect('/crud/form/question_group');
+        return redirect('/crud/form/question_group_');
     }
 
     /**
@@ -72,7 +72,7 @@ class FormQuestionGroupController extends Controller
      */
     public function show($id)
     {
-        return redirect('/crud/form/question_group');
+        return redirect('/crud/form/question_group_');
     }
 
     /**
@@ -104,7 +104,7 @@ class FormQuestionGroupController extends Controller
 
         $fqg->update($request->all());
 
-        return redirect('/crud/form/question_group');
+        return redirect('/crud/form/question_group_');
     }
 
     /**

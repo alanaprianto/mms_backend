@@ -14,6 +14,7 @@ use App\Form_question;
 use Image;
 use Carbon\Carbon;
 use App\Kta;
+use App\User;
 
 class ProfileController extends Controller
 {

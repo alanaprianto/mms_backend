@@ -9,7 +9,7 @@
 <br><br>
   
 <div class="nopadding" align="left">
-  <a href='type/create' class="btn btn-primary btn-md"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
+  <a href='types/create' class="btn btn-primary btn-md"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
 </div>  
 <br>
 
@@ -93,7 +93,7 @@ $(function() {
   $('#type-table').DataTable({
     processing: true,
     serverSide: true,
-    ajax: "{{ url('crud/form/ajax/type')}}",
+    ajax: "{{ url('crud/form/ajax/types')}}",
     columns: [            
       { "data" : "name" },
       { "data" : "description" },
@@ -106,7 +106,7 @@ $(function() {
         // `data` option, which defaults to the column being worked with, in
         // this case `data: 0`.
         "render": function ( data, type, row ) {
-        return '<a href="type/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="type"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>';
+        return '<a href="types/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="types"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>';
         },
         "targets": 3
       },

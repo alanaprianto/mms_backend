@@ -5,6 +5,7 @@
 @stop
 
 @section('content')
+
 	<h1>Create New Form Type</h1>
 
 	<hr/>

@@ -69,6 +69,7 @@ class PendaftaranController extends Controller
             
         // }            
 
+        $id_namapenanggungjawab = Form_question::where('question', 'like', '%Nama Penanggung Jawab%')->first()->id;        
         $rules = $this->rules();
         
             $attributeNames = $this->names();
@@ -78,6 +79,15 @@ class PendaftaranController extends Controller
             $validator->setAttributeNames($attributeNames);
 
             if ($validator->passes()) {
+                // $name = "Syahril Rachman";
+                // $code = "AS32FLF9";
+                // $date = "2016-11-04 11:07:36";
+                // $email = 'rachman.syahril@gmail.com';
+                // Mail::send('emails.register_confirmation', ['name' => $name, 'code' => $code, 'date' => $date], function($message) use ($email) {
+                //     $message->from('no-reply@kadin-indonesia.org', 'no-reply');
+                //     $message->to($email)->subject('Kadin Registration');                    
+                // });
+                // return $input;
 
                 $random_string = md5(microtime());
                 $first = substr($random_string, 0, 4);
@@ -131,18 +141,41 @@ class PendaftaranController extends Controller
                         $form_result->id_question = "Alamat Lengkap";
                     } else if (str_contains($keys[2], "KodePos")) {
                         $form_result->id_question = "Kode Pos";
+                    } else if (str_contains($keys[2], "fileupload")) {
+                        $form_result->id_question = $keys[3];                    
                     } else {
                         $form_result->id_question = $keys[2];
+                        if ($keys[2]==$id_namapenanggungjawab) {
+                            $name = $value;
+                        }
                     }
 
                     // answer value
                     if (is_array($value)) {
                         $form_result->answer_value = implode (", ", $value);
+                    } else if ($request->hasFile($key)) {
+                        $path = storage_path() . '/app/uploadedfiles/'.Auth::user()->username;                    
+                        if(!\File::exists($path)) {
+                            \File::makeDirectory($path);                            
+                        } else {                            
+                        }
+                        
+                        $uname = $keys[3];
+                        $imageName = $uname.'.'.$request->$key->getClientOriginalExtension();                                                
+                        $request->$key->move($path, $imageName);
+
+                        $form_result->answer_value = $imageName;
+                        // $file = $path.$imageName;        
+                        // if(!\File::exists($file)) {
+                        //     $form_result->answer_value = $file;
+                        // } else {
+                        //     $form_result->answer_value = "Failed to Upload File";
+                        // }
                     } else {
                         $form_result->answer_value = $value;
                         if (str_contains($value, '@')) {
                             $email = $value;
-                        }
+                        }                        
                     }  
 
                     // tracking code                  
@@ -172,9 +205,10 @@ class PendaftaranController extends Controller
             $fr->save();                        
         }
 
-        Mail::send('emails.trackingcode', ['code' => $code], function($message) use ($email) {
+        $date = new Carbon();
+        Mail::send('emails.register_confirmation', ['name' => $name, 'code' => $code, 'date' => $date], function($message) use ($email) {
             $message->from('no-reply@kadin-indonesia.org', 'no-reply');
-            $message->to($email)->subject('Kadin Registration');
+            $message->to($email)->subject('Kadin Registration');                    
         });
 
         return redirect('/register1success'); 
@@ -478,6 +512,8 @@ class PendaftaranController extends Controller
                 $rules["id_question_KabKot"] = implode("|", $parameter);
                 $rules["id_question_Alamat"] = implode("|", $parameter);
                 $rules["id_question_KodePos"] = implode("|", $parameter);
+            } else if (str_contains($type, "fileupload")) {
+                $rules[$type] = implode("|", $parameter);                
             } else {
                 $rules["id_question_{$value->id}"] = implode("|", $parameter);
             }            
@@ -511,8 +547,10 @@ class PendaftaranController extends Controller
                 $names["id_question_KabKot"] = "Kabupaten / Kota";
                 $names["id_question_Alamat"] = "Alamat Lengkap";
                 $names["id_question_KodePos"] = "Kode Pos";
+            } else if (str_contains($type, "fileupload")) {
+                $names[$type] = $value->question;
             } else {
-                $names["id_question_{$value->id}"] = $value->question;   
+                $names["id_question_{$value->id}"] = $value->question;
             }                                          
         }
 
@@ -521,6 +559,12 @@ class PendaftaranController extends Controller
 
     public function success() {
         return view('mms.pendaftaran-success');
+    }
+
+    public function pay1()
+    {                
+        
+        return view('mms.pay1');
     }
 }
 

@@ -55,12 +55,11 @@ $('#myModal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) // Button that triggered the modal    
   url = button.data('url');
   id = button.data('id');
-  name = button.data('name');
-
-  console.log(url + " " + id + " " + name);
+  question = button.data('question');  
+  answer = button.data('answer');
 
   var modal = $(this);
-  modal.find('.modal-body').text('Delete Record "' + name + '"?');
+  modal.find('.modal-body').text('Delete Question "' + question + '", with answer: "' + answer + '"?');
   modal.find('.modal-footer .form-control').val(id);
 
 });
@@ -111,7 +110,14 @@ $(function() {
         // `data` option, which defaults to the column being worked with, in
         // this case `data: 0`.
         "render": function ( data, type, row ) {
-        return '<a href="result/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="result"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>';
+        return '<a href="result/'+row.id+'/edit" class="btn btn-primary btn-xs">'+
+                  '<span class="glyphicon glyphicon-pencil"></span>'+
+                  '&nbsp;&nbsp;Edit'+
+                '</a>'+
+                '<a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-question="'+row.question+'" data-answer="'+row.answer+'" data-url="result">'+
+                  '<span class="glyphicon glyphicon-trash"></span>'+
+                  '&nbsp;&nbsp;Delete'+
+                '</a>';
         },
         "targets": 5
       }

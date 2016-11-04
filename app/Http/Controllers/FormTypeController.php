@@ -51,7 +51,7 @@ class FormTypeController extends Controller
 
         Form_type::create($input);
 
-        return redirect('/crud/form/type');
+        return redirect('/crud/form/types_');
     }
 
     /**
@@ -62,7 +62,7 @@ class FormTypeController extends Controller
      */
     public function show($id)
     {
-        return redirect('/crud/form/type');
+        return redirect('/crud/form/types_');
     }
 
     /**
@@ -93,7 +93,7 @@ class FormTypeController extends Controller
 
         $ftype->update($request->all());
 
-        return redirect('/crud/form/type');
+        return redirect('/crud/form/types_');
     }
 
     /**

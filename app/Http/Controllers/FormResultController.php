@@ -73,7 +73,7 @@ class FormResultController extends Controller
          
         Form_result::create($input);
 
-        return redirect('/crud/form/result');
+        return redirect('/crud/form/result_');
     }
 
     /**
@@ -84,7 +84,7 @@ class FormResultController extends Controller
      */
     public function show($id)
     {      
-        return redirect('/crud/form/result');
+        return redirect('/crud/form/result_');
     }
 
     /**
@@ -117,7 +117,7 @@ class FormResultController extends Controller
 
         $fa->update($request->all());
 
-        return redirect('/crud/form/result');
+        return redirect('/crud/form/result_');
     }
 
     /**
