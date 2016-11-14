@@ -10,6 +10,9 @@ use App\Form_result;
 use Carbon\Carbon;
 use App\Http\Requests\FormResultRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use App\Form_question_group;
+use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 class PercobaanController extends Controller
 {
@@ -52,8 +55,54 @@ class PercobaanController extends Controller
         $name = "Syahril Rachman";
         $code = "AS32FLF9";
         $date = "2016-11-04 11:07:36";
-        return view('emails.register_confirmation', compact('name', 'code', 'date'));
-        // return view('emails.register_succesfull');
+        return view('emails.register_confirmation', compact('name', 'code', 'date'));        
+
+        $name = "Syahril Rachman";
+        $username = "syahril";
+        $password = "ASDAD";
+        // return view('emails.register_succesfull', compact('name', 'username', 'password'));
+
+
+        $user = Auth::user();
+        $fr = Form_result::                
+                where('id_user', '=', $user->id)                
+                ->where('id_question', '=', "1")
+                ->first();
+
+        $required = 0;
+        $percentage = 0;
+        $completed = 0;
+
+        if ($fr) {
+            $comp = $fr->answer;
+            $btk = Str::upper($comp);
+
+            $fqg1 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->id;
+            $fq1 = Form_question::where('group_question', '=', $fqg1)->count();
+
+            $fqg2 = Form_question_group::where('name', 'like', '%Pendaftaran%')->first()->id;
+            $fq2 = Form_question::where('group_question', '=', $fqg2)->count();
+
+            $fqg3 = Form_question_group::where('name', 'like', '%Tahap 3%')->first()->id;
+            $fq3 = Form_question::where('group_question', '=', $fqg3)->count();
+
+            $required = $fq1+$fq2+$fq3;
+            $completed = Form_result::where('id_user', '=', $user->id)->count();       
+            $percentage = ($completed/$required) * 100;                
+        }         
+
+        if ($user->kta) {
+            $kta = $user->kta->kta;
+        } else {
+            $kta = "";
+        }
+        
+        $name = $user->name;
+        $email = $user->email;        
+        $username = $user->username;        
+                
+        return view('mms.profile.profile', compact('required', 'completed', 'percentage', 'kta', 'userdata',
+                    'name', 'email', 'username'));
     }
 
     /**
@@ -156,9 +205,3 @@ class PercobaanController extends Controller
     }
 }
 
-class formResult {
-    public $id_question;
-    public $answer_value;
-    public $id_user;
-    public $trackingcode;
-}

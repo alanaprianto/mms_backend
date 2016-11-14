@@ -44,6 +44,15 @@ class PendaftaranController extends Controller
 		return view('mms.pendaftaran-content', compact('fquestions'));
     }
     
+    public function indexFrame()
+    {        
+        
+        $fquestions = Form_question::whereHas('group', function ($q) {        
+            $q->where('name', 'like', '%Pendaftaran%');
+        })->orderBy('order', 'asc')->get();
+        
+        return view('mms.pendaftaran-frame', compact('fquestions'));
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -92,8 +101,8 @@ class PendaftaranController extends Controller
                 $random_string = md5(microtime());
                 $first = substr($random_string, 0, 4);
                 $last = substr($random_string, -4);
-                $code = $first.$last;                                                        
-
+                $code = $first.$last;
+                
                 $admins = User::where('role', '=', '1')->get();                
                 foreach ($admins as $key => $admin) {
                     $notif = new Notification;
@@ -288,7 +297,7 @@ class PendaftaranController extends Controller
         $user->no_rn = "0";
         $user->territory = $territory;
 
-        $user->save();   
+        $user->save();
 
         $admins = User::where('role', '=', '1')->get();        
         foreach ($admins as $key => $admin) {
@@ -559,13 +568,7 @@ class PendaftaranController extends Controller
 
     public function success() {
         return view('mms.pendaftaran-success');
-    }
-
-    public function pay1()
-    {                
-        
-        return view('mms.pay1');
-    }
+    }    
 }
 
 class formResult {

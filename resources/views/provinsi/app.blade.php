@@ -41,9 +41,9 @@
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ Auth::user()->name }}</strong>
                              </span> <span class="text-muted text-xs block">{{ Auth::user()->myrole->name }}<b class="caret"></b></span> </span> </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a href="{{ url('dashboard/provinsi/profile') }}">Profile</a></li>
-                                <li><a href="contacts.html">Contacts</a></li>
-                                <li><a href="mailbox.html">Mailbox</a></li>
+                                <li><a href="{{ url('profile') }}">Profile</a></li>
+                                <li><a href="{{ url('contacts') }}">Contacts</a></li>
+                                <li><a href="{{ url('mailbox') }}">Mailbox</a></li>
                                 <li class="divider"></li>
                                 <li><a href="{{ url('/logout')}}">Logout</a></li>
                             </ul>
@@ -61,9 +61,17 @@
             <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0"> 
                 <div class="navbar-header">
-                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>                    
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>         
+                    <form role="search" class="navbar-form-custom" action="">
+                        <div class="form-group">
+                            <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                        </div>
+                    </form>           
                 </div>          
-                <ul class="nav navbar-top-links navbar-right">                                        
+                <ul class="nav navbar-top-links navbar-right">     
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">Welcome to KADIN Provinsi Panel.</span>
+                    </li>                                   
                     <li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">                            
                             <i class="fa fa-bell"></i>  

@@ -5,16 +5,48 @@
 @stop
 
 @section('content')
-	<h1> Members </h1>
+<div class="col-lg-10">
+  <h2>Members</h2>
+  <ol class="breadcrumb">
+    <li>
+      <a>Kadin Daerah</a>
+    </li>
+    <li class="active">
+      <strong>Members</strong>
+    </li>
+  </ol>
+</div>
+<div class="col-lg-2">
+  <div class="title-action">      
+  </div>
+</div>
 @stop
 
 @section('iframe')	
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>{{ count($members) }} Total Members</h5>
+					<div class="ibox-tools">
+                    	<a class="collapse-link">
+							<i class="fa fa-chevron-up"></i>
+                        </a>
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							<i class="fa fa-wrench"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li><a href="#">Config option 1</a></li>
+							<li><a href="#">Config option 2</a></li>
+						</ul>
+						<a class="close-link">
+							<i class="fa fa-times"></i>
+						</a>
+					</div>
+				</div>
 				<div class="ibox-content">
 					<div>
-						<h2 class="m-b-xs">{{ count($members) }} Total Members</h2>
+						<h2 class="m-b-xs"></h2>
 						<!-- <span class="pull-right text-right">
 							<small>Average value of sales in the past month in: <strong>United states</strong></small>
 							<br/>
@@ -66,7 +98,7 @@
 						</a>
 					</div>
 				</div>
-				<div class="ibox-content">
+				<div class="ibox-content">					
 					<table class="table table-bordered" id="list-table" width=100%>
 						<thead>
 							<tr>
@@ -111,7 +143,7 @@
 					<h4 class="modal-title">Validation</h4>						
 				</div>
 				<div class="modal-body">
-					<p>Validasi pembayaran untuk tracking code </p>
+					<p id="thetext">Validasi pembayaran untuk tracking code </p>
 					<div class="form-group">							
 						<input type="text" id="thecode" class="form-control" value="ASDAD" style="text-align:center; font-size: 24px; font-family: monospace;" readonly>
 					</div>
@@ -193,7 +225,7 @@
 		            	return '<i class="fa fa-check text-navy"></i>'+
 			        			'&nbsp;&nbsp;Validated';
 		            } else {
-		            	return '<a href="" class="btn btn-success btn-xs" data-toggle="modal" data-target="#valModal" data-id="'+row.id+'" 			data-trcode="'+row.trackingcode+'">'+
+		            	return '<a href="" class="btn btn-success btn-xs" data-toggle="modal" data-target="#valModal" data-id="'+row.id+'" data-trcode="'+row.trackingcode+'" data-name="'+row.name+'">'+
 			        				'<span class="glyphicon glyphicon-check"></span>'+
 			        				'&nbsp;&nbsp;Validate'+
 			        			'</a>';
@@ -238,11 +270,15 @@
 		  var button = $(event.relatedTarget) // Button that triggered the modal    
 		  var trcode = button.data('trcode');
 		  id = button.data('id');
+		  name = button.data('name');
 
 		  console.log(trcode);
 
 		  var modal = $(this);
-		  modal.find('#thecode').val(trcode);		  
+		  modal.find('#thecode').val(trcode);
+		  modal.find('#thetext').innerHTML = "";
+
+		  modal.find('.modal-body').text('Validasi User "' + name + '"?');
 		});
 
 		$('#validate').on('click', function (event) {
@@ -268,5 +304,29 @@
 		  });
 		});
 
+		$('#submit_delete').on('click', function (event) {		  
+		  var url = "{{ url('dashboard/daerah/member/delete/') }}/"+id;
+
+		  $.ajax({    
+		    url: url,
+		    type: "post",
+		    data: {
+		      _method: 'DELETE', 
+		      _token: "{{ csrf_token() }}",        
+		    }
+		  }).done(function(data) {                    
+		    console.log(data);
+
+		    $('#myModal').modal('hide'); 
+
+		    if (data.success) {
+		      toastr.success(data.msg);
+		    } else {
+		      toastr.error(data.msg);
+		    }
+
+		    location.reload();
+		  });
+		});
     </script>
 @endpush

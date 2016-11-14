@@ -6,109 +6,107 @@
 
 @section('content')
 <div class="wrapper wrapper-content">
-            <div class="row animated fadeInRight">
-                <div class="col-md-4">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Profile Detail</h5>
-                        </div>
-                        <div>
-                            <div class="ibox-content col-centered">
-                                <img alt="image" class="img-responsive" src="{{ url('/images') }}/{{ Auth::user()->username}}.jpg">
-                            </div>
-                            <div class="ibox-content profile-content">                                                            
-                                <h4><strong>{{ Auth::user()->username }}</strong></h4>
-                                <p><i class="fa fa-map-marker"></i> {{ Auth::user()->territory_name }}</p>
-                                <br>
-                                <div class="list-group" width="100%">
-                                    <a id="gr-overview" href="#" class="list-group-item list-group-item-info">Overview</a>
-                                    <a id="gr-profil" href="#" class="list-group-item list-group-item-info">Profile</a>
-                                    <a id="gr-kta" href="#" class="list-group-item list-group-item-info">KTA</a>              
-                                </div>                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="border-bottom white-bg dashboard-header">
-                        <div id="judul">
-                        </div>
-                        <div id="wadah">                                                    
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+  <div class="row animated fadeInRight">
+    <div class="col-md-4">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Profile Detail</h5>
         </div>
+        <div>
+          <div class="ibox-content col-centered">
+            <img alt="image" class="img-responsive" src="{{ url('/images') }}/{{ Auth::user()->username}}.jpg">
+          </div>
+          <div class="ibox-content profile-content">
+            <h4><strong>{{ Auth::user()->username }}</strong></h4>
+            <p><i class="fa fa-map-marker"></i> {{ Auth::user()->territory_name }}</p>
+            <br>
+            <div class="list-group" width="100%">
+              <a id="gr-overview" href="#" class="list-group-item list-group-item-info">Overview</a>
+              <a id="gr-profil" href="#" class="list-group-item list-group-item-info">Profile</a>
+              <a id="gr-kta" href="#" class="list-group-item list-group-item-info">KTA</a>              
+            </div>                                
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="border-bottom white-bg dashboard-header">
+        <div id="judul">
+        </div>
+        <div id="wadah">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <div id="overview" class="hidden">
-            <h5>Your Account Information ({{ $completed }}/{{ $required }})</h5>
+<div id="overview" class="hidden">
+  <h5>Your Account Information ({{ $completed }}/{{ $required }})</h5>
+  <div class="progress progress-striped active">
+    <div style="width: {{ $percentage}}%" aria-valuemax="{{ $required }}" aria-valuemin="0" aria-valuenow="{{ $completed }}" role="progressbar" class="progress-bar progress-bar-success">
+      <!-- <span class="sr-only">0% Complete (success)</span> -->
+    </div>
+  </div>
 
-            <div class="progress progress-striped active">
-                <div style="width: {{ $percentage}}%" aria-valuemax="{{ $required }}" aria-valuemin="0" aria-valuenow="{{ $completed }}" role="progressbar" class="progress-bar progress-bar-success">
-                    <!-- <span class="sr-only">0% Complete (success)</span> -->
-                </div>
-            </div>
-
-            @unless ($percentage == 100 || $percentage == 0)                
-                <a href="{{ url('registerii') }}" class="btn btn-warning btn-block">Complete your account Information</a>
-                <br>
-            @endunless
+  @unless ($percentage == 100 || $percentage == 0)                
+    <a href="{{ url('registerii') }}" class="btn btn-warning btn-block">Complete your account Information</a>
+    <br>
+  @endunless
                                     
-            <table class="table" id="profile-table" width=100%>                                                                   
-            </table>
-        </div>
+  <table class="table" id="profile-table" width=100%>                                                                   
+  </table>
+</div>
 
-        <div id="profile" class="hidden">            
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Pendaftaran</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>                        
-                    </div>
-                </div>
-                <div class="ibox-content" style="display: block;">
-                    <div>
-                        <table class="table" id="profile-table" width=100%>                                                     
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Profile Tahap 2</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>                        
-                    </div>
-                </div>
-                <div class="ibox-content" style="display: block;">
-                    <div>
-                        <table class="table" id="tahap2-table" width=100%>                                                     
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Profile Tahap 3</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>                        
-                    </div>
-                </div>
-                <div class="ibox-content" style="display: block;">
-                    <div>
-                        <table class="table" id="tahap3-table" width=100%>                                                     
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div id="profile" class="hidden">            
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <h5>Pendaftaran</h5>
+      <div class="ibox-tools">
+        <a class="collapse-link">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+      </div>
+    </div>
+    <div class="ibox-content" style="display: block;">
+      <div>
+        <table class="table" id="profile-table" width=100%>                                                     
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <h5>Profile Tahap 2</h5>
+      <div class="ibox-tools">
+        <a class="collapse-link">
+          <i class="fa fa-chevron-up"></i>
+        </a>                       
+      </div>
+    </div>
+    <div class="ibox-content" style="display: block;">
+      <div>
+        <table class="table" id="tahap2-table" width=100%>                                                     
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <h5>Profile Tahap 3</h5>
+      <div class="ibox-tools">
+        <a class="collapse-link">
+          <i class="fa fa-chevron-up"></i>
+        </a>                        
+      </div>
+    </div>
+    <div class="ibox-content" style="display: block;">
+      <div>
+        <table class="table" id="tahap3-table" width=100%>                                                     
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
         <div id="kta" class="hidden">     
             @if ($kta=="")            
@@ -214,8 +212,50 @@
                     </tr>
                 </tbody>
             </table>
-            @endif   
-        </div>      
+            @endif
+        </div>
+        
+        <div id="setting" class="hidden">
+            <form class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">Name</label>
+                  <div class="col-lg-10">
+                    <p class="form-control-static">{{ $name }}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">Email</label>
+                  <div class="col-lg-10">
+                    <p class="form-control-static">{{ $email }}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">Username</label>
+                  <div class="col-lg-10">
+                    <p class="form-control-static">{{ $username }}</p>
+                  </div>
+                </div>
+            </form>                        
+            {!! Form::open(['action' => ['PendaftaranController@createuser'], 'class' => 'm-t']) !!}                
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Name" name="name" value="{{ $name }}">
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Email" name="email" value="{{ $email }}">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Username" name="username" value="{{ $username }}">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Password" name="password">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation">
+                </div>                
+                <button type="submit" class="btn btn-primary block full-width m-b">Register</button>
+                    
+            {!! Form::close() !!}
+        </div>
 @stop
 
 @push('scripts')
@@ -271,6 +311,16 @@
 
         loadTable("profile-table", "{{ url('profile/indexAjax/')}}"+"/"+"{{ Auth::user()->id }}");
     });    
+
+    $('#gr-setting').on('click', function (event) {
+        var element = document.getElementById("wadah");
+        var setting = document.getElementById("setting");
+        var title = document.getElementById("judul");
+
+        title.innerHTML = "<h3>Setting</h3><br>";
+        title.style.visibility='visible';
+        element.innerHTML = setting.innerHTML;        
+    });
 
     function loadTable(id, url) {
         $('#'+id).DataTable({

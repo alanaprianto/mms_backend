@@ -68,7 +68,13 @@ class MemberController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();        
         $member = User::find($id);        
-        return view('form.member.indexresult', compact('notifs', 'member'));
+
+        /* ocha upd */
+        $detail = Form_result::
+                leftJoin('users', 'form_result.id_user', '=', 'users.id')
+                ->where('form_result.id_user', '=', $id)->get();
+
+        return view('form.member.indexresult', compact('notifs', 'member', 'detail'));
     }
 
     /**

@@ -57,6 +57,11 @@ class User extends Authenticatable
         return $this->hasOne('App\Kta', 'owner', 'id');
     }
     
+    public function payment()
+    {
+        return $this->hasMany('App\Payment');
+    }
+
     public function getTerritoryNameAttribute()
     {
         $terr = $this->attributes['territory'];

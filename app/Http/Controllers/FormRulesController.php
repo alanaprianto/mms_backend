@@ -51,7 +51,7 @@ class FormRulesController extends Controller
 
         Form_rules::create($input);
 
-        return redirect('/crud/form/rules_');
+        return redirect('/crud/form/rules');
     }
 
     /**
@@ -62,6 +62,7 @@ class FormRulesController extends Controller
      */
     public function show($id)
     {
+        // terjadi error jika ke '/crud/form/rules'
         return redirect('/crud/form/rules_');
     }
 
@@ -94,7 +95,7 @@ class FormRulesController extends Controller
 
         $frules->update($request->all());
 
-        return redirect('/crud/form/rules_');
+        return redirect('/crud/form/rules');
     }
 
     /**

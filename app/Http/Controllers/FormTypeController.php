@@ -51,7 +51,7 @@ class FormTypeController extends Controller
 
         Form_type::create($input);
 
-        return redirect('/crud/form/types_');
+        return redirect('/crud/form/types');
     }
 
     /**
@@ -62,6 +62,7 @@ class FormTypeController extends Controller
      */
     public function show($id)
     {
+        // terjadi error jika ke '/crud/form/types'
         return redirect('/crud/form/types_');
     }
 
@@ -88,12 +89,12 @@ class FormTypeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(FormTypeRequest $request, $id)
-    {
+    {        
         $ftype = Form_type::findOrFail($id);        
 
         $ftype->update($request->all());
 
-        return redirect('/crud/form/types_');
+        return redirect('/crud/form/types');
     }
 
     /**

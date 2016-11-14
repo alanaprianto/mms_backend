@@ -13,6 +13,7 @@ use App\User;
 use Carbon\Carbon;
 use App\Kta;
 use App\Notification;
+use App\Payment;
 
 class KadinDaerahController extends Controller
 {
@@ -98,12 +99,28 @@ class KadinDaerahController extends Controller
         return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
     }
 
-    public function submittedFormDetail($code)
+    public function memberDelete($id)
     {
-        $notifs = \App\Helpers\Notifs::getNotifs();        
-        $fr = Form_result::where('trackingcode', '=', $code)->get();
+        $user = User::where('id', '=', $id)->first();
 
-        return view('daerah.indexresult', compact('notifs'));   
+        try {
+            $user->delete();       
+            $deleted = true;
+            $deletedMsg = "Data " . $name . " is deleted";
+        }catch(\Exception $e){
+            $deleted = false;
+            $deletedMsg = "Error while deleting data";      
+        }
+        
+        return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
+    }
+
+    public function submittedFormDetail($code)
+    {        
+        $notifs = \App\Helpers\Notifs::getNotifs();        
+        $detail = Form_result::where('trackingcode', '=', $code)->get();
+
+        return view('daerah.form.detail', compact('notifs', 'detail'));   
     }
     
     /**
@@ -170,8 +187,9 @@ class KadinDaerahController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
         $member = User::find($id);
+        $detail = Form_result::where('id_user', '=', $member->id)->get();
 
-        return view('daerah.member.detail', compact('notifs', 'member'));
+        return view('daerah.member.detail', compact('notifs', 'member', 'detail'));
     }
 
     public function ajaxMembers() {
@@ -315,5 +333,11 @@ class KadinDaerahController extends Controller
         $notifs = \App\Helpers\Notifs::getNotifs();        
         
         return view('daerah.notif.indexall', compact('notifs'));
+    }
+
+    public function paymentAjax($code) {        
+        $fr = Payment::where('trackingcode', '=', $code)
+                ->get();
+        return Datatables::of($fr)->make(true);
     }
 }

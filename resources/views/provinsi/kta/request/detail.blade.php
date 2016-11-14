@@ -5,7 +5,25 @@
 @stop
 
 @section('content')
-	<h1> Member Detail </h1>
+	<h1>  </h1>
+<div class="col-lg-10">
+  <h2>Request KTA</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a>Kadin Provinsi</a>
+      </li>      
+      <li>
+        Request KTA
+      </li>
+      <li class="active">
+        <strong>Member Detail</strong>        
+      </li>
+  </ol>
+</div>
+<div class="col-lg-2">
+  <div class="title-action">
+  </div>
+</div>
 @stop
 
 @section('iframe')	
@@ -33,17 +51,73 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <table class="table table-bordered" id="list-table" width=100%>
-						<thead>
-					       <tr>
-                                <th>Question</th>
-                                <th>Answer Value</th>
-							    <th>User</th>
-							    <th>Tracking Code</th>      
-							    <th>Submitted At</th>
-							</tr>      
-                        </thead>
-                    </table>
+                  <div class="row">
+                        <div class="col-lg-12">
+                            <!-- identitas user -->
+                            <div class="form-group">
+                              <label class="col-lg-2 control-label">Username</label>
+                              <div class="col-lg-10">
+                                <p class="form-control-static">{{ $member->username }}</p>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-lg-2 control-label">Tracking Code</label>
+                              <div class="col-lg-10">
+                                <p class="form-control-static"><?php echo @$detail[0]['trackingcode'];?></p>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-lg-2 control-label">Submitted At</label>
+                              <div class="col-lg-10">
+                                <p class="form-control-static">{{ $member->created_at }}</p>
+                              </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>                                          
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-9 col-lg-offset-1">
+                          @if ($detail)
+                                <?php $i=1;?>       
+                                <table class="table">
+                                  <tr>
+                                    <td><strong>Status</strong></td>
+                                    <td>:</td>
+                                    <td>
+                                @if ( $detail[0]['id_user'] )
+                                  <span class="label label-primary">Registered</span>
+                                @else
+                                  <span class="label label-danger">Not Yet Registered</span>
+                                @endif                
+                              </td>
+                                  </tr>
+                                  @foreach ($detail as $row)
+                                  <tr>
+                                    <td><strong>{{ $row->question }}</strong></td>
+                                    <td>:</td>
+                                    <td>{{ $row->answer }}</td>
+                                  </tr>
+                                  @endforeach
+                                  <tr>
+                                    <td><strong>Submitted At</strong></td>
+                                    <td>:</td>
+                                    <td>{{ $detail[0]['created_at'] }}</td>
+                                  </tr>
+                                </table>
+                          @endif
+                        </div>
+                      </div>
+                    <!-- <table class="table table-bordered" id="list-table" width=100%>
+						          <thead>
+					              <tr>
+                          <th>Question</th>
+                          <th>Answer Value</th>
+        							    <th>User</th>
+        							    <th>Tracking Code</th>      
+        							    <th>Submitted At</th>
+        							  </tr>      
+                      </thead>
+                    </table> -->
                 </div>
             </div>
         </div>

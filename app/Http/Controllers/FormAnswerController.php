@@ -108,8 +108,7 @@ class FormAnswerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(FormAnswerRequest $request, $id)
-    {
-        return $request->all();
+    {        
         $fa = Form_answer::findOrFail($id);
 
         $fa->update($request->all());

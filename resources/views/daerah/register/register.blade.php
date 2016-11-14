@@ -4,9 +4,27 @@
   @include('daerah.register.sidebar')
 @stop
 
+@section('content')
+<div class="col-lg-10">
+  <h2>Pendaftaran Anggota Biasa</h2>
+  <ol class="breadcrumb">
+    <li>
+      <a>Kadin Daerah</a>
+    </li>        
+    <li class="active">
+      <strong>Pendaftaran</strong>
+    </li>
+  </ol>
+</div>
+<div class="col-lg-2">
+  <div class="title-action">      
+  </div>
+</div>
+@stop
+
 @section('iframe')
-	<iframe src="{{ url('register1') }}" frameborder='0' width='100%' onload='resizeIframe(this)' style='margin-top:30px;'>	
-	</iframe>	
+	<iframe src="{{ url('register1frame') }}" frameborder='0' width='100%' onload='resizeIframe(this)'>	
+	</iframe>
 @stop
 
 @push('scripts')

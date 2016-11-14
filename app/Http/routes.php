@@ -11,8 +11,11 @@
 |
 */
 
-Route::get('/', 'MmsController@index');
+Route::get('/', 'MmsController@info');
 Route::get('404', 'MmsController@notfound');
+Route::get('informasi', 'MmsController@info');
+Route::get('bantuan', 'MmsController@help');
+
 
 // Auth
 Route::get('login', 'LoginController@show');
@@ -22,19 +25,26 @@ Route::get('logout', 'LoginController@logout');
 // Register
 Route::get('register1', 'PendaftaranController@index');
 Route::post('register1', 'PendaftaranController@store');
+Route::get('register1frame', 'PendaftaranController@indexFrame');
 Route::get('register1success', 'PendaftaranController@success');
-Route::get('register1pay', 'PendaftaranController@pay1');
 Route::get('register/{code}', 'PendaftaranController@register');
 Route::post('register', 'PendaftaranController@createuser');
 
 // Authenticated
 Route::group(['middleware' => 'auth'], function() {
   // Profile
-  Route::get('profile', 'ProfileController@index');
+  Route::get('profile', 'ProfileAdminController@index');
+  Route::post('updateCAI/{id}', 'ProfileAdminController@updateCAI');
+  Route::post('updateCYP/{id}', 'ProfileAdminController@updateCYP');
+  
+  // Route::get('profile', 'ProfileController@index');
   Route::get('profile/edit', 'ProfileController@edit');
   Route::get('profile/indexAjax/{id}', 'ProfileController@indexAjax');
   Route::get('profile/tahapiiAjax/{id}', 'ProfileController@tahapiiAjax');
   Route::get('profile/tahapiiiAjax/{id}', 'ProfileController@tahapiiiAjax');  
+
+  // KTA
+  Route::get('profile/requestkta/', 'ProfileController@requestkta');
 
   // Register tahap 2
   Route::get('registerii', 'PendaftaranController@indexii');
@@ -43,10 +53,16 @@ Route::group(['middleware' => 'auth'], function() {
   // Image
   Route::get('images/{filename}', 'ImageController@images');
   Route::get('image-upload','ImageController@imageUpload');
-  Route::post('image-upload','ImageController@imageUploadPost');
+  Route::post('image-upload','ImageController@imageUploadPost');  
 
-  // KTA
-  Route::get('profile/requestkta/', 'ProfileController@requestkta');
+  // Payment *percobaan
+  Route::get('register1pay', 'MmsController@pay1');
+  Route::post('register1pay', 'MmsController@pay1store');
+
+  // Member
+  Route::get('member', 'Member1Controller@dashboard');
+  Route::get('member/kta', 'Member1Controller@kta');
+  Route::get('member/compprof', 'Member1Controller@compprof');
 });
 
 // Get Territory
@@ -81,7 +97,7 @@ Route::group(['prefix' => 'crud/form/', 'middleware' => 'auth.role'], function (
     Route::get('notifresult/{id}', 'NotifController@notifresultAjax');
     Route::get('notifuser/{id}', 'NotifController@notifuserAjax');
   });
-  Route::get('question/whereSetting/{id}', 'FormQuestionController@whereSetting');
+  Route::get('question/whereSetting/{id}', 'FormQuestionController@whereSetting');  
 });
 
 Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role'], function () {
@@ -89,7 +105,8 @@ Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role'], function (
   Route::get('daerah/pendaftaran', 'KadinDaerahController@pendaftaran');
   Route::get('daerah/submitted', 'KadinDaerahController@submittedForms');
   Route::delete('daerah/submitted/delete/{code}', 'KadinDaerahController@submittedFormsDelete');
-  Route::get('daerah/submitted/{code}', 'KadinDaerahController@submittedFormDetail');
+  Route::delete('daerah/member/delete/{id}', 'KadinDaerahController@memberDelete');
+  Route::get('daerah/submitted/detail/{code}/a', 'KadinDaerahController@submittedFormDetail');
   Route::get('daerah/ajax/submittedforms', 'KadinDaerahController@ajaxForms');
   Route::get('daerah/ajax/submittedforms/{code}', 'KadinDaerahController@ajaxFormDetail');
   Route::get('daerah/member', 'KadinDaerahController@member');
@@ -102,6 +119,7 @@ Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role'], function (
   Route::get('daerah/notif/{id}', 'KadinDaerahController@notif');
   Route::get('daerah/ajax/notifresult/{id}', 'KadinDaerahController@notifresultAjax');
   Route::get('daerah/ajax/notifuser/{id}', 'KadinDaerahController@notifuserAjax');
+  Route::get('daerah/ajax/payment/{code}', 'KadinDaerahController@paymentAjax');
 
   Route::get('provinsi', 'KadinProvinsiController@dashboard');
   Route::get('provinsi/profile', 'KadinProvinsiController@profile');
@@ -117,7 +135,7 @@ Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role'], function (
   Route::get('provinsi/ajax/ktacancelled', 'KadinProvinsiController@ajaxKtaCancel');
   Route::get('provinsi/ajax/ktalist', 'KadinProvinsiController@ajaxKtaList');
   Route::get('provinsi/notif/all', 'KadinProvinsiController@notifall');
-  Route::get('provinsi/notif/{id}', 'KadinProvinsiController@notif');  
+  Route::get('provinsi/notif/{id}', 'KadinProvinsiController@notif');
 });
 
 // Percobaan

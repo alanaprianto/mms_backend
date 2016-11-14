@@ -15,5 +15,5 @@ class Daerah extends Model
      */
     protected $fillable = [
         'daerah', 'description',
-    ];  
+    ];
 }

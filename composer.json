@@ -14,7 +14,8 @@
         "guzzlehttp/guzzle": "~6.0",
         "symfony/psr-http-message-bridge": "^1.0",
         "intervention/image": "^2.3",
-        "kartik-v/bootstrap-fileinput": "dev-master"
+        "kartik-v/bootstrap-fileinput": "dev-master",
+        "fedeisas/laravel-mail-css-inliner": "~1.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

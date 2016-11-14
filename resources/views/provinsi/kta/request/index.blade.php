@@ -5,16 +5,50 @@
 @stop
 
 @section('content')
-	<h1>Request KTA</h1>
+<div class="col-lg-10">
+  <h2>Request KTA</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a>Kadin Provinsi</a>
+      </li>      
+      <li class="active">
+        <strong>Request KTA</strong>        
+      </li>
+  </ol>
+</div>
+<div class="col-lg-2">
+  <div class="title-action">
+  </div>
+</div>
 @stop
 
 @section('iframe')	
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+                	<h5>{{ count($kta) }} Total Request KTA</h5>
+					<div class="ibox-tools">
+						<a class="collapse-link">
+							<i class="fa fa-chevron-up"></i>
+						</a>
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							<i class="fa fa-wrench"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li><a href="#">Config option 1</a>
+							</li>
+                            <li><a href="#">Config option 2</a>
+                            </li>
+                        </ul>
+						<a class="close-link">
+							<i class="fa fa-times"></i>
+						</a>
+					</div>
+				</div>
 				<div class="ibox-content">
 					<div>
-						<h2 class="m-b-xs">{{ count($kta) }} Total Request KTA</h2>
+						<h2 class="m-b-xs"></h2>
 						<!-- <span class="pull-right text-right">
 							<small>Average value of sales in the past month in: <strong>United states</strong></small>
 							<br/>
@@ -204,7 +238,7 @@
 		    "columnDefs": [            
 		      {		        
 		        "render": function ( data, type, row ) {
-		        return '<a href="" class="btn btn-success btn-xs" data-toggle="modal" data-target="#insertModal" data-id="'+row.id_user+'" data-name="'+row.answer+'" data-url="insertkta">'+
+		        return '<a href="" class="btn btn-success btn-xs" data-toggle="modal" data-target="#insertModal" data-id="'+row.id_user+'" data-name="'+row.answer+'" data-terr="'+row.territory+'" data-url="insertkta">'+
 		        			'<span class="glyphicon glyphicon-check"></span>'+
 		        			'&nbsp;&nbsp;Insert KTA'+
 		        		'</a>';
@@ -253,7 +287,7 @@
 		  }).done(function(data) {                    
 		    console.log(data);
 
-		    $('#myModal').modal('hide'); 
+		    $('#cancelModal').modal('hide'); 
 
 		    if (data.success) {
 		      toastr.success(data.msg);
@@ -271,6 +305,7 @@
 		  url = button.data('url');
 		  id = button.data('id');
 		  name = button.data('name');
+		  terr = button.data('terr');
 
 		  var today = new Date();
 		  var dd = today.getDate();
@@ -282,6 +317,7 @@
 		  console.log(today);
 
 		  var modal = $(this);
+		  modal.find('#st').val(terr);
 		  modal.find('#rd').val(today);
 		  modal.find('#id_user').val(id);
 

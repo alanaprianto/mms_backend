@@ -151,7 +151,8 @@ return [
         Lavary\Menu\ServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,    
         Intervention\Image\ImageServiceProvider::class,    
-
+        Fedeisas\LaravelMailCssInliner\LaravelMailCssInlinerServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */

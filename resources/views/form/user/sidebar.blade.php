@@ -1,6 +1,6 @@
 <li>
-  <a href="#"><i class="fa fa-table"></i> <span class="nav-label">CRUD Forms</span><span class="fa arrow"></span></a>
-  <ul class="nav nav-second-level">
+  <a href="#" aria-expanded="false"><i class="fa fa-table"></i> <span class="nav-label">CRUD Forms</span><span class="fa arrow"></span></a>
+  <ul class="nav nav-second-level" aria-expanded="false">
     <li><a href="{{ url('crud/form/setting')}}">Form Setting</a></li>
     <li><a href="{{ url('crud/form/types')}}">Form Type</a></li>
     <li><a href="{{ url('crud/form/rules')}}">Form Rules</a></li>

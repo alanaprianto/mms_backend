@@ -1,37 +1,44 @@
-<html><!-- Site: HackForums.Ru | E-mail: abuse@hackforums.ru | Skype: h2osancho --><head>
+@extends('mms.appregister')
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@section('memberactive')
+  <?php echo 'active';?>
+@stop
 
-    <title>Kadin Register Member</title>
+@section('head')
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('resources/assets/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
-    <link href="{{ asset('resources/assets/css/plugins/iCheck/custom.css') }}" rel="stylesheet">
-    <link href="{{ asset('resources/assets/css/animate.css') }}" rel="stylesheet">
-    <link href="{{ asset('resources/assets/css/style.css') }}" rel="stylesheet">
+<title>Kadin Register Member</title>
 
-</head>
+<!-- <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ asset('resources/assets/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+<link href="{{ asset('resources/assets/css/plugins/iCheck/custom.css') }}" rel="stylesheet">
+<link href="{{ asset('resources/assets/css/animate.css') }}" rel="stylesheet">
+<link href="{{ asset('resources/assets/css/style.css') }}" rel="stylesheet"> -->
+@stop
 
-<body class="gray-bg">
-
-    <div class="middle-box text-center loginscreen   animated fadeInDown">
-        <div>
+@section('content')
+<div class="container">
+    <div class="row features-block">
+        <div class="middle-box text-center loginscreen   animated fadeInDown">
             <div>
+                <div>
+                    <img class="logo-name" src="{{ asset('resources/img/icon144-128x128-10.png') }}"/>
 
-                <img class="logo-name" src="{{ asset('resources/img/icon144-128x128-10.png') }}"/>
-
+                </div>
+                <h5>Your Form has been Succesfully Saved!</h5>
+                <p>Check your E-Mail for further information.</p>
+                        
             </div>
-            <h3>Your Form has been Succesfully Saved!</h3>            
-            <p>Check your E-Mail for further information.</p>
-            
-            <p class="m-t"> <small>© 2016</small> </p>
         </div>
-    </div>
+    </div>    
+</div>
+@stop
 
-    <!-- Mainly scripts -->
-    <script src="{{ asset('resources/assets/js/jquery-2.1.1.js') }}"></script>
-    <script src="{{ asset('resources/assets/js/bootstrap.min.js') }}"></script>
+@push('scripts')
+<!-- Mainly scripts -->
+<script src="{{ asset('resources/assets/js/jquery-2.1.1.js') }}"></script>
+<script src="{{ asset('resources/assets/js/bootstrap.min.js') }}"></script>
     <!-- iCheck -->
     <script src="{{ asset('resources/assets/js/plugins/iCheck/icheck.min.js') }}"></script>
     <script>
@@ -42,9 +49,4 @@
             });
         });
     </script>
-
-
-
-<!-- Site: HackForums.Ru | E-mail: abuse@hackforums.ru | Skype: h2osancho -->
-
-</body></html>
+@endpush

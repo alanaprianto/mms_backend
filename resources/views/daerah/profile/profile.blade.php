@@ -10,40 +10,39 @@
 
 @section('iframe')
 <div class="wrapper wrapper-content">
-            <div class="row animated fadeInRight">
-                <div class="col-md-4">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Profile Detail</h5>
-                        </div>
-                        <div>
-                            <div class="ibox-content col-centered">
-                                <img alt="image" class="img-responsive" src="{{ url('/images') }}/{{ Auth::user()->username}}.jpg">
-                            </div>
-                            <div class="ibox-content profile-content">
-                                <h4><strong>{{ Auth::user()->username }}</strong></h4>
-                                <p><i class="fa fa-map-marker"></i> {{ Auth::user()->territory_name }}</p>
-                                <br>
-                                <div class="list-group" width="100%">
-                                    <a id="gr-overview" href="#" class="list-group-item list-group-item-info">Overview</a>
-                                    <a id="gr-profil" href="#" class="list-group-item list-group-item-info">Profile</a>
-                                    <a id="gr-kta" href="#" class="list-group-item list-group-item-info">KTA</a>              
-                                </div>                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="border-bottom white-bg dashboard-header">
-                        <div id="judul">
-                        </div>
-                        <div id="wadah">                                                    
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+  <div class="row animated fadeInRight">
+    <div class="col-md-4">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Profile Detail</h5>
         </div>
+        <div>
+          <div class="ibox-content col-centered">
+            <img alt="image" class="img-responsive" src="{{ url('/images') }}/{{ Auth::user()->username}}.jpg">
+          </div>
+          <div class="ibox-content profile-content">
+            <h4><strong>{{ Auth::user()->username }}</strong></h4>
+            <p><i class="fa fa-map-marker"></i> {{ Auth::user()->territory_name }}</p>
+            <br>
+            <div class="list-group" width="100%">
+              <a id="gr-overview" href="#" class="list-group-item list-group-item-info">Overview</a>
+              <a id="gr-profil" href="#" class="list-group-item list-group-item-info">Profile</a>
+              <a id="gr-kta" href="#" class="list-group-item list-group-item-info">KTA</a>              
+            </div>                                
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="border-bottom white-bg dashboard-header">
+        <div id="judul">
+        </div>
+        <div id="wadah">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
         <div id="overview" class="hidden">
             <h5>Your Account Information ({{ $completed }}/{{ $required }})</h5>

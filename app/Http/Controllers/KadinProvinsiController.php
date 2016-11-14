@@ -83,6 +83,7 @@ class KadinProvinsiController extends Controller
             $data[] = Kta::where('kta', '=', 'requested')->whereMonth('created_at', '=', $i)->count();            
         }
 
+
     	return view('provinsi.kta.request.index', compact('notifs', 'kta', 'labels', 'data'));
     }
 
@@ -103,8 +104,9 @@ class KadinProvinsiController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
         $member = User::find($id);
+        $detail = Form_result::where('id_user', '=', $member->id)->get();
 
-        return view('provinsi.kta.request.detail', compact('notifs', 'member'));
+        return view('provinsi.kta.request.detail', compact('notifs', 'member', 'detail'));
     }
 
     public function cancelKta($id_owner) {
@@ -170,8 +172,9 @@ class KadinProvinsiController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
         $member = User::find($id);
+        $detail = Form_result::where('id_user', '=', $member->id)->get();
 
-        return view('provinsi.kta.canceled.detail', compact('notifs', 'member'));
+        return view('provinsi.kta.canceled.detail', compact('notifs', 'member', 'detail'));
     }
 
     public function insertKta(Request $request) {
@@ -253,8 +256,9 @@ class KadinProvinsiController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
         $member = User::find($id);
+        $detail = Form_result::where('id_user', '=', $member->id)->get();
 
-        return view('provinsi.kta.list.detail', compact('notifs', 'member'));
+        return view('provinsi.kta.list.detail', compact('notifs', 'member', 'detail'));
     }
 
     /**

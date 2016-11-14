@@ -22,7 +22,7 @@ class AuthRole
         } else {                            
             if (Auth::user()->role==2) {
                 return redirect('/');
-            }            
+            }
         }
 
         $notifs = Notification::where([

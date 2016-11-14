@@ -1,6 +1,8 @@
-<div class="thread-body" role="presentation">  
-  <div class="body undoreset">
-    <div class="email-wrapped">
+<!-- <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet"> -->
+
+<div role="presentation">  
+  <div>
+    <div>
       <div>
         <title>Kadin</title>    
         <div>          
@@ -12,7 +14,7 @@
                     <tbody>
                       <tr>
                         <td style="background-color:rgb(255, 255, 255);" valign="top">
-                          <table style="font-family:Arial, Helvetica, Sans-Serif;text-align:justify;font-size:12px;line-height:8px;color:rgb(0, 0, 0);" align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="590">
+                          <table style="text-align:justify;font-size:12px;line-height:8px;color:rgb(0, 0, 0);" align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="590">
                             <tbody>
                               <tr>
                                 <td>
@@ -37,10 +39,10 @@
                           <p style="margin:20px 0pt 0pt;line-height:150%;">
                             Terima kasih telah mendaftar di Kamar Dagang Indonesia.
                           </p>
-                          <p style="margin:20px 0pt 0pt;line-height:150%;">
+                          <p align="justify" style="margin:20px 0pt 0pt;line-height:150%;">
                             Pendaftaran Anda sudah diterima dan saat ini sedang dalam proses verifikasi. Mohon kesediaannya untuk segera melunasi biaya-biaya yang diperlukan, rincian biaya yang perlu segera dilunasi tertera pada tabel di bawah. Dalam melakukan pembayaran, anda diwajibkan menyertakan code berikut: <strong>{{ $code }}</strong>. Code tersebut untuk menandai form pendaftaran anda pada sistem.
                           </p>
-                          <p style="margin:20px 0pt 0pt;line-height:150%;">
+                          <p align="justify" style="margin:20px 0pt 0pt;line-height:150%;">
                             Untuk petunjuk selanjutnya setelah pembayaran, Mohon kesediaannya menunggu email kami dalam waktu 1x24 jam, dimana kami akan memberikan informasi akun anda. Jika dalam waktu tersebut anda belum mendapatkan e-mail berisi informasi akun anda, silahkan ....
                           </p>                          
                           <p style="margin:20px 0pt 0pt;line-height:150%;">
@@ -48,67 +50,85 @@
                           </p>
                           <p align="right" style="font-size:10px;">
                             Registered at {{ $date }}
-                          </p>                                            
-                          <table width="100%" border="0" cellspacing="0" cellpadding="5" style="border:1px solid #dee2e3;">
+                          </p>        
+                          <table class="table table-striped table-bordered table-hover" style="width: 100%;max-width: 100%;margin-bottom: 20px;background-color: #f9f9f9;border: 1px solid #ddd !important;">
                             <tr>
-                              <td colspan="2" valign="top" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;border-bottom:1px solid #dee2e3;font-weight:bold;text-align:left;">
+                              <td colspan="2" valign="top">
                                 <div align="left">
-                                  <span style="padding:5px;">Tracking Code {{ $code }}</span>
+                                  <span style="padding:5px;">Tracking Code : {{ $code }}</span>
                                 </div>
                               </td>
                             </tr>
                             <tr>
-                              <td style="font-size:12px;font-family:Arial, Helvetica, sans-serif;background:#dceff5;font-weight:bold;">
+                              <td style="font-size:12px;background:#dceff5;font-weight:bold;">
                                 Jenis Biaya
                               </td>
-                              <td style="font-size:12px;font-family:Arial, Helvetica, sans-serif;background:#dceff5;font-weight:bold;">
+                              <td style="font-size:12px;background:#dceff5;font-weight:bold;">
                                 Jumlah
                               </td>
                             </tr>
                             <tr>
-                              <td valign="top" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;border-bottom:1px solid #dee2e3;">
+                              <td valign="top" style="font-size:11px;border-bottom:1px solid #dee2e3;">
                                 Biaya Pendaftaran Tahun Pertama
                               </td>
-                              <td valign="top" style="font-size:11px;font-family:Arial, Helvetica, sans-serif;border-bottom:1px solid #dee2e3;">
+                              <td valign="top" style="font-size:11px;border-bottom:1px solid #dee2e3;">
                                 250.000
                               </td>
                             </tr>
                             <tr>
-                              <td align="right" valign="top" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;border-bottom:1px solid #dee2e3;">
+                              <td align="right" valign="top" style="font-size:12px;border-bottom:1px solid #dee2e3;">
                                 <strong>Total Harga</strong>
                               </td>
-                              <td align="right" valign="top" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;border-bottom:1px solid #dee2e3;">
+                              <td align="right" valign="top" style="font-size:12px;border-bottom:1px solid #dee2e3;">
                                 <strong>Rp 250.000</strong>
                               </td>
                             </tr>
-                            <tr>
-                              <td align="right" valign="top" style="font-size:12px;font-family:Arial, Helvetica, sans-serif;border-bottom:1px solid #dee2e3;">                                
-                              </td>
-                              <td align="right" valign="top">
-                                <a target="_blank" href="{{ url('/') }}">
-                                  <input type="button" value="Lakukan Pembayaran" style="background-color:#4286f4;color:#FFFFFF;font:bold;">
+                            <tr>                              
+                              <td colspan="2" align="right" valign="top">                                
+                                <a target="_blank" href="{{ url('/register1pay') }}">
+                                  <input type="button" class="btn btn-primary" value="Lakukan Pembayaran" style="display: inline-block;
+                                    padding: 6px 12px;
+                                    margin-bottom: 0;
+                                    font-size: 14px;
+                                    font-weight: normal;
+                                    line-height: 1.42857143;
+                                    text-align: center;
+                                    white-space: nowrap;
+                                    vertical-align: middle;
+                                    -ms-touch-action: manipulation;
+                                        touch-action: manipulation;
+                                    cursor: pointer;
+                                    -webkit-user-select: none;
+                                       -moz-user-select: none;
+                                        -ms-user-select: none;
+                                            user-select: none;
+                                    background-image: none;
+                                    border: 1px solid transparent;
+                                    border-radius: 4px;
+                                    color: #fff;
+                                    background-color: #337ab7;
+                                    border-color: #2e6da4;
+                                    ">
                                 </a>
                               </td>
-                            </tr>                            
-                          </table>
-                          <br>
-                          <table style="border:1px solid #dee2e3;" width="100%">
-                            <tbody>
-                              <tr>
-                                <td style="font-size:12px;font-family:Arial, Helvetica, sans-serif;background:#f7ecb5;font-weight:bold;text-align:center;">
-                                  Penting!!
-                                </td>                                      
-                              </tr>
-                              <tr>
-                                <td align="center">
-                                  <p>Jangan lupa untuk menyertakan tracking code anda pada keterangan transfer.</p>
-                                  <p>Tracking Code anda adalah: <strong>{{ $code }}</strong></p>
-                                  <p>&nbsp;</p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>                                            
-                          <p>
+                            </tr>
+                          </table>                          
+                          <table class="table table-striped table-bordered table-hover dataTables-example" id="setting-table" style="width: 100%;max-width: 100%;margin-bottom: 20px;background-color: #f9f9f9;border: 1px solid #ddd !important;">
+                            <tr>
+                              <td style="background:#f7ecb5;font-weight:bold;text-align:center;">
+                                Penting!!
+                              </td> 
+                            </tr>
+                            <tr>
+                              <td align="center">
+                                <p>Jangan lupa untuk menyertakan tracking code anda pada keterangan transfer.</p>
+                                <p>Tracking Code anda adalah: <strong>{{ $code }}</strong></p>
+                                <p>&nbsp;</p>
+                              </td>
+                            </tr>
+                          </table>                              
+                          <br>                                     
+                          <p align="justify">
                             Silahkan kunjungi&nbsp;<a rel="nofollow" target="_blank" href="https://devtes.com/mms/">FAQ</a>&nbsp;kami untuk tips terbaru dan pertanyaan yang sering diajukan. Silahkan jika Anda ingin menghubungi kami, jangan ragu untuk memberikan informasi <a rel="nofollow" target="_blank" href="https://devtes.com/mms/">disini</a>.
                           </p>
                           <p>

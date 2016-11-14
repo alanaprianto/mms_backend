@@ -36,8 +36,8 @@ class ProfileController extends Controller
         $completed = 0;
 
         if ($fr) {
-            $fr = $fr->answer;
-            $btk = Str::upper($fr);
+            $comp = $fr->answer;
+            $btk = Str::upper($comp);
 
             $fqg1 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->id;
             $fq1 = Form_question::where('group_question', '=', $fqg1)->count();
@@ -58,8 +58,13 @@ class ProfileController extends Controller
         } else {
             $kta = "";
         }
-
-		return view('mms.profile.profile', compact('required', 'completed', 'percentage', 'kta'));
+        
+        $name = $user->name;
+        $email = $user->email;        
+        $username = $user->username;
+                
+		return view('mms.profile.profile', compact('required', 'completed', 'percentage', 'kta',
+                    'name', 'email', 'username'));
     }
 
     public function edit()

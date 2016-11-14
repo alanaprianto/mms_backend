@@ -5,16 +5,48 @@
 @stop
 
 @section('content')
-	<h1> Submitted Form </h1>	
+<div class="col-lg-10">
+  <h2>Submitted Form</h2>
+  <ol class="breadcrumb">
+    <li>
+      <a>Kadin Daerah</a>
+    </li>        
+    <li class="active">
+      <strong>Submitted Form</strong>
+    </li>
+  </ol>
+</div>
+<div class="col-lg-2">
+  <div class="title-action">      
+  </div>
+</div>
 @stop
 
-@section('iframe')	
+@section('iframe')
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>{{ count($forms) }} Total Submitted Forms</h5>
+					<div class="ibox-tools">
+                    	<a class="collapse-link">
+							<i class="fa fa-chevron-up"></i>
+                        </a>
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							<i class="fa fa-wrench"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li><a href="#">Config option 1</a></li>
+							<li><a href="#">Config option 2</a></li>
+						</ul>
+						<a class="close-link">
+							<i class="fa fa-times"></i>
+						</a>
+					</div>
+				</div>
 				<div class="ibox-content">
 					<div>
-						<h2 class="m-b-xs">{{ count($forms) }} Total Submitted Forms</h2>
+						<h3 class="m-b-xs"></h3>
 						<!-- <span class="pull-right text-right">
 							<small>Average value of sales in the past month in: <strong>United states</strong></small>
 							<br/>
@@ -46,7 +78,8 @@
 	<div class="row">
 		<div class="col-lg-12">
             <div class="ibox float-e-margins">
-				<div class="ibox-title">
+				
+					<div class="ibox-title">
 					<h5>List Submitted Form </h5>
 					<div class="ibox-tools">
                     	<a class="collapse-link">
@@ -168,7 +201,7 @@
 		    "columnDefs": [            
 		      {		        
 		        "render": function ( data, type, row ) {
-		        return '<a href="submitted/'+row.trackingcode+'" class="btn btn-warning btn-xs">'+
+		        return '<a href="submitted/detail/'+row.trackingcode+'/a" class="btn btn-warning btn-xs">'+
 		        			'<span class="glyphicon glyphicon-search"></span>'+
 		        			'&nbsp;&nbsp; Detail'+
 		        		'</a>'+

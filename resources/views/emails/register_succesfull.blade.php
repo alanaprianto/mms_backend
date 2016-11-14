@@ -1,3 +1,5 @@
+<link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">
+
 <div class="thread-body" role="presentation">  
   <div class="body undoreset">
     <div class="email-wrapped">
@@ -12,7 +14,7 @@
                     <tbody>
                       <tr>
                         <td style="background-color:rgb(255, 255, 255);" valign="top">
-                          <table style="font-family:Arial, Helvetica, Sans-Serif;text-align:justify;font-size:12px;line-height:8px;color:rgb(0, 0, 0);" align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="590">
+                          <table style="text-align:justify;font-size:12px;line-height:8px;color:rgb(0, 0, 0);" align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="590">
                             <tbody>
                               <tr>
                                 <td>
@@ -30,24 +32,25 @@
                       <tr>
                         <td style="padding:15px;background-color:white;" valign="top">                          
                           <p style="margin:20px 0pt 0pt;line-height:150%;">
-                            Dear <strong><u>NAME</u></strong>,</p>
+                            Dear <strong>{{ $name }}</strong>,</p>
                           <p style="margin:20px 0pt 0pt;line-height:150%;">
                             Selamat, Akun anda telah terdaftar sebagai member Kamar Dagang Indonesia.
                           </p>
                           <p style="margin:20px 0pt 0pt;line-height:150%;">
                             Berikut adalah keterangan akun anda :<br>
-                            Username : <u>USERNAME</u><br>
-                            Password : <u>PASSWORD</u><br>                            
+                            Username : {{ $username }}<br>
+                            Password : {{ $password }}<br>                            
                           </p>
-                          <p style="margin:20px 0pt 0pt;line-height:150%;">
+                          <p align="justify" style="margin:20px 0pt 0pt;line-height:150%;">
                             Kunjungi link berikut untuk melakukan login pertama, anda dapat mengganti password setelah melakukan login pertama ini.
                           </p>
                           <p align="center" style="margin:20px 0 0 0;line-height:150%;">
-                            <a rel="nofollow" target="_blank" href="">
-                              <input type="button" value="DO SOMETHING" style="background-color:#f36f21;color:#FFFFFF;font:bold;">
+                            <a rel="nofollow" target="_blank" href="{{ url('login') }}">
+                              <input type="button" value="Login Link" class="btn btn-primary block full-width m-b" >
                             </a>
-                          </p>                                                  
-                          <p>
+                          </p>
+                          <br>
+                          <p align="justify">
                             Silahkan kunjungi&nbsp;<a rel="nofollow" target="_blank" href="">FAQ</a>&nbsp;kami untuk tips terbaru dan pertanyaan yang sering diajukan. Silahkan jika Anda ingin menghubungi kami, jangan ragu untuk memberikan informasi <a rel="nofollow" target="_blank" href="">disini</a>.
                           </p>
                           <p>
@@ -58,7 +61,7 @@
                       </tr>  
                     </tbody>
                   </table>
-                  <table style="font-family:Arial, Helvetica, Sans-Serif;text-align:justify;font-size:12px;line-height:18px;color:rgb(0, 0, 0);" align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="700">
+                  <table style="text-align:justify;font-size:12px;line-height:18px;color:rgb(0, 0, 0);" align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="700">
                     <tbody>
                       <tr>
                         <td height="" valign="middle" width="250">  
