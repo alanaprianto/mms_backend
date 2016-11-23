@@ -115,7 +115,7 @@ class MmsController extends Controller
                 $territory = $result->answer_value;
             }
         }        
-
+      
         $random_string = md5(microtime());
         $first = substr($random_string, 0, 4);
         $last = substr($random_string, -4);
@@ -127,8 +127,8 @@ class MmsController extends Controller
         $user->email = $email;
         $user->password = Hash::make($random_string); //ini
         $user->role = "2";
-        $user->no_kta = "0";
-        $user->no_rn = "0";
+        // $user->no_kta = "0";
+        // $user->no_rn = "0";
         $user->territory = $territory;
         $user->save();
 
@@ -172,9 +172,24 @@ class MmsController extends Controller
         $results = Form_result::where('trackingcode', '=', $trcode)->get();
         foreach ($results as $key => $result) {
             $result->id_user = $user->id;
-            $result->save();
+            $result->update();
         }            
         
         return redirect('register1success');
+    }
+
+    public function dashboardAdmin()
+    {                       
+      $notifs = \App\Helpers\Notifs::getNotifs();
+
+      $totalsetting = \App\Form_setting::get()->count();
+      $totaltype = \App\Form_type::get()->count();
+      $totalrules = \App\Form_rules::get()->count();
+      $totalquestion = \App\Form_question::get()->count();
+      $totalqgroup = \App\Form_question_group::get()->count();
+      $totalanswer = \App\Form_answer::get()->count();
+      $totalresult = \App\Form_result::get()->count();
+      return view('form.dashboard.index', compact('notifs', 'totalsetting', 'totaltype', 'totalrules', 
+        'totalquestion', 'totalqgroup', 'totalanswer', 'totalresult'));
     }
 }

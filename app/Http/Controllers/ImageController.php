@@ -49,7 +49,7 @@ class ImageController extends Controller
 
         $uname = Auth::user()->username;
         $imageName = $uname.'.'.$request->image->getClientOriginalExtension();
-        $path = storage_path() . '/app/photoprofile/';                    
+        $path = storage_path() . '/app/photoprofile/';
         
         $filesInFolder = \File::files($path);
         foreach($filesInFolder as $delPath)
@@ -68,14 +68,13 @@ class ImageController extends Controller
             $message = "Some Error Occurred!, check your image input.";
         } else {
             $success = true;
-            $message = "Image successfully uploaded!";
+            $message = "Image successfully uploaded!";            
         }
 
         return response()->json(['success' => $success, 'msg' => $message]);
     	// return back()
     	// 	->with('success','Image Uploaded successfully.')
     	// 	->with('path', $imageName);
-
     }
 
     public function images($filename)
@@ -93,7 +92,7 @@ class ImageController extends Controller
                 $ext = $files['extension'];
             }
 
-        }        
+        }
 
         // \File::exists($file)
         if(!$name) {
@@ -101,7 +100,45 @@ class ImageController extends Controller
             $ext = "png";
         }
         
-        $file = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;    
+        $file = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;
+        $img = Image::make($file);
+
+        return $img->response($ext);
+        // return $manuals;
+    }
+
+    public function uploadedfiles($filename)
+    {             
+        $filepath = explode("_", $filename);
+
+        $name = "";
+        $ext = "";
+        // $file = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/'
+        $file = storage_path() . '/app/uploadedfiles/'.$filepath[0].'/';
+        $filesInFolder = \File::files($file);
+        
+        foreach($filesInFolder as $path)
+        {
+            $files = pathinfo($path);            
+            // if ($files['filename'] == $filename) {                
+            if ($files['filename'] == $filepath[1]) {                
+                $name = $files['filename'];
+                $ext = $files['extension'];
+            }
+
+        }        
+
+        // \File::exists($file)
+        if(!$name) {
+            $name = 'default-thumbnail';
+            $ext = "jpg";
+            $path = storage_path() . '/app/uploadedfiles/';
+        } else {
+            // $path = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
+            $path = storage_path() . '/app/uploadedfiles/'.$filepath[0].'/';
+        }
+        
+        $file = $path.$name.'.'.$ext;
         $img = Image::make($file);
 
         return $img->response($ext);

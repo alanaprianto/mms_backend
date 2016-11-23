@@ -7,3 +7,4 @@
     <li><a href="{{ url('dashboard/provinsi/kta/cancel') }}">Canceled KTA Request</a></li>    
   </ul>
 </li>
+<li><a href="{{ url('dashboard/provinsi/valnas') }}"><i class="fa fa-list-alt"></i><span class="nav-label">Validasi Nasional</span></a></li>

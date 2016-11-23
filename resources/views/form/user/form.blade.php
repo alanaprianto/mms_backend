@@ -35,7 +35,7 @@
 <div class="hr-line-dashed"></div>
 
 <!-- ini diisi apa? | di comment dulu -->
-<!--
+
 <div class="form-group" id="provinsi">
 
 </div>
@@ -43,7 +43,7 @@
 <div class="form-group" id="daerah">
 
 </div>
--->
+
 
 <div class="form-group">
   <div class="col-sm-4 col-sm-offset-2">
@@ -63,30 +63,49 @@
 	    }
 
 	    var daerah = false;
+	    var init = false;
 		if (value=="5") {
 			daerah = true;
+			init = true;
 		} else if (value=="4") {
 			daerah = false;
-		} else {
-			return;
+			init = true;
+		} else if (value=="3") {
+			daerah = false;
+			init = false;
+		} else if (value=="1") {
+			daerah = false;
+			init = false;
 		}
 
-		$.ajax({
-	        url: "{{ url('ajax/listprovinsi') }}"
-	    }).done(function(datas) {
-	    	var options = "";
-			for (i=0; i<datas.length; i++) {
-				options += "<option value='"+datas[i].id+"'>"+datas[i].provinsi+"</option>";
-			}
+		if (init) {
+			$.ajax({
+		        url: "{{ url('ajax/listprovinsi') }}"
+		    }).done(function(datas) {
+		    	console.log(datas);
+		    	var options = "";
+				for (i=0; i<datas.length; i++) {
+					options += "<option value='"+datas[i].id+"'>"+datas[i].provinsi+"</option>";
+				}
 
-	    	$(	"<div class='form-group' id='provinsi_filled'>"+
-					"<label for=territory>Provinsi</label>"+
-					"<select class=form-control name='territory' id='provinsi' onchange='setDaerah(this.value, "+daerah+")'>"+
-					options+
-					"</select>"+
+		    	$(	"<div class='form-group' id='provinsi_filled'>"+		    			
+						"<label for=territory class='col-sm-2 control-label'>Provinsi</label>"+
+						"<div class='col-sm-4'>"+
+							"<select class=form-control name='territory' id='provinsi' onchange='setDaerah(this.value, "+daerah+")'>"+
+							options+
+							"</select>"+
+						"</div>"+
+					"</div>").appendTo(element);
+		    });
+		} else {
+			$(	"<div class='form-group' id='provinsi_filled'>"+
+					"<label for=territory class='col-sm-2 control-label'>Territory</label>"+
+					"<div class='col-sm-4'>"+
+						"<input type='text' name='territory' class='hidden' value='0' readonly>"+
+						"<h4>Indonesia</h4>"+
+					"</div>"+
 				"</div>").appendTo(element);
-	    });
-
+		} 
     }
 
     function setDaerah(value, init) {
@@ -108,10 +127,12 @@
 				}
 
 		    	$(	"<div class='form-group' id='daerah_filled'>"+
-						"<label for=territory>Daerah</label>"+
-						"<select class=form-control name='territory' id='daerah')'>"+
-						options+
-						"</select>"+
+						"<label for=territory class='col-sm-2 control-label'>Daerah</label>"+
+						"<div class='col-sm-4'>"+
+							"<select class=form-control name='territory' id='daerah')'>"+
+							options+
+							"</select>"+
+						"</div>"+
 					"</div>").appendTo(element);
 			});
     	}

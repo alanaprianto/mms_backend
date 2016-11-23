@@ -19,7 +19,7 @@
                               <tr>
                                 <td>
                                   <a rel="nofollow" target="_blank" href="" style="display:block;">
-                                    <img src="{{ asset('resources/assets/frontend/images/logo_kadin.png') }}" alt="KADIN" title="Kamar Dagang Indonesia" border="0" height="76" width="700">
+                                    <img src="https://devtes.com/mms/resources/assets/frontend/images/logo_kadin.png" alt="KADIN" title="Kamar Dagang Indonesia" border="0" height="76" width="700">
                                   </a>
                                 </td>
                               </tr>

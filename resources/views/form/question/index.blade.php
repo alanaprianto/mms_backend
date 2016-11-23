@@ -134,7 +134,7 @@ $(function() {
             { "data" : "group_name" },
             { "data" : "question_type.name" },
             { "data" : "setting.name" },
-            { "data" : "rules_detail[].name" },
+            { "data" : "rules_detail.name" },
             { "data" : "order" },
             { "data" : "id" },
         ],
@@ -144,7 +144,13 @@ $(function() {
                 // `data` option, which defaults to the column being worked with, in
                 // this case `data: 0`.
                 "render": function ( data, type, row ) {
-                	return '<a href="question/'+row.id+'/edit" class="btn btn-white btn-xs"><span class="fa fa-edit fa-fw"></span>&nbsp;&nbsp;Edit</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.question+'" data-url="question" title="Delete Item"><span class="fa fa-trash fa-fw"></span></a>';
+                	return '<a href="question/'+row.id+'/edit" class="btn btn-white btn-xs">'+
+                            '<span class="fa fa-edit fa-fw"></span>'+
+                            '&nbsp;&nbsp;Edit'+
+                          '</a>'+
+                          '<a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.question+'" data-url="question" title="Delete Item">'+
+                            '<span class="fa fa-trash fa-fw"></span>'+
+                          '</a>';
                     // return data +' ('+ row[3]+')';
                 },
                 "targets": 6

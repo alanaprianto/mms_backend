@@ -26,101 +26,212 @@
 @stop
 
 @section('iframe')	
-	<div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>{{ $member->name }} </h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#">Config option 1</a>
-                            </li>
-                            <li><a href="#">Config option 2</a>
-                            </li>
-                        </ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                  <div class="row">
-                        <div class="col-lg-12">
-                            <!-- identitas user -->
-                            <div class="form-group">
-                              <label class="col-lg-2 control-label">Username</label>
-                              <div class="col-lg-10">
-                                <p class="form-control-static">{{ $member->username }}</p>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="col-lg-2 control-label">Tracking Code</label>
-                              <div class="col-lg-10">
-                                <p class="form-control-static"><?php echo @$detail[0]['trackingcode'];?></p>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <label class="col-lg-2 control-label">Submitted At</label>
-                              <div class="col-lg-10">
-                                <p class="form-control-static">{{ $member->created_at }}</p>
-                              </div>
-                            </div>
-                            <div class="hr-line-dashed"></div>                                          
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-9 col-lg-offset-1">
-                          @if ($detail)
-                                <?php $i=1;?>       
-                                <table class="table">
-                                  <tr>
-                                    <td><strong>Status</strong></td>
-                                    <td>:</td>
-                                    <td>
-                                @if ( $detail[0]['id_user'] )
-                                  <span class="label label-primary">Registered</span>
-                                @else
-                                  <span class="label label-danger">Not Yet Registered</span>
-                                @endif                
-                              </td>
-                                  </tr>
-                                  @foreach ($detail as $row)
-                                  <tr>
-                                    <td><strong>{{ $row->question }}</strong></td>
-                                    <td>:</td>
-                                    <td>{{ $row->answer }}</td>
-                                  </tr>
-                                  @endforeach
-                                  <tr>
-                                    <td><strong>Submitted At</strong></td>
-                                    <td>:</td>
-                                    <td>{{ $detail[0]['created_at'] }}</td>
-                                  </tr>
-                                </table>
-                          @endif
-                        </div>
-                      </div>
-                    <!-- <table class="table table-bordered" id="list-table" width=100%>
-						          <thead>
-					              <tr>
-                          <th>Question</th>
-                          <th>Answer Value</th>
-        							    <th>User</th>
-        							    <th>Tracking Code</th>      
-        							    <th>Submitted At</th>
-      							    </tr>      
-                      </thead>
-                    </table> -->
-                </div>
-            </div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <h5>{{ $member->kta->first()->kta }} </h5>
+        <div class="ibox-tools">
+          <a class="collapse-link">
+            <i class="fa fa-chevron-up"></i>
+          </a>
         </div>
+      </div>
+      <div class="ibox-content">
+        <div class="row">
+          <div class="col-lg-12">
+            <!-- identitas user -->
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Username</label>
+              <div class="col-lg-10">
+                <p class="form-control-static">{{ $member->username }}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Tracking Code</label>
+              <div class="col-lg-10">
+                <p class="form-control-static"><?php echo @$detail[0]['trackingcode'];?></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Submitted At</label>
+              <div class="col-lg-10">
+                <p class="form-control-static">{{ $member->created_at }}</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Territory</label>
+              <div class="col-lg-10">
+                <p class="form-control-static">{{ $member->territory_name }}</p>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+          </div>
+        </div>                
+      </div>
     </div>
+  </div>
+</div>
+
+<div class="ibox float-e-margins">
+  <div class="ibox-title">    
+    <h5>Pendaftaran</h5>    
+    <div class="ibox-tools">      
+      <a class="collapse-link">
+        <i class="fa fa-chevron-up"></i>
+      </a>
+    </div>
+  </div>
+  <div class="ibox-content" style="display: block;">    
+    <div class="row">
+      <div class="col-lg-9 col-lg-offset-1">
+        @if ($detail1->count()>=1)            
+          <table class="table">            
+            @foreach ($detail1 as $row)
+              @if ($row->correction||$row->commentary)
+                <tr bgcolor="#F6CECE">
+              @else 
+                <tr>
+              @endif
+                <td><strong>{{ $row->question }}</strong></td>
+                <td>:</td>
+                <td>{{ $row->answer }}</td>
+                <td>
+                  <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
+                    <i class="fa fa-edit fa-fw"></i>
+                  </a>
+                </td>
+              </tr>
+            @endforeach            
+          </table>
+        @else
+          <div class="text-center">
+            No Data
+          </div>
+        @endif
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ibox float-e-margins">
+  <div class="ibox-title">
+    <h5>Profile Tahap 2</h5>
+    <div class="ibox-tools">      
+      <a class="collapse-link">
+        <i class="fa fa-chevron-up"></i>
+      </a>                       
+    </div>
+  </div>
+  <div class="ibox-content" style="display: block;">      
+    <div class="row">
+      <div class="col-lg-9 col-lg-offset-1">
+        @if ($detail2->count()>=1)
+          <table class="table">              
+            @foreach ($detail2 as $row)
+              @if ($row->correction||$row->commentary)
+                <tr bgcolor="#F6CECE">
+              @else 
+                <tr>
+              @endif
+                <td><strong>{{ $row->question }}</strong></td>
+                <td>:</td>
+                <td>{{ $row->answer }}</td>
+                <td>
+                  <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
+                    <i class="fa fa-edit fa-fw"></i>
+                  </a>
+                </td>
+              </tr>
+            @endforeach              
+          </table>
+        @else
+          <div class="text-center">
+            No Data
+          </div>
+        @endif
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ibox float-e-margins">
+  <div class="ibox-title">
+    <h5>Profile Tahap 3</h5>
+    <div class="ibox-tools">      
+      <a class="collapse-link">
+        <i class="fa fa-chevron-up"></i>
+      </a>                        
+    </div>
+  </div>
+  <div class="ibox-content" style="display: block;">
+    <div class="row">
+      <div class="col-lg-9 col-lg-offset-1">
+        @if ($detail3->count()>=1)
+          <table class="table">              
+            @foreach ($detail3 as $row)
+              @if ($row->correction||$row->commentary)
+                <tr bgcolor="#F6CECE">
+              @else 
+                <tr>
+              @endif
+                <td><strong>{{ $row->question }}</strong></td>
+                <td>:</td>
+                <td>{{ $row->answer }}</td>
+                <td>
+                  <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
+                    <i class="fa fa-edit fa-fw"></i>
+                  </a>
+                </td>
+              </tr>
+            @endforeach              
+          </table>
+        @else
+          <div class="text-center">
+            No Data
+          </div>
+        @endif
+      </div>
+    </div>
+  </div>    
+</div>
+<div class="ibox float-e-margins">
+  <div class="ibox-title">
+    <h5>Documents Uploaded</h5>
+    <div class="ibox-tools">      
+      <a class="collapse-link">
+        <i class="fa fa-chevron-up"></i>
+      </a>                        
+    </div>
+  </div>
+  <div class="ibox-content" style="display: block;">
+    <div class="row">
+      <div class="col-lg-9 col-lg-offset-1">
+        @if ($docs->count()>=1)
+          <table class="table">              
+            @foreach ($docs as $row)
+              @if ($row->correction||$row->commentary)
+                <tr bgcolor="#F6CECE">
+              @else 
+                <tr>
+              @endif
+                <td><strong>{{ $row->question }}</strong></td>
+                <td>:</td>
+                <td>{{ $row->answer }}</td>
+                <td>
+                  <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valImgModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
+                    <i class="fa fa-edit fa-fw"></i>
+                  </a>
+                </td>
+              </tr>
+            @endforeach              
+          </table>
+        @else
+          <div class="text-center">
+            No Data
+          </div>
+        @endif
+      </div>
+    </div>
+  </div>    
 </div>
 @stop
 

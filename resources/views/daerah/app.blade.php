@@ -8,21 +8,25 @@
       <!-- Simple Sidebar CSS -->
       <!-- <link href="{{ asset('resources/assets/css/simple-sidebar.css') }}" rel="stylesheet">        -->
       <!-- Datatables CSS -->
-      <link href="{{ asset('resources/assets/css/jquery.dataTables.min.css') }}" rel="stylesheet">  
+      <!-- <link href="{{ asset('resources/assets/css/jquery.dataTables.min.css') }}" rel="stylesheet">   -->
+      <link href="{{ asset('resources/assets/css/plugins/dataTables/dataTables.bootstrap.css') }}" rel="stylesheet">
+      <link href="{{ asset('resources/assets/css/plugins/dataTables/dataTables.responsive.css') }}" rel="stylesheet">
+      <link href="{{ asset('resources/assets/css/plugins/dataTables/dataTables.tableTools.min.css') }}" rel="stylesheet">
+
       <!-- Toastr -->
       <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/css/plugins/toastr/toastr.min.css') }}">  
       <!-- Font Awesome -->
       <link href="{{ asset('resources/assets/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
       <!-- Gritter -->
-      <link href="{{ asset('resources/assets/js/plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">
-
-      <link href="{{ asset('resources/assets/css/animate.css') }}" rel="stylesheet">
-      <link href="{{ asset('resources/assets/css/style.css') }}" rel="stylesheet">
+      <link href="{{ asset('resources/assets/js/plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">      
 
       <link href="{{ asset('resources/assets/css/plugins/cropper/cropper.min.css') }}" rel="stylesheet">
           
       <!-- Kraaje Fileinputmin CSS -->
       <link href="{{ asset('resources/assets/css/fileinput.min.css') }}" rel="stylesheet">
+
+      <link href="{{ asset('resources/assets/css/animate.css') }}" rel="stylesheet">
+      <link href="{{ asset('resources/assets/css/style.css') }}" rel="stylesheet">
       @yield('head')
   </head>
   <body>
@@ -129,7 +133,7 @@
         <div class="footer">
           <div>
             <strong>Copyright</strong> MMS Kadin Indonesia &copy; 2016
-          </div>            
+          </div>
         </div>
       </div>            
     </div>                                       

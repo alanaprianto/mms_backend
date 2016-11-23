@@ -23,99 +23,64 @@
 @stop
 
 @section('iframe')	
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="ibox float-e-margins">
-				<div class="ibox-title">
-                	<h5>{{ count($kta) }} Total KTA</h5>
-					<div class="ibox-tools">
-						<a class="collapse-link">
-							<i class="fa fa-chevron-up"></i>
-						</a>
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-							<i class="fa fa-wrench"></i>
-						</a>
-						<ul class="dropdown-menu dropdown-user">
-							<li><a href="#">Config option 1</a>
-							</li>
-                            <li><a href="#">Config option 2</a>
-                            </li>
-                        </ul>
-						<a class="close-link">
-							<i class="fa fa-times"></i>
-						</a>
-					</div>
-				</div>
-				<div class="ibox-content">
-					<div>
-						<h2 class="m-b-xs"></h2>
-						<!-- <span class="pull-right text-right">
-							<small>Average value of sales in the past month in: <strong>United states</strong></small>
-							<br/>
-							All sales: 162,862
-						</span>
-						<h1 class="m-b-xs">$ 50,992</h1>
-						<h3 class="font-bold no-margins">
-							Half-year revenue margin
-						</h3>
-						<small>Sales marketing.</small> -->
-					</div>
-					<div>
-						<canvas id="lineChart" height="70"></canvas>
-					</div>
-					<div class="m-t-md">
-						<!-- <small class="pull-right">
-							<i class="fa fa-clock-o"> </i>
-							Update on 16.07.2015
-						</small>
-						<small>
-							<strong>Analysis of sales:</strong> The value has been changed over time, and last month reached a level over $50,000.
-						</small> -->
-					</div>
-				</div>
-			</div>
+<div class="row">
+  <div class="col-lg-12">
+	<div class="ibox float-e-margins">
+	  <div class="ibox-title">
+        <h5>{{ count($kta) }} Total KTA</h5>
+		<div class="ibox-tools">
+		  <div class="btn-group">
+			<button type="button" class="btn btn-xs btn-white">Today</button>
+			<button type="button" class="btn btn-xs btn-white ">Monthly</button>
+			<button type="button" class="btn btn-xs btn-white active">Annual</button>
+		  </div>
+		  &nbsp;&nbsp;
+		  <a class="collapse-link">
+			<i class="fa fa-chevron-up"></i>
+		  </a>
 		</div>
-	</div>
+	  </div>
+	  <div class="ibox-content">
+		<div>
+		  <h2 class="m-b-xs"></h2>						
+	    </div>
+	    <div>
+  		  <canvas id="lineChart" height="70"></canvas>
+	    </div>
+	    <div class="m-t-md">						
+	    </div>
+	  </div>
+    </div>
+  </div>
+</div>
 
-	<div class="row">
-    	<div class="col-lg-12">
-			<div class="ibox float-e-margins">
-				<div class="ibox-title">
-                	<h5>List KTA</h5>
-					<div class="ibox-tools">
-						<a class="collapse-link">
-							<i class="fa fa-chevron-up"></i>
-						</a>
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-							<i class="fa fa-wrench"></i>
-						</a>
-						<ul class="dropdown-menu dropdown-user">
-							<li><a href="#">Config option 1</a>
-							</li>
-                            <li><a href="#">Config option 2</a>
-                            </li>
-                        </ul>
-						<a class="close-link">
-							<i class="fa fa-times"></i>
-						</a>
-					</div>
-				</div>
-				<div class="ibox-content">
-					<table class="table table-bordered" id="list-table" width=100%>
-						<thead>
-							<tr>
-								<th>Company</th>
-								<th>Registered At</th>
-								<th>Granted At</th>
-								<th>KTA</th>
-							    <th>Options</th>
-							</tr>
-						</thead>
-					</table>
-                </div>
-            </div>
-        </div>    
+<div class="row">
+  <div class="col-lg-12">
+	<div class="ibox float-e-margins">
+	  <div class="ibox-title">
+		<h5>List KTA</h5>
+		<div class="ibox-tools">
+		  <a class="collapse-link">
+			<i class="fa fa-chevron-up"></i>
+		  </a>
+		</div>
+	  </div>
+	  <div class="ibox-content">
+		<table class="table table-striped table-bordered table-hover dataTables-example" id="list-table" width=100%>
+		  <thead>
+			<tr>
+			  <th>Company</th>
+			  <th>Registered At</th>
+			  <th>Granted At</th>
+			  <th>KTA</th>
+			  <th>Options</th>
+			</tr>
+		  </thead>
+		</table>
+	  </div>
 	</div>
+  </div>    
+</div>
 @stop
 
 @push('scripts')

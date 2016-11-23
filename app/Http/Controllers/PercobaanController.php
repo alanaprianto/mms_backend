@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Form_question_group;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
+use Image;
+use App\Form_result_kadin_daerah;
 
 class PercobaanController extends Controller
 {
@@ -24,11 +26,14 @@ class PercobaanController extends Controller
     public function percobaan()
     {        
         
+        $form = Form_result_kadin_daerah::where('id', '=', '525')->first();
+        return $form;
+
         $fquestions = Form_question::whereHas('group', function ($q) {        
-            $q->where('name', 'like', '%Percobaan%');
+            $q->where('name', 'like', '%Upload%');
         })->orderBy('order', 'asc')->get();        
         $notifs = null;
-        // return view('form.percobaan', compact('fquestions', 'notifs'));
+        return view('form.percobaan', compact('fquestions', 'notifs'));
 
         $random_string = md5(microtime());
         $first = substr($random_string, 0, 4);
@@ -55,13 +60,12 @@ class PercobaanController extends Controller
         $name = "Syahril Rachman";
         $code = "AS32FLF9";
         $date = "2016-11-04 11:07:36";
-        return view('emails.register_confirmation', compact('name', 'code', 'date'));        
+        // return view('emails.register_confirmation', compact('name', 'code', 'date'));        
 
         $name = "Syahril Rachman";
         $username = "syahril";
         $password = "ASDAD";
         // return view('emails.register_succesfull', compact('name', 'username', 'password'));
-
 
         $user = Auth::user();
         $fr = Form_result::                
@@ -101,8 +105,10 @@ class PercobaanController extends Controller
         $email = $user->email;        
         $username = $user->username;        
                 
-        return view('mms.profile.profile', compact('required', 'completed', 'percentage', 'kta', 'userdata',
-                    'name', 'email', 'username'));
+        // return view('mms.profile.profile', compact('required', 'completed', 'percentage', 'kta', 'userdata',
+                    // 'name', 'email', 'username'));
+
+        return view('percobaan');
     }
 
     /**
@@ -155,28 +161,31 @@ class PercobaanController extends Controller
                     if (is_array($value)) {
                         $form_result->answer_value = implode (", ", $value);
                     } else if ($request->hasFile($key)) {
-                        $path = storage_path() . '/app/uploadedfiles/'.Auth::user()->username;                    
+                        $path = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
                         if(!\File::exists($path)) {
                             \File::makeDirectory($path);                            
                         } else {                            
                         }
                         
                         $uname = $keys[3];
-                        $imageName = $uname.'.'.$request->$key->getClientOriginalExtension();                                                
+                        $imageName = $uname.'.'.$request->$key->getClientOriginalExtension();
                         $request->$key->move($path, $imageName);
-
-                        $form_result->answer_value = $imageName;                        
-                        // $file = $path.$imageName;        
-                        // if(!\File::exists($file)) {
-                        //     $form_result->answer_value = $file;
-                        // } else {
-                        //     $form_result->answer_value = "Failed to Upload File";
-                        // }                                        
+                    
+                        $file = $path.$imageName;
+                        if(\File::exists($file)) {
+                            $form_result->answer_value = $imageName;
+                            
+                            $thmbName = $uname.'-thumbs.'.$request->$key->getClientOriginalExtension();
+                            $image = Image::make($file);
+                            $image->fit(100, 100)->save($path.$thmbName);
+                        } else {
+                            $form_result->answer_value = "Failed to Upload File";
+                        }
                     } else {
                         $form_result->answer_value = $value;
-                    }         
+                    }
 
-                    // id user           
+                    // id user
                     $form_result->id_user = "12";
 
                     $datas[] = $form_result;
@@ -205,3 +214,9 @@ class PercobaanController extends Controller
     }
 }
 
+class formResult {
+    public $id_question;
+    public $answer_value;
+    public $id_user;
+    public $trackingcode;
+}

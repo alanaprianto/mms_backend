@@ -76,7 +76,7 @@ class ProfileController extends Controller
         $fr = Form_result::
                 leftJoin('users', 'form_result.id_user', '=', 'users.id')
                 ->where('form_result.id_user', '=', $id)                
-                ->get();                
+                ->get();
         foreach ($fr as $key => $value) {
             if ($value->question_group === null) {
                 unset($fr[$key]);
@@ -100,18 +100,18 @@ class ProfileController extends Controller
         if ($fq) {
             $fq = $fq->answer;
 
-            $btk = Str::upper($fq);        
+            $btk = Str::upper($fq);
             $fqg = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->name;
             
             foreach ($fr as $key => $value) {
-                if ($value->question_group == $fqg) {                
-                } else {                
+                if ($value->question_group == $fqg) {
+                } else {
                     unset($fr[$key]);
                 }
             }
         } else {
             $fq = null;
-        }    
+        }
         return Datatables::of($fr)->make(true);
     }
 
@@ -132,47 +132,5 @@ class ProfileController extends Controller
         }
 
         return Datatables::of($fr)->make(true);
-    }
-
-    public function requestkta() {
-        $user = Auth::user();        
-        $kta = Kta::find($user->id);
-
-        if ($kta) {
-            return redirect('profile');
-        } else {
-            $kta = new Kta;
-            
-            $kta->owner = $user->id;
-            $kta->kta = 'requested';
-            $kta->requested_at = new Carbon();
-            $kta->granted_at = "";
-
-            $kta->save();
-
-            $idProv = str_limit(Auth::user()->territory, 3);
-            $idSender = Auth::user()->id;
-            $provinsi = User::where('role', '=', '4')->where('territory', '=', $idProv)->get();
-            $data = array();
-            foreach ($provinsi as $key => $prov) {
-                $notif = new Notification;
-
-                $notif->target = $prov->id;
-                $notif->senderid = $idSender;
-                $notif->value = "New Request KTA";
-                $notif->active = true;
-                    
-                $notif->save();
-            }
-            
-            return redirect('profile');
-        }
-
-        // $user->update([
-        //     'no_kta' => 'requested'
-        //     ]);
-
-
-        // return redirect('profile');
-    }
+    }    
 }

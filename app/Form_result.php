@@ -9,7 +9,7 @@ class Form_result extends Model
 {
     protected  $table = "form_result";
 
-    protected $appends = ['answer_type', 'answer', 'question_group', 'question'];
+    protected $appends = ['answer_type', 'answer', 'question_group', 'question', 'territory_name'];
 
     protected $hidden = ['password', 'remember_token'];
 
@@ -155,5 +155,34 @@ class Form_result extends Model
         }   
 
         return null;
+    }
+
+    public function getTerritoryNameAttribute()
+    {
+        $terr = $this->attributes['answer_value'];
+        if ($terr) {
+            $request = ['id' => $terr];        
+
+            $validator = Validator::make($request, [
+                'id' => 'integer',            
+            ]);
+
+            if ($validator->passes()) {
+                $daerah = Daerah::find($terr);
+                if ($daerah) {
+                    return $daerah->daerah;
+                } else {
+                    $provinsi = Provinsi::find($terr);
+                    if ($provinsi) {
+                        return $provinsi->provinsi;
+                    } else {
+                        return "Location Not Found";
+                    }
+                }
+            } else {
+                return "Location Not Found";
+            }            
+        }
+        return "Location Not Found";
     }
 }

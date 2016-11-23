@@ -29,20 +29,14 @@
 				<div class="ibox-title">
                 	<h5>{{ count($kta) }} Total Request KTA</h5>
 					<div class="ibox-tools">
+		  <div class="btn-group">
+			<button type="button" class="btn btn-xs btn-white">Today</button>
+			<button type="button" class="btn btn-xs btn-white ">Monthly</button>
+			<button type="button" class="btn btn-xs btn-white active">Annual</button>
+		  </div>
+		  &nbsp;&nbsp;
 						<a class="collapse-link">
 							<i class="fa fa-chevron-up"></i>
-						</a>
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-							<i class="fa fa-wrench"></i>
-						</a>
-						<ul class="dropdown-menu dropdown-user">
-							<li><a href="#">Config option 1</a>
-							</li>
-                            <li><a href="#">Config option 2</a>
-                            </li>
-                        </ul>
-						<a class="close-link">
-							<i class="fa fa-times"></i>
 						</a>
 					</div>
 				</div>
@@ -86,18 +80,6 @@
 						<a class="collapse-link">
 							<i class="fa fa-chevron-up"></i>
 						</a>
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-							<i class="fa fa-wrench"></i>
-						</a>
-						<ul class="dropdown-menu dropdown-user">
-							<li><a href="#">Config option 1</a>
-							</li>
-                            <li><a href="#">Config option 2</a>
-                            </li>
-                        </ul>
-						<a class="close-link">
-							<i class="fa fa-times"></i>
-						</a>
 					</div>
 				</div>
 				<div class="ibox-content">
@@ -117,7 +99,7 @@
         </div>    
 	</div>
 
-	<!-- Modal -->
+	<!-- Cancel KTA Request Modal -->
 	<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -126,7 +108,14 @@
 		        	<h4 class="modal-title" id="myModalLabel">Confirmation</h4>
 		      	</div>
 		      	<div class="modal-body">
-		        	Batalkan Permintaan Nomor KTA?		       
+		        	<p class="jhgj"></p>
+		        	<div class="form-group">
+			          <label>Silahkan cantumkan keterangan</label>
+			          <form id="formcancel" method="post" action="{{ url('provinsi/kta/cancelkta/a') }}">
+			          	<input type="hidden" id="id_usercancel" name="id_usercancel" value="">
+						<textarea class="form-control" id="keterangan" name="keterangan"></textarea>
+					  </form>			          
+			        </div>
 		      	</div>
 		      	<div class="modal-footer">        
 			        <input type="hidden" class="form-control" id="id">
@@ -136,7 +125,8 @@
 		    </div>
 		</div>
 	</div>
-
+		
+	<!-- Insert Modal -->
 	<div class="modal inmodal" id="insertModal" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content animated bounceInRight">
@@ -152,11 +142,12 @@
 					remaining essentially unchanged.</p>
 					<div class="text-center">
 						<form id="form" method="post" action="{{ url('dashboard/provinsi/kta/insertkta/') }}">
-							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<input type="hidden" id="id_user" name="id_user" value="">
+
 							<input id="st" name="st" type="text" width="124" placeholder="20201">&nbsp;&nbsp;-&nbsp;&nbsp;
-							<input id="nd" name="nd" type="text" width="60%" placeholder="12345678">&nbsp;&nbsp;/&nbsp;&nbsp;
-							<input id="rd" name="rd" type="text" width="20%" placeholder="7-2-2016" readonly>							
+							<input id="nd" name="nd" type="text" width="60%" placeholder="12345678">&nbsp;&nbsp;
+							<!-- /&nbsp;&nbsp;
+							<input id="rd" name="rd" type="text" width="20%" placeholder="7-2-2016" readonly> -->
 						</form>                          
 					</div>					
 				</div>
@@ -166,8 +157,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- Modal -->
+	</div>	
 @stop
 
 @push('scripts')
@@ -267,38 +257,17 @@
 		  var button = $(event.relatedTarget) // Button that triggered the modal    
 		  url = button.data('url');
 		  id = button.data('id');
-		  name = button.data('name');
-
-		  console.log(url + " " + id + " " + name);
+		  name = button.data('name');		  
 
 		  var modal = $(this);
-		  modal.find('.modal-body').text('Batalkan Permintaan Nomor KTA dari "' + name + '"?');
+		  modal.find('#keterangan').val("");
+		  modal.find('#id_usercancel').val(id);		  
+		  $(".jhgj").html('Batalkan Permintaan Nomor KTA dari "' + name + '"?');		  
 		  modal.find('.modal-footer .form-control').val(id);
 
-		});
-
-		$('#batalkan').on('click', function (event) {
-		  console.log("submit clicked");
-		  console.log(url+"/"+id);    
-
-		  $.ajax({    
-		    url: url+"/"+id,
-		    type: "get",		    
-		  }).done(function(data) {                    
-		    console.log(data);
-
-		    $('#cancelModal').modal('hide'); 
-
-		    if (data.success) {
-		      toastr.success(data.msg);
-		    } else {
-		      toastr.error(data.msg);
-		    }
-
-		    var ref = $('#list-table').DataTable();
-		    ref.ajax.reload(null, false);
-		  });
-		});
+		  var validator = $("#formcancel").validate();
+		  validator.resetForm();
+		});		
 
 		$('#insertModal').on('show.bs.modal', function (event) {  
 		  var button = $(event.relatedTarget) // Button that triggered the modal    
@@ -311,19 +280,26 @@
 		  var dd = today.getDate();
 		  var mm = today.getMonth()+1; //January is 0!
 		  var yyyy = today.getFullYear();
+		  var yy = today.getFullYear().toString().substr(2,2);
 
-		  today = dd+'-'+mm+'-'+yyyy;		  
-
-		  console.log(today);
+		  today = dd+'-'+mm+'-'+yyyy;
+		  var fornd = yy+pad(id, 6);
 
 		  var modal = $(this);
 		  modal.find('#st').val(terr);
+		  modal.find('#nd').val(fornd);
 		  modal.find('#rd').val(today);
 		  modal.find('#id_user').val(id);
 
 		  var validator = $("#form").validate();
 		  validator.resetForm();
 		});		
+
+		function pad(n, width, z) {
+		  z = z || '0';
+		  n = n + '';
+		  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+		}
 
 		$(document).ready(function(){
         	$("#form").validate({
@@ -341,6 +317,15 @@
                      rd: {
                          required: true,                         
                      },
+                 }
+             });
+
+        	$("#formcancel").validate({
+            	rules: {
+                     keterangan: {
+                         required: true,
+                         minlength: 5
+                     },                     
                  }
              });
 
@@ -379,6 +364,38 @@
 		    		ref.ajax.reload(null, false);
 				});
 			  }
+			});			
+
+			$('#batalkan').on('click', function (event) {
+			  var id_user = $('#id_usercancel').val();
+			  var keterangan = $('#keterangan').val();
+
+			  var url = "{{ url('dashboard/provinsi/kta/cancelkta/') }}";  
+
+			  if ($("#formcancel").valid()) {
+			  	$.ajax({    
+					url: url,
+				    type: "post",
+				    data: {						    	
+				    	_token: "{{ csrf_token() }}",
+				    	id_user: id_user,
+				    	keterangan : keterangan,
+				    }
+				}).done(function(data) {                    
+				    console.log(data);
+
+				    $('#cancelModal').modal('hide');
+
+				    if (data.success) {
+				      toastr.success(data.msg);
+				    } else {
+				      toastr.error(data.msg);
+				    }
+
+				    var ref = $('#list-table').DataTable();
+		    		ref.ajax.reload(null, false);
+				});
+			  }			  
 			});
         });
     </script>

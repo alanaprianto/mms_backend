@@ -14,7 +14,7 @@ class Kta extends Model
      * @var array
      */
     protected $fillable = [
-        'owner', 'kta', 'requested_at', 'granted_at',
+        'owner', 'kta', 'requested_at', 'granted_at', 'keterangan'
     ];
 
     /**

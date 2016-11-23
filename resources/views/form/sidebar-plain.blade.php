@@ -1,3 +1,4 @@
+<li><a href="{{ url('crud/form/dashboard')}}"><i class="fa fa-dashboard"></i><span class="nav-label">Dashboard</span></a></li>
 <li>
     <a href="#">
       <i class="fa fa-table"></i> 

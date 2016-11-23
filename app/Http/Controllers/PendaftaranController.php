@@ -51,8 +51,32 @@ class PendaftaranController extends Controller
             $q->where('name', 'like', '%Pendaftaran%');
         })->orderBy('order', 'asc')->get();
         
-        return view('mms.pendaftaran-frame', compact('fquestions'));
+        return view('mms.pendaftaran-frame', compact('fquestions'));    
     }
+
+    public function indexiiFrame()
+    {        
+        $user = Auth::user();
+        $fr = Form_result::                
+                where('id_user', '=', $user->id)
+                ->where('id_question', '=', "1")
+                ->first()->answer;
+        $btk = Str::upper($fr);
+
+        $tahap2 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->id;
+        $tahap3 = Form_question_group::where('name', 'like', '%Tahap 3%')->first()->id;
+
+        // $fquestions = Form_question::whereHas('group', function ($q) use($btk) {        
+        //     $q->whereIn('name', 'like', '%'.$btk.'%')
+        //     ->where('name', 'like', '%Pendaftaran%');
+        // })->orderBy('order', 'asc')->get();
+        
+        $fquestions = Form_question::whereIn('group_question', [1, $tahap2, $tahap3])->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();      
+        $fresults = Form_result::where('id_user', '=', $user->id)->get();
+                
+        return view('mms.tahapii-frame', compact('fquestions', 'fresults'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -78,8 +102,9 @@ class PendaftaranController extends Controller
             
         // }            
 
-        $id_namapenanggungjawab = Form_question::where('question', 'like', '%Nama Penanggung Jawab%')->first()->id;        
-        $rules = $this->rules();
+        $id_namapenanggungjawab = Form_question::where('question', 'like', '%Nama Penanggung Jawab%')->first()->id;
+        $idfqg = Form_question_group::where('name', 'like', '%Pendaftaran%')->first()->id;
+        $rules = $this->rules($idfqg);
         
             $attributeNames = $this->names();
             
@@ -293,9 +318,10 @@ class PendaftaranController extends Controller
         $user->email = $email;
         $user->password = Hash::make($password1);
         $user->role = "2";
-        $user->no_kta = "0";
-        $user->no_rn = "0";
+        // $user->no_kta = "0";
+        // $user->no_rn = "0";
         $user->territory = $territory;
+        $user->validation = "not validated";
 
         $user->save();
 
@@ -344,6 +370,7 @@ class PendaftaranController extends Controller
      */
     public function indexii()
     {        
+        return "asdad1";
         $user = Auth::user();
         $fr = Form_result::                
                 where('id_user', '=', $user->id)
@@ -365,14 +392,13 @@ class PendaftaranController extends Controller
         return view('mms.tahapii-content', compact('fquestions', 'fresults'));
     }
 
-    public function storeii(FormResultRequest $request)
+    public function storeii(FormResultRequest $request, $idqg)
     {        
         $input = $request->all();           
-
-        // return $input;
-        $rules = $this->rules();        
+        
+        $rules = $this->rules($idqg);           
         $attributeNames = $this->names();
-        $rules["email"] = "required";
+        // $rules["email"] = "required";
         $rules = [];
 
         // Create a new validator instance.
@@ -409,7 +435,7 @@ class PendaftaranController extends Controller
             }
 
         } else {                
-            return Redirect::to('registerii')
+            return Redirect::to('/member/completeprofile/'.$idqg)
                 ->withInput(Input::except(['password', 'password_confirmation']))
                 ->withErrors($validator);
         }
@@ -430,6 +456,8 @@ class PendaftaranController extends Controller
                         $form_result->id_question = "Alamat Lengkap";
                     } else if (str_contains($keys[2], "KodePos")) {
                         $form_result->id_question = "Kode Pos";
+                    } else if (str_contains($keys[2], "fileupload")) {
+                        $form_result->id_question = $keys[3];
                     } else {
                         $form_result->id_question = $keys[2];
                     }
@@ -437,6 +465,43 @@ class PendaftaranController extends Controller
                     // answer value
                     if (is_array($value)) {
                         $form_result->answer_value = implode (", ", $value);
+                    } else if ($request->hasFile($key)) {
+                        $path = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
+                        if(!\File::exists($path)) {
+                            \File::makeDirectory($path);                            
+                        }
+                        
+                        $uname = $keys[3];
+                        $imageName = $uname.'.'.$request->$key->getClientOriginalExtension();
+
+                        // delete file sebelumnya
+                        $filesInFolder = \File::files($path);
+                        foreach($filesInFolder as $delPath)
+                        {
+                            $files = pathinfo($delPath);
+                            if ($files['filename'] == $uname) {     
+                                $fileToDelete = $files['dirname'].'/'.$files['basename'];                             
+                                \File::delete($fileToDelete);                                
+                            } else if ($files['filename'] == $uname.'-thumbs') {
+                                $fileToDelete1 = $files['dirname'].'/'.$files['basename'];                             
+                                \File::delete($fileToDelete1);                                
+                            }
+                        }
+
+                        // update file image.
+                        $request->$key->move($path, $imageName);
+                    
+                        $file = $path.$imageName;
+                        if(\File::exists($file)) {
+                            $form_result->answer_value = $imageName;
+                            
+                            $thmbName = $uname.'-thumbs.'.$request->$key->getClientOriginalExtension();
+                            $image = Image::make($file);
+                            $image->fit(100, 100)->save($path.$thmbName);
+                        } else {
+                            $form_result->answer_value = "Failed to Upload File";
+                        }
+
                     } else {
                         $form_result->answer_value = $value;
                         if (str_contains($value, '@')) {
@@ -454,7 +519,8 @@ class PendaftaranController extends Controller
         }
         
         // return $datas;
-        $terr = "";
+        $user = Auth::user();
+        $terr = $user->territory;
         foreach ($datas as $data) {            
             $fr = Form_result::where('id_user', '=', $userid)->where('id_question', '=', $data->id_question)->first();
             if ($fr) {
@@ -479,22 +545,18 @@ class PendaftaranController extends Controller
                 $terr = $data->answer_value;
             }
         }
-
-
-        $user = Auth::user();
+        
         $user->update([
                 'territory' => $terr
             ]);
 
-        return redirect('/profile'); 
+        return redirect('/member'); 
     }
 
-    public function rules() {
+    public function rules($idqg) {
 
-        $fquestions = Form_question::whereHas('group', function ($q) {        
-            $q->where('name', 'like', '%Pendaftaran%');
-        })->orderBy('order', 'asc')->get();
-
+        $fquestions = Form_question::where('group_question', '=', $idqg)
+                        ->orderBy('order', 'asc')->get();
         $rules = [];
         
         foreach($fquestions as $key => $value) {     
@@ -522,7 +584,7 @@ class PendaftaranController extends Controller
                 $rules["id_question_Alamat"] = implode("|", $parameter);
                 $rules["id_question_KodePos"] = implode("|", $parameter);
             } else if (str_contains($type, "fileupload")) {
-                $rules[$type] = implode("|", $parameter);                
+                $rules[$type] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
             } else {
                 $rules["id_question_{$value->id}"] = implode("|", $parameter);
             }            
@@ -564,11 +626,15 @@ class PendaftaranController extends Controller
         }
 
         return $names;
-    }    
+    }
 
     public function success() {
         return view('mms.pendaftaran-success');
-    }    
+    }
+
+    public function successframe() {
+        return view('mms.pendaftaran-successframe');
+    }
 }
 
 class formResult {

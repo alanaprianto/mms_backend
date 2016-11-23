@@ -30,7 +30,7 @@
 				<small>Silahkan isi data pada form dibawah ini !</small><br/><br/>
 				@include('errors.error_list')
 
-				{!! Form::open(['action' => ['PendaftaranController@store'], 'id' => 'wadah']) !!}
+				{!! Form::open(['action' => ['KadinDaerahController@store'], 'id' => 'wadah']) !!}
 
 				{!! Form::close() !!}
 			</div>

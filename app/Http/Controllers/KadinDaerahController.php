@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Form_question;
+use App\Http\Requests\FormResultRequest;
 use App\Form_result;
 use Datatables;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,16 @@ use Carbon\Carbon;
 use App\Kta;
 use App\Notification;
 use App\Payment;
+use App\Provinsi;
+use App\Form_question_group;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\Form_result_kadin_daerah;
+use DB;
 
 class KadinDaerahController extends Controller
 {
@@ -25,7 +36,23 @@ class KadinDaerahController extends Controller
     public function dashboard()
     {                       
     	$notifs = \App\Helpers\Notifs::getNotifs();
-        return view('daerah.dashboard.index', compact('notifs'));
+
+        $user = Auth::user();
+        $terr = $user->territory;
+        $totalsubmitted = Form_result::where('answer_value', '=', $terr)->get()->count();    
+                
+        $totalmember = User::where('territory', '=', $terr)->where('role', '=', '2')->get()->count();
+
+        $totalverified = User::where('territory', '=', $terr)->where('role', '=', '2')
+                            ->where('validation', '=', 'validated')
+                            ->get()->count();
+        $totalunverified = User::where('territory', '=', $terr)->where('role', '=', '2')
+                            ->where('validation', '!=', 'validated')
+                            ->get()->count();                            
+        $provcode = substr($terr, 0, 3);
+        $provinsi = Provinsi::where('id', '=', $provcode)->first();
+        
+        return view('daerah.dashboard.index', compact('notifs', 'totalsubmitted', 'totalmember', 'totalverified', 'totalunverified', 'user', 'provinsi'));
     }
 
     /**
@@ -112,6 +139,7 @@ class KadinDaerahController extends Controller
             $deletedMsg = "Error while deleting data";      
         }
         
+        // hapus juga image profile
         return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
     }
 
@@ -189,61 +217,50 @@ class KadinDaerahController extends Controller
         $member = User::find($id);
         $detail = Form_result::where('id_user', '=', $member->id)->get();
 
-        return view('daerah.member.detail', compact('notifs', 'member', 'detail'));
+        $detail1 = $this->detail1($member->id);
+        $detail2 = $this->detail2($member->id);
+        $detail3 = $this->detail3($member->id);
+        $docs = $this->docs($member->id);
+
+        return view('daerah.member.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
     }
 
     public function ajaxMembers() {
         $terr = Auth::user()->territory;
-        $ids = User::where('territory', '=', $terr)->where('role', '=', '2')->get();
-        
+        // $ids = User::where('territory', '=', $terr)
+        //         ->where('role', '=', '2')
+        //         ->leftJoin('kta', 'kta.owner', '=', 'users.id')
+        //         ->get();
+        $ids = User::select( 'users.*',
+            DB::raw('(select kta from kta where owner  =   users.id  order by id asc limit 1) as kta')  )
+            ->where('territory', '=', $terr)
+            ->where('role', '=', '2')
+            ->get();
+
         return Datatables::of($ids)->make(true);        
     }    
 
     public function ajaxMemberDetail($id) {        
         $fr = Form_result::
                 leftJoin('users', 'form_result.id_user', '=', 'users.id')
-                ->where('form_result.id_user', '=', $id)->get();                
+                ->where('form_result.id_user', '=', $id)->get();
         return Datatables::of($fr)->make(true);
     }
 
-    public function memberValidate($id) {
-        $member = User::find($id);
-        $member->verifiedemail = true;            
-        $member->paid = "paid";
-        $kta = Kta::where('owner', '=', $id)->first();
-
+    public function memberValidate(Request $request, $id) {           
         try {
-            $member->save();
-            if (!$kta) {        
-                $kta = new Kta;
-                
-                $kta->owner = $id;
-                $kta->kta = 'requested';
-                $kta->requested_at = new Carbon();
-                $kta->granted_at = "";
-
-                $kta->save();
-            }
-                        
-            $idProv = substr(Auth::user()->territory, 0, 3);
-            $idSender = $id;
-            $provinsi = User::where('role', '=', '4')->where('territory', '=', $idProv)->get();                                
-            foreach ($provinsi as $key => $prov) {
-                $notif = new Notification;
-
-                $notif->target = $prov->id;
-                $notif->senderid = $idSender;
-                $notif->value = "New Request KTA";
-                $notif->active = true;
-
-                $notif->save();                
-            }
+            $kadindaerah = Auth::user();
+            $form = Form_result_kadin_daerah::where('id', '=', $id)->first();
+            $request['validated_by'] = $kadindaerah->id;
+            $request['validated_at'] = new Carbon();
+            $form->update($request->all());
 
             $deleted = true;
-            $deletedMsg = "Member " . $member->username . " is verified";            
-        }catch(\Exception $e){
+            $deletedMsg = "Question " . $form->question . " is verified";
+            
+        }catch(\Exception $e) {
             $deleted = false;
-            $deletedMsg = "Error while verifying member";      
+            $deletedMsg = "Error while verifying member";            
         }
         
         return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
@@ -340,4 +357,343 @@ class KadinDaerahController extends Controller
                 ->get();
         return Datatables::of($fr)->make(true);
     }
+
+    public function store(FormResultRequest $request)
+    {        
+        $input = $request->all();                
+
+        $id_namapenanggungjawab = Form_question::where('question', 'like', '%Nama Penanggung Jawab%')->first()->id;
+        $idfqg = Form_question_group::where('name', 'like', '%Pendaftaran%')->first()->id;
+        $rules = $this->rules($idfqg);
+        
+            $attributeNames = $this->names();
+            
+            // Create a new validator instance.
+            $validator = Validator::make($input, $rules);
+            $validator->setAttributeNames($attributeNames);
+
+            if ($validator->passes()) {
+                // $name = "Syahril Rachman";
+                // $code = "AS32FLF9";
+                // $date = "2016-11-04 11:07:36";
+                // $email = 'rachman.syahril@gmail.com';
+                // Mail::send('emails.register_confirmation', ['name' => $name, 'code' => $code, 'date' => $date], function($message) use ($email) {
+                //     $message->from('no-reply@kadin-indonesia.org', 'no-reply');
+                //     $message->to($email)->subject('Kadin Registration');                    
+                // });
+                // return $input;
+
+                $random_string = md5(microtime());
+                $first = substr($random_string, 0, 4);
+                $last = substr($random_string, -4);
+                $code = $first.$last;
+                
+                $admins = User::where('role', '=', '1')->get();                
+                foreach ($admins as $key => $admin) {
+                    $notif = new Notification;
+
+                    $notif->target = $admin->id;
+                    $notif->sendercode = $code;
+                    $notif->value = "New submitted form";
+                    $notif->active = true;
+                    
+                    $notif->save();
+                }
+
+            } else {                
+                return Redirect::to('register1frame')
+                    ->withInput(Input::except(['password', 'password_confirmation']))
+                    ->withErrors($validator);
+            }
+
+        $datas = array();
+        foreach ($input as $key => $value) {
+            $keys = explode("_", $key);
+            $form_result = new formResult;
+
+            try {
+                if (!empty($keys[2])) {
+                    // id question
+                    if (str_contains($keys[2], "Provinsi")) {
+                        $form_result->id_question = "Provinsi";
+                    } else if (str_contains($keys[2], "KabKot")) {
+                        $form_result->id_question = "Kabupaten / Kota";
+
+                        $kadinKota = User::where('role', '=', '5')->where('territory', '=', $value)->get();                        
+                        foreach ($kadinKota as $key => $kota) {
+                            $notif = new Notification;
+
+                            $notif->target = $kota->id;
+                            $notif->sendercode = $code;
+                            $notif->value = "New submitted form";
+                            $notif->active = true;
+                            
+                            $notif->save();
+                        }
+
+                    } else if (str_contains($keys[2], "Alamat")) {
+                        $form_result->id_question = "Alamat Lengkap";
+                    } else if (str_contains($keys[2], "KodePos")) {
+                        $form_result->id_question = "Kode Pos";
+                    } else if (str_contains($keys[2], "fileupload")) {
+                        $form_result->id_question = $keys[3];                    
+                    } else {
+                        $form_result->id_question = $keys[2];
+                        if ($keys[2]==$id_namapenanggungjawab) {
+                            $name = $value;
+                        }
+                    }
+
+                    // answer value
+                    if (is_array($value)) {
+                        $form_result->answer_value = implode (", ", $value);
+                    } else if ($request->hasFile($key)) {
+                        $path = storage_path() . '/app/uploadedfiles/'.Auth::user()->username;                    
+                        if(!\File::exists($path)) {
+                            \File::makeDirectory($path);                            
+                        } else {                            
+                        }
+                        
+                        $uname = $keys[3];
+                        $imageName = $uname.'.'.$request->$key->getClientOriginalExtension();                                                
+                        $request->$key->move($path, $imageName);
+
+                        $form_result->answer_value = $imageName;
+                        // $file = $path.$imageName;        
+                        // if(!\File::exists($file)) {
+                        //     $form_result->answer_value = $file;
+                        // } else {
+                        //     $form_result->answer_value = "Failed to Upload File";
+                        // }
+                    } else {
+                        $form_result->answer_value = $value;
+                        if (str_contains($value, '@')) {
+                            $email = $value;
+                        }                        
+                    }  
+
+                    // tracking code                  
+                    $form_result->trackingcode = $code;
+
+                    $datas[] = $form_result;
+                }
+            } catch (\ErrorException $e) {
+                
+            }              
+        }
+        //$input = $request->get('id_question');
+        
+        // return $email;
+        foreach ($datas as $data) {
+            // $asdad = json_encode($data);
+            // return $asdad;
+            // Form_result::create($asdad);
+
+            $fr = new Form_result;
+
+            $fr->id_question = $data->id_question;
+            $fr->answer_value = $data->answer_value;
+            $fr->id_user = !empty($data->id_user) ? $data->id_user : '0';
+            $fr->trackingcode = $code;
+
+            $fr->save();                        
+        }
+
+        $date = new Carbon();
+        Mail::send('emails.register_confirmation', ['name' => $name, 'code' => $code, 'date' => $date], function($message) use ($email) {
+            $message->from('no-reply@kadin-indonesia.org', 'no-reply');
+            $message->to($email)->subject('Kadin Registration');                    
+        });
+
+        return redirect('/register1successframe'); 
+    }
+
+    public function rules($idqg) {
+
+        $fquestions = Form_question::where('group_question', '=', $idqg)
+                        ->orderBy('order', 'asc')->get();
+        $rules = [];
+        
+        foreach($fquestions as $key => $value) {     
+            $type = $value->qtype->name;       
+            $params = $value->rules_detail;
+            $parameter = [];
+            if (!empty($params)) {
+                foreach($params as $key => $param) {     
+                    $parameter[] = $param->parameter;
+                }   
+            }            
+            if (str_contains($type, "Username")) {
+                $rules["username"] = implode("|", $parameter);
+            } else if (str_contains($type, "Confirm Password")) {
+                $rules["password_confirmation"] = implode("|", $parameter);
+            } else if (str_contains($type, "Password")) {
+                $rules["password"] = implode("|", $parameter);
+            } else if (str_contains($type, "Name")) {
+                $rules["name"] = implode("|", $parameter);
+            } else if (str_contains($type, "Email")) {
+                $rules["email"] = implode("|", $parameter);
+            } else if (str_contains($type, "Address")) {
+                $rules["id_question_Provinsi"] = implode("|", $parameter);
+                $rules["id_question_KabKot"] = implode("|", $parameter);
+                $rules["id_question_Alamat"] = implode("|", $parameter);
+                $rules["id_question_KodePos"] = implode("|", $parameter);
+            } else if (str_contains($type, "fileupload")) {
+                $rules[$type] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+            } else {
+                $rules["id_question_{$value->id}"] = implode("|", $parameter);
+            }            
+        }
+        
+        return $rules;
+    }
+
+    public function names() {
+
+        $fquestions = Form_question::whereHas('group', function ($q) {        
+            $q->where('name', 'like', '%Pendaftaran%');
+        })->orderBy('order', 'asc')->get();
+
+        $names = [];
+
+        foreach($fquestions as $key => $value) {       
+            $type = $value->qtype->name;            
+            if (str_contains($type, "Username")) {                
+                $names["username"] = $value->question;   
+            } else if (str_contains($type, "Confirm Password")) {                
+                $names["password_confirmation"] = $value->question;   
+            } else if (str_contains($type, "Password")) {                
+                $names["password"] = $value->question;   
+            } else if (str_contains($type, "Name")) {                
+                $names["name"] = $value->question;   
+            } else if (str_contains($type, "Email")) {   
+                $names["email"] = $value->question;   
+            } else if (str_contains($type, "Address")) {   
+                $names["id_question_Provinsi"] = "Provinsi";   
+                $names["id_question_KabKot"] = "Kabupaten / Kota";
+                $names["id_question_Alamat"] = "Alamat Lengkap";
+                $names["id_question_KodePos"] = "Kode Pos";
+            } else if (str_contains($type, "fileupload")) {
+                $names[$type] = $value->question;
+            } else {
+                $names["id_question_{$value->id}"] = $value->question;
+            }                                          
+        }
+
+        return $names;
+    }
+
+    function detail1($id) {
+        //detail 1 
+        $qg1 = Form_question_group::where('name', 'like', '%Pendaftaran%')->first();
+        $q1 = Form_question::where('group_question', '=', $qg1->id)->pluck('id');
+        $detail1 = Form_result::                    
+                    where('id_user', '=', $id)
+                    ->whereIn('id_question', $q1)
+                    ->get();
+
+        return $detail1;
+    }
+
+    function detail2($id) {
+        //detail 2
+        $detail2 = Form_result::                
+                where('id_user', '=', $id)                
+                ->get();
+        $fq = Form_result::
+                where('id_user', '=', $id)
+                ->where('id_question', '=', "1")
+                ->first();
+        $qg2 = 0;
+        if ($fq) {
+            $fq = $fq->answer;
+            $btk = Str::upper($fq);
+            $fqg = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->name;
+            foreach ($detail2 as $key => $value) {
+                if ($value->question_group == $fqg) {
+                } else {
+                    unset($detail2[$key]);
+                }
+            }
+
+            $qg2 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first();
+        } else {
+            $detail2 = [];
+        }  
+
+        return $detail2;        
+    }
+
+    function detail3($id) {
+        //detail 3
+        $detail3 = Form_result::                
+                where('id_user', '=', $id)                
+                ->get();            
+        $fqg = Form_question_group::where('name', 'like', '%Tahap 3%')->first()->name;
+        $qg3 = Form_question_group::where('name', 'like', '%Tahap 3%')->first();
+        foreach ($detail3 as $key => $value) {
+            if ($value->question_group == $fqg) {                
+            } else {                
+                unset($detail3[$key]);
+            }
+        }
+        
+        return $detail3;        
+    }
+
+    function docs($id) {
+        //documents uploded
+        $docs = Form_result::                
+                where('id_user', '=', $id)                
+                ->get();            
+        $fqg = Form_question_group::where('name', 'like', '%Upload%')->first()->name;
+        $qgd = Form_question_group::where('name', 'like', '%Upload%')->first();
+        foreach ($docs as $key => $value) {
+            if ($value->question_group == $fqg) {                
+            } else {                
+                unset($docs[$key]);
+            }
+        }
+
+        return $docs;
+    }
+
+    public function memberReqKta(Request $request) {
+        $keterangan = $request['keterangan'];
+        $id_owner = $request['id_user'];
+
+        $kta = Kta::where('owner', '=', $id_owner)->first();        
+                
+        if ($kta) {
+            try {
+                $kta->kta = "validated";
+                $kta->keterangan = $keterangan;
+                $kta->save();
+
+                $member = User::where('id', '=', $id_owner)->first();
+                $member->update([
+                    'validation' => 'validated'
+                ]);
+
+                $deleted = true;
+                $deletedMsg = "KTA request from " . $member->username . " is proceeded";      
+            }catch(\Exception $e){
+                return $e;
+                $deleted = false;
+                $deletedMsg = "Error while executing command";      
+            }        
+        } else {
+            $deleted = false;
+            $deletedMsg = "Data is not available";
+        }
+        
+        return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
+    }    
+}
+
+class formResult {
+    public $id_question;
+    public $answer_value;
+    public $id_user;
+    public $trackingcode;
 }

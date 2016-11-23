@@ -8,7 +8,10 @@
         <!-- Simple Sidebar CSS -->
         <!-- <link href="{{ asset('resources/assets/css/simple-sidebar.css') }}" rel="stylesheet">        -->
         <!-- Datatables CSS -->
-        <link href="{{ asset('resources/assets/css/jquery.dataTables.min.css') }}" rel="stylesheet">  
+        <!-- <link href="{{ asset('resources/assets/css/jquery.dataTables.min.css') }}" rel="stylesheet"> -->
+        <link href="{{ asset('resources/assets/css/plugins/dataTables/dataTables.bootstrap.css') }}" rel="stylesheet">
+        <link href="{{ asset('resources/assets/css/plugins/dataTables/dataTables.responsive.css') }}" rel="stylesheet">
+        <link href="{{ asset('resources/assets/css/plugins/dataTables/dataTables.tableTools.min.css') }}" rel="stylesheet">
         <!-- Toastr -->
         <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/css/plugins/toastr/toastr.min.css') }}">  
         <!-- Font Awesome -->

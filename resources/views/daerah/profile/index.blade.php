@@ -307,8 +307,7 @@
           $('#modalCYP').modal('hide');
 
           // location.reload();
-          // setTimeout(location.reload.bind(location), 1000);
-          console.log(data.msg);
+          setTimeout(location.reload.bind(location), 1000);          
         });
       }      
     });

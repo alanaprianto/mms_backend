@@ -25,7 +25,7 @@
         <link href="{{ asset('resources/assets/css/fileinput.min.css') }}" rel="stylesheet">
         @yield('head')
     </head>
-    <body>                          
+    <body>                        
         <div id="wrapper">
             <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
@@ -56,9 +56,9 @@
                 </ul>
 
             </div>
-            </nav>              
+            </nav>
             <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="row border-bottom">
+            <div id="div2" class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0"> 
                 <div class="navbar-header">
                     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>                    
@@ -113,12 +113,17 @@
             </nav>
             </div>
             
-            <div class="row  border-bottom white-bg dashboard-header">
+            <div id="div3" class="row  border-bottom white-bg dashboard-header">
                 @yield('content')
             </div>       
             <br>
             @yield('iframe')
 
+            <div id="div4" class="footer">
+              <div>
+                <strong>Copyright</strong> MMS Kadin Indonesia &copy; 2016
+              </div>
+            </div>
             </div>
         </div>                                       
 

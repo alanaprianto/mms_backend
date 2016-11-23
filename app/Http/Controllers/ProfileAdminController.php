@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileAdminController extends Controller
 {
@@ -30,7 +31,7 @@ class ProfileAdminController extends Controller
         } else if (Auth::user()->role==2) {
             return view('member.profile.index', compact('notifs', 'name', 'email', 'username'));
         } else if (Auth::user()->role==3) {
-            //pusat
+            return view('pusat.profile.index', compact('notifs', 'name', 'email', 'username'));
         } else if (Auth::user()->role==4) {
             return view('provinsi.profile.index', compact('notifs', 'name', 'email', 'username'));
         } else if (Auth::user()->role==5) {
@@ -55,13 +56,41 @@ class ProfileAdminController extends Controller
             $deletedMsg = "The Username is Exist!";
         } else {
             try {
+                $pathold = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
+                $pathnew = storage_path() . '/app/uploadedfiles/'.$uname.'/';
+                \File::copyDirectory($pathold, $pathnew);                
+                \File::deleteDirectory($pathold);
+
+                $name = "";
+                $ext = "";
+                $file = storage_path() . '/app/photoprofile'.'/';
+                $filesInFolder = \File::files($file);
+                
+                foreach($filesInFolder as $path)
+                {
+                    $files = pathinfo($path);            
+                    if ($files['filename'] == Auth::user()->username) {                
+                        $name = $files['filename'];
+                        $ext = $files['extension'];
+
+                        $imgold = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;
+                        $imgnew = storage_path() . '/app/photoprofile'.'/'.$uname.'.'.$ext;
+                        \File::move($imgold, $imgnew);
+                    }
+
+                }                
+
                 $user = User::findOrFail($id);
                 $user->update($request->all());
+                
                 $deleted = true;
                 $deletedMsg = "Your Account is Updated";
+
             }catch(\Exception $e){
                 $deleted = false;
                 $deletedMsg = "Error while Updating Your Account!";
+
+                return $e;                                  
             }
         }        
         

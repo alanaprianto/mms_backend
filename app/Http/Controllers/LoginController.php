@@ -58,7 +58,7 @@ class LoginController extends Controller
                 // return "admin";
                           
                 // return view('form.app', compact('notifs'));                              
-                return redirect('/crud/form/setting');
+                return redirect('/crud/form/dashboard');
             } else if (Auth::user()->role=="2") {                
                 // return redirect('/')->with('name', Auth::user()->name)->with('loginRole', Auth::user()->role);
                 return redirect('/member');

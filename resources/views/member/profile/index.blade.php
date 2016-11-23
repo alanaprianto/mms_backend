@@ -293,9 +293,7 @@
             newpassword: npass,
             confirmpassword: cpass,
           }
-        }).done(function(data) {
-          console.log(data);
-
+        }).done(function(data) {          
           $('#modalCYP').modal('hide');
 
           if (data.success) {
@@ -328,18 +326,14 @@
             email: email,
             username: username,
           }
-        }).done(function(data) {
-          console.log(data);
-
+        }).done(function(data) {          
           $('#modalCAI').modal('hide');
 
           if (data.success) {
             toastr.success(data.msg);
           } else {
             toastr.error(data.msg);
-          }
-
-          $('#modalCAI').modal('hide');
+          }          
 
           // location.reload();
           setTimeout(location.reload.bind(location), 1000);
