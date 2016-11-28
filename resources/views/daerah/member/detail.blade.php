@@ -18,11 +18,13 @@
 </div>
 <div class="col-lg-2">
   <div class="title-action">
-    @if($member->kta->first()->kta=="requested")
-      <a href="" class="btn btn-primary" data-toggle="modal" data-target="#reqModal" data-id="{{ $member->id }}">
-        <span class="glyphicon glyphicon-check"></span>
-        &nbsp;&nbsp;Request KTA
-      </a>
+    @if($member->kta->first())
+      @if($member->kta->first()->kta=="requested")
+        <a href="" class="btn btn-primary" data-toggle="modal" data-target="#reqModal" data-id="{{ $member->id }}">
+          <span class="glyphicon glyphicon-check"></span>
+          &nbsp;&nbsp;Request KTA
+        </a>
+      @endif
     @endif
   </div>
 </div>
@@ -84,7 +86,7 @@
   <div class="ibox-content" style="display: block;">    
     <div class="row">
       <div class="col-lg-9 col-lg-offset-1">
-        @if ($detail1->count()>=1)            
+        @if (count($detail1)>=1)            
           <table class="table">            
             @foreach ($detail1 as $row)
               @if ($row->correction||$row->commentary)
@@ -127,7 +129,7 @@
   <div class="ibox-content" style="display: block;">      
     <div class="row">
       <div class="col-lg-9 col-lg-offset-1">
-        @if ($detail2->count()>=1)
+        @if (count($detail2)>=1)
           <table class="table">              
             @foreach ($detail2 as $row)
               @if ($row->correction||$row->commentary)
@@ -170,7 +172,7 @@
   <div class="ibox-content" style="display: block;">
     <div class="row">
       <div class="col-lg-9 col-lg-offset-1">
-        @if ($detail3->count()>=1)
+        @if (count($detail3)>=1)
           <table class="table">              
             @foreach ($detail3 as $row)
               @if ($row->correction||$row->commentary)
@@ -213,7 +215,7 @@
   <div class="ibox-content" style="display: block;">
     <div class="row">
       <div class="col-lg-9 col-lg-offset-1">
-        @if ($docs->count()>=1)
+        @if (count($docs)>=1)
           <table class="table">              
             @foreach ($docs as $row)
               @if ($row->correction||$row->commentary)
@@ -371,7 +373,7 @@
 		});
 
     $('#valModal').on('show.bs.modal', function (event) {  
-      var button = $(event.relatedTarget) // Button that triggered the modal          
+      var button = $(event.relatedTarget) // Button that triggered the modal
       id = button.data('id');
       question = button.data('question');
       answer = button.data('answer');
@@ -380,12 +382,12 @@
 
       $(".jhgj").html("<strong>"+question+"  :</strong>  <i>"+answer+"</i>");
 
-      var modal = $(this);      
+      var modal = $(this);
       if (corr) {
-        modal.find('#correction').val(corr);      
+        modal.find('#correction').val(corr);
       }
       if (comm) {
-        modal.find('#commentary').val(comm);      
+        modal.find('#commentary').val(comm);
       }
     });
 
@@ -412,7 +414,7 @@
 
           $('#valModal').modal('hide');
 
-          // setTimeout(location.reload.bind(location), 1000);
+          setTimeout(location.reload.bind(location), 1000);
         });
     });
 
@@ -461,7 +463,7 @@
             toastr.error(data.msg);
           }          
 
-          $('#valModal').modal('hide');
+          $('#valImgModal').modal('hide');
 
           setTimeout(location.reload.bind(location), 1000);
         });

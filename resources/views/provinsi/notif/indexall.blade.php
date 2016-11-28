@@ -1,9 +1,5 @@
 @extends('provinsi.app')
 
-@section('sidebar')
-  @include('provinsi.sidebar-plain') 
-@stop
-
 @section('content')
 
 <div class="col-lg-12">

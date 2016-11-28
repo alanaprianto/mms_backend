@@ -1,7 +1,10 @@
 @extends('pusat.app')
 
-@section('sidebar')
-  @include('pusat.rn.list.sidebar')
+@section('active-groupnr')
+  active
+@stop
+@section('active-nrlist')
+  active
 @stop
 
 @section('content')

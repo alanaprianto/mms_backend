@@ -1,7 +1,10 @@
 @extends('provinsi.app')
 
-@section('sidebar')
-	@include('provinsi.kta.list.sidebar')
+@section('active-groupkta')
+	active
+@stop
+@section('active-ktalist')
+	active
 @stop
 
 @section('content')
@@ -10,7 +13,10 @@
     <ol class="breadcrumb">
       <li>
         <a>Kadin Provinsi</a>
-      </li>      
+      </li>
+      <li>
+        <a>KTA</a>
+      </li>
       <li class="active">
         <strong>List KTA</strong>        
       </li>

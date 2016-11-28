@@ -17,6 +17,7 @@ use App\Notification;
 use App\Form_question_group;
 use Illuminate\Support\Str;
 use App\Regnum;
+use Illuminate\Support\Collection;
 
 class KadinProvinsiController extends Controller
 {
@@ -35,7 +36,36 @@ class KadinProvinsiController extends Controller
         $totalreqkta = Kta::where('kta', '=', 'validated')->whereIn('owner', $owner)->get()->count();
         $totalcancelkta = Kta::where('kta', '=', 'cancelled')->whereIn('owner', $owner)->get()->count();
 
-        return view('provinsi.dashboard.index', compact('notifs', 'totalkta', 'totalreqkta', 'totalcancelkta', 'user'));
+        $ktas = Kta::where('kta', '<>', 'requested')
+                    ->where('kta', '<>', 'cancelled')
+                    ->whereIn('owner', $owner)
+                    ->get();
+        $totalexpkta = 0;
+        $today = new Carbon();
+        foreach ($ktas as $key => $value) {
+            $exp = Carbon::parse($value->expired_at);
+            $exp_at = $exp->diffInMonths($today);
+
+            if ($exp_at<=3||$today>=$exp) {
+                $totalexpkta = $totalexpkta+1;
+            }
+        }
+        
+        return view('provinsi.dashboard.index', compact('notifs', 'totalkta', 'totalreqkta', 'totalcancelkta', 'user', 'totalexpkta'));
+    }
+
+    public function ktaDetail($id)
+    {
+        $notifs = \App\Helpers\Notifs::getNotifs();
+        $member = User::find($id);
+        
+        $detail1 = \App\Helpers\Details::detail1($member->id);
+        $detail2 = \App\Helpers\Details::detail2($member->id);
+        $detail3 = \App\Helpers\Details::detail3($member->id);
+        $docs = \App\Helpers\Details::docs($member->id);
+
+        // return $detail1;
+        return view('provinsi.kta.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
     }
 
     public function profile() {
@@ -94,38 +124,54 @@ class KadinProvinsiController extends Controller
             }
 
             $labels[] = date('F', strtotime("2000-$i-01"));
-            $data[] = Kta::where('kta', '=', 'requested')->whereMonth('created_at', '=', $i)->count();            
-        }
-
+            $data[] = Kta::where('kta', '=', 'validated')->whereMonth('created_at', '=', $i)->count();            
+        }        
 
     	return view('provinsi.kta.request.index', compact('notifs', 'kta', 'labels', 'data'));
     }
 
-    public function ajaxKta() {
+    public function ajaxKta() {        
         $terr = Auth::user()->territory;
-        $kta = Kta::whereHas('user', function ($query) use($terr) {
+        $ktas = Kta::whereHas('user', function ($query) use($terr) {
             $query->where('territory', 'like', $terr.'%');
-        })->where('kta', '=', 'validated')->pluck('owner');
+        })->where('kta', '=', 'validated');
 
-        $fr = Form_result::leftJoin('users', 'form_result.id_user', '=', 'users.id')
-                ->where('id_question', '=', '8')
-                ->whereIn('id_user', $kta)                
-                ->get();
-        return Datatables::of($fr)->make(true);
-    }
+        // $fr = Form_result::leftJoin('users', 'form_result.id_user', '=', 'users.id')
+        //         ->where('id_question', '=', '8')
+        //         ->whereIn('id_user', $ktas->pluck('owner'))
+        //         ->get();
 
-    public function ktaRequestDetail($id)
-    {
-        $notifs = \App\Helpers\Notifs::getNotifs();
-        $member = User::find($id);
-        
-        $detail1 = $this->detail1($member->id);
-        $detail2 = $this->detail2($member->id);
-        $detail3 = $this->detail3($member->id);
-        $docs = $this->docs($member->id);
+        // return $ktas->count()." ".$fr->count();
+        $dt = new Collection;
+        // return $ktas->get()." +++++ ".$fr;
+        foreach ($ktas->get() as $key => $kta) {            
+            if (str_contains($kta->perpanjangan, 'processed')) {
+                $status = "Perpanjangan KTA";
+            } else {
+                $status = "Pembuatan KTA";
+            }
 
-        return view('provinsi.kta.request.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
-    }
+            $comp = Form_result::where('id_user', '=', $kta->owner)
+                        ->where('id_question', '=', '8')
+                        ->first()->answer_value;
+            $comptype = Form_result::where('id_user', '=', $kta->owner)
+                        ->where('id_question', '=', '1')
+                        ->first()->answer;
+            $regat = Form_result::where('id_user', '=', $kta->owner)->first()->created_at->format('d/m/Y');
+
+            $dt->push([                       
+                    'company' => $comptype." ".$comp,
+                    'comprep' => $kta->user->name,
+                    'registered_at' => $regat,
+                    'id_user' => $kta->owner,
+                    'territory' => $kta->user->territory,
+                    'status' => $status,
+                    'perpanjangan' => $kta->perpanjangan,
+                ]);
+        }
+
+        return Datatables::of($dt)->make(true);
+    }    
 
     public function cancelKta(Request $request) {        
         $keterangan = $request['keterangan'];        
@@ -188,20 +234,7 @@ class KadinProvinsiController extends Controller
                 ->whereIn('id_user', $kta)                
                 ->get();
         return Datatables::of($fr)->make(true);
-    }
-
-    public function ktaCancelDetail($id)
-    {
-        $notifs = \App\Helpers\Notifs::getNotifs();
-        $member = User::find($id);
-        
-        $detail1 = $this->detail1($member->id);
-        $detail2 = $this->detail2($member->id);
-        $detail3 = $this->detail3($member->id);
-        $docs = $this->docs($member->id);
-
-        return view('provinsi.kta.canceled.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
-    }
+    }    
 
     public function insertKta(Request $request) {
         $st = $request['st'];
@@ -215,18 +248,23 @@ class KadinProvinsiController extends Controller
             try {
                 $carbon = new Carbon();
                 
-                $kta->kta = $st."-".$nd."/".$rd;
+                // $kta->kta = $st."-".$nd."/".$rd;
                 $kta->kta = $st."-".$nd;
                 $kta->granted_at = $carbon;
                 $kta->expired_at = $carbon->addYear(1);
-                $kta->save();
+                if (str_contains($kta->perpanjangan, 'processed')) {
+                    $kta->perpanjangan = "granted";
+                    $kta->save();
+                } else {
+                    $kta->save();
 
-                $rn = new Regnum();
-                $rn->owner = $id_owner;
-                $rn->regnum = 'requested';
-                $rn->requested_at = new Carbon();
-                $rn->granted_at = "";
-                $rn->save();
+                    $rn = new Regnum();
+                    $rn->owner = $id_owner;
+                    $rn->regnum = 'requested';
+                    $rn->requested_at = new Carbon();
+                    $rn->granted_at = "";
+                    $rn->save();
+                }                                
                 
                 $deleted = true;
                 $deletedMsg = "KTA for " . $kta->user->name . " is set";
@@ -243,12 +281,12 @@ class KadinProvinsiController extends Controller
     }
 
     public function ktaList()
-    {
+    {        
         $notifs = \App\Helpers\Notifs::getNotifs();
 
         $terr = Auth::user()->territory;
         $owner = User::where('territory', 'like', $terr.'%')->where('role', '=', 2)->pluck('id');        
-        $kta = Kta::where('kta', '<>', 'requested')->where('kta', '<>', 'cancelled')->whereIn('owner', $owner)->get();
+        $kta = Kta::where('kta', '<>', 'requested')->where('kta', '<>', 'validated')->where('kta', '<>', 'cancelled')->whereIn('owner', $owner)->get();
 
         $carbon = new Carbon();
         $monthsago = $carbon->subMonths(6)->month;
@@ -274,8 +312,9 @@ class KadinProvinsiController extends Controller
     public function ajaxKtaList() {
         $terr = Auth::user()->territory;
         $kta = Kta::whereHas('user', function ($query) use($terr) {
-            $query->where('territory', 'like', $terr.'%');
-        })->where('kta', '<>', 'requested')
+                $query->where('territory', 'like', $terr.'%');
+            })->where('kta', '<>', 'requested')
+            ->where('kta', '<>', 'validated')
             ->where('kta', '<>', 'cancelled')
             ->pluck('owner');
 
@@ -287,20 +326,7 @@ class KadinProvinsiController extends Controller
                 ->whereIn('form_result.id_user', $kta)
                 ->get();
         return Datatables::of($fr)->make(true);
-    }
-
-    public function ktaListDetail($id)
-    {
-        $notifs = \App\Helpers\Notifs::getNotifs();
-        $member = User::find($id);        
-
-        $detail1 = $this->detail1($member->id);
-        $detail2 = $this->detail2($member->id);
-        $detail3 = $this->detail3($member->id);
-        $docs = $this->docs($member->id);
-
-        return view('provinsi.kta.list.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
-    }
+    }    
 
     /**
      * Menangani permintaan detail notif
@@ -343,78 +369,143 @@ class KadinProvinsiController extends Controller
         return Datatables::of($fr)->make(true);
     }
 
-    function detail1($id) {
-        //detail 1 
-        $qg1 = Form_question_group::where('name', 'like', '%Pendaftaran%')->first();
-        $q1 = Form_question::where('group_question', '=', $qg1->id)->pluck('id');
-        $detail1 = Form_result::                    
-                    where('id_user', '=', $id)
-                    ->whereIn('id_question', $q1)
-                    ->get();
-
-        return $detail1;
+    public function ktaExpired()
+    {
+        $notifs = \App\Helpers\Notifs::getNotifs();        
+        return view('provinsi.kta.expired.index', compact('notifs'));
     }
 
-    function detail2($id) {
-        //detail 2
-        $detail2 = Form_result::                
-                where('id_user', '=', $id)                
-                ->get();
-        $fq = Form_result::
-                where('id_user', '=', $id)
-                ->where('id_question', '=', "1")
-                ->first();
-        $qg2 = 0;
-        if ($fq) {
-            $fq = $fq->answer;
-            $btk = Str::upper($fq);
-            $fqg = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->name;
-            foreach ($detail2 as $key => $value) {
-                if ($value->question_group == $fqg) {
-                } else {
-                    unset($detail2[$key]);
-                }
-            }
+    public function ajaxKtaExpired() {
+        $terr = Auth::user()->territory;        
+        $owner = Kta::whereHas('user', function ($query) use($terr) {
+            $query->where('territory', 'like', $terr.'%');
+        })->pluck('owner');
+        $ktas = Kta::whereIn('owner', $owner)->get();
+        
+        $fr = new Collection;
+        $today = new Carbon();        
+        foreach ($ktas as $key => $value) {
+            if ($value->expired_at) {
+                $exp = Carbon::parse($value->expired_at);
+                $exp_month = $exp->diffInMonths($today);
 
-            $qg2 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first();
-        } else {
-            $detail2 = [];
-        }  
+                if ($exp_month<=3||$today >= $exp) {
 
-        return $detail2;        
-    }
+                    $exp_show = true;                
 
-    function detail3($id) {
-        //detail 3
-        $detail3 = Form_result::                
-                where('id_user', '=', $id)                
-                ->get();            
-        $fqg = Form_question_group::where('name', 'like', '%Tahap 3%')->first()->name;
-        $qg3 = Form_question_group::where('name', 'like', '%Tahap 3%')->first();
-        foreach ($detail3 as $key => $value) {
-            if ($value->question_group == $fqg) {                
-            } else {                
-                unset($detail3[$key]);
-            }
+                    $exp_at = $exp_month;
+                    if ($exp_month==0) {
+                        $exp_at = $exp->diffInDays($today);
+
+                        if ($exp_at==1) {
+                            $m = "Day";
+                        } else {
+                            $m = "Days";
+                        }
+                    } else {
+                        if ($exp_at==1) {
+                            $m = "Month";
+                        } else {
+                            $m = "Months";
+                        }
+                    }                
+
+                    $exp_in = "";
+                    if ($today >= $exp) {
+                        $exp_in = $exp_at." ".$m." Ago";
+                    } else if ($exp_at<=3) {
+                        $exp_in = "In ".$exp_at." ".$m;
+                    }
+
+                    $comp = Form_result::where('id_user', '=', $value->owner)
+                                ->where('id_question', '=', '8')
+                                ->first()->answer_value;
+                    $comprep = $value->user->name;
+                    $kta = $value->kta;
+                    $id_user = $value->owner;
+                    $exp_at = $value->expired_at;
+
+                    $fr->push([
+                        'company' => $comp,
+                        'companyrep' => $comprep,
+                        'kta' => $kta,
+                        'expired_at' => $exp_at,
+                        'expired_in' => $exp_in,
+                        'id_user' =>  $id_user,
+                    ]);
+                }      
+            }            
         }
         
-        return $detail3;        
+        return Datatables::of($fr)->make(true);
     }
 
-    function docs($id) {
-        //documents uploded
-        $docs = Form_result::                
-                where('id_user', '=', $id)                
-                ->get();            
-        $fqg = Form_question_group::where('name', 'like', '%Upload%')->first()->name;
-        $qgd = Form_question_group::where('name', 'like', '%Upload%')->first();
-        foreach ($docs as $key => $value) {
-            if ($value->question_group == $fqg) {                
-            } else {                
-                unset($docs[$key]);
-            }
+    public function ktaExtension()
+    {                       
+        $notifs = \App\Helpers\Notifs::getNotifs();        
+
+        return view('provinsi.kta.expired.extension', compact('notifs'));
+    }
+
+    public function ajaxKtaExtension() {   
+        $terr = Auth::user()->territory;        
+        $owner = Kta::whereHas('user', function ($query) use($terr) {
+            $query->where('territory', 'like', $terr.'%');
+        })->pluck('owner');
+        $ktas = Kta::whereIn('owner', $owner)->where('keterangan', '=', 'request_perpanjangan')->get();
+        
+        $fr = new Collection;
+        $today = new Carbon();
+        foreach ($ktas as $key => $value) {
+            $exp = Carbon::parse($value->expired_at);
+            $exp_month = $exp->diffInMonths($today);
+
+            if ($exp_month<=3||$today >= $exp) {
+                $exp_show = true;                
+
+                $exp_at = $exp_month;
+                if ($exp_month==0) {
+                    $exp_at = $exp->diffInDays($today);
+
+                    if ($exp_at==1) {
+                        $m = "Day";
+                    } else {
+                        $m = "Days";
+                    }
+                } else {
+                    if ($exp_at==1) {
+                        $m = "Month";
+                    } else {
+                        $m = "Months";
+                    }
+                }                
+
+                $exp_in = "";
+                if ($today >= $exp) {
+                    $exp_in = $exp_at." ".$m." Ago";
+                } else if ($exp_at<=3) {
+                    $exp_in = "In ".$exp_at." ".$m;
+                }
+
+                $comp = Form_result::where('id_user', '=', $value->owner)
+                            ->where('id_question', '=', '8')
+                            ->first()->answer_value;
+                $comprep = $value->user->name;
+                $kta = $value->kta;
+                $id_user = $value->owner;
+                $exp_at = $value->expired_at;
+
+                $fr->push([
+                    'company' => $comp,
+                    'companyrep' => $comprep,
+                    'kta' => $kta,
+                    'expired_at' => $exp_at,
+                    'expired_in' => $exp_in,
+                    'id_user' =>  $id_user,
+                ]);
+            }      
         }
 
-        return $docs;
-    }
+        return Datatables::of($fr)->make(true);
+    }        
 }

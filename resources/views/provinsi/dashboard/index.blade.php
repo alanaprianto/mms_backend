@@ -1,7 +1,7 @@
 @extends('provinsi.app')
 
-@section('sidebar')
-	@include('provinsi.dashboard.sidebar')
+@section('active-dashboard')
+	active
 @stop
 
 @section('content')
@@ -67,7 +67,7 @@
           <h5>Expired KTA</h5>
       </div>
       <div class="ibox-content">
-        <h1 class="no-margins"><strong>999</strong></h1>        
+        <h1 class="no-margins">{{ $totalexpkta  }}</h1>        
         <small>Total Expired KTA</small>
       </div>
     </div>

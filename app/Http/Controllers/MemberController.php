@@ -8,6 +8,9 @@ use App\Http\Requests;
 use App\User;
 use Datatables;
 use App\Form_result;
+use App\Form_question_group;
+use App\Form_question;
+use Illuminate\Support\Str;
 
 class MemberController extends Controller
 {
@@ -65,16 +68,16 @@ class MemberController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    {        
         $notifs = \App\Helpers\Notifs::getNotifs();        
         $member = User::find($id);        
 
-        /* ocha upd */
-        $detail = Form_result::
-                leftJoin('users', 'form_result.id_user', '=', 'users.id')
-                ->where('form_result.id_user', '=', $id)->get();
-
-        return view('form.member.indexresult', compact('notifs', 'member', 'detail'));
+        $detail1 = \App\Helpers\Details::detail1($member->id);
+        $detail2 = \App\Helpers\Details::detail2($member->id);
+        $detail3 = \App\Helpers\Details::detail3($member->id);
+        $docs = \App\Helpers\Details::docs($member->id);
+        
+        return view('form.member.indexresult', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
     }
 
     /**
@@ -120,5 +123,5 @@ class MemberController extends Controller
         }
         
         return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
-    }
+    }    
 }

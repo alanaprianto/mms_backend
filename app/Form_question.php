@@ -8,7 +8,7 @@ class Form_question extends Model
 {
 	protected  $table = "form_question";
 
-    protected $appends = ['setting', 'list_answer', 'group_name', 'question_type', 'rules_detail',];
+    protected $appends = ['setting', 'list_answer', 'group_name', 'question_type', 'rules_detail', 'rules_names'];
 
     /**
      * The attributes that are mass assignable.
@@ -110,11 +110,30 @@ class Form_question extends Model
 
         $errors = array_filter($ids);
 
-        if (empty($errors)) {
+        if (empty($errors)) {            
             return null;
+        } else {
+            $rules = Form_rules::whereIn('id', $ids)->get();
         }
-        $rules = Form_rules::whereIn('id', $ids)->get();        
         
         return $rules;
-    }    
+    }
+
+    public function getRulesNamesAttribute() 
+    {
+        $string = $this->attributes['rules'];    
+        $ids = explode(", ", $string);
+
+        $errors = array_filter($ids);
+
+        if (empty($errors)) {            
+            $rules = collect([
+                        ['name' => '-']    
+                     ]);
+        } else {
+            $rules = Form_rules::whereIn('id', $ids)->get();            
+        }
+        
+        return $rules->implode('name', ', ');
+    }
 }

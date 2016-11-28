@@ -5,20 +5,104 @@
 @stop
 
 @section('content')
+<!-- <h1> Form Result </h1>
+<br><br> -->
 
-<h1> Form Result </h1>
-<br><br>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>New Submitted Form</h2>
+    <ol class="breadcrumb">
+        <li>
+            <a>Notification</a>
+        </li>        
+        <li class="active">
+            <strong>New Submitted Form</strong>
+        </li>
+    </ol>
+  </div>
+  <div class="col-lg-2">    
+  </div>
+</div>
 
-<table class="table table-bordered" id="result-table" width=100%>
-  <thead>
-    <tr>      
-      <th>Question</th>                  
-      <th>Answer Value</th>        
-      <th>Submitted At</th>  
-      <th>Tracking Code</th>      
-    </tr>        
-  </thead>
-</table>
+<div class="wrapper wrapper-content animated fadeInRight">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Submitted Form</h5>
+          <div class="ibox-tools">
+            <a class="collapse-link">
+              <i class="fa fa-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+        <div class="ibox-content">
+          <div class="row">            
+            <div class="col-lg-9 col-lg-offset-1">
+              @if ($fr->count()>=1)            
+                <table class="table">       
+                  <tr>
+                    <td><strong>Tracking Code</strong></td>
+                    <td>:</td>
+                    <td>{{ $fr[0]->trackingcode }}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Submitted At</strong></td>
+                    <td>:</td>
+                    <td>{{ $fr[0]->created_at }}</td>
+                  </tr>
+                  @foreach ($fr as $row)
+                    @if ($row->correction||$row->commentary)
+                      <tr bgcolor="#F6CECE">
+                    @else 
+                      <tr>
+                    @endif
+                      <td><strong>{{ $row->question }}</strong></td>
+                      <td>:</td>
+                      <td>{{ $row->answer }}</td>                      
+                    </tr>
+                  @endforeach            
+                </table>
+              @else
+                <div class="text-center">
+                  No Data
+                </div>
+              @endif
+            </div>
+          </div>                
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>Submitted Form</h5>
+          <div class="ibox-tools"> -->
+            <!-- any link icon -->            
+          <!-- </div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-striped table-bordered table-hover dataTables-example" id="result-table">
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Answer Value</th>
+                <th>Submitted At</th>
+                <th>Tracking Code</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

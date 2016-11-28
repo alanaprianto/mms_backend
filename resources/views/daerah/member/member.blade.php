@@ -188,18 +188,43 @@
 		    ],    
 		    "columnDefs": [     
 		      {		        
-		        "render": function ( data, type, row ) {		 
-		        	if (row.kta=="") {
-		        		return 'Not Yet Requested, Completing Profile Information';
-		        	} else if (row.kta=="requested") {
-		        		return 'KTA Requested, Waiting for Validation';
-		        	} else if (row.kta=="validated") {
-		        		return 'Profile Validated, waiting for Generation';
-		        	} else if (row.kta=="cancelled") {
-		        		return 'KTA Request Cancelled';
-		        	} else {
-		        		return 'KTA Generated';
+		        "render": function ( data, type, row ) {
+		        	if (row.ext) {
+		        		if (row.ext=="requested") {
+		        			if (row.kta=="requested") {
+					        	return 'KTA Extension Requested, Waiting for Validation';
+					        } else if (row.kta=="validated") {
+					        	return 'Profile Validated, waiting for KTA Extension';
+					        } else if (row.kta=="cancelled") {
+					        	return 'KTA Extension Request Cancelled';
+					        } else {
+					        	return 'KTA is Expired, Extension Requested';
+					        }
+		        		} else if (row.ext.indexOf("processed") !== -1) {
+		        			if (row.kta=="requested") {
+					        	return 'KTA Extension is Processed, Waiting for Validation';
+					        } else if (row.kta=="validated") {
+					        	return 'Profile Validated, waiting for KTA Extension';
+					        } else if (row.kta=="cancelled") {
+					        	return 'KTA Extension Request Cancelled';
+					        } else {
+					        	return 'KTA is Expired, Extension Requested';
+					        }
+		        		}		        		
 		        	}
+
+		        	if (row.kta=="") {
+			        	return 'Not Yet Requested, Completing Profile Information';
+			        } else if (row.kta=="requested") {
+			        	return 'KTA Requested, Waiting for Validation';
+			        } else if (row.kta=="validated") {
+			        	return 'Profile Validated, waiting for KTA Generation';
+			        } else if (row.kta=="cancelled") {
+			        	return 'KTA Request Cancelled';
+			        } else {
+			        	return 'KTA Generated';
+			        }
+		        			        	
 		            // if (row.paid=="paid"&&row.verifiedemail==true)   {
 		            // 	return '<i class="fa fa-check text-navy"></i>'+
 			        			// '&nbsp;&nbsp;Validated';
@@ -278,7 +303,8 @@
 		      toastr.error(data.msg);
 		    }
 
-		    location.reload();
+		    // location.reload();
+		    setTimeout(location.reload.bind(location), 1000);
 		  });
 		});
 
@@ -303,7 +329,8 @@
 		      toastr.error(data.msg);
 		    }
 
-		    location.reload();
+		    // location.reload();
+		    setTimeout(location.reload.bind(location), 1000);
 		  });
 		});
     </script>

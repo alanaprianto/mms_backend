@@ -1,19 +1,12 @@
-@extends('provinsi.app')
+@extends('pusat.app')
 
-@section('sidebar')
-	@include('provinsi.kta.canceled.sidebar')
-@stop
-
-@section('content')	
+@section('content') 
 <div class="col-lg-10">
   <h2>Member Detail</h2>
     <ol class="breadcrumb">
       <li>
-        <a>Kadin Provinsi</a>
-      </li>        
-      <li>
-        Canceled KTA Request
-      </li>
+        <a>Kadin Indonesia</a>
+      </li>      
       <li class="active">
         <strong>Member Detail</strong>        
       </li>
@@ -25,7 +18,7 @@
 </div>
 @stop
 
-@section('iframe')	
+@section('iframe')  
 <div class="row">
   <div class="col-lg-12">
     <div class="ibox float-e-margins">
@@ -235,24 +228,5 @@
 </div>
 @stop
 
-@push('scripts')
-	<!-- ChartJS-->	
-    <script src="{{ asset('resources/assets/js/plugins/chartJs/Chart.min.js') }}"></script>
-    <script type="text/javascript">    			  
-		$(function() {
-		  $('#list-table').DataTable({
-		    processing: true,
-		    serverSide: true,
-		    iDisplayLength: 100,
-		    ajax: "{{ url('/dashboard/daerah/ajax/members/')}}/{{ $member->id }}",
-		    columns: [       
-		    	{ "data" : "question" },        
-		        { "data" : "answer" },        
-		        { "data" : "name"},        
-		        { "data" : "trackingcode"},      
-		        { "data" : "created_at"},      
-		    ],		    
-		  });
-		});
-    </script>
+@push('scripts')    
 @endpush

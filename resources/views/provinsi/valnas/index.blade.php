@@ -1,7 +1,7 @@
 @extends('provinsi.app')
 
-@section('sidebar')
-	@include('provinsi.valnas.sidebar')
+@section('active-valnas')
+  active
 @stop
 
 @section('content')

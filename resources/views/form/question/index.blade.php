@@ -134,7 +134,7 @@ $(function() {
             { "data" : "group_name" },
             { "data" : "question_type.name" },
             { "data" : "setting.name" },
-            { "data" : "rules_detail.name" },
+            { "data" : "rules_names" },
             { "data" : "order" },
             { "data" : "id" },
         ],

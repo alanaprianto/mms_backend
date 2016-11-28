@@ -9,7 +9,41 @@
 <h1> Submitted Form </h1>
 <br><br>
 
-<table class="table table-bordered" id="result-table" width=100%>
+<div class="row">
+            <div class="col-lg-9 col-lg-offset-1">
+            @if ($detail)
+              <?php $i=1;?>   
+              <table class="table">
+                <tr>
+                  <td><strong>Status</strong></td>
+                  <td>:</td>
+                  <td>
+                    @if ( $detail[0]['id_user'] )
+                      <span class="label label-primary">Registered</span>
+                    @else
+                      <span class="label label-danger">Not Yet Registered</span>
+                    @endif                
+                  </td>
+                </tr>
+                @foreach ($detail as $row)
+                <tr>
+                    <td><strong>{{ $row->question }}</strong></td>
+                  <td>:</td>
+                  <td>{{ $row->answer }}</td>
+                </tr>
+                @endforeach
+                <tr>
+                  <td><strong>Submitted At</strong></td>
+                  <td>:</td>
+                  <td>{{ $detail[0]['created_at'] }}</td>
+                </tr>
+              </table>
+            @endif
+            </div>
+          </div>                                   
+        </div>
+        
+<!-- <table class="table table-bordered" id="result-table" width=100%>
   <thead>
     <tr>      
       <th>Question</th>                  
@@ -18,7 +52,7 @@
       <th>Tracking Code</th>      
     </tr>        
   </thead>
-</table>
+</table> -->
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

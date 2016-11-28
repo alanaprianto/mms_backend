@@ -16,6 +16,7 @@ use App\Notification;
 use Carbon\Carbon;
 use App\User;
 use App\Regnum;
+use Datatables;
 
 class Member1Controller extends Controller
 {
@@ -41,10 +42,53 @@ class Member1Controller extends Controller
         $completed = $this->completed();
 
         $kta = Kta::where('owner', '=', $member->id)->first();
+        $exp_show = false;
+        $exp_text1 = "";
+        $exp_text2 = "";
         if ($kta) {
             $kta = $member->kta->first()->kta;
+
+            if ($kta=="") {
+            } else if ($kta=="requested") {                
+            } else if ($kta=="validated") {                
+            } else if ($kta=="cancelled") {                
+            } else {                
+                $today = new Carbon();
+                $exp = Carbon::parse($member->kta->first()->expired_at);
+
+                $exp_month = $exp->diffInMonths($today);
+
+                if ($exp_month<=3||$today >= $exp) {
+                    $exp_show = true;                
+
+                    $exp_at = $exp_month;
+                    if ($exp_month==0) {
+                        $exp_at = $exp->diffInDays($today);
+
+                        if ($exp_at==1) {
+                            $m = "Day";
+                        } else {
+                            $m = "Days";
+                        }
+                    } else {
+                        if ($exp_at==1) {
+                            $m = "Month";
+                        } else {
+                            $m = "Months";
+                        }
+                    }
+                    
+                    if ($today >= $exp) {
+                        $exp_text1 = "Your KTA is Expired";
+                        $exp_text2 = $exp_at." ".$m." Ago";
+                    } else if ($exp_month<=3) {                    
+                        $exp_text1 = "Your KTA will be Expired";
+                        $exp_text2 = "In ".$exp_at." ".$m;
+                    }
+                }
+            }            
         } else {
-            $kta = "";
+            $kta = "";            
         }
 
         $rn = Regnum::where('owner', '=', $member->id)->first();
@@ -81,24 +125,66 @@ class Member1Controller extends Controller
         $fdoc = Form_result::where('id_user', '=', $member->id)->whereIn('id_question', $qdoc->pluck('id'));
         $cdoc = $fdoc->count();
         $docs = $fdoc->get();
+
         return view('member.dashboard.index', compact('notifs', 'member', 'detail', 'required', 'completed', 
                 'percentage', 'kta', 'compclass', 'compform', 'compname', 'daerah', 'provinsi', 'cdoc', 'rdoc', 
-                'docs', 'rn'));
+                'docs', 'rn', 'exp_at', 'exp_show', 'exp_text1', 'exp_text2'));
     }
 
     public function kta()
     {                       
         $user = Auth::user();          
 
-        $kta = Kta::where('owner', '=', $user->id)->first();
-        if ($kta) {
+        $thekta = Kta::where('owner', '=', $user->id)->first();
+        if ($thekta) {
             $kta = $user->kta->first()->kta;
+
+            $today = new Carbon();
+            $exp = Carbon::parse($user->kta->first()->expired_at);
+
+            $exp_month = $exp->diffInMonths($today);
+
+            $exp_show = false;
+            if ($exp_month<=3||$today >= $exp) {
+                $exp_show = true;
+
+                $exp_at = $exp_month;
+                if ($exp_month==0) {
+                    $exp_at = $exp->diffInDays($today);
+
+                    $m = "Hari";                
+                } else {
+                    $m = "Bulan";                
+                }                
+                if ($today >= $exp) {
+                    $exp_text1 = "Masa Berlaku KTA anda telah habis. Segera perpanjang KTA anda untuk terus menikmati layanan anggota Kadin.";
+                    $exp_text2 = "Masa berlaku KTA anda telah habis sejak ";
+                    $exp_text3 = $exp_at." ".$m." Lalu";
+                } else if ($exp_month<=3) {
+                    $exp_text1 = "Masa Berlaku KTA anda telah berada di masa tenggang.";
+                    $exp_text2 = "Kartu Tanda Anggota Anda tidak akan berlaku dalam ";
+                    $exp_text3 = $exp_at." ".$m;
+                }
+            }
+            
+            $ext_show = true;
+            if ($thekta->perpanjangan=="requested") {
+                $ext_show = false;
+            }
         } else {
             $kta = "";
-        }
+        }        
 
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('member.kta.index', compact('notifs', 'kta'));
+        return view('member.kta.index', compact('notifs', 'kta', 'exp_show', 'exp_text1', 'exp_text2', 'exp_text3',
+                'ext_show'));
+    }
+
+    public function ajaxKta() {
+        $user = Auth::user();
+        $kta = Kta::where('owner', '=', $user->id)->get();
+
+        return Datatables::of($kta)->make(true);
     }
 
     public function regnum()
@@ -328,7 +414,7 @@ class Member1Controller extends Controller
 
                 $idProv = str_limit(Auth::user()->territory, 3);
                 $idSender = Auth::user()->id;
-                $provinsi = User::where('role', '=', '4')->where('territory', '=', $idProv)->get();                    
+                $provinsi = User::where('role', '=', '4')->where('territory', '=', $idProv)->get();
                 foreach ($provinsi as $key => $prov) {
                     $notif = new Notification;
 
@@ -473,4 +559,71 @@ class Member1Controller extends Controller
         return view('member.kta.print', compact('kta', 'rn', 'exp',
                 'compname', 'complead', 'compaddr', 'compbdus', 'comppermit', 'compqual', 'jabatan', 'postcode', 'compnpwp', 'daerah', 'provinsi'));
     }
+
+    function extkta(Request $request) {
+        $user = Auth::user();
+
+        try {                
+            $kta = Kta::where('owner', '=', $user->id);            
+
+            if (!$kta) {
+                $deleted = false;
+                $deletedMsg = "Error while requesting KTA";
+            } else {                
+                                    
+                $kta->update([
+                        "perpanjangan" => "requested",
+                    ]);
+                
+                $idSender = Auth::user()->id;
+                $idProv = str_limit(Auth::user()->territory, 3);
+                $provinsi = User::where('role', '=', '4')->where('territory', '=', $idProv)->get();                    
+                foreach ($provinsi as $key => $prov) {
+                    $notif = new Notification;
+
+                    $notif->target = $prov->id;
+                    $notif->senderid = $idSender;
+                    $notif->value = "New KTA Extension Request";
+                    $notif->active = true;
+                            
+                    $notif->save();
+                }
+
+                $idDaerah = Auth::user()->territory;
+                $daerah = User::where('role', '=', '5')->where('territory', '=', $idDaerah)->get();
+                foreach ($daerah as $key => $d) {
+                    $notif = new Notification;
+
+                    $notif->target = $d->id;
+                    $notif->senderid = $idSender;
+                    $notif->value = "New KTA Extension Request";
+                    $notif->active = true;
+                            
+                    $notif->save();
+                }
+                
+                $pusat = User::where('role', '=', '3')->get();
+                foreach ($pusat as $key => $p) {
+                    $notif = new Notification;
+
+                    $notif->target = $p->id;
+                    $notif->senderid = $idSender;
+                    $notif->value = "New KTA Extension Request";
+                    $notif->active = true;
+                            
+                    $notif->save();
+                }
+
+                $deleted = true;
+                $deletedMsg = "KTA Extension Request is Sent";
+            }
+        }catch(\Exception $e){
+            return $e;
+            $deleted = false;
+            $deletedMsg = "Error while requesting KTA";
+        }
+
+        return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
+    }
+
 }

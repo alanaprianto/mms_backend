@@ -27,7 +27,7 @@
   <div class="col-lg-3">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <span class="label label-success pull-right">CRUD Form</span>
+        <span class="label label-success pull-right">Form</span>
           <h5>Submitted Form</h5>
       </div>
       <div class="ibox-content">
@@ -39,7 +39,7 @@
   <div class="col-lg-3">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <span class="label label-success pull-right">CRUD Form</span>
+        <span class="label label-success pull-right">Member</span>
           <h5>Member</h5>
       </div>
       <div class="ibox-content">
@@ -51,7 +51,7 @@
   <div class="col-lg-3">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <span class="label label-success pull-right">CRUD Form</span>
+        <span class="label label-success pull-right">Member</span>
           <h5>Validated Member</h5>
       </div>
       <div class="ibox-content">
@@ -63,7 +63,7 @@
   <div class="col-lg-3">
     <div class="ibox float-e-margins">
       <div class="ibox-title">
-        <span class="label label-success pull-right">CRUD Form</span>
+        <span class="label label-success pull-right">Member</span>
           <h5>Unvalidated Member</h5>
       </div>
       <div class="ibox-content">

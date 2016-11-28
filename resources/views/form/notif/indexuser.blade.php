@@ -5,24 +5,56 @@
 @stop
 
 @section('content')
-<h1> Users Index </h1>
-<br><br>
+<!-- <h1> Users Index </h1>
+<br><br> -->
   
 <!-- <div class="nopadding" align="left">
   <a href='user/create' class="btn btn-primary btn-md"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
 </div>  
 <br> -->
 
-<table class="table table-bordered" id="user-table" width=100%>
-  <thead>
-    <tr>
-      <th>Name</th>    
-      <th>Username</th>
-      <th>Email</th>    
-      <th>Options</th>      
-    </tr>        
-  </thead>
-</table>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Users Index</h2>
+    <ol class="breadcrumb">
+        <li>
+            <a>Notification</a>
+        </li>        
+        <li class="active">
+            <strong>Users Index</strong>
+        </li>
+    </ol>
+  </div>
+  <div class="col-lg-2">    
+  </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>User Registered</h5>
+          <div class="ibox-tools"><!-- any link icon --></div>
+        </div>
+        <div class="ibox-content">
+          <table class="table table-striped table-bordered table-hover dataTables-example" id="user-table">
+            <thead>
+              <tr>
+                <th>Name</th>    
+                <th>Username</th>
+                <th>Email</th>    
+                <th>Options</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -102,22 +134,19 @@ $(function() {
       { "data" : "id"}      
     ],
     "columnDefs": [            
-      {
-        // The `data` parameter refers to the data for the cell (defined by the
-        // `data` option, which defaults to the column being worked with, in
-        // this case `data: 0`.
-        // <a href="user/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>        
+      {        
         "render": function ( data, type, row ) {        
-        return '<a href="'+url+'/'+row.id+'" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Detail</a> <a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="user"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>';
+          return '<a href="'+url+'/'+row.id+'" class="btn btn-warning btn-xs">'+
+                    '<span class="glyphicon glyphicon-search"></span>'+
+                    '&nbsp;&nbsp;Detail'+
+                 '</a>'+
+                 '<a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="user">'+
+                    '<span class="glyphicon glyphicon-trash"></span>'+
+                    '&nbsp;&nbsp;Delete'+
+                 '</a>';
         },
         "targets": 3
-      },
-      // {        
-      //   "render": function ( data, type, row ) {
-      //   return '<p>"'+row.html_tag+'"</p>';
-      //   },
-      //   "targets": 2
-      // }
+      }      
     ]
   });
 });

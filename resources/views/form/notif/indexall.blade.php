@@ -5,7 +5,6 @@
 @stop
 
 @section('content')
-
 <div class="col-lg-12">
   <div class="ibox float-e-margins">
     <h1>All Notifications</h1>

@@ -34,8 +34,9 @@ class NotifController extends Controller
         	return view('form.notif.indexuser', compact('notifs', 'id'));
         }
 
-        $code = $notif->sendercode;                
-        return view('form.notif.indexresult', compact('notifs', 'code'));                
+        $code = $notif->sendercode;
+        $fr = Form_result::where('trackingcode', '=', $code)->get();     
+        return view('form.notif.indexresult', compact('notifs', 'code', 'fr'));
     }
 
     public function notifresultAjax($code) {        

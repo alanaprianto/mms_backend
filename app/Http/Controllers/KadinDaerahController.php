@@ -41,14 +41,15 @@ class KadinDaerahController extends Controller
         $terr = $user->territory;
         $totalsubmitted = Form_result::where('answer_value', '=', $terr)->get()->count();    
                 
-        $totalmember = User::where('territory', '=', $terr)->where('role', '=', '2')->get()->count();
-
+        $totalmember = User::where('territory', '=', $terr)->where('role', '=', '2')->get()->count();        
         $totalverified = User::where('territory', '=', $terr)->where('role', '=', '2')
                             ->where('validation', '=', 'validated')
                             ->get()->count();
         $totalunverified = User::where('territory', '=', $terr)->where('role', '=', '2')
-                            ->where('validation', '!=', 'validated')
-                            ->get()->count();                            
+                            ->where('validation', '=', '')
+                            ->get()->count();
+
+        $totalunverified = $totalmember-$totalverified;
         $provcode = substr($terr, 0, 3);
         $provinsi = Provinsi::where('id', '=', $provcode)->first();
         
@@ -131,7 +132,8 @@ class KadinDaerahController extends Controller
         $user = User::where('id', '=', $id)->first();
 
         try {
-            $user->delete();       
+            $user->delete();
+            // method delete folder n propic
             $deleted = true;
             $deletedMsg = "Data " . $name . " is deleted";
         }catch(\Exception $e){
@@ -217,10 +219,10 @@ class KadinDaerahController extends Controller
         $member = User::find($id);
         $detail = Form_result::where('id_user', '=', $member->id)->get();
 
-        $detail1 = $this->detail1($member->id);
-        $detail2 = $this->detail2($member->id);
-        $detail3 = $this->detail3($member->id);
-        $docs = $this->docs($member->id);
+        $detail1 = \App\Helpers\Details::detail1($member->id);
+        $detail2 = \App\Helpers\Details::detail2($member->id);
+        $detail3 = \App\Helpers\Details::detail3($member->id);
+        $docs = \App\Helpers\Details::docs($member->id);
 
         return view('daerah.member.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
     }
@@ -231,12 +233,15 @@ class KadinDaerahController extends Controller
         //         ->where('role', '=', '2')
         //         ->leftJoin('kta', 'kta.owner', '=', 'users.id')
         //         ->get();
+
         $ids = User::select( 'users.*',
-            DB::raw('(select kta from kta where owner  =   users.id  order by id asc limit 1) as kta')  )
+            DB::raw('(select kta from kta where owner = users.id order by id asc limit 1) as kta'),
+            DB::raw('(select perpanjangan from kta where owner = users.id order by id asc limit 1) as ext')  )     
             ->where('territory', '=', $terr)
             ->where('role', '=', '2')
             ->get();
 
+        
         return Datatables::of($ids)->make(true);        
     }    
 
@@ -325,8 +330,9 @@ class KadinDaerahController extends Controller
             return view('daerah.notif.indexuser', compact('notifs', 'id'));
         }
 
-        $code = $notif->sendercode;                
-        return view('daerah.notif.indexresult', compact('notifs', 'code'));                
+        $code = $notif->sendercode;       
+        $detail  = Form_result::where('trackingcode', '=', $code)->get();         
+        return view('daerah.notif.indexresult', compact('notifs', 'code', 'detail'));                
     }
 
     public function notifresultAjax($code) {        
@@ -581,82 +587,7 @@ class KadinDaerahController extends Controller
         }
 
         return $names;
-    }
-
-    function detail1($id) {
-        //detail 1 
-        $qg1 = Form_question_group::where('name', 'like', '%Pendaftaran%')->first();
-        $q1 = Form_question::where('group_question', '=', $qg1->id)->pluck('id');
-        $detail1 = Form_result::                    
-                    where('id_user', '=', $id)
-                    ->whereIn('id_question', $q1)
-                    ->get();
-
-        return $detail1;
-    }
-
-    function detail2($id) {
-        //detail 2
-        $detail2 = Form_result::                
-                where('id_user', '=', $id)                
-                ->get();
-        $fq = Form_result::
-                where('id_user', '=', $id)
-                ->where('id_question', '=', "1")
-                ->first();
-        $qg2 = 0;
-        if ($fq) {
-            $fq = $fq->answer;
-            $btk = Str::upper($fq);
-            $fqg = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->name;
-            foreach ($detail2 as $key => $value) {
-                if ($value->question_group == $fqg) {
-                } else {
-                    unset($detail2[$key]);
-                }
-            }
-
-            $qg2 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first();
-        } else {
-            $detail2 = [];
-        }  
-
-        return $detail2;        
-    }
-
-    function detail3($id) {
-        //detail 3
-        $detail3 = Form_result::                
-                where('id_user', '=', $id)                
-                ->get();            
-        $fqg = Form_question_group::where('name', 'like', '%Tahap 3%')->first()->name;
-        $qg3 = Form_question_group::where('name', 'like', '%Tahap 3%')->first();
-        foreach ($detail3 as $key => $value) {
-            if ($value->question_group == $fqg) {                
-            } else {                
-                unset($detail3[$key]);
-            }
-        }
-        
-        return $detail3;        
-    }
-
-    function docs($id) {
-        //documents uploded
-        $docs = Form_result::                
-                where('id_user', '=', $id)                
-                ->get();            
-        $fqg = Form_question_group::where('name', 'like', '%Upload%')->first()->name;
-        $qgd = Form_question_group::where('name', 'like', '%Upload%')->first();
-        foreach ($docs as $key => $value) {
-            if ($value->question_group == $fqg) {                
-            } else {                
-                unset($docs[$key]);
-            }
-        }
-
-        return $docs;
-    }
+    }    
 
     public function memberReqKta(Request $request) {
         $keterangan = $request['keterangan'];

@@ -32,29 +32,40 @@
       </div>
       <div class="ibox-content">
         <h4 align="center">
-        @if ($kta=="")
-          KTA is not requested.<br>
-          Complete your Account Information.
-        @elseif ($kta=="requested")
-          KTA is requested.<br>
-          Waiting for Validation.
-        @elseif ($kta=="validated")
-          KTA is validated.<br>
-          Waiting for Generation.
-        @elseif ($kta=="cancelled")
-          Your KTA request is cancelled.<br><br>
-          <a href="{{ url('member/kta') }}">
-            <button type="submit" class="btn btn-danger">
-              See Why your KTA is cancelled.
-            </button>
-          </a>
-        @else
-          Your KTA is generated.<br><br>
+        @if ($exp_show)
+          {{ $exp_text1 }}<br><br>
+          <strong>{{ $exp_text2 }}</strong>          
+          <br><br>
           <a href="{{ url('member/kta') }}">
             <button type="submit" class="btn btn-success">
               See your KTA detail.
             </button>
-          </a>          
+          </a>
+        @else
+          @if ($kta=="")
+            KTA is not requested.<br>
+            Complete your Account Information.
+          @elseif ($kta=="requested")
+            KTA is requested.<br>
+            Waiting for Validation.
+          @elseif ($kta=="validated")
+            KTA is validated.<br>
+            Waiting for Generation.
+          @elseif ($kta=="cancelled")
+            Your KTA request is cancelled.<br><br>
+            <a href="{{ url('member/kta') }}">
+              <button type="submit" class="btn btn-danger">
+                See Why your KTA is cancelled.
+              </button>
+            </a>
+          @else
+            Your KTA is generated.<br><br>
+            <a href="{{ url('member/kta') }}">
+              <button type="submit" class="btn btn-success">
+                See your KTA detail.
+              </button>
+            </a>
+          @endif
         @endif
         </h4>
       </div>

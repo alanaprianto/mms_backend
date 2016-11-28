@@ -6,7 +6,7 @@
 
 @section('content')
 <div id="breadcrumbs-bar" class="col-lg-10">
-  <h2>Pendaftaran Anggota Biasa</h2>
+  <h2>Anggota Biasa</h2>
   <ol class="breadcrumb">
     <li>
       <a>Member</a>

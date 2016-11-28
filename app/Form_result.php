@@ -9,7 +9,7 @@ class Form_result extends Model
 {
     protected  $table = "form_result";
 
-    protected $appends = ['answer_type', 'answer', 'question_group', 'question', 'territory_name'];
+    protected $appends = ['answer_type', 'answer', 'question_group', 'question', 'territory_name', 'val_by'];
 
     protected $hidden = ['password', 'remember_token'];
 
@@ -184,5 +184,53 @@ class Form_result extends Model
             }            
         }
         return "Location Not Found";
+    }
+
+    public function getValByAttribute()
+    {
+        $by = $this->attributes['validated_by'];
+        if ($by) {
+            $request = ['id' => $by];        
+
+            $validator = Validator::make($request, [
+                'id' => 'integer',            
+            ]);
+
+            if ($validator->passes()) {
+                $user = User::find($by);
+                if ($user) {
+                    return $user->name;
+                } else {
+                    return "-";
+                }                
+            } else {
+                return "-";
+            }            
+        }
+        return "-";
+    }
+
+    public function getOrderAttribute()
+    {
+        $id = $this->attributes['id_question'];
+        if ($id) {
+            $request = ['id' => $id];        
+
+            $validator = Validator::make($request, [
+                'id' => 'integer',            
+            ]);
+
+            if ($validator->passes()) {
+                $order = Form_question::find($id);
+                if ($order) {
+                    return $order->order;
+                } else {
+                    return 0;
+                }                
+            } else {
+                return 0;
+            }            
+        }
+        return 0;
     }
 }

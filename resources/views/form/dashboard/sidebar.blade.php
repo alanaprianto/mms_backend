@@ -1,6 +1,15 @@
-<li class="active"><a href="{{ url('crud/form/dashboard')}}"><i class="fa fa-dashboard"></i><span class="nav-label">Dashboard</span></a></li>
+<li class="active">
+  <a href="{{ url('crud/form/dashboard')}}">
+    <i class="fa fa-dashboard"></i>
+    <span class="nav-label">Dashboard</span>
+  </a>
+</li>
 <li>
-    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">CRUD Forms</span><span class="fa arrow"></span></a>
+    <a href="#">
+      <i class="fa fa-table"></i>
+      <span class="nav-label">Dynamic Forms</span>
+      <span class="fa arrow"></span>
+    </a>
     <ul class="nav nav-second-level">
       <li><a href="{{ url('crud/form/setting')}}">Form Setting</a></li>
       <li><a href="{{ url('crud/form/types')}}">Form Type</a></li>
@@ -11,5 +20,15 @@
       <li><a href="{{ url('crud/form/result')}}">Form Result</a></li>
   </ul>
 </li>
-<li><a href="{{ url('crud/form/user')}}"><i class="fa fa-user"></i><span class="nav-label">Users</span></a></li>
-<li><a href="{{ url('crud/form/member')}}"><i class="fa fa-users"></i><span class="nav-label">Members</span></a></li>
+<li>
+  <a href="{{ url('crud/form/user')}}">
+    <i class="fa fa-user"></i>
+    <span class="nav-label">Users</span>
+  </a>
+</li>
+<li>
+  <a href="{{ url('crud/form/member')}}">
+    <i class="fa fa-users"></i>
+    <span class="nav-label">Members</span>
+  </a>
+</li>

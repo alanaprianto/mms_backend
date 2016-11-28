@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], function() {
   // Member
   Route::get('member', 'Member1Controller@dashboard');
   Route::get('member/kta', 'Member1Controller@kta');
+  Route::get('member/ajax/kta', 'Member1Controller@ajaxKta');
   Route::post('member/ktaprint', 'Member1Controller@ktaprint');
   Route::get('member/printkta', 'Member1Controller@printkta');
   Route::get('member/rn', 'Member1Controller@regnum');
@@ -71,6 +72,7 @@ Route::group(['middleware' => 'auth'], function() {
 
   // KTA
   Route::post('member/requestkta/', 'Member1Controller@requestkta');
+  Route::post('member/extkta', 'Member1Controller@extkta');
 
 });
 
@@ -140,16 +142,22 @@ Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role.provinsi'], f
   Route::get('provinsi', 'KadinProvinsiController@dashboard');
   Route::get('provinsi/profile', 'KadinProvinsiController@profile');
   Route::get('provinsi/kta/list', 'KadinProvinsiController@ktaList');
-  Route::get('provinsi/kta/list/{id}', 'KadinProvinsiController@ktaListDetail');
+  Route::get('provinsi/kta/list/{id}', 'KadinProvinsiController@ktaDetail');
   Route::get('provinsi/kta/request', 'KadinProvinsiController@ktaRequest');
-  Route::get('provinsi/kta/request/{id}', 'KadinProvinsiController@ktaRequestDetail');
+  Route::get('provinsi/kta/request/{id}', 'KadinProvinsiController@ktaDetail');
   Route::get('provinsi/kta/cancel', 'KadinProvinsiController@ktaCancel');
-  Route::get('provinsi/kta/cancel/{id}', 'KadinProvinsiController@ktaCancelDetail');
+  Route::get('provinsi/kta/cancel/{id}', 'KadinProvinsiController@ktaDetail');
   Route::post('provinsi/kta/cancelkta/', 'KadinProvinsiController@cancelKta');  
   Route::post('provinsi/kta/insertkta/', 'KadinProvinsiController@insertKta');
+  Route::get('provinsi/kta/expired', 'KadinProvinsiController@ktaExpired');
+  Route::get('provinsi/kta/expired/{id}', 'KadinProvinsiController@ktaDetail');
+  Route::get('provinsi/kta/extension', 'KadinProvinsiController@ktaExtension');
+  Route::get('provinsi/kta/extension/{id}', 'KadinProvinsiController@ktaDetail');
   Route::get('provinsi/ajax/kta', 'KadinProvinsiController@ajaxKta');
   Route::get('provinsi/ajax/ktacancelled', 'KadinProvinsiController@ajaxKtaCancel');
   Route::get('provinsi/ajax/ktalist', 'KadinProvinsiController@ajaxKtaList');
+  Route::get('provinsi/ajax/ktaexpired', 'KadinProvinsiController@ajaxKtaExpired');
+  Route::get('provinsi/ajax/ktaext', 'KadinProvinsiController@ajaxKtaExtension');
   Route::get('provinsi/notif/all', 'KadinProvinsiController@notifall');
   Route::get('provinsi/notif/{id}', 'KadinProvinsiController@notif');
   Route::get('provinsi/valnas', 'KadinProvinsiController@valnas');
@@ -161,13 +169,16 @@ Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role.pusat'], func
   Route::get('pusat/notif/all', 'KadinPusatController@notifall');
   Route::get('pusat/notif/{id}', 'KadinPusatController@notif');
   Route::get('pusat/rn/list', 'KadinPusatController@rnList');
-  Route::get('pusat/rn/list/{id}', 'KadinPusatController@rnListDetail');
+  Route::get('pusat/rn/list/{id}', 'KadinPusatController@memberDetail');
   Route::get('pusat/ajax/rnlist', 'KadinPusatController@ajaxRnList');
   Route::get('pusat/rn/request', 'KadinPusatController@rnRequest');
-  Route::get('pusat/rn/request/{id}', 'KadinPusatController@rnRequestDetail');
+  Route::get('pusat/rn/request/{id}', 'KadinPusatController@memberDetail');
   Route::get('pusat/ajax/rn', 'KadinPusatController@ajaxRnRequest');
   Route::post('pusat/rn/insertrn/', 'KadinPusatController@insertRn');
-
+  Route::get('pusat/ktaext', 'KadinPusatController@ktaExt');
+  Route::get('pusat/ktaext/{id}', 'KadinPusatController@memberDetail');
+  Route::get('pusat/ajax/ktaext', 'KadinPusatController@ajaxKtaExtension');
+  Route::post('pusat/ktaext/process', 'KadinPusatController@ktaExtensionProcess');  
 });
 // Percobaan
 Route::get('percobaan', 'PercobaanController@percobaan');

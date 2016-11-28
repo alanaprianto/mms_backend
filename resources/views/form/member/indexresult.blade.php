@@ -32,151 +32,365 @@
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <h5>Detail User</h5>
-          <div class="ibox-tools"><!-- any link icon --></div>
+          <h5>{{ $member->name }} </h5>
+          <div class="ibox-tools">
+            <a class="collapse-link">
+              <i class="fa fa-chevron-up"></i>
+            </a>
+          </div>
         </div>
         <div class="ibox-content">
-          <form class="form-horizontal">
-            <!-- identitas user -->
-            <div class="form-group">
-              <label class="col-lg-2 control-label">User</label>
-              <div class="col-lg-10">
-                <p class="form-control-static"><?php echo @$detail[0]['username'];?></p>
+          <div class="row">
+            <div class="col-lg-12">
+              <!-- identitas user -->
+              <div class="form-group">
+                <label class="col-lg-2 control-label">Username</label>
+                <div class="col-lg-10">
+                  <p class="form-control-static">{{ $member->username }}</p>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Tracking Code</label>
-              <div class="col-lg-10">
-                <p class="form-control-static"><?php echo @$detail[0]['trackingcode'];?></p>
+              <div class="form-group">
+                <label class="col-lg-2 control-label">Tracking Code</label>
+                <div class="col-lg-10">
+                  <p class="form-control-static"><?php echo @$detail[0]['trackingcode'];?></p>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Submitted At</label>
-              <div class="col-lg-10">
-                <p class="form-control-static"><?php echo @$detail[0]['created_at'];?></p>
+              <div class="form-group">
+                <label class="col-lg-2 control-label">Submitted At</label>
+                <div class="col-lg-10">
+                  <p class="form-control-static">{{ $member->created_at }}</p>
+                </div>
               </div>
-            </div>
-            <div class="hr-line-dashed"></div>
-
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Questions</label>
-              <div class="col-lg-10">
-                <p class="form-control-static">
-                  <strong>Found <?php echo count(@$detail);?> questions.</strong>
-                  <div class="table-responsive">
-                    <table class="table table-hover issue-tracker">
-                      <tbody>
-                        @if ($detail)
-                        <?php $i=1;?>
-                        @foreach ($detail as $row)
-                        <tr>
-                          <td><span class="label label-primary">added</span></td>
-                          <td class="issue-info"><a href="#">QUESTION-<?php echo str_pad($i++, 1, '0', STR_PAD_LEFT);?></a><small>{{ $row->question }}</small></td>
-                          <td align="right">{{ $row->answer }}</td>
-                          <td class="text-right">
-                            <button class="btn btn-white btn-xs" title="Edit Question"> <i class="fa fa-edit fa-fw"></i></button>
-                            <button class="btn btn-white btn-xs" title="Delete Question"> <i class="fa fa-trash fa-fw"></i></button>
-                          </td>
-                        </tr>
-                        @endforeach
-                        @endif
-                      </tbody>
-                    </table>
-                  </div>
-                </p>
+              <div class="form-group">
+                <label class="col-lg-2 control-label">Territory</label>
+                <div class="col-lg-10">
+                  <p class="form-control-static">{{ $member->territory_name }}</p>
+                </div>
               </div>
+              <div class="hr-line-dashed"></div>
             </div>
-          </form>
-
+          </div>                
         </div>
       </div>
     </div>
   </div>
+
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">    
+      <h5>Pendaftaran</h5>    
+      <div class="ibox-tools">      
+        <a class="collapse-link">
+          <i class="fa fa-chevron-up"></i>
+        </a>
+      </div>
+    </div>
+    <div class="ibox-content" style="display: block;">    
+      <div class="row">
+        <div class="col-lg-9 col-lg-offset-1">
+          @if ($detail1->count()>=1)            
+            <table class="table">            
+              @foreach ($detail1 as $row)
+                @if ($row->correction||$row->commentary)
+                  <tr bgcolor="#F6CECE">
+                @else 
+                  <tr>
+                @endif
+                  <td><strong>{{ $row->question }}</strong></td>
+                  <td>:</td>
+                  <td>{{ $row->answer }}</td>
+                  <td>
+                    <a 
+                      href="" 
+                      class="btn btn-white btn-xs" 
+                      data-toggle="modal" 
+                      data-target="#valModal" 
+                      data-id="{{ $row->id }}" 
+                      data-answer="{{ $row->answer }}" 
+                      data-question="{{ $row->question }}" 
+                      data-corr="{{ $row->correction }}" 
+                      data-comm="{{ $row->commentary }}"
+                      data-valby="{{ $row->val_by }}" 
+                      data-date="{{ $row->validated_at }}">
+                      <i class="fa fa-edit fa-fw"></i>
+                    </a>
+                  </td>
+                </tr>
+              @endforeach            
+            </table>
+          @else
+            <div class="text-center">
+              No Data
+            </div>
+          @endif
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <h5>Profile Tahap 2</h5>
+      <div class="ibox-tools">      
+        <a class="collapse-link">
+          <i class="fa fa-chevron-up"></i>
+        </a>                       
+      </div>
+    </div>
+    <div class="ibox-content" style="display: block;">      
+      <div class="row">
+        <div class="col-lg-9 col-lg-offset-1">
+          @if ($detail2->count()>=1)
+            <table class="table">              
+              @foreach ($detail2 as $row)
+                @if ($row->correction||$row->commentary)
+                  <tr bgcolor="#F6CECE">
+                @else 
+                  <tr>
+                @endif
+                  <td><strong>{{ $row->question }}</strong></td>
+                  <td>:</td>
+                  <td>{{ $row->answer }}</td>
+                  <td>
+                    <a 
+                    href="" 
+                    class="btn btn-white btn-xs" 
+                    data-toggle="modal" 
+                    data-target="#valModal" 
+                    data-id="{{ $row->id }}" 
+                    data-answer="{{ $row->answer }}" 
+                    data-question="{{ $row->question }}" 
+                    data-corr="{{ $row->correction }}" 
+                    data-comm="{{ $row->commentary }}"
+                    data-valby="{{ $row->val_by }}" 
+                    data-date="{{ $row->validated_at }}">
+                      <i class="fa fa-edit fa-fw"></i>
+                    </a>
+                  </td>
+                </tr>
+              @endforeach              
+            </table>
+          @else
+            <div class="text-center">
+              No Data
+            </div>
+          @endif
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <h5>Profile Tahap 3</h5>
+      <div class="ibox-tools">      
+        <a class="collapse-link">
+          <i class="fa fa-chevron-up"></i>
+        </a>                        
+      </div>
+    </div>
+    <div class="ibox-content" style="display: block;">
+      <div class="row">
+        <div class="col-lg-9 col-lg-offset-1">
+          @if ($detail3->count()>=1)
+            <table class="table">              
+              @foreach ($detail3 as $row)
+                @if ($row->correction||$row->commentary)
+                  <tr bgcolor="#F6CECE">
+                @else 
+                  <tr>
+                @endif
+                  <td><strong>{{ $row->question }}</strong></td>
+                  <td>:</td>
+                  <td>{{ $row->answer }}</td>
+                  <td>
+                    <a 
+                      href="" 
+                      class="btn btn-white btn-xs" 
+                      data-toggle="modal" 
+                      data-target="#valModal" 
+                      data-id="{{ $row->id }}" 
+                      data-answer="{{ $row->answer }}" 
+                      data-question="{{ $row->question }}" 
+                      data-corr="{{ $row->correction }}" 
+                      data-comm="{{ $row->commentary }}"
+                      data-valby="{{ $row->val_by }}" 
+                      data-date="{{ $row->validated_at }}">
+                      <i class="fa fa-edit fa-fw"></i>
+                    </a>
+                  </td>
+                </tr>
+              @endforeach              
+            </table>
+          @else
+            <div class="text-center">
+              No Data
+            </div>
+          @endif
+        </div>
+      </div>
+    </div>    
+  </div>
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <h5>Documents Uploaded</h5>
+      <div class="ibox-tools">      
+        <a class="collapse-link">
+          <i class="fa fa-chevron-up"></i>
+        </a>                        
+      </div>
+    </div>
+    <div class="ibox-content" style="display: block;">
+      <div class="row">
+        <div class="col-lg-9 col-lg-offset-1">
+          @if ($docs->count()>=1)
+            <table class="table">              
+              @foreach ($docs as $row)
+                @if ($row->correction||$row->commentary)
+                  <tr bgcolor="#F6CECE">
+                @else 
+                  <tr>
+                @endif
+                  <td><strong>{{ $row->question }}</strong></td>
+                  <td>:</td>
+                  <td>{{ $row->answer }}</td>
+                  <td>
+                    <a 
+                      href="" 
+                      class="btn btn-white btn-xs" 
+                      data-toggle="modal" 
+                      data-target="#valImgModal" 
+                      data-id="{{ $row->id }}" 
+                      data-answer="{{ $row->answer }}" 
+                      data-question="{{ $row->question }}" 
+                      data-corr="{{ $row->correction }}" 
+                      data-comm="{{ $row->commentary }}" 
+                      data-valby="{{ $row->val_by }}" 
+                      data-date="{{ $row->validated_at }}">
+                      <i class="fa fa-edit fa-fw"></i>                    
+                    </a>
+                  </td>
+                </tr>
+              @endforeach              
+            </table>
+          @else
+            <div class="text-center">
+              No Data
+            </div>
+          @endif
+        </div>
+      </div>
+    </div>
+  </div>  
 </div>
 
-
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
+<!-- Validation Modal -->
+<div class="modal inmodal" id="valModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content animated bounceInRight">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Validation</h4>           
       </div>
       <div class="modal-body">
-        Delete Record No
+        <p>Validasi untuk keterangan : </p>      
+        <p class="jhgj"></p>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+          <label>Your Correction</label>
+          <input type="text" class="form-control" id="correction" readonly>
+        </div>
+        <div class="form-group">
+          <label>Your Commentary</label>
+          <textarea class="form-control" id="commentary" readonly></textarea>
+        </div>
+        <p class="val-by" style="font-size:12px;"></p>
+        <p class="val-date" style="font-size:12px;"></p>
       </div>
-      <div class="modal-footer">
-        <input type="hidden" class="form-control" id="id">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button id="submit_delete" type="submit" class="btn btn-danger">Delete</button>
+      <div class="modal-footer">        
       </div>
     </div>
   </div>
 </div>
 
+<!-- Validation Modal With Image-->
+<div class="modal inmodal" id="valImgModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content animated bounceInRight">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Validation</h4>           
+      </div>
+      <div class="modal-body">
+        <div class="center-block forimage" align="center">          
+        </div>
+        <br>
+        <p>Validasi untuk keterangan : </p>      
+        <p class="jhgj"></p>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+          <label>Your Correction</label>
+          <input type="text" class="form-control" id="correctionimg" readonly>
+        </div>
+        <div class="form-group">
+          <label>Your Commentary</label>
+          <textarea class="form-control" id="commentaryimg" readonly></textarea>
+        </div>
+        <p class="val-by" style="font-size:12px;"></p>
+        <p class="val-date" style="font-size:12px;"></p>
+      </div>
+      <div class="modal-footer">        
+      </div>
+    </div>
+  </div>
+</div>
 @stop
 
 @push('scripts')
 <script>
-  var urlAjax = "{{ url('crud/form/ajax/memberresultAjax/')}}/{{ $member->id }}";
-  $('#myModal').on('show.bs.modal', function (event) {  
-    var button = $(event.relatedTarget) // Button that triggered the modal    
-    url = button.data('url');
-    id = button.data('id');
-    name = button.data('name');
+  $('#valModal').on('show.bs.modal', function (event) {  
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var id = button.data('id');
+    var question = button.data('question');
+    var answer = button.data('answer');
+    var corr = button.data('corr');
+    var comm = button.data('comm');
+    var valby = button.data('valby');
+    var date = button.data('date');    
 
-    console.log(url + " " + id + " " + name);
+    $(".jhgj").html("<strong>"+question+"  :</strong>  <i>"+answer+"</i>");
+    $(".val-by").html("Tervalidasi Oleh : <i>"+valby+"</i>");
+    $(".val-date").html("Tervalidasi Tanggal : <i>"+date+"</i>");
 
     var modal = $(this);
-    modal.find('.modal-body').text('Delete Record "' + name + '"?');
-    modal.find('.modal-footer .form-control').val(id);
-
+    modal.find('#correction').val(corr);
+    modal.find('#commentary').val(comm);    
   });
 
-  $('#submit_delete').on('click', function (event) {  
-    $.ajax({    
-      url: url+"/"+id,
-      type: "post",
-      data: {
-        _method: 'DELETE', 
-        _token: "{{ csrf_token() }}",        
-      }
-    }).done(function(data) {                    
-      console.log(data);
+  $('#valImgModal').on('show.bs.modal', function (event) {  
+    var button = $(event.relatedTarget) // Button that triggered the modal          
+    id = button.data('id');
+    question = button.data('question');
+    answer = button.data('answer');
+    corr = button.data('corr');
+    comm = button.data('comm');
+    filename = answer.split(".")[0];
+    var valby = button.data('valby');
+    var date = button.data('date');
 
-      $('#myModal').modal('hide'); 
+    var uploadedfiles = "{{ url('/uploadedfiles') }}";
+    var username = "{{ $member->username }}";
 
-      if (data.success) {
-        toastr.success(data.msg);
-      } else {
-        toastr.error(data.msg);
-      }
-
-      var ref = $('#result-table').DataTable();
-      ref.ajax.reload(null, false);    
-    });
+    $(".jhgj").html("<strong>"+question+"  :</strong>  <i>"+answer+"</i>");
+    $(".forimage").html("<img src="+uploadedfiles+"/"+username+"_"+filename+" class='img-responsive center-block img-thumbnail' />");
+    $(".val-by").html("Tervalidasi Oleh : <i>"+valby+"</i>");
+    $(".val-date").html("Tervalidasi Tanggal : <i>"+date+"</i>");
+    var modal = $(this);
+    modal.find('#correctionimg').val(corr);
+    modal.find('#commentaryimg').val(comm);
   });
-
-  $(function() {
-    var ajax = urlAjax;
-    console.log(ajax);
-
-    $('#result-table').DataTable({
-      processing: true,
-      serverSide: true,
-      iDisplayLength: 50,
-      ajax: ajax,
-      columns: [       
-        { "data" : "question" },        
-        { "data" : "answer" },        
-        { "data" : "name"},        
-        { "data" : "trackingcode"},      
-        { "data" : "created_at"},      
-      ],    
-    });
-  });
-
 </script>
 @endpush

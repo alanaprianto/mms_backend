@@ -12,6 +12,9 @@ use App\Form_result;
 use App\Role;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Form_question_group;
+use App\Form_question;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -87,8 +90,14 @@ class UserController extends Controller
     public function show($id)
     {
         $notifs = \App\Helpers\Notifs::getNotifs();        
-        $user = User::find($id);
-        return view('form.user.indexresult', compact('notifs', 'user'));
+        $member = User::find($id);        
+        
+        $detail1 = \App\Helpers\Details::detail1($member->id);
+        $detail2 = \App\Helpers\Details::detail2($member->id);
+        $detail3 = \App\Helpers\Details::detail3($member->id);
+        $docs = \App\Helpers\Details::docs($member->id);
+        
+        return view('form.user.indexresult', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
     }
 
     /**
@@ -123,5 +132,5 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
+    }    
 }

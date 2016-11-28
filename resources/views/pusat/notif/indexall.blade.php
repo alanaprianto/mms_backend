@@ -1,9 +1,5 @@
 @extends('pusat.app')
 
-@section('sidebar')
-  @include('pusat.sidebar-plain') 
-@stop
-
 @section('content')
 
 <div class="col-lg-12">

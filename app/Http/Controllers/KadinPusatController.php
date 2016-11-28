@@ -17,6 +17,7 @@ use App\Notification;
 use App\Form_question_group;
 use Illuminate\Support\Str;
 use App\Regnum;
+use Illuminate\Support\Collection;
 
 class KadinPusatController extends Controller
 {
@@ -173,7 +174,7 @@ class KadinPusatController extends Controller
             try {
                 $carbon = new Carbon();                
                 
-                $rn->rn = $st."-".$nd;
+                $rn->regnum = $st."-".$nd;
                 $rn->granted_at = $carbon;
                 $rn->expired_at = $carbon->addYear(1);
                 $rn->save();
@@ -191,7 +192,115 @@ class KadinPusatController extends Controller
         
         return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
     }
-    // asdad
+    
+    public function ktaExt()
+    {                       
+        $notifs = \App\Helpers\Notifs::getNotifs();        
+
+        return view('pusat.ktaext.index', compact('notifs'));
+    }
+
+    public function ajaxKtaExtension() {                
+        $ktas = Kta::where('perpanjangan', '=', 'requested')->get();
+        
+        $fr = new Collection;
+        $today = new Carbon();
+        foreach ($ktas as $key => $value) {
+            $exp = Carbon::parse($value->expired_at);
+            $exp_month = $exp->diffInMonths($today);
+
+            if ($exp_month<=3||$today >= $exp) {
+                $exp_show = true;                
+
+                $exp_at = $exp_month;
+                if ($exp_month==0) {
+                    $exp_at = $exp->diffInDays($today);
+
+                    if ($exp_at==1) {
+                        $m = "Day";
+                    } else {
+                        $m = "Days";
+                    }
+                } else {
+                    if ($exp_at==1) {
+                        $m = "Month";
+                    } else {
+                        $m = "Months";
+                    }
+                }                
+
+                $exp_in = "";
+                if ($today >= $exp) {
+                    $exp_in = $exp_at." ".$m." Ago";
+                } else if ($exp_at<=3) {
+                    $exp_in = "In ".$exp_at." ".$m;
+                }
+
+                $comp = Form_result::where('id_user', '=', $value->owner)
+                            ->where('id_question', '=', '8')
+                            ->first()->answer_value;
+                $comptype = Form_result::where('id_user', '=', $value->owner)
+                            ->where('id_question', '=', '1')
+                            ->first()->answer;
+                $comprep = $value->user->name;
+                $kta = $value->kta;
+                $id_user = $value->owner;
+                $exp_at = $value->expired_at;
+                $stat = $value->perpanjangan;
+                $id = $value->id;
+
+                $fr->push([
+                    'id' => $id,
+                    'company' => $comptype." ".$comp,
+                    'companyrep' => $comprep,
+                    'kta' => $kta,
+                    'expired_at' => $exp_at,
+                    'expired_in' => $exp_in,
+                    'id_user' =>  $id_user,
+                    'status' => $stat,
+                ]);
+            }      
+        }
+
+        return Datatables::of($fr)->make(true);
+    }
+
+    public function memberDetail($id)
+    {
+        $notifs = \App\Helpers\Notifs::getNotifs();
+        $member = User::find($id);
+        
+        $detail1 = $this->detail1($member->id);
+        $detail2 = $this->detail2($member->id);
+        $detail3 = $this->detail3($member->id);
+        $docs = $this->docs($member->id);
+
+        return view('pusat.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
+    }    
+
+    public function ktaExtensionProcess(Request $request) {
+        $id = $request['id_kta'];
+        $name = $request['compname'];
+
+
+        try {            
+            $kta = Kta::where('id', '=', $id)->first();            
+            $pp = 'processed_'.$kta->kta;
+
+            $kta->update([
+                    'kta' => 'requested',
+                    'perpanjangan' => $pp,
+                ]);            
+
+            $deleted = true;
+            $deletedMsg = "Extension Request from ".$name." is Proceeded";
+        }catch(\Exception $e){
+            $deleted = false;
+            $deletedMsg = "Error while executing command";
+        }
+        
+        return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
+    }
 
     function detail1($id) {
         //detail 1 

@@ -1,9 +1,5 @@
 @extends('pusat.app')
 
-@section('sidebar')
-  @include('pusat.sidebar-plain')
-@stop
-
 @section('content')
 <div class="col-lg-10">
   <h2>Profile</h2>
@@ -36,7 +32,7 @@
           </div>
           <div class="ibox-content profile-content">
             <h4><strong>{{ Auth::user()->username }}</strong></h4>
-            <p><i class="fa fa-map-marker"></i> {{ Auth::user()->territory_name }}</p>
+            <p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;Indonesia</p>
             <br>            
           </div>
         </div>

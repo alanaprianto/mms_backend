@@ -62,26 +62,28 @@
 <!-- Modal -->
 <div class="modal inmodal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog">
-      <div class="modal-content animated bounceInRight">
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <div class="modal-content animated bounceInRight">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
 
-              <i class="fa fa-warning modal-icon"></i>
-              <h4 class="modal-title">Warning!</h4>
-          </div>
-          <div class="modal-body">
-              <p>This record will be deleted permanently.</p>
-              <p>Are you sure to delete record <span class="recordname"></span></p>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" class="form-control" id="id">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button id="submit_delete" type="submit" class="btn btn-danger">Delete</button>
-          </div>
+        <i class="fa fa-warning modal-icon"></i>
+        <h4 class="modal-title">Warning!</h4>
       </div>
+      <div class="modal-body">
+        <p>This record will be deleted permanently.</p>
+        <p>Are you sure to delete record <span class="recordname"></span></p>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" class="form-control" id="id">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="submit_delete" type="submit" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
   </div>
 </div>
-
 @stop
 
 @push('scripts')

@@ -229,7 +229,7 @@
             }      
 
             $(  "<div class='form-group'>"+
-                    "<input class='btn btn-primary full-width' type='submit' value='Submit'>"+                    
+                    "<input class='btn btn-primary' type='submit' value='Submit'>"+                    
                 "</div>").appendTo(element);
 
             var div1 = element.offsetHeight;

@@ -1,7 +1,7 @@
 @extends('pusat.app')
 
-@section('sidebar')
-	@include('pusat.dashboard.sidebar')
+@section('active-dashboard')
+	active
 @stop
 
 @section('content')
