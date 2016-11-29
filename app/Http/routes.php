@@ -16,7 +16,6 @@ Route::get('404', 'MmsController@notfound');
 Route::get('informasi', 'MmsController@info');
 Route::get('bantuan', 'MmsController@help');
 
-
 // Auth
 Route::get('login', 'LoginController@show');
 Route::post('login', 'LoginController@login');
@@ -33,9 +32,14 @@ Route::get('register/{code}', 'PendaftaranController@register');
 Route::post('register', 'PendaftaranController@createuser');
 
 // Payment *percobaan
-  Route::get('register1pay', 'MmsController@pay1');
-  Route::post('register1pay', 'MmsController@pay1store');
-  
+Route::get('register1pay', 'MmsController@pay1');
+Route::post('register1pay', 'MmsController@pay1store');
+
+// KTA Tracking
+Route::post('ktatrack', 'MmsController@ktatrack');
+Route::post('ktatrack/requestkta/', 'MmsController@ktatrackrequestkta');
+Route::get('ktatrack/{code}', 'MmsController@ktatrackcode');
+
 // Authenticated
 Route::group(['middleware' => 'auth'], function() {
   // Profile

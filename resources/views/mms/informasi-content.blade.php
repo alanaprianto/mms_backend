@@ -29,12 +29,15 @@
             <small>KADIN</small>
             <h2>Tracking</h2>
             <p>Untuk mengetahui status proses Kartu Tanda Anggota silahkan cek dibawah ini.</p>
-            <form role="form" action="" method="post" class="registration-form">
+            <form role="form" action="{{ url('ktatrack') }}" method="post" class="registration-form">
                 <div class="form-group">
                     <label class="sr-only" for="form-first-name">Kode Tracking</label>
-                    <input type="text" name="form-first-name" placeholder="Kode Tracking ..." class="form-first-name form-control" id="form-first-name">
+                    <input type="text" name="code" placeholder="Kode Tracking ..." class="form-first-name form-control" id="code" required minlength="8">
                 </div>
-                <button class="btn btn-success " type="button"><i class="fa fa-search"></i>&nbsp;&nbsp;<span class="bold">Temukan</span></button>
+                <button class="btn btn-success " type="submit">
+                    <i class="fa fa-search"></i>
+                    &nbsp;&nbsp;<span class="bold">Temukan</span>
+                </button>
             </form>
         </div>
 
@@ -55,4 +58,9 @@
         </div>
     </div>
 </div>
+@stop
+
+@section('scripts')
+<!-- Jquery Validate -->
+<script src="{{ asset('resources/assets/js/plugins/validate/jquery.validate.min.js') }}"></script>
 @stop

@@ -23,7 +23,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 
 class MmsController extends Controller
-{
+{  
     /**
      * Menampilkan Halaman Utama
      *
@@ -92,7 +92,7 @@ class MmsController extends Controller
 
     public function pay1store(Request $request)
     {                
-        $input = Request::all();                        
+        $input = Request::all();
 
         $trcode = $input['trackingcode'];
         $results = Form_result::where('trackingcode', '=', $trcode)->get();
@@ -191,5 +191,62 @@ class MmsController extends Controller
       $totalresult = \App\Form_result::get()->count();
       return view('form.dashboard.index', compact('notifs', 'totalsetting', 'totaltype', 'totalrules', 
         'totalquestion', 'totalqgroup', 'totalanswer', 'totalresult'));
+    }    
+
+    public function ktatrack(Request $request) {
+      $input = Request::all();
+      $code = $input['code'];          
+      return view('mms.ktatracking-content', compact('code'));
+    }
+
+    // ktatrackrequestkta
+
+    public function ktatrackcode ($code) {      
+      $fr = \App\Form_result::where('trackingcode', '=', $code)->first()->id_user;
+      if (!$fr) {
+        return 'Tracking Code Tidak Terdaftar';
+      }
+
+      $user = \App\User::where('id', '=', $fr)->first();
+
+      $kta = \App\Kta::where('owner', '=', $user->id)->first();
+        if ($kta) {
+            $today = new Carbon();
+            $exp = Carbon::parse($user->kta->first()->expired_at);
+
+            $exp_month = $exp->diffInMonths($today);
+
+            $exp_show = false;
+            if ($exp_month<=3||$today >= $exp) {
+                $exp_show = true;
+
+                $exp_at = $exp_month;
+                if ($exp_month==0) {
+                    $exp_at = $exp->diffInDays($today);
+
+                    $m = "Hari";                
+                } else {
+                    $m = "Bulan";                
+                }                
+                if ($today >= $exp) {
+                    $exp_text1 = "Masa Berlaku KTA anda telah habis. Segera perpanjang KTA anda untuk terus menikmati layanan anggota Kadin.";
+                    $exp_text2 = "Masa berlaku KTA anda telah habis sejak ";
+                    $exp_text3 = $exp_at." ".$m." Lalu";
+                } else if ($exp_month<=3) {
+                    $exp_text1 = "Masa Berlaku KTA anda telah berada di masa tenggang.";
+                    $exp_text2 = "Kartu Tanda Anggota Anda tidak akan berlaku dalam ";
+                    $exp_text3 = $exp_at." ".$m;
+                }
+            }
+            
+            $ext_show = true;
+            if ($kta->perpanjangan=="requested") {
+                $ext_show = false;
+            }
+        }     
+        
+        // return $kta;
+
+        return view('mms.ktatracking-frame', compact('kta', 'exp_show', 'exp_text1', 'exp_text2', 'exp_text3', 'ext_show'));
     }
 }

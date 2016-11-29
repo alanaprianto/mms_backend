@@ -45,7 +45,10 @@
                             <label class="sr-only" for="form-password">Password</label>
                             <input type="password" name="password" placeholder="Password..." class="form-password form-control" id="form-password">
                           </div>
-                          <button class="btn btn-warning" type="submit"><i class="fa fa-lock"></i> <span class="bold">Login</span></button>
+                          <button class="btn btn-warning" type="submit">
+                            <i class="fa fa-lock"></i>
+                            <span class="bold">Login</span>
+                          </button>
                       {!! Form::close() !!}
                     </div>
                   </div>
