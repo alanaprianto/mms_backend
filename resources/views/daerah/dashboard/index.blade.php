@@ -1,7 +1,7 @@
 @extends('daerah.app')
 
-@section('sidebar')
-  @include('daerah.dashboard.sidebar')
+@section('active-dashboard')
+  active
 @stop
 
 @section('content')
@@ -131,43 +131,9 @@
       </div>
       <div class="ibox-content">
         <div class="feed-activity-list">
-          
-          <div class="feed-element">
-            <div>
-              <a href="">
-                <i class="fa fa-envelope fa-fw"></i> 
-                <strong>Judul Berita 1</strong>
-              </a>
-              <small class="pull-right text-navy">1m ago</small>
-              <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum</div>
-              <small class="text-muted">Today 5:60 pm - 12.06.2014</small>
-            </div>
-          </div>
+          <div id="wadahnews">
 
-          <div class="feed-element">
-            <div>
-              <a href="">
-                <i class="fa fa-envelope fa-fw"></i> 
-                <strong>Judul Berita 2</strong>
-              </a>
-              <small class="pull-right text-navy">1m ago</small>
-              <div>There are many variations of passages of Lorem Ipsum available</div>
-              <small class="text-muted">Today 5:60 pm - 12.06.2014</small>
-            </div>
           </div>
-
-          <div class="feed-element">
-            <div>
-              <a href="">
-                <i class="fa fa-envelope fa-fw"></i> 
-                <strong>Judul Berita 3</strong>
-              </a>
-              <small class="pull-right text-navy">1m ago</small>
-              <div>There are many variations of passages of Lorem Ipsum available</div>
-              <small class="text-muted">Today 5:60 pm - 12.06.2014</small>
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
@@ -176,5 +142,51 @@
 @stop
 
 @push('scripts')
+<script type="text/javascript">
+   window.onload = getNews;
+    
+    function getNews() {
+      $.ajax({    
+        url: "http://110.74.178.215/portal/kadin-indonesia/list/view_detail/list",
+        type: "post",
+        data: {
+          id: "berita_kadin",
+          param: "news",
+          sort: "desc",
+          order: "year",
+          limit: 20,
+          offset: 0
+        }
+      }).done(function(data) {
+        var json = JSON.parse(data);
+        var datas = json.data;
+        var element = document.getElementById("wadahnews");
+        
+        for (var i = datas.length - 1; i >= 0; i--) {
+          var thedata = datas[i];
+          var news = thedata.datas;
 
+          for (var i = news.length - 1; i >= 0; i--) {
+            var thenews = news[i];
+            var link = thenews.title.replace(/\s+/g, "_");
+            var judul = thenews.title;
+            var tagline = thenews.tagline;
+            var date_publish = thenews.datepublish;
+
+            $("<div class='feed-element'>"+
+                "<div>"+
+                  "<a target=_blank href='https://devtes.com/portal/kadin-indonesia/news/berita_kadin/"+link+"'>"+
+                    "<i class='fa fa-envelope fa-fw'></i>"+
+                    "<strong>"+judul+"</strong>"+
+                  "</a>"+
+                  "<small class='pull-right text-navy'></small>"+
+                  "<div>"+tagline+"</div>"+
+                  "<small class='text-muted'>"+date_publish+"</small>"+
+                "</div>"+
+              "</div>").appendTo(element);
+          }
+        }
+      });
+    }
+</script>
 @endpush

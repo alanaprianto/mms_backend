@@ -16,11 +16,13 @@ use App\Provinsi;
 use App\Daerah;
 use DB;
 use Illuminate\Support\Facades\Auth;
-
 use App\Payment;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use App\Kbli;
+use App\Regnum;
+use Illuminate\Support\Collection;
 
 class MmsController extends Controller
 {  
@@ -202,51 +204,64 @@ class MmsController extends Controller
     // ktatrackrequestkta
 
     public function ktatrackcode ($code) {      
-      $fr = \App\Form_result::where('trackingcode', '=', $code)->first()->id_user;
+      $fr = \App\Form_result::where('trackingcode', '=', $code)->first();
       if (!$fr) {
-        return 'Tracking Code Tidak Terdaftar';
-      }
+        $kta = null;
+      } else {
+        $fr = $fr->id_user;
+        $user = \App\User::where('id', '=', $fr)->first();
 
-      $user = \App\User::where('id', '=', $fr)->first();
+        $kta = \App\Kta::where('owner', '=', $user->id)->first();
+          if ($kta) {
+              $today = new Carbon();
+              $exp = Carbon::parse($user->kta->first()->expired_at);
 
-      $kta = \App\Kta::where('owner', '=', $user->id)->first();
-        if ($kta) {
-            $today = new Carbon();
-            $exp = Carbon::parse($user->kta->first()->expired_at);
+              $exp_month = $exp->diffInMonths($today);
 
-            $exp_month = $exp->diffInMonths($today);
+              $exp_show = false;
+              if ($exp_month<=3||$today >= $exp) {
+                  $exp_show = true;
 
-            $exp_show = false;
-            if ($exp_month<=3||$today >= $exp) {
-                $exp_show = true;
+                  $exp_at = $exp_month;
+                  if ($exp_month==0) {
+                      $exp_at = $exp->diffInDays($today);
 
-                $exp_at = $exp_month;
-                if ($exp_month==0) {
-                    $exp_at = $exp->diffInDays($today);
-
-                    $m = "Hari";                
-                } else {
-                    $m = "Bulan";                
-                }                
-                if ($today >= $exp) {
-                    $exp_text1 = "Masa Berlaku KTA anda telah habis. Segera perpanjang KTA anda untuk terus menikmati layanan anggota Kadin.";
-                    $exp_text2 = "Masa berlaku KTA anda telah habis sejak ";
-                    $exp_text3 = $exp_at." ".$m." Lalu";
-                } else if ($exp_month<=3) {
-                    $exp_text1 = "Masa Berlaku KTA anda telah berada di masa tenggang.";
-                    $exp_text2 = "Kartu Tanda Anggota Anda tidak akan berlaku dalam ";
-                    $exp_text3 = $exp_at." ".$m;
-                }
-            }
-            
-            $ext_show = true;
-            if ($kta->perpanjangan=="requested") {
-                $ext_show = false;
-            }
-        }     
-        
-        // return $kta;
-
-        return view('mms.ktatracking-frame', compact('kta', 'exp_show', 'exp_text1', 'exp_text2', 'exp_text3', 'ext_show'));
+                      $m = "Hari";                
+                  } else {
+                      $m = "Bulan";                
+                  }                
+                  if ($today >= $exp) {
+                      $exp_text1 = "Masa Berlaku KTA anda telah habis. Segera perpanjang KTA anda untuk terus menikmati layanan anggota Kadin.";
+                      $exp_text2 = "Masa berlaku KTA anda telah habis sejak ";
+                      $exp_text3 = $exp_at." ".$m." Lalu";
+                  } else if ($exp_month<=3) {
+                      $exp_text1 = "Masa Berlaku KTA anda telah berada di masa tenggang.";
+                      $exp_text2 = "Kartu Tanda Anggota Anda tidak akan berlaku dalam ";
+                      $exp_text3 = $exp_at." ".$m;
+                  }
+              }
+              
+              $ext_show = true;
+              if ($kta->perpanjangan=="requested") {
+                  $ext_show = false;
+              }
+          }
+      }            
+      
+      return view('mms.ktatracking-frame', compact('kta', 'exp_show', 'exp_text1', 'exp_text2', 'exp_text3', 'ext_show'));
     }
+
+    public function kblilist(Request $request) {
+      $input = Request::all();
+      $type = $input['type'];
+      $parent = $input['parent'];
+
+      $kbli = Kbli::where('type', '=', $type)->where('parent', '=', $parent)->get();
+      return $kbli;
+    }
+
+    public function kblilist1() {
+      $kbli = Kbli::where('type', '=', '1')->where('parent', '=', '0')->get();
+      return $kbli;
+    }    
 }

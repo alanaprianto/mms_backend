@@ -1,7 +1,7 @@
 @extends('daerah.app')
 
-@section('sidebar')
-  @include('daerah.register.sidebar')
+@section('active-register')
+  active
 @stop
 
 @section('content')

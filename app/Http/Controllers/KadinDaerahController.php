@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Form_question;
 use App\Http\Requests\FormResultRequest;
 use App\Form_result;
+use App\Form_type;
 use Datatables;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Form_result_kadin_daerah;
 use DB;
+use Illuminate\Support\Collection;
 
 class KadinDaerahController extends Controller
 {
@@ -82,24 +84,49 @@ class KadinDaerahController extends Controller
         $notifs = \App\Helpers\Notifs::getNotifs();    
 
         $terr = Auth::user()->territory;
-        $forms = Form_result::where('answer_value', '=', $terr)->get();
+        $total = Form_result::where('alb', '<>', true)->where('answer_value', '=', $terr)->get();
 
         $carbon = new Carbon();
-        $monthsago = $carbon->subMonths(6)->month;
-        $monthslater = new Carbon();
+        $monthsago = $carbon->subMonths(6)->month;                
 
         $labels = array();
-        $data = array();
-        for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
-            if ($i==12) {
-                $i = 0;
+        $data = array();        
+        for ($i=0; $i <7 ; $i++) {
+            if ($monthsago==13) {
+                $monthsago = 1;
             }
+                
+            $labels[] = date('F', strtotime("2000-$monthsago-01"));
+            $data[] = Form_result::
+                        where('alb', '<>', true)
+                        ->where('answer_value', '=', $terr)
+                        ->whereMonth('created_at', '=', $monthsago)
+                        ->count();
+                            
+            $monthsago++;
+        }        
+        // for ($i=$monthsago; $i != $monthslater; $i++) { 
+        //     if ($i==13) {                
+        //         $i = 1;
+        //     }                    
+        // }                
+        return view('daerah.form.ab.index', compact('notifs', 'total', 'labels', 'data'));
+    }
 
-            $labels[] = date('F', strtotime("2000-$i-01"));
-            $data[] = Form_result::where('answer_value', '=', $terr)->whereMonth('created_at', '=', $i)->count();
-        }
+    /**
+     * Memproses request datatable untuk list submittedForm.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ajaxForms() {
+        $terr = Auth::user()->territory;
+        $codes = Form_result::where('answer_value', '=', $terr)->get()->pluck('trackingcode');        
 
-        return view('daerah.form.submitted', compact('notifs', 'forms', 'labels', 'data'));
+        $fr = Form_result::leftJoin('users', 'form_result.id_user', '=', 'users.id')
+                ->where('form_result.id_question', '=', '8')
+                ->whereIn('form_result.trackingcode', $codes)
+                ->get();        
+        return Datatables::of($fr)->make(true);
     }
 
     public function submittedFormsDelete($code)
@@ -132,8 +159,34 @@ class KadinDaerahController extends Controller
         $user = User::where('id', '=', $id)->first();
 
         try {
-            $user->delete();
-            // method delete folder n propic
+            $user->delete();            
+
+            $path = storage_path() . '/app/uploadedfiles/'.$user->username.'/';
+            \File::deleteDirectory($path);
+
+            $name = "";
+            $ext = "";
+            $file = storage_path() . '/app/photoprofile'.'/';
+            $filesInFolder = \File::files($file);
+
+            foreach($filesInFolder as $path)
+            {
+                $files = pathinfo($path);
+                if ($files['filename'] == $user->username) {                
+                    $name = $files['filename'];
+                    $ext = $files['extension'];
+
+                    $img = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;
+                    \File::Delete($img);
+                }
+            }
+
+            $fr = Form_result::where('id_user', '=', $id)->get();
+            foreach ($fr as $key => $result) {
+                $result->id_user = "0";
+                $result->update();
+            }
+
             $deleted = true;
             $deletedMsg = "Data " . $name . " is deleted";
         }catch(\Exception $e){
@@ -150,23 +203,7 @@ class KadinDaerahController extends Controller
         $notifs = \App\Helpers\Notifs::getNotifs();        
         $detail = Form_result::where('trackingcode', '=', $code)->get();
 
-        return view('daerah.form.detail', compact('notifs', 'detail'));   
-    }
-    
-    /**
-     * Memproses request datatable untuk list submittedForm.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function ajaxForms() {
-        $terr = Auth::user()->territory;
-        $codes = Form_result::where('answer_value', '=', $terr)->get()->pluck('trackingcode');
-
-        $fr = Form_result::leftJoin('users', 'form_result.id_user', '=', 'users.id')
-                ->where('form_result.id_question', '=', '8')
-                ->whereIn('form_result.trackingcode', $codes)
-                ->get();
-        return Datatables::of($fr)->make(true);
+        return view('daerah.form.ab.detail', compact('notifs', 'detail'));   
     }
 
     /**
@@ -198,19 +235,27 @@ class KadinDaerahController extends Controller
 
         $labels = array();
         $data = array();
-        for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
-            if ($i==12) {
-                $i = 0;
-            }
 
-            $labels[] = date('F', strtotime("2000-$i-01"));
+        for ($i=0; $i <7 ; $i++) {
+            if ($monthsago==13) {
+                $monthsago = 1;
+            }
+                
+            $labels[] = date('F', strtotime("2000-$monthsago-01"));
             $data[] = User::where('territory', '=', $terr)
                         ->where('role', '=', '2')
-                        ->whereMonth('created_at', '=', $i)
+                        ->whereMonth('created_at', '=', $monthsago)
                         ->count();
-        }        
+                            
+            $monthsago++;
+        }  
+        // for ($i=$monthsago; $i != $monthslater->addMonths(1)->month ; $i++) { 
+        //     if ($i==12) {
+        //         $i = 0;
+        //     }        
+        // }        
         
-        return view('daerah.member.member', compact('notifs', 'members', 'labels', 'data'));
+        return view('daerah.member.ab.index', compact('notifs', 'members', 'labels', 'data'));
     }
 
     public function memberDetail($id)
@@ -224,7 +269,7 @@ class KadinDaerahController extends Controller
         $detail3 = \App\Helpers\Details::detail3($member->id);
         $docs = \App\Helpers\Details::docs($member->id);
 
-        return view('daerah.member.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
+        return view('daerah.member.ab.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
     }
 
     public function ajaxMembers() {
@@ -619,7 +664,274 @@ class KadinDaerahController extends Controller
         }
         
         return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
-    }    
+    }
+
+    public function submittedAlbForms()
+    {                       
+        $notifs = \App\Helpers\Notifs::getNotifs();    
+
+        $terr = Auth::user()->territory;
+        $total = Form_result::where('alb', '=', true)->where('answer_value', '=', $terr)->get();
+
+        $carbon = new Carbon();
+        $monthsago = $carbon->subMonths(6)->month;        
+
+        $labels = array();
+        $data = array();
+        
+        for ($i=0; $i <7 ; $i++) {
+            if ($monthsago==13) {
+                $monthsago = 1;
+            }
+                
+            $labels[] = date('F', strtotime("2000-$monthsago-01"));
+            $data[] = Form_result::
+                        where('alb', '=', true)
+                        ->where('answer_value', '=', $terr)
+                        ->whereMonth('created_at', '=', $monthsago)
+                        ->count();
+                            
+            $monthsago++;
+        }                
+        return view('daerah.form.alb.index', compact('notifs', 'total', 'labels', 'data'));
+    }
+
+    public function ajaxAlbForms() {
+        $terr = Auth::user()->territory;
+        $codes = Form_result::where('alb', '=', true)->where('answer_value', '=', $terr)->get()->pluck('trackingcode');
+
+        $fq = Form_question::where('question', 'like', '%Nama Asosiasi/Himpunan%')->first();
+        $fr = Form_result::
+                where('id_question', '=', $fq->id)
+                ->whereIn('form_result.trackingcode', $codes)
+                ->get();
+
+        $dt = new Collection;
+        foreach ($fr as $key => $value) {
+            $iduser = $value->id_user;
+            $name = "-";
+            if ($iduser) {
+                $name = User::find($iduser)->name;
+            }      
+
+            $dt->push([                       
+                    'answer' => $value->answer,
+                    'name' => $name,
+                    'created_at' => $value->created_at->format('Y-m-d H:i:s'),
+                    'trackingcode' => $value->trackingcode,
+                ]);
+        }
+        // return $dt;
+        return Datatables::of($dt)->make(true);
+    }
+
+    public function submittedAlbFormDetail($code)
+    {        
+        $notifs = \App\Helpers\Notifs::getNotifs();        
+        $detail = Form_result::where('trackingcode', '=', $code)->get();
+
+        $fq = Form_question::where('question', 'like', '%Nama Asosiasi/Himpunan%')->first();
+        $fr = Form_result::where('id_question', '=', $fq->id)->first();
+        $name = $fr->answer;
+        $trcode = $fr->trackingcode;
+        
+        return view('daerah.form.alb.detail', compact('notifs', 'detail', 'name', 'trcode'));   
+    }
+
+    public function submittedAlbApprove(Request $request) {           
+        $trcode = $request['trackingcode'];
+
+        if (!$trcode) {
+            return response()->json(['success' => false, 'msg' => 'Request is Not Understood']);
+        } 
+
+        $results = Form_result::where('trackingcode', '=', $trcode)->get();
+        if (count($results)<=0) {
+          return response()->json(['success' => false, 'msg' => 'Data is Not Available']);
+        } if ($results[0]->id_user) {
+          return response()->json(['success' => false, 'msg' => 'Data is Not Available']);
+        }
+
+        $name = "";
+        $username = "";
+        $email = "";        
+        $territory = "";
+        $random_string = "";
+
+        $user = new User;
+        $payment = new Payment;
+        try {            
+            foreach ($results as $key => $result) {
+                $question = $result->question;
+                if (str_contains($question, "Nama Asosiasi/Himpunan")) {
+                    $name = $result->answer;                
+                } else if (str_contains($question, "E-Mail")) {
+                    $email = $result->answer;
+                } else if (str_contains($question, "Kabupaten / Kota")) {
+                    $territory = $result->answer_value;
+                }
+            }        
+          
+            $random_string = md5(microtime());
+            $first = substr($random_string, 0, 4);
+            $last = substr($random_string, -4);
+            $username = $first.$last;            
+            
+            $user->name = $name;
+            $user->username = $username; //ini
+            $user->email = $email;
+            $user->password = Hash::make($random_string); //ini
+            $user->role = "6";
+            // $user->no_kta = "0";
+            // $user->no_rn = "0";
+            $user->territory = $territory;
+            $user->save();
+
+            $userid = $user->id;
+            $attempt = Payment::where('id_user', $userid)->count()+1;        
+            $input['id_user'] = $userid;
+            $input['attempt'] = $attempt;
+            $input['amount'] = 500000;
+            $input['payment_date'] = new Carbon();        
+            $payment = Payment::create($input);
+
+            $results = Form_result::where('trackingcode', '=', $trcode)->get();
+            foreach ($results as $key => $result) {
+                $result->id_user = $user->id;
+                $result->update();
+            }
+
+            Mail::send('emails.register_succesfull', ['name' => $name, 'username' => $username, 'password' => $random_string], function($message) use ($email) {
+                $message->from('no-reply@kadin-indonesia.org', 'no-reply');
+                $message->to($email)->subject('Kadin Registration');                    
+            }); 
+
+            $admins = User::where('role', '=', '1')->get();        
+            foreach ($admins as $key => $admin) {
+                $notif = new Notification;
+
+                $notif->target = $admin->id;
+                $notif->senderid = $user->id;
+                $notif->value = "New Extraordinary User Registered";
+                $notif->active = true;
+                        
+                $notif->save();
+            }
+
+            // $kadinKota = User::where('role', '=', '5')->where('territory', '=', $territory)->get();
+            // foreach ($kadinKota as $key => $kota) {
+            //     $notif = new Notification;
+
+            //     $notif->target = $kota->id;
+            //     $notif->senderid = $user->id;
+            //     $notif->value = "New Extraordinary User Registered";
+            //     $notif->active = true;
+                        
+            //     $notif->save();
+            // }
+
+            $pathold = storage_path() . '/app/uploadedfiles1/'.$trcode.'/';
+            $pathnew = storage_path() . '/app/uploadedfiles/'.$username.'/';
+            \File::copyDirectory($pathold, $pathnew);
+
+            $name = "";
+            $ext = "";
+            $file = storage_path() . '/app/uploadedfiles1/'.$trcode;
+            $filesInFolder = \File::files($file);
+                
+            foreach($filesInFolder as $path)
+            {
+                $files = pathinfo($path);            
+                if ($files['filename'] == Auth::user()->username) {                
+                    $name = $files['filename'];
+                    $ext = $files['extension'];
+
+                    $imgold = storage_path() . '/app/uploadedfiles1/'.$trcode.'/'.$name.'.'.$ext;
+                    $imgnew = storage_path() . '/app/uploadedfiles/'.$username.'/'.$name.'.'.$ext;
+                    \File::move($imgold, $imgnew);
+                }
+            }
+
+            \File::deleteDirectory($pathold);
+
+            $deleted = true;
+            $deletedMsg = 'Account for '.$name.' is created !';
+        } catch(\Exception $e){
+            $user->delete();
+            $payment->delete();
+            $results = Form_result::where('trackingcode', '=', $trcode)->get();
+            foreach ($results as $key => $result) {
+                $result->id_user = "0";
+                $result->update();
+            }
+            $deleted = false;
+            $deletedMsg = "Error in Creating Account!";
+        }
+                
+        return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
+    }
+    
+    public function memberAlb()
+    {                       
+        $notifs = \App\Helpers\Notifs::getNotifs();        
+        
+        $terr = Auth::user()->territory;
+        $members = User::where('territory', '=', $terr)->where('role', '=', '6')->get();
+
+        $carbon = new Carbon();
+        $monthsago = $carbon->subMonths(6)->month;
+        $monthslater = new Carbon();
+
+        $labels = array();
+        $data = array();
+
+        for ($i=0; $i <7 ; $i++) {
+            if ($monthsago==13) {
+                $monthsago = 1;
+            }
+                
+            $labels[] = date('F', strtotime("2000-$monthsago-01"));
+            $data[] = User::where('territory', '=', $terr)
+                        ->where('role', '=', '6')
+                        ->whereMonth('created_at', '=', $monthsago)
+                        ->count();
+                            
+            $monthsago++;
+        }        
+        
+        return view('daerah.member.alb.index', compact('notifs', 'members', 'labels', 'data'));
+    }
+
+    public function ajaxAlbMembers() {
+        $terr = Auth::user()->territory;
+        // $ids = User::where('territory', '=', $terr)
+        //         ->where('role', '=', '2')
+        //         ->leftJoin('kta', 'kta.owner', '=', 'users.id')
+        //         ->get();
+
+        $ids = User::select( 'users.*',
+            DB::raw('(select kta from kta where owner = users.id order by id asc limit 1) as kta'),
+            DB::raw('(select perpanjangan from kta where owner = users.id order by id asc limit 1) as ext')  )     
+            ->where('territory', '=', $terr)
+            ->where('role', '=', '6')
+            ->get();
+
+        // return $ids;        
+        return Datatables::of($ids)->make(true);        
+    }  
+        
+    public function memberAlbDetail($id)
+    {
+        $notifs = \App\Helpers\Notifs::getNotifs();
+        $member = User::find($id);
+        $detail = Form_result::where('id_user', '=', $member->id)->get();
+
+        $fileqg = Form_type::where('name', 'like', '%File Upload%')->pluck('id');
+        $fileq = Form_question::whereIn('type', $fileqg)->pluck('id')->toArray();
+         
+        // return $fileq;        
+        return view('daerah.member.alb.detail', compact('notifs', 'member', 'detail', 'fileq'));
+    }
 }
 
 class formResult {

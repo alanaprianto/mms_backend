@@ -115,8 +115,8 @@
       <div class="ibox-content">
         <div class="lightBoxGallery">
           @foreach ($docs as $key=>$doc)
-            <a href="{{ url('/uploadedfiles') }}/{{ $member->username}}_{{ $doc->id_question }}" data-gallery="">
-              <img src="{{ url('/uploadedfiles') }}/{{ $member->username}}_{{ $doc->id_question }}-thumbs">
+            <a href="{{ url('/uploadedfiles') }}/{{ $member->username}}:::{{ explode('.', $doc->answer_value)[0] }}" data-gallery="">
+              <img src="{{ url('/uploadedfiles') }}/{{ $member->username}}:::{{ explode('.', $doc->answer_value)[0] }}-thumbs">
             </a>
           @endforeach
           <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
@@ -132,7 +132,7 @@
         </div>
         @if ($cdoc==0)
           <h4 align="center">
-            <a href="{{ url('member\completeprofile\22') }}">
+            <a href="{{ url('member\completeprofile\24') }}">
               <button type="submit" class="btn btn-success">
                 Upload Scanned Document
               </button>
@@ -194,48 +194,48 @@
       </div>
       <div class="ibox-content">
         <div class="row">
-        <div class="col-lg-12">
-          @unless ($percentage == 100 || $percentage == 0)     
-            <span class="pull-right">
-              <a href="{{ url('member\registerii') }}">
-                Complete your account Information
-              </a>
-            </span>
-          @endunless
-          <h5>Your Account Information ({{ $completed }}/{{ $required }})</h5>          
-          <div class="progress progress-striped active">
-            <div style="width: {{ $percentage}}%" aria-valuemax="{{ $required }}" aria-valuemin="0" aria-valuenow="{{ $completed }}" role="progressbar" class="progress-bar progress-bar-success">    
-            </div>
-          </div>          
+          <div class="col-lg-12">
+            @unless ($percentage == 100 || $percentage == 0)     
+              <span class="pull-right">
+                <a href="{{ url('member\registerii') }}">
+                  Complete your account Information
+                </a>
+              </span>
+            @endunless
+            <h5>Your Account Information ({{ $completed }}/{{ $required }})</h5>          
+            <div class="progress progress-striped active">
+              <div style="width: {{ $percentage}}%" aria-valuemax="{{ $required }}" aria-valuemin="0" aria-valuenow="{{ $completed }}" role="progressbar" class="progress-bar progress-bar-success">    
+              </div>
+            </div>          
 
-          <!-- identitas user -->
-          <div class="form-group">
-            <label class="col-lg-6 control-label">Nama Perusahaan</label>
-            <div class="col-lg-6">
-              <p class="form-control-static">{{ $compform }} {{ $compname }}</p>
+            <!-- identitas user -->
+            <div class="form-group">
+              <label class="col-lg-6 control-label">Nama Perusahaan</label>
+              <div class="col-lg-6">
+                <p class="form-control-static">{{ $compform }} {{ $compname }}</p>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-6 control-label">Klasifikasi Perusahaan</label>
-            <div class="col-lg-6">
-              <p class="form-control-static">{{ $compclass }}</p>
+            <div class="form-group">
+              <label class="col-lg-6 control-label">Klasifikasi Perusahaan</label>
+              <div class="col-lg-6">
+                <p class="form-control-static">{{ $compclass }}</p>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-6 control-label">Daerah</label>
-            <div class="col-lg-6">
-              <p class="form-control-static">{{ $daerah }}</p>
+            <div class="form-group">
+              <label class="col-lg-6 control-label">Daerah</label>
+              <div class="col-lg-6">
+                <p class="form-control-static">{{ $daerah }}</p>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-6 control-label">Provinsi</label>
-            <div class="col-lg-6">
-              <p class="form-control-static">{{ $provinsi }}</p>
+            <div class="form-group">
+              <label class="col-lg-6 control-label">Provinsi</label>
+              <div class="col-lg-6">
+                <p class="form-control-static">{{ $provinsi }}</p>
+              </div>
             </div>
+            <div class="hr-line-dashed"></div>
           </div>
-          <div class="hr-line-dashed"></div>
         </div>
-      </div>
       </div>
     </div>
   </div>
@@ -252,43 +252,9 @@
       </div>
       <div class="ibox-content">
         <div class="feed-activity-list">
-          
-          <div class="feed-element">
-            <div>
-              <a href="">
-                <i class="fa fa-envelope fa-fw"></i> 
-                <strong>Judul Berita 1</strong>
-              </a>
-              <small class="pull-right text-navy">1m ago</small>
-              <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum</div>
-              <small class="text-muted">Today 5:60 pm - 12.06.2014</small>
-            </div>
-          </div>
+          <div id="wadahnews">
 
-          <div class="feed-element">
-            <div>
-              <a href="">
-                <i class="fa fa-envelope fa-fw"></i> 
-                <strong>Judul Berita 2</strong>
-              </a>
-              <small class="pull-right text-navy">1m ago</small>
-              <div>There are many variations of passages of Lorem Ipsum available</div>
-              <small class="text-muted">Today 5:60 pm - 12.06.2014</small>
-            </div>
           </div>
-
-          <div class="feed-element">
-            <div>
-              <a href="">
-                <i class="fa fa-envelope fa-fw"></i> 
-                <strong>Judul Berita 3</strong>
-              </a>
-              <small class="pull-right text-navy">1m ago</small>
-              <div>There are many variations of passages of Lorem Ipsum available</div>
-              <small class="text-muted">Today 5:60 pm - 12.06.2014</small>
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
@@ -299,4 +265,51 @@
 
 @push('scripts')
 <script src="{{ asset('resources/assets/js/plugins/blueimp/jquery.blueimp-gallery.min.js') }}"></script>
+<script type="text/javascript">
+   window.onload = getNews;
+    
+    function getNews() {
+      $.ajax({    
+        url: "http://110.74.178.215/portal/kadin-indonesia/list/view_detail/list",
+        type: "post",
+        data: {
+          id: "berita_kadin",
+          param: "news",
+          sort: "desc",
+          order: "year",
+          limit: 20,
+          offset: 0
+        }
+      }).done(function(data) {
+        var json = JSON.parse(data);
+        var datas = json.data;
+        var element = document.getElementById("wadahnews");
+        
+        for (var i = datas.length - 1; i >= 0; i--) {
+          var thedata = datas[i];
+          var news = thedata.datas;
+
+          for (var i = news.length - 1; i >= 0; i--) {
+            var thenews = news[i];
+            var link = thenews.title.replace(/\s+/g, "_");
+            var judul = thenews.title;
+            var tagline = thenews.tagline;
+            var date_publish = thenews.datepublish;
+
+            $("<div class='feed-element'>"+
+                "<div>"+
+                  "<a target=_blank href='https://devtes.com/portal/kadin-indonesia/news/berita_kadin/"+link+"'>"+
+                    "<i class='fa fa-envelope fa-fw'></i>"+
+                    "<strong>"+judul+"</strong>"+
+                  "</a>"+
+                  "<small class='pull-right text-navy'></small>"+
+                  "<div>"+tagline+"</div>"+
+                  "<small class='text-muted'>"+date_publish+"</small>"+
+                "</div>"+
+              "</div>").appendTo(element);
+          }
+        }
+      });
+    }
+</script>
 @endpush

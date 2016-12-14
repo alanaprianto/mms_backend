@@ -31,7 +31,7 @@ class Member1Controller extends Controller
         $member = Auth::user();
         $detail = Form_result::                    
                     where('id_user', '=', $member->id)
-                    ->get();    
+                    ->get();
         $fr = Form_result::                
                 where('id_user', '=', $member->id)                
                 ->where('id_question', '=', "1")
@@ -300,7 +300,7 @@ class Member1Controller extends Controller
         $user = Auth::user();        
         
         $fqg = Form_question_group::where('id', '=', $id)->first();
-        $fquestions = Form_question::where('group_question', '=', $id)->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();
+        $fquestions = Form_question::where('group_question', '=', $id)->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();        
         $fresults = Form_result::where('id_user', '=', $user->id)->get();
 
         $notifs = \App\Helpers\Notifs::getNotifs();        
@@ -537,7 +537,7 @@ class Member1Controller extends Controller
                 $complead = $result->answer;
             } else if (str_contains($question, "Alamat Lengkap")) {
                 $compaddr = $result->answer;
-            } else if (str_contains($question, "Kegiatan Usaha")) {
+            } else if (str_contains($question, "Bidang Usaha")) {
                 $compbdus = $result->answer;
             } else if (str_contains($question, "No SIUP/SIUJK")) {
                 $comppermit = $result->answer;
@@ -555,7 +555,7 @@ class Member1Controller extends Controller
                 $provinsi = $result->territory_name;
             }
         }
-
+        
         return view('member.kta.print', compact('kta', 'rn', 'exp',
                 'compname', 'complead', 'compaddr', 'compbdus', 'comppermit', 'compqual', 'jabatan', 'postcode', 'compnpwp', 'daerah', 'provinsi'));
     }

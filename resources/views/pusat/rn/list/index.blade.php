@@ -143,7 +143,7 @@
 		    processing: true,
 		    serverSide: true,
 		    iDisplayLength: 100,
-		    ajax: "{{ url('/dashboard/pusat/ajax/rnlist')}}",
+		    ajax: "{{ url('/dashboard/pusat/ajax/rn/list')}}",
 		    columns: [       		      
 		      { "data" : "answer" },     
 		      { "data" : "created_at"},                  
@@ -151,7 +151,7 @@
 		      { "data" : "regnum"},
 		      { "data" : "id_user"},
 		    ],    
-		    "columnDefs": [            
+		    "columnDefs": [
 		      {		        
 		        "render": function ( data, type, row ) {
 		        return '<a href="list/'+row.id_user+'" class="btn btn-warning btn-xs">'+

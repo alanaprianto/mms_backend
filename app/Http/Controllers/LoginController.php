@@ -68,6 +68,8 @@ class LoginController extends Controller
                 return redirect('/dashboard/provinsi');
             } else if (Auth::user()->role=="5") {
                 return redirect('/dashboard/daerah');
+            } else if (Auth::user()->role=="6") {
+                return redirect('/dashboard/alb');
             } else {
                 return redirect('/')
                 ->withErrors(['message' => 'Invalid Username or Password']) // send back all errors to the login form

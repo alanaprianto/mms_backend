@@ -1,7 +1,10 @@
 @extends('daerah.app')
 
-@section('sidebar')
-  @include('daerah.form.sidebar')
+@section('active-groupform')
+  active
+@stop
+@section('active-formalb')
+  active
 @stop
 
 @section('content')
@@ -11,8 +14,11 @@
     <li>
       <a>Kadin Daerah</a>
     </li>        
+    <li>
+      Submitted Form
+    </li>
     <li class="active">
-      <strong>Submitted Form</strong>
+      <strong>Anggota Luar Biasa</strong>
     </li>
   </ol>
 </div>
@@ -27,7 +33,7 @@
   <div class="col-lg-12">
 	<div class="ibox float-e-margins">
 	  <div class="ibox-title">	  	
-		<h5>{{ count($forms) }} Total Submitted Forms</h5>
+		<h5>{{ count($total) }} Total Submitted Forms</h5>
 		<div class="ibox-tools">
 		  <div class="btn-group">
 			<button type="button" class="btn btn-xs btn-white">Today</button>
@@ -87,9 +93,10 @@
 		  <thead>
 			<tr>      
 			  <th>Company</th>
-			  <th>Company Representative</th>
+			  <th>Username</th>
 			  <th>Submitted At</th>
 			  <th>Tracking Code</th>
+			  <th>Info</th>
 			  <th>Options</th>
 			</tr>        
 		  </thead>
@@ -99,24 +106,48 @@
   </div>
 </div>
 
-	<!-- Modal -->
+	<!-- Delete Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-		        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        	<h4 class="modal-title" id="myModalLabel">Confirmation</h4>
-		      	</div>
-		      	<div class="modal-body">
-		        	ASDAD		       
-		      	</div>
-		      	<div class="modal-footer">        
-			        <input type="hidden" class="form-control" id="id">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-			        <button id="submit_delete" type="submit" class="btn btn-danger">Delete</button>
-		    	  </div>
-		    </div>
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		    </button>
+		    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+		  </div>
+		  <div class="modal-body">
+		    ASDAD
+		  </div>
+		  <div class="modal-footer">
+			<input type="hidden" class="form-control" id="id">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+			<button id="submit_delete" type="submit" class="btn btn-danger">Delete</button>
+		  </div>
 		</div>
+	  </div>
+	</div>
+
+	<!-- Approve Modal -->
+	<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		    </button>
+		    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+		  </div>
+		  <div class="modal-body">
+		    ASDAD
+		  </div>
+		  <div class="modal-footer">
+			<input type="hidden" class="form-control" id="id">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+			<button id="submit_approve" type="submit" class="btn btn-primary">Approve</button>
+		  </div>
+		</div>
+	  </div>
 	</div>
 @stop
 
@@ -175,45 +206,56 @@
 		    serverSide: true,
 		    iDisplayLength: 100,
 		    aaSorting: [[1, 'desc']],
-		    ajax: "{{ url('/dashboard/daerah/ajax/submittedforms')}}",
-		    columns: [       		      
+		    ajax: "{{ url('/dashboard/daerah/ajax/submittedforms/alb')}}",
+		    columns: [
 		      { "data" : "answer" },
 		      { "data" : "name" },
 		      { "data" : "created_at"},                  
 		      { "data" : "trackingcode"},            
 		      { "data" : "trackingcode"},
 		    ],    
-		    "columnDefs": [            
+		    "columnDefs": [
 		      {		        
 		        "render": function ( data, type, row ) {
-		        return '<a href="submitted/detail/'+row.trackingcode+'/a" class="btn btn-warning btn-xs">'+
+		        	if (row.name!="-") {
+		        		return '<span class="glyphicon glyphicon-check"></span>&nbsp;&nbsp;Approved';
+		        	} else {
+		        		return 	'<a href="" class="btn btn-success btn-xs" data-toggle="modal" data-target="#approveModal" data-code="'+row.trackingcode+'" data-name="'+row.answer+'" data-url="member">'+
+				        			'<span class="glyphicon glyphicon-check"></span>'+
+				        			'&nbsp;&nbsp;Approve User'+
+				        		'</a>';
+		        	}		        
+		        },
+		        "targets": 4
+		      },
+		      {		        
+		        "render": function ( data, type, row ) {
+		        return 	'<a href="alb/detail/'+row.trackingcode+'" class="btn btn-warning btn-xs">'+
 		        			'<span class="glyphicon glyphicon-search"></span>'+
 		        			'&nbsp;&nbsp; Detail'+
 		        		'</a>'+
 		        		'&nbsp;&nbsp;'+
-		        		'<a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.trackingcode+'" data-name="'+row.answer+'" data-url="member">'+
+		        		'<a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-code="'+row.trackingcode+'" data-name="'+row.answer+'" data-url="member">'+
 		        			'<span class="glyphicon glyphicon-trash"></span>'+
 		        			'&nbsp;&nbsp;Delete'+
 		        		'</a>';
 		        },
-		        "targets": 4
-		      },		      
+		        "targets": 5
+		      },
 		    ]
 		  });
 		});
 
 		$('#myModal').on('show.bs.modal', function (event) {  
 		  var button = $(event.relatedTarget) // Button that triggered the modal    
-		  id = button.data('id');
+		  id = button.data('code');
 		  name = button.data('name');
-
-		  console.log(id + " " + name);
 
 		  var modal = $(this);
 		  modal.find('.modal-body').text('Delete Record "' + name + '"?');
 		  modal.find('.modal-footer .form-control').val(id);
 
-		});		
+		});
 
 		$('#submit_delete').on('click', function (event) {		  
 		  var url = "{{ url('dashboard/daerah/submitted/delete/') }}/"+id;
@@ -224,6 +266,42 @@
 		    data: {
 		      _method: 'DELETE', 
 		      _token: "{{ csrf_token() }}",        
+		    }
+		  }).done(function(data) {                    
+		    console.log(data);
+
+		    $('#myModal').modal('hide'); 
+
+		    if (data.success) {
+		      toastr.success(data.msg);
+		    } else {
+		      toastr.error(data.msg);
+		    }
+
+		    location.reload();
+		  });
+		});
+
+		$('#approveModal').on('show.bs.modal', function (event) {  
+		  var button = $(event.relatedTarget) // Button that triggered the modal    
+		  id = button.data('code');
+		  name = button.data('name');
+
+		  var modal = $(this);
+		  modal.find('.modal-body').text('Approve Permintaan Menjadi Anggota Luar Biasa dari "' + name + '"?');
+		  modal.find('.modal-footer .form-control').val(id);
+
+		});
+
+		$('#submit_approve').on('click', function (event) {
+		  var url = "{{ url('dashboard/daerah/submitted/alb/approve') }}"
+
+		  $.ajax({    
+		    url: url,
+		    type: "post",
+		    data: {		      
+		      _token: "{{ csrf_token() }}",
+		      trackingcode: id,
 		    }
 		  }).done(function(data) {                    
 		    console.log(data);

@@ -150,7 +150,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Lavary\Menu\ServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,    
-        Intervention\Image\ImageServiceProvider::class,    
+        Intervention\Image\ImageServiceProvider::class,
         Fedeisas\LaravelMailCssInliner\LaravelMailCssInlinerServiceProvider::class,
         
         /*
@@ -210,7 +210,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Menu' => Lavary\Menu\Facade::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,   
-        'Image' => Intervention\Image\Facades\Image::class,     
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

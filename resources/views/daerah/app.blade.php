@@ -62,8 +62,8 @@
               <div class="logo-element">
                 <img class="logo-name" src="{{ asset('resources/img/icon144-128x128-10.png') }}" height="48" width="48"/>
               </div>
-            </li>                    
-            @yield('sidebar')                            
+            </li>   
+            @include('daerah.sidebar')            
           </ul>
 
         </div>

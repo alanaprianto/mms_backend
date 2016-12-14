@@ -51,6 +51,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'auth.role' => \App\Http\Middleware\AuthRole::class,
         'auth.role.admin' => \App\Http\Middleware\AuthRoleAdmin::class,
+        'auth.role.alb' => \App\Http\Middleware\AuthRoleAlb::class,
         'auth.role.pusat' => \App\Http\Middleware\AuthRolePusat::class,
         'auth.role.provinsi' => \App\Http\Middleware\AuthRoleProvinsi::class,
         'auth.role.daerah' => \App\Http\Middleware\AuthRoleDaerah::class,

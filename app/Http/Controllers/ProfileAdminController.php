@@ -36,6 +36,8 @@ class ProfileAdminController extends Controller
             return view('provinsi.profile.index', compact('notifs', 'name', 'email', 'username'));
         } else if (Auth::user()->role==5) {
             return view('daerah.profile.index', compact('notifs', 'name', 'email', 'username'));
+        } else if (Auth::user()->role==6) {
+            return view('alb.profile.index', compact('notifs', 'name', 'email', 'username'));
         }
     }
 
@@ -77,8 +79,7 @@ class ProfileAdminController extends Controller
                         $imgnew = storage_path() . '/app/photoprofile'.'/'.$uname.'.'.$ext;
                         \File::move($imgold, $imgnew);
                     }
-
-                }                
+                }
 
                 $user = User::findOrFail($id);
                 $user->update($request->all());
@@ -90,7 +91,7 @@ class ProfileAdminController extends Controller
                 $deleted = false;
                 $deletedMsg = "Error while Updating Your Account!";
 
-                return $e;                                  
+                return $e;
             }
         }        
         

@@ -115,6 +115,27 @@ class MemberController extends Controller
 
         try {
             $member->delete();
+
+            $path = storage_path() . '/app/uploadedfiles/'.$member->username.'/';
+            \File::deleteDirectory($path);
+
+            $name = "";
+            $ext = "";
+            $file = storage_path() . '/app/photoprofile'.'/';
+            $filesInFolder = \File::files($file);
+                
+            foreach($filesInFolder as $path)
+            {
+                $files = pathinfo($path);
+                if ($files['filename'] == $member->username) {                
+                    $name = $files['filename'];
+                    $ext = $files['extension'];
+
+                    $img = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;
+                    \File::Delete($img);
+                }
+            }
+            
             $deleted = true;
             $deletedMsg = "Data " . $member->name . " is deleted";      
         }catch(\Exception $e){

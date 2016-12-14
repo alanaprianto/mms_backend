@@ -44,23 +44,23 @@
   </div>
 </div>
 
-        <div id="overview" class="hidden">
-            <h5>Your Account Information ({{ $completed }}/{{ $required }})</h5>
+<div id="overview" class="hidden">
+  <h5>Your Account Information ({{ $completed }}/{{ $required }})</h5>
 
-            <div class="progress progress-striped active">
-                <div style="width: {{ $percentage}}%" aria-valuemax="{{ $required }}" aria-valuemin="0" aria-valuenow="{{ $completed }}" role="progressbar" class="progress-bar progress-bar-success">
-                    <!-- <span class="sr-only">0% Complete (success)</span> -->
-                </div>
-            </div>
+  <div class="progress progress-striped active">
+    <div style="width: {{ $percentage}}%" aria-valuemax="{{ $required }}" aria-valuemin="0" aria-valuenow="{{ $completed }}" role="progressbar" class="progress-bar progress-bar-success">
+      <!-- <span class="sr-only">0% Complete (success)</span> -->
+    </div>
+  </div>
 
-            @unless ($percentage == 100 || $percentage == 0)                
-                <a href="{{ url('registerii') }}" class="btn btn-warning btn-block">Complete your account Information</a>
-                <br>
-            @endunless
+  @unless ($percentage == 100 || $percentage == 0)                
+    <a href="{{ url('registerii') }}" class="btn btn-warning btn-block">Complete your account Information</a>
+    <br>
+  @endunless
                                     
-            <table class="table" id="profile-table" width=100%>                                                                   
-            </table>
-        </div>
+  <table class="table" id="profile-table" width=100%>                                                                  
+  </table>
+</div>
 
         <div id="profile" class="hidden">            
             <div class="ibox float-e-margins">

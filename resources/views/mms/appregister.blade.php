@@ -18,7 +18,6 @@
 
     <!-- Animation CSS -->
     <link href="{{ asset('resources/assets/css/animate.min.css') }}" rel="stylesheet">
-
     <link href="{{ asset('resources/assets/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -29,6 +28,9 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ asset('resources/assets/css/register/style.css') }}" rel="stylesheet">
+
+    <!-- Kraaje Fileinputmin CSS -->
+    <link href="{{ asset('resources/assets/css/fileinput.min.css') }}" rel="stylesheet">
     <style>
       .ul-drop{
         display: none;
@@ -82,21 +84,23 @@
                 <a class="page" href="#">Anggota</a>
                 <ul class="ul-drop">
                   <li><a href="{{ url('register1')}}">Anggota Biasa</a></li>
-                  <li><a>Anggota Luar Biasa</a></li>
+                  <li><a href="{{ url('register2')}}">Anggota Luar Biasa</a></li>
                 </ul>
               </li>
               <li class="@yield('helpactive')"><a class="page" href="{{ url('bantuan')}}">Bantuan</a></li>
               @if(Auth::check())
-                @if(Auth::user()->role==1)
+                @if (Auth::user()->role==1)
                   <li class="@yield('loginactive')"><a class="page" href="{{ url('/crud/form/setting/')}}">Admin Panel</a></li>
+                @elseif (Auth::user()->role==2)
+                  <li class="@yield('loginactive')"><a class="page" href="{{ url('/member')}}">Panel</a></li>
                 @elseif (Auth::user()->role==3)
                   <li class="@yield('loginactive')"><a class="page" href="{{ url('/dashboard/pusat')}}">Panel</a></li>
                 @elseif (Auth::user()->role==4)
                   <li class="@yield('loginactive')"><a class="page" href="{{ url('/dashboard/provinsi')}}">Panel</a></li>
                 @elseif (Auth::user()->role==5)
                   <li class="@yield('loginactive')"><a class="page" href="{{ url('/dashboard/daerah')}}">Panel</a></li>
-                @else 
-                  <li class="@yield('loginactive')"><a class="page" href="{{ url('/member')}}">Panel</a></li>
+                @elseif (Auth::user()->role==6)
+                  <li class="@yield('loginactive')"><a class="page" href="{{ url('/dashboard/alb')}}">Panel</a></li>
                 @endif
                 <li class="@yield('loginactive')"><a class="page" href="{{ url('logout')}}">Logout</a></li>
               @else

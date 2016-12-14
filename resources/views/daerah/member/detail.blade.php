@@ -1,7 +1,10 @@
 @extends('daerah.app')
 
-@section('sidebar')
-  @include('daerah.member.sidebar')
+@section('active-groupmember')
+  active
+@stop
+@section('active-memberab')
+  active
 @stop
 
 @section('content')
@@ -503,7 +506,7 @@
           } else {
             toastr.error(data.msg);
             
-            $('#reqModal').modal('hide');          
+            $('#reqModal').modal('hide');
           }          
 
         });

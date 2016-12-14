@@ -37,11 +37,12 @@ class FormResultController extends Controller
         return view('form.result.index', compact('notifs'));
     }
 
-    public function indexAjax() {                
+    public function indexAjax() {
+        // return 'asdad';
         $fr = Form_result::
                 // leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
                 leftJoin('users', 'form_result.id_user', '=', 'users.id')->get();
-                // ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.trackingcode', 'form_result.id_question']);        
+                // ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.trackingcode', 'form_result.id_question']);   
         return Datatables::of($fr)->make(true);
         // ->where('form_result.id_user', '=', '13')
     }
@@ -73,7 +74,7 @@ class FormResultController extends Controller
          
         Form_result::create($input);
 
-        return redirect('/crud/form/result_');
+        return redirect('/crud/form/result');
     }
 
     /**

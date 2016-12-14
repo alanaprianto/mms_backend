@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Provinsi extends Model
 {
-    protected  $table = "provinsi";    
+    protected  $table = "provinsi";
 
     /**
      * The attributes that are mass assignable.
@@ -15,5 +15,5 @@ class Provinsi extends Model
      */
     protected $fillable = [
         'provinsi', 'description',
-    ];    
+    ];
 }

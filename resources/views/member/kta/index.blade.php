@@ -2,7 +2,6 @@
 
 @section('head')
     <!-- <link href="{{ asset('resources/assets/css/table_styles.css') }}" rel="stylesheet"> -->
-
 @stop
 
 @section('sidebar')
@@ -22,7 +21,7 @@
   </ol>
 </div>
 <div class="col-lg-2">
-  <div class="title-action">      
+  <div class="title-action">
   </div>
 </div>
 @stop
@@ -46,10 +45,10 @@
               <tr>
                 <td class="content-wrap">
                   <table width="100%" cellpadding="0" cellspacing="0">
-                    <tbody>                                    
+                    <tbody>
                       <tr>
                         <td class="content-block" align="center">
-                          <br>                                                  
+                          <br>
                           <button type="submit" class="btn btn-primary" onclick="requestKta()">
                             <i class="fa fa-paper-plane"></i>
                             &nbsp;
@@ -73,11 +72,11 @@
               </tr>
               <tr>
                 <td class="alert alert-good">
-                  Member Kadin yang terhormat.<br>              
+                  Member Kadin yang terhormat.<br>
                   <br>
                   Permintaan KTA anda telah berhasil dikirimkan. Proses registrasi dan implementasi KTA akan memakan waktu beberapa saat. Kami ucapkan terima kasih atas pengertian dan kesabaran anda.<br>
                   <br>
-                  Terima Kasih atas kepercayaan anda pada kami.                            
+                  Terima Kasih atas kepercayaan anda pada kami.
                 </td>
               </tr>
             </tbody>
@@ -92,11 +91,11 @@
               </tr>
               <tr>
                 <td class="alert alert-good">
-                  Member Kadin yang terhormat.<br>              
+                  Member Kadin yang terhormat.<br>
                   <br>
                   Permintaan KTA anda telah berhasil dikirimkan. Permintaan KTA anda saat ini sedang dalam proses validasi pada Kadin Kabupaten/Kota dimana anda terdaftar. Proses registrasi dan implementasi KTA akan memakan waktu beberapa saat. Kami ucapkan terima kasih atas pengertian dan kesabaran anda.<br>
-                  <br>                  
-                  Terima Kasih atas kepercayaan anda pada kami.                            
+                  <br>
+                  Terima Kasih atas kepercayaan anda pada kami.
                 </td>
               </tr>
             </tbody>
@@ -115,14 +114,14 @@
                   <br>
                   Permintaan KTA anda telah ditolak. Harap perhatikan syarat dan ketentuan anggota kadin. Untuk pengajuan ulang dan bantuan silahkan...<br>
                   <br>
-                  Terima Kasih atas kepercayaan anda pada kami.                            
+                  Terima Kasih atas kepercayaan anda pada kami.
                 </td>
               </tr>
             </tbody>
           </table>
         @else
           <table class="main" width="100%" cellpadding="0" cellspacing="0">
-            <tbody>              
+            <tbody>
               <tr>
                 <td class="content-wrap">
                   <table width="100%" cellpadding="0" cellspacing="0">
@@ -157,7 +156,7 @@
                           <div class="text-center">
                             <button type="button" class="btn btn-white" data-dismiss="modal">Copy</button>
                             <button type="button" class="btn btn-success" onclick="printpage()">Print KTA</button>
-                          </div>                                  
+                          </div>
                           <br><br> -->
 
                           @if ($exp_show)
@@ -165,7 +164,7 @@
                             <tr>
                               <td style="background:#f7ecb5;font-weight:bold;text-align:center;">
                                 Perhatian !!
-                              </td> 
+                              </td>
                             </tr>
                             <tr>
                               <td align="center">
@@ -177,14 +176,14 @@
                                 @else
                                   <div class="col-lg-4" style="float: none;margin: 0 auto;">
                                     <input type="text" id="thekta" class="form-control" value="KTA Extension Request is Sent" style="text-align:center; font-size: 18px; font-family: monospace;" readonly>
-                                  </div>                          
+                                  </div>
                                 @endif
                               </td>
                             </tr>
-                          </table>                             
+                          </table>
                           @endif
 
-                          Mohon diperhatikan, Nomor KTA bersifat abadi atau nomor yang anda miliki tidak akan digenerate lagi. Bila nomor KTA anda tidak tervalidasi, kemungkinan nomor KTA anda telah habis masa berlaku. Gunakan fitur perpanjangan KTA untuk memperpanjang masa berlaku KTA anda.                                            
+                          Mohon diperhatikan, Nomor KTA bersifat abadi atau nomor yang anda miliki tidak akan digenerate lagi. Bila nomor KTA anda tidak tervalidasi, kemungkinan nomor KTA anda telah habis masa berlaku. Gunakan fitur perpanjangan KTA untuk memperpanjang masa berlaku KTA anda.
                         </td>
                       </tr>
                       <tr>
@@ -202,26 +201,18 @@
       </div>
     </div>
   </div>
-
-<div class="hidden">
-  <canvas id="myCanvas" style="border:1px solid #d3d3d3;">
-  </canvas>
-</div>
-<div class="hidden">
-  <img id="theimg" alt="image" class="img-responsive" src="{{ asset('resources/assets/images/kta.jpg') }}"/>  
-</div>
 @stop
 
 @push('scripts')
 <script type="text/javascript">
-  function printpage() {    
-    $.ajax({    
+  function printpage() {
+    $.ajax({
       url: "{{ url('member/ktaprint') }}",
       type: "post",
-      data: {        
+      data: {
         _token: "{{ csrf_token() }}"
       }
-    }).done(function(data) {      
+    }).done(function(data) {
       if (data.success) {
         var win = window.open("{{ url('member/printkta') }}", '_blank');
         if (win) {
@@ -233,22 +224,8 @@
         }
       } else {
         toastr.error(data.msg);
-      }              
+      }
     });
-  }
-
-  window.onload = function() {
-    var canvas = document.getElementById("myCanvas");    
-    var img = document.getElementById("theimg");
-    
-    canvas.height = img.height ;
-    canvas.width = img.width ;    
-
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 1, 1);
-
-    console.log(canvas.height+" "+canvas.width);
-    console.log(img.height+" "+img.width);
   }
 
   function requestKta() {    

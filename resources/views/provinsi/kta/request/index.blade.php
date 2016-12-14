@@ -261,7 +261,7 @@
 
 		  var validator = $("#formcancel").validate();
 		  validator.resetForm();
-		});		
+		});
 
 		$('#insertModal').on('show.bs.modal', function (event) {  
 		  var button = $(event.relatedTarget) // Button that triggered the modal		  

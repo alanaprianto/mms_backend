@@ -18,6 +18,7 @@ use App\Form_question_group;
 use Illuminate\Support\Str;
 use App\Regnum;
 use Illuminate\Support\Collection;
+use App\Form_type;
 
 class KadinProvinsiController extends Controller
 {
@@ -59,13 +60,23 @@ class KadinProvinsiController extends Controller
         $notifs = \App\Helpers\Notifs::getNotifs();
         $member = User::find($id);
         
-        $detail1 = \App\Helpers\Details::detail1($member->id);
-        $detail2 = \App\Helpers\Details::detail2($member->id);
-        $detail3 = \App\Helpers\Details::detail3($member->id);
-        $docs = \App\Helpers\Details::docs($member->id);
+        if ($member->role==2) {
+            $detail1 = \App\Helpers\Details::detail1($member->id);
+            $detail2 = \App\Helpers\Details::detail2($member->id);
+            $detail3 = \App\Helpers\Details::detail3($member->id);
+            $docs = \App\Helpers\Details::docs($member->id);        
 
-        // return $detail1;
-        return view('provinsi.kta.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
+            return view('provinsi.kta.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
+        } elseif ($member->role==6) {
+            $fileqg = Form_type::where('name', 'like', '%File Upload%')->pluck('id');
+            $fileq = Form_question::whereIn('type', $fileqg)->pluck('id')->toArray();
+
+            $detail = Form_result::                    
+                    where('id_user', '=', $member->id)
+                    ->get();
+
+            return view('provinsi.kta.detail1', compact('notifs', 'member', 'detail', 'fileq'));
+        }        
     }
 
     public function profile() {
@@ -118,14 +129,21 @@ class KadinProvinsiController extends Controller
 
         $labels = array();
         $data = array();
-        for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
-            if ($i==12) {
-                $i = 0;
+        for ($i=0; $i <7 ; $i++) {
+            if ($monthsago==13) {
+                $monthsago = 1;
             }
-
-            $labels[] = date('F', strtotime("2000-$i-01"));
-            $data[] = Kta::where('kta', '=', 'validated')->whereMonth('created_at', '=', $i)->count();            
-        }        
+                
+            $labels[] = date('F', strtotime("2000-$monthsago-01"));
+            $data[] = Kta::where('kta', '=', 'validated')->whereMonth('created_at', '=', $monthsago)->count();
+                        
+            $monthsago++;
+        }
+        // for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) {
+        //     if ($i==12) {
+        //         $i = 0;
+        //     }
+        // }
 
     	return view('provinsi.kta.request.index', compact('notifs', 'kta', 'labels', 'data'));
     }
@@ -151,12 +169,21 @@ class KadinProvinsiController extends Controller
                 $status = "Pembuatan KTA";
             }
 
-            $comp = Form_result::where('id_user', '=', $kta->owner)
+            $comp = "";
+            $comptype = "";
+            $user = User::where('id', '=', $kta->owner)->first();
+            if ($user->role==2) {
+                $comp = Form_result::where('id_user', '=', $kta->owner)
                         ->where('id_question', '=', '8')
                         ->first()->answer_value;
-            $comptype = Form_result::where('id_user', '=', $kta->owner)
-                        ->where('id_question', '=', '1')
-                        ->first()->answer;
+                $comptype = Form_result::where('id_user', '=', $kta->owner)
+                            ->where('id_question', '=', '1')
+                            ->first()->answer;
+            } elseif ($user->role==6) {
+                $comp = Form_result::where('id_user', '=', $kta->owner)
+                        ->where('id_question', '=', '96')
+                        ->first()->answer_value;
+            }            
             $regat = Form_result::where('id_user', '=', $kta->owner)->first()->created_at->format('d/m/Y');
 
             $dt->push([                       
@@ -176,7 +203,7 @@ class KadinProvinsiController extends Controller
     public function cancelKta(Request $request) {        
         $keterangan = $request['keterangan'];        
         $id_owner = $request['id_user'];
-
+        
         $kta = Kta::where('owner', '=', $id_owner)->first();        
         
         if ($kta) {
@@ -212,14 +239,21 @@ class KadinProvinsiController extends Controller
 
         $labels = array();
         $data = array();
-        for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
-            if ($i==12) {
-                $i = 0;
+        for ($i=0; $i <7 ; $i++) {
+            if ($monthsago==13) {
+                $monthsago = 1;
             }
-
-            $labels[] = date('F', strtotime("2000-$i-01"));
-            $data[] = Kta::where('kta', '=', 'cancelled')->whereMonth('created_at', '=', $i)->count();            
+                
+            $labels[] = date('F', strtotime("2000-$monthsago-01"));
+            $data[] = Kta::where('kta', '=', 'cancelled')->whereMonth('created_at', '=', $monthsago)->count();
+                        
+            $monthsago++;
         }
+        // for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
+        //     if ($i==12) {
+        //         $i = 0;
+        //     }            
+        // }
 
         return view('provinsi.kta.canceled.index', compact('notifs', 'kta', 'labels', 'data'));
     }
@@ -294,17 +328,24 @@ class KadinProvinsiController extends Controller
 
         $labels = array();
         $data = array();
-        for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
-            if ($i==12) {
-                $i = 0;
+        for ($i=0; $i <7 ; $i++) {
+            if ($monthsago==13) {
+                $monthsago = 1;
             }
-
-            $labels[] = date('F', strtotime("2000-$i-01"));
+                
+            $labels[] = date('F', strtotime("2000-$monthsago-01"));
             $data[] = Kta::where('kta', '<>', 'requested')
                         ->where('kta', '<>', 'cancelled')
-                        ->whereMonth('created_at', '=', $i)
+                        ->whereMonth('created_at', '=', $monthsago)
                         ->count();
+                        
+            $monthsago++;
         }
+        // for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
+        //     if ($i==12) {
+        //         $i = 0;
+        //     }            
+        // }
 
         return view('provinsi.kta.list.index', compact('notifs', 'kta', 'labels', 'data'));
     }

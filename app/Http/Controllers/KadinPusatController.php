@@ -61,7 +61,7 @@ class KadinPusatController extends Controller
     }
 
     public function rnList()
-    {
+    {        
         $notifs = \App\Helpers\Notifs::getNotifs();
         
         $rn = Regnum::where('regnum', '<>', 'requested')
@@ -74,33 +74,78 @@ class KadinPusatController extends Controller
 
         $labels = array();
         $data = array();
-        for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
-            if ($i==12) {
-                $i = 0;
+        for ($i=0; $i <7 ; $i++) {
+            if ($monthsago==13) {
+                $monthsago = 1;
             }
-
+                
             $labels[] = date('F', strtotime("2000-$i-01"));
             $data[] = Regnum::where('regnum', '<>', 'requested')
                         ->where('regnum', '<>', 'cancelled')
                         ->whereMonth('created_at', '=', $i)
                         ->count();
-        }
+                            
+            $monthsago++;
+        }    
+        // for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
+        //     if ($i==12) {
+        //         $i = 0;
+        //     }
+        // }
 
         return view('pusat.rn.list.index', compact('notifs', 'rn', 'labels', 'data'));
     }
 
-    public function ajaxRnList() {        
-        $rn = Regnum::where('regnum', '<>', 'requested')
-                ->where('regnum', '<>', 'cancelled')
-                ->pluck('owner');
-                
-        $fr = Form_result::leftJoin('regnum', 'form_result.id_user', '=', 'regnum.owner')
-                ->where('form_result.id_question', '=', '8')
-                ->whereIn('form_result.id_user', $rn)
-                ->get();        
-        return Datatables::of($fr)->make(true);
+    public function ajaxRnList() {                
+        $regnums = Regnum::where('regnum', '<>', 'requested')
+                ->where('regnum', '<>', 'cancelled')->pluck('owner');
+        
+        $dt = new Collection;
+        foreach ($regnums as $key => $id) {
+            $member = User::where('id', '=', $id)->first();
+
+            if ($member->role==2) {
+                $fr = Form_result::where('id_user', '=', $id)->where('id_question', '=', '8')->first();
+            } else if ($member->role==6) {
+                $fr = Form_result::where('id_user', '=', $id)->where('id_question', '=', '96')->first();
+            }
+
+            $regnum = Regnum::where('owner', '=', $id)->first();
+
+            $dt->push([
+                'id_user' => $id,
+                'answer' => $fr->answer,
+                'created_at' => $regnum->created_at,
+                'granted_at' => $regnum->granted_at,
+                'regnum' => $regnum->regnum,
+            ]);
+        }
+
+        return Datatables::of($dt)->make(true);
     }
-    
+
+    public function ajaxRnList1() {
+        $regnums = Regnum::where('regnum', '<>', 'requested')
+                ->where('regnum', '<>', 'cancelled')->pluck('owner');
+
+        $cl = new Collection;
+        foreach ($regnums as $key => $id) {
+            $member = User::find($id);
+
+            if ($member->asdad==2) {
+                $anjing = "asdad";
+            } else if ($member->role==6) {
+                $anjing = "asdad1";
+            }
+
+            $cl->push([
+                    'answer' => $anjing,
+                ]);
+        }
+
+        return $cl;
+    }
+
     public function rnListDetail($id)
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
@@ -131,7 +176,7 @@ class KadinPusatController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();        
 
-        $rn = Regnum::where('regnum', '=', 'requested')->get();
+        $rn = Regnum::where('regnum', '=', 'requested')->pluck('owner');
 
         $carbon = new Carbon();
         $monthsago = $carbon->subMonths(6)->month;
@@ -139,27 +184,57 @@ class KadinPusatController extends Controller
 
         $labels = array();
         $data = array();
-        for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
-            if ($i==12) {
-                $i = 0;
+        for ($i=0; $i <7 ; $i++) {
+            if ($monthsago==13) {
+                $monthsago = 1;
             }
-
-            $labels[] = date('F', strtotime("2000-$i-01"));
-            $data[] = Regnum::where('regnum', '=', 'requested')->whereMonth('created_at', '=', $i)->count();            
-        }
-
-
+                
+            $labels[] = date('F', strtotime("2000-$monthsago-01"));
+            $data[] = Regnum::where('regnum', '=', 'requested')
+                        ->whereMonth('created_at', '=', $monthsago)
+                        ->pluck('owner')
+                        ->count();
+                            
+            $monthsago++;
+        }    
+        // for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
+        //     if ($i==12) {
+        //         $i = 0;
+        //     }                    
+        // }
+        
         return view('pusat.rn.request.index', compact('notifs', 'rn', 'labels', 'data'));
     }
 
-    public function ajaxRnRequest() {        
-        $rn = Regnum::where('regnum', '=', 'requested')->pluck('owner');
+    public function ajaxRnRequest() {
+        $regnums = Regnum::where('regnum', '=', 'requested')->pluck('owner');
 
-        $fr = Form_result::leftJoin('users', 'form_result.id_user', '=', 'users.id')
-                ->where('id_question', '=', '8')
-                ->whereIn('id_user', $rn)                
-                ->get();
-        return Datatables::of($fr)->make(true);
+        $dt = new Collection;
+        foreach ($regnums as $key => $rn) {
+            $member = User::where('id', '=', $rn)->first();
+            
+            if ($member->role==2) {
+                $fr = Form_result::where('id_user', '=', $rn)->where('id_question', '=', '8')->first();
+            } else if ($member->role==6) {
+                $fr = Form_result::where('id_user', '=', $rn)->where('id_question', '=', '96')->first();
+            }
+
+            $regnum = Regnum::where('owner', '=', $rn)->first();
+
+            $dt->push([
+                'id_user' => $rn,
+                'name' =>  $member->name,
+                'territory' => $member->territory,
+                'answer' => $fr->answer,
+                'created_at' => $regnum->created_at->format('d/m/Y'),
+            ]);
+        }
+        // $fr = Form_result::leftJoin('users', 'form_result.id_user', '=', 'users.id')
+        //         ->where('id_question', '=', '8')
+        //         ->whereIn('id_user', $rn)                
+        //         ->get();
+        
+        return Datatables::of($dt)->make(true);
     }
 
     public function insertRn(Request $request) {

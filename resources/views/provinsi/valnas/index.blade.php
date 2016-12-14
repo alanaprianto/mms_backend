@@ -74,11 +74,8 @@
 		        // this case `data: 0`.
 		        // <a href="member/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>
 		        "render": function ( data, type, row ) {
-		        return '<a href="member/'+row.id+'" class="btn btn-warning btn-xs">'+
+		        return '<a href="valnas/'+row.id+'" class="btn btn-warning btn-xs">'+
 		                  'Detail'+
-		                '</a>'+
-		                '<a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="member" title="Delete Member">'+
-		                  '<span class="fa fa-trash fa-fw"></span>'+
 		                '</a>';
 		        },
 		        "targets": 3

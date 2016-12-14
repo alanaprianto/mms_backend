@@ -1,16 +1,10 @@
 @extends('daerah.app')
 
-@section('head')
-<style type="text/css">
-	.col-centered{
-	    float: none;
-	    margin: 0 auto;
-	}
-</style>
+@section('active-groupform')
+  active
 @stop
-
-@section('sidebar')
-  @include('daerah.form.sidebar')
+@section('active-formab')
+  active
 @stop
 
 @section('content')

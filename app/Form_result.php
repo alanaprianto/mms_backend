@@ -19,8 +19,13 @@ class Form_result extends Model
      * @var array
      */
     protected $fillable = [
-        'id_question', 'id_user', 'answer_value', 'trackingcode',
+        'id_question', 'id_user', 'answer_value', 'trackingcode', 'alb'
     ];
+
+    // public function getDates()
+    // {
+    //     return [];
+    // }
 
     /**
      * Get the question record associated with the result.
@@ -53,10 +58,10 @@ class Form_result extends Model
     /**
      * Get the user record associated with the result.
      */
-    public function answer()
-    {
-        return $this->hasOne('App\Form_answer', 'id', 'answer_value');
-    }
+    // public function answer()
+    // {
+    //     return $this->hasOne('App\Form_answer', 'id', 'answer_value');
+    // }
 
     public function getAnswerTypeAttribute() 
     {
@@ -81,16 +86,15 @@ class Form_result extends Model
 
     public function getAnswerAttribute() 
     {
-        $id = $this->attributes['answer_value'];    
-
+        $id = $this->attributes['answer_value'];        
         $request = ['answer_value' => $id];        
 
         $validator = Validator::make($request, [
-            'answer_value' => 'integer',            
+            'answer_value' => 'integer|required',            
         ]);
 
-        if ($validator->passes()) {
-            $answers = Form_answer::find($id);
+        if ($validator->passes()) {                   
+            $answers = Form_answer::find($id);            
             if ($answers) {
                 return $answers->answer;
             } else {
@@ -108,7 +112,7 @@ class Form_result extends Model
             }
 
             return $id;
-        }   
+        }
 
         return $id;     
     }
@@ -120,7 +124,7 @@ class Form_result extends Model
         $request = ['id_question' => $id];        
 
         $validator = Validator::make($request, [
-            'id_question' => 'integer',            
+            'id_question' => 'integer|required',            
         ]);
 
         if ($validator->passes()) {
@@ -142,7 +146,7 @@ class Form_result extends Model
         $request = ['id_question' => $id];        
 
         $validator = Validator::make($request, [
-            'id_question' => 'integer',            
+            'id_question' => 'integer|required',            
         ]);
 
         if ($validator->passes()) {
@@ -164,7 +168,7 @@ class Form_result extends Model
             $request = ['id' => $terr];        
 
             $validator = Validator::make($request, [
-                'id' => 'integer',            
+                'id' => 'integer|required',            
             ]);
 
             if ($validator->passes()) {
@@ -193,7 +197,7 @@ class Form_result extends Model
             $request = ['id' => $by];        
 
             $validator = Validator::make($request, [
-                'id' => 'integer',            
+                'id' => 'integer|required',            
             ]);
 
             if ($validator->passes()) {
@@ -217,7 +221,7 @@ class Form_result extends Model
             $request = ['id' => $id];        
 
             $validator = Validator::make($request, [
-                'id' => 'integer',            
+                'id' => 'integer|required',            
             ]);
 
             if ($validator->passes()) {

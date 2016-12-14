@@ -83,7 +83,7 @@ class ImageController extends Controller
         $ext = "";
         $file = storage_path() . '/app/photoprofile'.'/';
         $filesInFolder = \File::files($file);
-        
+
         foreach($filesInFolder as $path)
         {
             $files = pathinfo($path);            
@@ -99,8 +99,22 @@ class ImageController extends Controller
             $name = 'default-profile';
             $ext = "png";
         }
+
+        if ($ext=="doc"||$ext=="docx") {
+            $name = 'default-doc';
+            $ext = "png";
+        } else if ($ext=="xls"||$ext=="xlsx") {
+            $name = 'default-excel';
+            $ext = "png";
+        } else if ($ext=="ppt"||$ext=="pptx") {
+            $name = 'default-ppt';
+            $ext = "png";
+        } else if ($ext=="pdf") {
+            $name = 'default-pdf';
+            $ext = "png";
+        }   
         
-        $file = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;
+        $file = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;        
         $img = Image::make($file);
 
         return $img->response($ext);
@@ -108,37 +122,79 @@ class ImageController extends Controller
     }
 
     public function uploadedfiles($filename)
-    {             
-        $filepath = explode("_", $filename);
+    {   
+        $filepath = explode(":::", $filename);        
 
         $name = "";
         $ext = "";
         // $file = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/'
         $file = storage_path() . '/app/uploadedfiles/'.$filepath[0].'/';
         $filesInFolder = \File::files($file);
-        
+        // return $filesInFolder;
         foreach($filesInFolder as $path)
-        {
-            $files = pathinfo($path);            
-            // if ($files['filename'] == $filename) {                
+        {            
+            $files = pathinfo($path);
+
             if ($files['filename'] == $filepath[1]) {                
                 $name = $files['filename'];
                 $ext = $files['extension'];
+            } else {
+                if (str_contains($filepath[1], '-thumbs')) {
+                    $mname = chop($filepath[1], "-thumbs");
+                    
+                    if ($files['filename'] == $mname) {                        
+                        $name = $files['filename'];
+                        $ext = $files['extension'];
+                    }
+                }
             }
-
-        }        
-
-        // \File::exists($file)
+        }
+        
+        // \File::exists($file)        
         if(!$name) {
             $name = 'default-thumbnail';
             $ext = "jpg";
             $path = storage_path() . '/app/uploadedfiles/';
         } else {
             // $path = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
-            $path = storage_path() . '/app/uploadedfiles/'.$filepath[0].'/';
-        }
+            $path = storage_path() . '/app/uploadedfiles/'.$filepath[0].'/';            
+        }        
         
-        $file = $path.$name.'.'.$ext;
+        if ($ext=="doc"||$ext=="docx") {
+            $path = storage_path() . '/app/uploadedfiles/';
+            if (str_contains($filename, '-thumbs')) {
+                $name = 'default-doc-thumbs';
+            } else {
+                $name = 'default-doc';
+            }            
+            $ext = "png";
+        } else if ($ext=="xls"||$ext=="xlsx") {
+            $path = storage_path() . '/app/uploadedfiles/';
+            if (str_contains($filename, '-thumbs')) {
+                $name = 'default-excel-thumbs';
+            } else {
+                $name = 'default-excel';
+            }            
+            $ext = "png";
+        } else if ($ext=="ppt"||$ext=="pptx") {
+            $path = storage_path() . '/app/uploadedfiles/';
+            if (str_contains($filename, '-thumbs')) {
+                $name = 'default-ppt-thumbs';
+            } else {
+                $name = 'default-ppt';   
+            }            
+            $ext = "png";
+        } else if ($ext=="pdf") {
+            $path = storage_path() . '/app/uploadedfiles/';
+            if (str_contains($filename, '-thumbs')) {
+                $name = 'default-pdf-thumbs';
+            } else {
+                $name = 'default-pdf';   
+            }            
+            $ext = "png";
+        }
+
+        $file = $path.$name.'.'.$ext;        
         $img = Image::make($file);
 
         return $img->response($ext);

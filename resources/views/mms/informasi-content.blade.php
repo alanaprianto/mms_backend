@@ -50,11 +50,13 @@
                     <i class="fa fa-user"></i>&nbsp;&nbsp;
                     <span class="bold">Anggota Biasa</span>
                 </button>
-            </a>            
-            <button class="btn btn-success " type="button">
-                <i class="fa fa-users"></i>&nbsp;&nbsp;
-                <span class="bold">Anggota Luar Biasa</span>
-            </button>
+            </a>
+            <a href="{{ url('register2')}}">
+                <button class="btn btn-success " type="button">
+                    <i class="fa fa-users"></i>&nbsp;&nbsp;
+                    <span class="bold">Anggota Luar Biasa</span>
+                </button>
+            </a>
         </div>
     </div>
 </div>

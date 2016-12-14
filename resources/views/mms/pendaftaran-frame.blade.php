@@ -31,6 +31,7 @@
 				@include('errors.error_list')
 
 				{!! Form::open(['action' => ['KadinDaerahController@store'], 'id' => 'wadah']) !!}
+                    <input type="hidden" name="alb" value="false">
 
 				{!! Form::close() !!}
 			</div>
@@ -39,7 +40,8 @@
   </section>
 
 <script src="{{ asset('resources/assets/js/jquery-2.1.1.js') }}"></script>
-@include('dynamic_form_script')
+    {{ $alb = false }}
+    @include('dynamic_form_script')
 </body>
 
 <!-- Site: HackForums.Ru | E-mail: abuse@hackforums.ru | Skype: h2osancho -->

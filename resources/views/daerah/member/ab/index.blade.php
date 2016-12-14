@@ -1,7 +1,10 @@
 @extends('daerah.app')
 
-@section('sidebar')
-  @include('daerah.member.sidebar')
+@section('active-groupmember')
+  active
+@stop
+@section('active-memberab')
+  active
 @stop
 
 @section('content')
@@ -11,8 +14,11 @@
     <li>
       <a>Kadin Daerah</a>
     </li>
+    <li>
+      <a>Members</a>
+    </li>
     <li class="active">
-      <strong>Members</strong>
+      <strong>Anggota Biasa</strong>
     </li>
   </ol>
 </div>
@@ -213,7 +219,7 @@
 		        		}		        		
 		        	}
 
-		        	if (row.kta=="") {
+		        	if (row.kta==""||row.kta==null) {
 			        	return 'Not Yet Requested, Completing Profile Information';
 			        } else if (row.kta=="requested") {
 			        	return 'KTA Requested, Waiting for Validation';
@@ -239,7 +245,7 @@
 		      },
 		      {		        
 		        "render": function ( data, type, row ) {
-			        return '<a href="member/'+row.id+'" class="btn btn-warning btn-xs">'+
+			        return '<a href="member/detail/'+row.id+'" class="btn btn-warning btn-xs">'+
 					        	'<span class="glyphicon glyphicon-search"></span>'+
 					        	'&nbsp;&nbsp;Detail'+
 					        '</a>'+

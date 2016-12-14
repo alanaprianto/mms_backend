@@ -387,7 +387,7 @@ li.pricing-title {
   border-color: #FFA600;
   color: #FFFFFF;
   font-size: 14px;
-  padding: 10px 20px;
+  /*padding: 10px 20px;*/
   font-weight: 600;
 }
 .btn-primary:hover,
@@ -422,6 +422,7 @@ fieldset[disabled] .btn-primary.active {
   background-color: #1dc5a3;
   border-color: #1dc5a3;
 }
+
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 @media (min-width: 768px) {

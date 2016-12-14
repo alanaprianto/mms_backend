@@ -175,7 +175,7 @@
 		    processing: true,
 		    serverSide: true,
 		    iDisplayLength: 100,
-		    ajax: "{{ url('/dashboard/pusat/ajax/rn')}}",
+		    ajax: "{{ url('/dashboard/pusat/ajax/rn/request')}}",
 		    columns: [       		      
 		      { "data" : "answer" },
 		      { "data" : "name" },
@@ -183,7 +183,7 @@
 		      { "data" : "id_user"},
 		      { "data" : "id_user"},
 		    ],    
-		    "columnDefs": [            
+		    "columnDefs": [
 		      {		        
 		        "render": function ( data, type, row ) {
 		        return '<a href="" class="btn btn-success btn-xs" data-toggle="modal" data-target="#insertModal" data-id="'+row.id_user+'" data-name="'+row.answer+'" data-terr="'+row.territory+'" data-url="insertrn">'+
@@ -215,6 +215,9 @@
 
 		  var today = new Date();
 		  var dd = today.getDate();
+		  if (dd<10) {
+		  	dd = "0"+dd;
+		  }
 		  var mm = today.getMonth()+1; //January is 0!
 		  var yyyy = today.getFullYear();
 		  var yy = today.getFullYear().toString().substr(2,2);
