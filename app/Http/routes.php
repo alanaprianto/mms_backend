@@ -225,8 +225,8 @@ Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role.alb'], functi
   Route::post('alb/requestkta/', 'AlbController@requestkta');
   Route::get('alb/ajax/kta', 'AlbController@ajaxKta');
   Route::post('alb/extkta', 'AlbController@extkta');
-  Route::post('alb/ktaprint', 'Member1Controller@ktaprint');
-  Route::get('alb/printkta', 'Member1Controller@printkta');
+  Route::post('alb/ktaprint', 'AlbController@ktaprint');
+  Route::get('alb/printkta', 'AlbController@printkta');
   
 });
 

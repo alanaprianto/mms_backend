@@ -147,15 +147,15 @@
 		    serverSide: true,
 		    iDisplayLength: 100,
 		    ajax: "{{ url('/dashboard/provinsi/ajax/ktalist')}}",
-		    columns: [       		      
-		      { "data" : "answer" },     
-		      { "data" : "created_at"},                  
+		    columns: [
+		      { "data" : "answer" },
+		      { "data" : "created_at"},
 		      { "data" : "granted_at"},
 		      { "data" : "kta"},
 		      { "data" : "id_user"},
-		    ],    
-		    "columnDefs": [            
-		      {		        
+		    ],
+		    "columnDefs": [
+		      {
 		        "render": function ( data, type, row ) {
 		        return '<a href="list/'+row.id_user+'" class="btn btn-warning btn-xs">'+
 		        			'<span class="glyphicon glyphicon-search"></span>'+

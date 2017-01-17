@@ -26,8 +26,8 @@ class PercobaanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function percobaan()
-    {        
-        
+    {
+        return view('percobaan-mainapp');
         // $form = Form_result_kadin_daerah::where('id', '=', '525')->first();
         // // return $form;
 

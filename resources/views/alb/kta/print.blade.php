@@ -51,10 +51,11 @@
 			}
 		</style>
 	</head>
-	<body onload="window.print()">	
+	<!-- <body onload="window.print()"> -->
+	<body>	
 		<div class="kadin-border" style="background-color: #fffbe2;">
 			<!-- header -->
-			<div style="text-align: center; margin-left: 281px;">
+			<div style="text-align: center; margin-left: 281px;margin-top: 20px;">
 				<table>
 					<tr valign="middle">
 						<td><img src="{{ url('resources/img/icon144-128x128-10.png') }}" width="95px"></td>
@@ -90,7 +91,7 @@
 			</table>
 			
 			<!-- content -->
-			<div style="padding: 10px 30px">
+			<div style="padding: 10px 30px; margin-top:10px;">
 				<table width="100%">
 				  <tr>
 					<td width="25%">					
@@ -98,7 +99,7 @@
 					  <i style="font-size:14px;">Name of Company</i>
 					</td>
 					<td width="3%">:</td>
-					<td style="font-size:14px;" width="30%">{{ $orgname }}</td>
+					<td style="font-size:14px;" width="30%">{{ $compname }}</td>
 					
 					<td colspan="4">&nbsp;</td>
 				  </tr>                              
@@ -108,7 +109,7 @@
 					  <i style="font-size:14px;">Person in Charge</i>
 					</td>
 					<td>:</td>					
-					<td style="font-size:14px;">{{ $orglead }}</td>
+					<td style="font-size:14px;">{{ $complead }}</td>
 					
 					<td width="7%">&nbsp;</td>					
 					<td width="15%">
@@ -124,7 +125,7 @@
 					  <i style="font-size:14px;">Company's Address</i>
 					</td>
 					<td>:</td>					
-					<td style="font-size:14px;">{{ $orgaddr}}</td>
+					<td style="font-size:14px;">{{ $compaddr}}</td>
 					
 					<td width="7%">&nbsp;</td>
 					<td>
@@ -140,18 +141,18 @@
 					  <i style="font-size:14px;">Industrial Classification</i>
 					</td>
 					<td>:</td>					
-					<td style="font-size:14px;">{{ $orgclass }}</td>
+					<td style="font-size:14px;">{{ $compbdus }}</td>
 					
 					<td colspan="4">&nbsp;</td>
 				  </tr>				  
 				</table>
 				
-				<div style="text-align: center; margin-top: 10px; margin-bottom: 5px">
+				<div style="text-align: center; margin-top: 20px; margin-bottom: 5px">
 				  <b style="font-size:15px;">ADALAH ANGGOTA LUAR BIASA KAMAR DAGANG DAN INDUSTRI (KADIN)</b><br>
 				  <i style="font-size:14px;">is an Extra - Ordinary Member of Chamber of Commerce and Industry (CCI)</i>				  
 				</div>
 				<br>
-				<table align="center">
+				<table align="center" style="margin-top:10px;">
 				  <tr>
 					<td style="padding-right:25px">
 					  <strong style="font-size: 12px">Di Daerah Provinsi</strong><br>
@@ -162,7 +163,7 @@
 				  </tr>
 				</table>
 				<br>
-				<table width="100%">
+				<table width="100%" style="margin-top:10px;">
 					<tr>
 						<td align="center" width="15%">						
 						</td>

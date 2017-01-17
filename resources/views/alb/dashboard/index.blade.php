@@ -35,7 +35,7 @@
           {{ $exp_text1 }}<br><br>
           <strong>{{ $exp_text2 }}</strong>          
           <br><br>
-          <a href="{{ url('member/kta') }}">
+          <a href="{{ url('dashboard/alb/kta') }}">
             <button type="submit" class="btn btn-success">
               See your KTA detail.
             </button>
@@ -52,14 +52,14 @@
             Waiting for Generation.
           @elseif ($kta=="cancelled")
             Your KTA request is cancelled.<br><br>
-            <a href="{{ url('member/kta') }}">
+            <a href="{{ url('dashboard/alb/kta') }}">
               <button type="submit" class="btn btn-danger">
                 See Why your KTA is cancelled.
               </button>
             </a>
           @else
             Your KTA is generated.<br><br>
-            <a href="{{ url('member/kta') }}">
+            <a href="{{ url('dashboard/alb/kta') }}">
               <button type="submit" class="btn btn-success">
                 See your KTA detail.
               </button>
@@ -85,14 +85,14 @@
           Still in process.
         @elseif ($rn=="cancelled")
           Your RN Number request is cancelled.<br><br>
-          <a href="{{ url('member/kta') }}">
+          <a href="{{ url('dashboard/alb/kta') }}">
             <button type="submit" class="btn btn-danger">
               See Why your RN is cancelled.
             </button>
           </a>
         @else
           Your RN Number is generated.<br><br>
-          <a href="{{ url('member/rn') }}">
+          <a href="{{ url('dashboard/alb/rn') }}">
             <button type="submit" class="btn btn-success">
               See your RN detail.
             </button>
@@ -131,7 +131,7 @@
         </div>
         @if ($cdoc==0)
           <h4 align="center">
-            <a href="{{ url('member\completeprofile\24') }}">
+            <a href="{{ url('dashboard\alb\completeprofile\24') }}">
               <button type="submit" class="btn btn-success">
                 Upload Scanned Document
               </button>

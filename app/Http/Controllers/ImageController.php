@@ -123,34 +123,38 @@ class ImageController extends Controller
 
     public function uploadedfiles($filename)
     {   
-        $filepath = explode(":::", $filename);        
+        $filepath = explode(":::", $filename);
 
         $name = "";
         $ext = "";
         // $file = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/'
         $file = storage_path() . '/app/uploadedfiles/'.$filepath[0].'/';
         $filesInFolder = \File::files($file);
-        // return $filesInFolder;
-        foreach($filesInFolder as $path)
-        {            
-            $files = pathinfo($path);
 
-            if ($files['filename'] == $filepath[1]) {                
+        foreach($filesInFolder as $path)
+        {
+            $files = pathinfo($path);
+            $init = false;
+
+            if ($files['filename'] == $filepath[1]) {
                 $name = $files['filename'];
-                $ext = $files['extension'];
+                $ext = $files['extension'];                
             } else {
                 if (str_contains($filepath[1], '-thumbs')) {
-                    $mname = chop($filepath[1], "-thumbs");
-                    
-                    if ($files['filename'] == $mname) {                        
-                        $name = $files['filename'];
-                        $ext = $files['extension'];
-                    }
+                    $mname = chop($filepath[1], "-thumbs");                    
+
+                    if ($files['filename'] == $mname) {
+                        $asdad = $files['extension'];
+
+                        if (str_contains($asdad, 'doc')||str_contains($asdad, 'xls')||str_contains($asdad, 'ppt')||str_contains($asdad, 'pdf')) {
+                            $name = $files['filename'];
+                            $ext = $files['extension'];
+                        }
+                    }                    
                 }
             }
-        }
-        
-        // \File::exists($file)        
+        }        
+        // \File::exists($file)
         if(!$name) {
             $name = 'default-thumbnail';
             $ext = "jpg";

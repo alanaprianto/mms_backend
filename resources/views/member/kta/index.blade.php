@@ -4,8 +4,8 @@
     <!-- <link href="{{ asset('resources/assets/css/table_styles.css') }}" rel="stylesheet"> -->
 @stop
 
-@section('sidebar')
-  @include('member.kta.sidebar')
+@section('active-kta')
+  active
 @stop
 
 @section('content')

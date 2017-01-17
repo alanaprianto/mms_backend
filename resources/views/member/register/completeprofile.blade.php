@@ -1,7 +1,7 @@
 @extends('member.app')
 
-@section('sidebar')
-  @include('member.compprof.sidebar')
+@section('active-comprof')
+  active
 @stop
 
 @section('content')
@@ -41,7 +41,7 @@
 
       @include('errors.error_list')
 
-      <form method="POST" action="http://localhost/mms/registerii/{{ $fqg->id}}" accept-charset="UTF-8" id="wadah" enctype="multipart/form-data">
+      <form method="POST" action="{{ url('registerii') }}/{{ $fqg->id}}" accept-charset="UTF-8" id="wadah" enctype="multipart/form-data">
         <input name="_token" value="{{ csrf_token() }}" type="hidden">                                
       </form>                   
     </div>

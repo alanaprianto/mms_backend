@@ -1,9 +1,5 @@
 @extends('member.app')
 
-@section('sidebar')
-  @include('member.sidebar-plain')
-@stop
-
 @section('content')
 <div id="breadcrumbs-bar" class="col-lg-10">
   <h2>Anggota Biasa</h2>

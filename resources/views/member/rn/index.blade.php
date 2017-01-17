@@ -5,8 +5,8 @@
 
 @stop
 
-@section('sidebar')
-  @include('member.rn.sidebar')
+@section('active-rn')
+  active
 @stop
 
 @section('content')

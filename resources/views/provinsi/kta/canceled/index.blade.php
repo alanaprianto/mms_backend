@@ -160,14 +160,14 @@
 		    serverSide: true,
 		    iDisplayLength: 100,
 		    ajax: "{{ url('/dashboard/provinsi/ajax/ktacancelled')}}",
-		    columns: [       		      
-		      { "data" : "answer" },     
-		      { "data" : "created_at"},                  
-		      { "data" : "updated_at"},            
+		    columns: [
+		      { "data" : "answer" },
+		      { "data" : "created_at"},
+		      { "data" : "updated_at"},
 		      { "data" : "id_user"},
 		    ],    
-		    "columnDefs": [            
-		      {		        
+		    "columnDefs": [
+		      {
 		        "render": function ( data, type, row ) {
 		        return '<a href="cancel/'+row.id_user+'" class="btn btn-warning btn-xs">'+
 		        			'<span class="glyphicon glyphicon-search"></span>'+
@@ -176,7 +176,7 @@
 		        		'&nbsp;&nbsp;';
 		        },
 		        "targets": 3
-		      },		      
+		      },
 		    ]
 		  });
 		});

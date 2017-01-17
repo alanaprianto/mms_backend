@@ -335,23 +335,23 @@ class AlbController extends Controller
 
         $results = Form_result::where('id_user', '=', $user->id)->get();                
 
-        $orgname = "";
-        $orglead = "";
-        $orgaddr = "";
-        $orgclass = "";
+        $compname = "";
+        $complead = "";
+        $compaddr = "";
+        $compbdus = "";
 		$postcode = "";
 		$kblicode = "";        
         $provinsi = "";
         foreach ($results as $key => $result) {
             $question = $result->question;
             if (str_contains($question, "Nama Asosiasi/Himpunan")) {
-                $orgname = $result->answer;
+                $compname = $result->answer;
             } else if (str_contains($question, "Nama Pimpinan Organisasi")) {
-                $orglead = $result->answer;
+                $complead = $result->answer;
             } else if (str_contains($question, "Alamat Lengkap")) {
-                $orgaddr = $result->answer;
+                $compaddr = $result->answer;
             } else if (str_contains($question, "Bidang Usaha 1")) {
-                $orgclass = $result->answer;            
+                $compbdus = $result->answer;            
             } else if (str_contains($question, "Kode Pos")) {
                 $postcode = $result->answer;
             } else if (str_contains($question, "KBLI 1")) {
@@ -361,6 +361,6 @@ class AlbController extends Controller
             }
         }
         
-        return view('alb.kta.print', compact('kta', 'rn', 'exp', 'orgname', 'orglead', 'orgaddr', 'orgclass', 'postcode', 'kblicode', 'provinsi'));
+        return view('alb.kta.print', compact('kta', 'rn', 'exp', 'compname', 'complead', 'compaddr', 'compbdus', 'postcode', 'kblicode', 'provinsi'));
     }
 }

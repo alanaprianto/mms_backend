@@ -28,7 +28,8 @@ class KadinProvinsiController extends Controller
 
         $user = Auth::user();
         $terr = $user->territory;
-        $owner = User::where('territory', 'like', $terr.'%')->where('role', '=', 2)->pluck('id');
+        $roles = [2, 6];
+        $owner = User::where('territory', 'like', $terr.'%')->whereIn('role', $roles)->pluck('id');
 
         $totalkta = Kta::where('kta', '<>', 'requested')
                     ->where('kta', '<>', 'cancelled')
@@ -158,10 +159,7 @@ class KadinProvinsiController extends Controller
         //         ->where('id_question', '=', '8')
         //         ->whereIn('id_user', $ktas->pluck('owner'))
         //         ->get();
-
-        // return $ktas->count()." ".$fr->count();
-        $dt = new Collection;
-        // return $ktas->get()." +++++ ".$fr;
+        $dt = new Collection;        
         foreach ($ktas->get() as $key => $kta) {            
             if (str_contains($kta->perpanjangan, 'processed')) {
                 $status = "Perpanjangan KTA";
@@ -260,14 +258,35 @@ class KadinProvinsiController extends Controller
 
     public function ajaxKtaCancel() {
         $terr = Auth::user()->territory;
-        $kta = Kta::whereHas('user', function ($query) use($terr) {
+        $ktas = Kta::whereHas('user', function ($query) use($terr) {
             $query->where('territory', 'like', $terr.'%');
         })->where('kta', '=', 'cancelled')->pluck('owner');
+        
+        $dt = new Collection;
+        foreach ($ktas as $key => $id) {
+            $member = User::where('id', '=', $id)->first();
 
-        $fr = Form_result::where('id_question', '=', '8')
-                ->whereIn('id_user', $kta)                
-                ->get();
-        return Datatables::of($fr)->make(true);
+            if ($member->role==2) {
+                $fr = Form_result::where('id_user', '=', $id)->where('id_question', '=', '8')->first();
+            } else if ($member->role==6) {
+                $fr = Form_result::where('id_user', '=', $id)->where('id_question', '=', '96')->first();
+            }
+
+            $kta = Kta::where('owner', '=', $id)->first();
+
+            $dt->push([
+                'id_user' => $id,
+                'answer' => $fr->answer,
+                'created_at' => $kta->created_at,
+                'updated_at' => $kta->updated_at,                
+            ]);
+        }
+
+        return Datatables::of($dt)->make(true);
+
+        // $fr = Form_result::where('id_question', '=', '8')
+        //         ->whereIn('id_user', $kta)                
+        //         ->get();        
     }    
 
     public function insertKta(Request $request) {
@@ -319,7 +338,7 @@ class KadinProvinsiController extends Controller
         $notifs = \App\Helpers\Notifs::getNotifs();
 
         $terr = Auth::user()->territory;
-        $owner = User::where('territory', 'like', $terr.'%')->where('role', '=', 2)->pluck('id');        
+        $owner = User::where('territory', 'like', $terr.'%')->whereIn('role', [2, 6])->pluck('id');        
         $kta = Kta::where('kta', '<>', 'requested')->where('kta', '<>', 'validated')->where('kta', '<>', 'cancelled')->whereIn('owner', $owner)->get();
 
         $carbon = new Carbon();
@@ -338,7 +357,7 @@ class KadinProvinsiController extends Controller
                         ->where('kta', '<>', 'cancelled')
                         ->whereMonth('created_at', '=', $monthsago)
                         ->count();
-                        
+
             $monthsago++;
         }
         // for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
@@ -350,23 +369,44 @@ class KadinProvinsiController extends Controller
         return view('provinsi.kta.list.index', compact('notifs', 'kta', 'labels', 'data'));
     }
 
-    public function ajaxKtaList() {
+    public function ajaxKtaList() {        
         $terr = Auth::user()->territory;
-        $kta = Kta::whereHas('user', function ($query) use($terr) {
+        $ktas = Kta::whereHas('user', function ($query) use($terr) {
                 $query->where('territory', 'like', $terr.'%');
             })->where('kta', '<>', 'requested')
             ->where('kta', '<>', 'validated')
             ->where('kta', '<>', 'cancelled')
             ->pluck('owner');
 
-        $fr = Form_result::where('id_question', '=', '8')
-                ->whereIn('id_user', $kta)
-                ->get();
-        $fr = Form_result::leftJoin('kta', 'form_result.id_user', '=', 'kta.owner')
-                ->where('form_result.id_question', '=', '8')
-                ->whereIn('form_result.id_user', $kta)
-                ->get();
-        return Datatables::of($fr)->make(true);
+        // return $kta;
+        
+        $dt = new Collection;
+        foreach ($ktas as $key => $id) {
+            $member = User::where('id', '=', $id)->first();
+
+            if ($member->role==2) {
+                $fr = Form_result::where('id_user', '=', $id)->where('id_question', '=', '8')->first();
+            } else if ($member->role==6) {
+                $fr = Form_result::where('id_user', '=', $id)->where('id_question', '=', '96')->first();
+            }
+
+            $kta = Kta::where('owner', '=', $id)->first();
+
+            $dt->push([
+                'id_user' => $id,
+                'answer' => $fr->answer,
+                'created_at' => $kta->created_at,
+                'granted_at' => $kta->granted_at,
+                'kta' => $kta->kta,
+            ]);
+        }
+
+        return Datatables::of($dt)->make(true);
+
+        // $fr = Form_result::leftJoin('kta', 'form_result.id_user', '=', 'kta.owner')
+        //         ->where('form_result.id_question', '=', '8')
+        //         ->whereIn('form_result.id_user', $kta)
+        //         ->get();
     }    
 
     /**
@@ -457,10 +497,17 @@ class KadinProvinsiController extends Controller
                     } else if ($exp_at<=3) {
                         $exp_in = "In ".$exp_at." ".$m;
                     }
-
-                    $comp = Form_result::where('id_user', '=', $value->owner)
+                    
+                    if ($value->user->role==2) {
+                        $comp = Form_result::where('id_user', '=', $value->owner)
                                 ->where('id_question', '=', '8')
                                 ->first()->answer_value;
+                    } else if ($member->role==6) {
+                        $comp = Form_result::where('id_user', '=', $value->owner)
+                                ->where('id_question', '=', '96')
+                                ->first()->answer_value;                        
+                    }
+
                     $comprep = $value->user->name;
                     $kta = $value->kta;
                     $id_user = $value->owner;

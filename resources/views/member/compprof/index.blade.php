@@ -1,7 +1,7 @@
 @extends('member.app')
 
-@section('sidebar')
-  @include('member.compprof.sidebar')
+@section('active-compprof')
+  active
 @stop
 
 @section('content')

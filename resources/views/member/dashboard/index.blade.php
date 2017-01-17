@@ -4,8 +4,8 @@
   <link href="{{ asset('resources/assets/css/plugins/blueimp/css/blueimp-gallery.min.css') }}" rel="stylesheet">  
 @stop
 
-@section('sidebar')
-  @include('member.dashboard.sidebar')
+@section('active-dashboard')
+  active
 @stop
 
 @section('content')

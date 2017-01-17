@@ -43,11 +43,12 @@ class KadinDaerahController extends Controller
         $terr = $user->territory;
         $totalsubmitted = Form_result::where('answer_value', '=', $terr)->get()->count();    
                 
-        $totalmember = User::where('territory', '=', $terr)->where('role', '=', '2')->get()->count();        
-        $totalverified = User::where('territory', '=', $terr)->where('role', '=', '2')
+        $roles = [2, 6];
+        $totalmember = User::where('territory', '=', $terr)->whereIn('role', $roles)->get()->count();        
+        $totalverified = User::where('territory', '=', $terr)->whereIn('role', $roles)
                             ->where('validation', '=', 'validated')
                             ->get()->count();
-        $totalunverified = User::where('territory', '=', $terr)->where('role', '=', '2')
+        $totalunverified = User::where('territory', '=', $terr)->whereIn('role', $roles)
                             ->where('validation', '=', '')
                             ->get()->count();
 

@@ -54,7 +54,7 @@
 	<body onload="window.print()">	
 		<div class="kadin-border">
 			<!-- header -->
-			<div style="text-align: center; margin-left: 281px;">
+			<div style="text-align: center; margin-left: 281px;margin-top: 20px;">
 				<table>
 					<tr valign="middle">
 						<td><img src="{{ url('resources/img/icon144-128x128-10.png') }}" width="95px"></td>
