@@ -66,8 +66,7 @@
               <div class="col-lg-10">
                 <p class="form-control-static">{{ $member->created_at }}</p>
               </div>
-            </div>
-            <div class="hr-line-dashed"></div>
+            </div>            
           </div>
         </div>                
       </div>
@@ -88,7 +87,7 @@
   </div>
   <div class="ibox-content" style="display: block;">    
     <div class="row">
-      <div class="col-lg-9 col-lg-offset-1">
+      <div class="col-lg-12">
         @if (count($detail1)>=1)            
           <table class="table">            
             @foreach ($detail1 as $row)
@@ -131,7 +130,7 @@
   </div>
   <div class="ibox-content" style="display: block;">      
     <div class="row">
-      <div class="col-lg-9 col-lg-offset-1">
+      <div class="col-lg-12">
         @if (count($detail2)>=1)
           <table class="table">              
             @foreach ($detail2 as $row)
@@ -174,7 +173,7 @@
   </div>
   <div class="ibox-content" style="display: block;">
     <div class="row">
-      <div class="col-lg-9 col-lg-offset-1">
+      <div class="col-lg-12">
         @if (count($detail3)>=1)
           <table class="table">              
             @foreach ($detail3 as $row)
@@ -217,7 +216,7 @@
   </div>
   <div class="ibox-content" style="display: block;">
     <div class="row">
-      <div class="col-lg-9 col-lg-offset-1">
+      <div class="col-lg-12">
         @if (count($docs)>=1)
           <table class="table">              
             @foreach ($docs as $row)

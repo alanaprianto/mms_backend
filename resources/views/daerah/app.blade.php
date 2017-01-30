@@ -65,7 +65,6 @@
             </li>   
             @include('daerah.sidebar')            
           </ul>
-
         </div>
       </nav>              
       <div id="page-wrapper" class="gray-bg dashbard-1">

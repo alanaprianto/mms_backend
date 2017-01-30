@@ -25,7 +25,7 @@ class FormQuestionGroupController extends Controller
         // if (Request::ajax()) {                                            
         //     return view('form.question.questions', compact('fquestions'));
         // }
-                
+
         // $deleted = false;
         // return view('form.questiongroup.index', compact('fqgroups', 'deleted'));
         $notifs = \App\Helpers\Notifs::getNotifs();

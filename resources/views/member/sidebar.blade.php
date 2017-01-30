@@ -6,7 +6,7 @@
 </li>
 <li class="@yield('active-kta')">
 	<a href="{{ url('member/kta')}}">
-		<i class="fa fa-list-alt"></i>
+		<i class="fa fa-credit-card"></i>
 		<span class="nav-label">KTA</span>
 	</a>
 </li>

@@ -82,36 +82,8 @@ class KadinDaerahController extends Controller
      */
     public function submittedForms()
     {                       
-        $notifs = \App\Helpers\Notifs::getNotifs();    
-
-        $terr = Auth::user()->territory;
-        $total = Form_result::where('alb', '<>', true)->where('answer_value', '=', $terr)->get();
-
-        $carbon = new Carbon();
-        $monthsago = $carbon->subMonths(6)->month;                
-
-        $labels = array();
-        $data = array();        
-        for ($i=0; $i <7 ; $i++) {
-            if ($monthsago==13) {
-                $monthsago = 1;
-            }
-                
-            $labels[] = date('F', strtotime("2000-$monthsago-01"));
-            $data[] = Form_result::
-                        where('alb', '<>', true)
-                        ->where('answer_value', '=', $terr)
-                        ->whereMonth('created_at', '=', $monthsago)
-                        ->count();
-                            
-            $monthsago++;
-        }        
-        // for ($i=$monthsago; $i != $monthslater; $i++) { 
-        //     if ($i==13) {                
-        //         $i = 1;
-        //     }                    
-        // }                
-        return view('daerah.form.ab.index', compact('notifs', 'total', 'labels', 'data'));
+        $notifs = \App\Helpers\Notifs::getNotifs();        
+        return view('daerah.form.ab.index', compact('notifs'));
     }
 
     /**
@@ -227,36 +199,7 @@ class KadinDaerahController extends Controller
     {                       
         $notifs = \App\Helpers\Notifs::getNotifs();        
         
-        $terr = Auth::user()->territory;
-        $members = User::where('territory', '=', $terr)->where('role', '=', '2')->get();
-
-        $carbon = new Carbon();
-        $monthsago = $carbon->subMonths(6)->month;
-        $monthslater = new Carbon();
-
-        $labels = array();
-        $data = array();
-
-        for ($i=0; $i <7 ; $i++) {
-            if ($monthsago==13) {
-                $monthsago = 1;
-            }
-                
-            $labels[] = date('F', strtotime("2000-$monthsago-01"));
-            $data[] = User::where('territory', '=', $terr)
-                        ->where('role', '=', '2')
-                        ->whereMonth('created_at', '=', $monthsago)
-                        ->count();
-                            
-            $monthsago++;
-        }  
-        // for ($i=$monthsago; $i != $monthslater->addMonths(1)->month ; $i++) { 
-        //     if ($i==12) {
-        //         $i = 0;
-        //     }        
-        // }        
-        
-        return view('daerah.member.ab.index', compact('notifs', 'members', 'labels', 'data'));
+        return view('daerah.member.ab.index', compact('notifs'));
     }
 
     public function memberDetail($id)
@@ -669,32 +612,9 @@ class KadinDaerahController extends Controller
 
     public function submittedAlbForms()
     {                       
-        $notifs = \App\Helpers\Notifs::getNotifs();    
+        $notifs = \App\Helpers\Notifs::getNotifs();
 
-        $terr = Auth::user()->territory;
-        $total = Form_result::where('alb', '=', true)->where('answer_value', '=', $terr)->get();
-
-        $carbon = new Carbon();
-        $monthsago = $carbon->subMonths(6)->month;        
-
-        $labels = array();
-        $data = array();
-        
-        for ($i=0; $i <7 ; $i++) {
-            if ($monthsago==13) {
-                $monthsago = 1;
-            }
-                
-            $labels[] = date('F', strtotime("2000-$monthsago-01"));
-            $data[] = Form_result::
-                        where('alb', '=', true)
-                        ->where('answer_value', '=', $terr)
-                        ->whereMonth('created_at', '=', $monthsago)
-                        ->count();
-                            
-            $monthsago++;
-        }                
-        return view('daerah.form.alb.index', compact('notifs', 'total', 'labels', 'data'));
+        return view('daerah.form.alb.index', compact('notifs'));
     }
 
     public function ajaxAlbForms() {
@@ -876,31 +796,7 @@ class KadinDaerahController extends Controller
     {                       
         $notifs = \App\Helpers\Notifs::getNotifs();        
         
-        $terr = Auth::user()->territory;
-        $members = User::where('territory', '=', $terr)->where('role', '=', '6')->get();
-
-        $carbon = new Carbon();
-        $monthsago = $carbon->subMonths(6)->month;
-        $monthslater = new Carbon();
-
-        $labels = array();
-        $data = array();
-
-        for ($i=0; $i <7 ; $i++) {
-            if ($monthsago==13) {
-                $monthsago = 1;
-            }
-                
-            $labels[] = date('F', strtotime("2000-$monthsago-01"));
-            $data[] = User::where('territory', '=', $terr)
-                        ->where('role', '=', '6')
-                        ->whereMonth('created_at', '=', $monthsago)
-                        ->count();
-                            
-            $monthsago++;
-        }        
-        
-        return view('daerah.member.alb.index', compact('notifs', 'members', 'labels', 'data'));
+        return view('daerah.member.alb.index', compact('notifs'));
     }
 
     public function ajaxAlbMembers() {

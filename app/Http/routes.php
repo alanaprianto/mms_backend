@@ -94,6 +94,11 @@ Route::get('ajax/listdaerah/{id}', 'MmsController@listDaerah');
 // Mms crud
 Route::group(['prefix' => 'crud/form/', 'middleware' => 'auth.role.admin'], function () {
   Route::get('dashboard', 'MmsController@dashboardAdmin');
+  Route::post('chart/adm_donut', 'AdminChartController@adm_donut');
+  Route::post('chart/adm_dblbar', 'AdminChartController@adm_dblbar');
+  Route::post('chart/adm_member', 'AdminChartController@adm_member');
+  Route::post('chart/adm_dynform', 'AdminChartController@adm_dynform');
+  
   Route::resource('setting', 'FormSettingController');
   Route::resource('types', 'FormTypeController');
   Route::resource('rules', 'FormRulesController');
@@ -168,6 +173,10 @@ Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role.daerah'], fun
   Route::get('daerah/member/alb', 'KadinDaerahController@memberAlb');
   Route::get('daerah/member/alb/detail/{id}', 'KadinDaerahController@memberAlbDetail');
   Route::get('daerah/ajax/members/alb', 'KadinDaerahController@ajaxAlbMembers');
+
+  // grafik  
+  Route::post('daerah/chart/sf_stat', 'DaerahChartController@sf_stat');
+  Route::post('daerah/chart/member_stat', 'DaerahChartController@member_stat');
 });
 
 Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role.provinsi'], function () {
@@ -195,6 +204,9 @@ Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role.provinsi'], f
   Route::get('provinsi/valnas', 'KadinProvinsiController@valnas');
   Route::get('provinsi/ajax/valnas', 'KadinProvinsiController@ajaxvalnas');
   Route::get('provinsi/valnas/{id}', 'KadinProvinsiController@ktaDetail');
+
+  //Chart
+  Route::post('provinsi/chart/kta_stat', 'ProvinsiChartController@kta_stat');
 });
 
 Route::group(['prefix' => 'dashboard/', 'middleware' => 'auth.role.pusat'], function () {

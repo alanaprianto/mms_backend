@@ -35,10 +35,11 @@ class MmsController extends Controller
     {                	
 		// return view('mms.home');
 
-        if (Auth::check()) {
-            return view('frontend.index')->with('name', Auth::user()->name)->with('loginRole', Auth::user()->role);
-        }
-		return view('frontend.index');
+      if (Auth::check()) {
+        return view('frontend.index')->with('name', Auth::user()->name)->with('loginRole', Auth::user()->role);
+      }
+      
+		  return view('frontend.index');
     }
 
     /**
@@ -147,7 +148,7 @@ class MmsController extends Controller
             $message->to($email)->subject('Kadin Registration');                    
         });
 
-        $admins = User::where('role', '=', '1')->get();        
+        $admins = User::where('role', '=', '1')->get();
         foreach ($admins as $key => $admin) {
             $notif = new Notification;
 
@@ -182,17 +183,9 @@ class MmsController extends Controller
 
     public function dashboardAdmin()
     {                       
-      $notifs = \App\Helpers\Notifs::getNotifs();
+      $notifs = \App\Helpers\Notifs::getNotifs();      
 
-      $totalsetting = \App\Form_setting::get()->count();
-      $totaltype = \App\Form_type::get()->count();
-      $totalrules = \App\Form_rules::get()->count();
-      $totalquestion = \App\Form_question::get()->count();
-      $totalqgroup = \App\Form_question_group::get()->count();
-      $totalanswer = \App\Form_answer::get()->count();
-      $totalresult = \App\Form_result::get()->count();
-      return view('form.dashboard.index', compact('notifs', 'totalsetting', 'totaltype', 'totalrules', 
-        'totalquestion', 'totalqgroup', 'totalanswer', 'totalresult'));
+      return view('form.dashboard.index', compact('notifs'));
     }    
 
     public function ktatrack(Request $request) {

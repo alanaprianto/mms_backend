@@ -99,7 +99,7 @@ $('#submit_delete').on('click', function (event) {
   console.log("submit clicked");
   console.log(url+"/"+id);    
 
-  $.ajax({    
+  $.ajax({
     url: url+"/"+id,
     type: "post",
     data: {

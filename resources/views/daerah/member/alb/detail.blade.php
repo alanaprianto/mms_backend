@@ -69,13 +69,12 @@
               <div class="col-lg-10">
                 <p class="form-control-static">{{ $member->created_at }}</p>
               </div>
-            </div>
-            <div class="hr-line-dashed"></div>
+            </div>            
           </div>
           <br><br><br><br><br><br><br>
-          <div class="col-lg-9 col-lg-offset-1">
+          <div class="col-lg-12" style="margin-right:10px;margin-left:10px;">
             @if (count($detail)>=1)            
-              <table class="table">            
+              <table class="table">
                 @foreach ($detail as $row)
                   @if ($row->correction||$row->commentary)
                     <tr bgcolor="#F6CECE">

@@ -65,7 +65,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-9 col-lg-offset-1">
+            <div class="col-lg-12">
 	          @if ($detail)
     			    <?php $i=1;?>		
     			    <table class="table">

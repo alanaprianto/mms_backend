@@ -27,7 +27,7 @@
           </div>
           <div class="ibox-content">
             <div class="col-lg-8 col-centered">
-              <iframe src="{{ url('ktatrack') }}/{{$code}}" frameborder="0" scrolling="no" onload="resizeIframe(this)" width="100%" />
+              <iframe src="{{ url('ktatrack') }}/{{$code}}" frameborder="0" scrolling="no" onload="resizeIframe(this)" width="100%"></iframe>
             </div>
           </div>
         </div>

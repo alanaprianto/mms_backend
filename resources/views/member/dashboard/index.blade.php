@@ -159,25 +159,24 @@
         <div class="row">
         <div class="col-lg-12">
           <!-- identitas user -->
-          <div class="form-group">
-            <label class="col-lg-4 control-label">Username</label>
+          <div class="form-group col-md-12 no-padding">
+            <label class="col-lg-4 control-label no-padding">Username</label>
             <div class="col-lg-8">
-              <p class="form-control-static">{{ $member->username }}</p>
+              <p class="form-control-static no-padding">{{ $member->username }}</p>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-lg-4 control-label">Tracking Code</label>
+          <div class="form-group col-md-12 no-padding">
+            <label class="col-lg-4 control-label no-padding">Tracking Code</label>
             <div class="col-lg-8">
-              <p class="form-control-static">{{ $detail[0]['trackingcode'] }}</p>
+              <p class="form-control-static no-padding">{{ $detail[0]['trackingcode'] }}</p>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-lg-4 control-label">Submitted At</label>
+          <div class="form-group col-md-12 no-padding">
+            <label class="col-lg-4 control-label no-padding">Submitted At</label>
             <div class="col-lg-8">
-              <p class="form-control-static">{{ $member->created_at }}</p>
+              <p class="form-control-static no-padding">{{ $member->created_at }}</p>
             </div>
-          </div>
-          <div class="hr-line-dashed"></div>
+          </div>          
         </div>
       </div>
       </div>
@@ -209,31 +208,31 @@
             </div>          
 
             <!-- identitas user -->
-            <div class="form-group">
-              <label class="col-lg-6 control-label">Nama Perusahaan</label>
+            <div class="form-group col-md-12 no-padding">
+              <label class="col-lg-6 control-label no-padding">Nama Perusahaan</label>
               <div class="col-lg-6">
-                <p class="form-control-static">{{ $compform }} {{ $compname }}</p>
+                <p class="form-control-static no-padding">{{ $compform }} {{ $compname }}</p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-6 control-label">Klasifikasi Perusahaan</label>
+            <div class="form-group col-md-12 no-padding">
+              <label class="col-lg-6 control-label no-padding">Klasifikasi Perusahaan</label>
               <div class="col-lg-6">
-                <p class="form-control-static">{{ $compclass }}</p>
+                <p class="form-control-static no-padding">{{ $compclass }}</p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-6 control-label">Daerah</label>
+            <br>
+            <div class="form-group col-md-12 no-padding">
+              <label class="col-lg-6 control-label no-padding">Daerah</label>
               <div class="col-lg-6">
-                <p class="form-control-static">{{ $daerah }}</p>
+                <p class="form-control-static no-padding">{{ $daerah }}</p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-6 control-label">Provinsi</label>
+            <div class="form-group col-md-12 no-padding">
+              <label class="col-lg-6 control-label no-padding">Provinsi</label>
               <div class="col-lg-6">
-                <p class="form-control-static">{{ $provinsi }}</p>
+                <p class="form-control-static no-padding">{{ $provinsi }}</p>
               </div>
-            </div>
-            <div class="hr-line-dashed"></div>
+            </div>            
           </div>
         </div>
       </div>
@@ -255,6 +254,7 @@
           <div id="wadahnews">
 
           </div>
+          <ul id="wadahpagination" class="pagination c-theme"></ul>
         </div>
       </div>
     </div>
@@ -266,11 +266,11 @@
 @push('scripts')
 <script src="{{ asset('resources/assets/js/plugins/blueimp/jquery.blueimp-gallery.min.js') }}"></script>
 <script type="text/javascript">
-   window.onload = getNews;
+   window.onload = getNews(0);
     
-    function getNews() {
+    function getNews($offset) {
       $.ajax({    
-        url: "http://110.74.178.215/portal/kadin-indonesia/list/view_detail/list",
+        url: "https://devtes.com/portal/kadin-indonesia/list/view_detail/list",
         type: "post",
         data: {
           id: "berita_kadin",
@@ -278,13 +278,20 @@
           sort: "desc",
           order: "year",
           limit: 20,
-          offset: 0
+          offset: $offset
         }
       }).done(function(data) {
         var json = JSON.parse(data);
         var datas = json.data;
-        var element = document.getElementById("wadahnews");
+        var enews = document.getElementById("wadahnews");
+        var epag = document.getElementById("wadahpagination");
         
+        enews.innerHTML = "";
+        epag.innerHTML = "";
+
+        var pagination = view_pagination(json.numpage, json.ap);
+        $(pagination).appendTo(epag);
+
         for (var i = datas.length - 1; i >= 0; i--) {
           var thedata = datas[i];
           var news = thedata.datas;
@@ -306,10 +313,49 @@
                   "<div>"+tagline+"</div>"+
                   "<small class='text-muted'>"+date_publish+"</small>"+
                 "</div>"+
-              "</div>").appendTo(element);
+              "</div>").appendTo(enews);
           }
         }
       });
+    }
+
+    function view_pagination($numpage, $active)
+    {
+      var pagination = '';
+      var class_active = '';
+      var start_number = $active-2;
+      
+      var next = '';
+
+      if ($active < 3)
+      {
+        start_number = 1;
+      }
+
+      var end_number = $numpage - start_number;
+      number_list = $numpage;
+      if (end_number >= 4)
+      {
+        number_list = start_number + 4;
+        var next = '<li class="c-next"><a class="upage" href="#" onClick="getNews('+(number_list)+')" data-offset="'+(number_list)+'"><i class="fa fa-angle-right"></i></a></li>';
+      }
+
+      var prev = '';
+      if (start_number > 1)
+      {
+        var prev = '<li class="c-prev"><a class="upage" href="#" onClick="getNews('+(start_number-2)+')" data-offset="'+(start_number-2)+'"><i class="fa fa-angle-left"></i></a></li>';
+      }
+
+      for(i=start_number; i <= number_list; i++)
+      {
+        var class_active = '';
+        if (i == $active)
+        {
+          class_active = 'class="c-active"';
+        }
+        pagination = pagination+'<li '+class_active+'><a class="upage" href="#" onClick="getNews('+(i-1)+')" data-offset="'+(i-1)+'">'+i+'</a></li>';
+      }
+      return prev+pagination+next;
     }
 </script>
 @endpush

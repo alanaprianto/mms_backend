@@ -28,6 +28,8 @@
 
     <link href="{{ asset('resources/assets/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('resources/assets/css/style.css') }}" rel="stylesheet">
+
+    @stack('styles')
   </head>
   <body>
         <div id="wrapper">
@@ -172,6 +174,8 @@
         </div>
       </div>
 
+      <div id="flotTip" style="display: none; position: absolute; background: rgb(255, 255, 255); z-index: 100; padding: 0.4em 0.6em; border-radius: 0.5em; font-size: 0.8em; border: 1px solid rgb(17, 17, 17); white-space: nowrap; left: 587px; top: 729px;"></div>
+      
         <!-- Mainly scripts -->
         <script src="{{ asset('resources/assets/js/jquery-2.1.1.js') }}"></script>
         <script src="{{ asset('resources/assets/js/bootstrap.min.js') }}"></script>

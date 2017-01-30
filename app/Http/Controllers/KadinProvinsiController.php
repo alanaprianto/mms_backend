@@ -118,35 +118,9 @@ class KadinProvinsiController extends Controller
 
     public function ktaRequest()
     {
-    	$notifs = \App\Helpers\Notifs::getNotifs();
+    	$notifs = \App\Helpers\Notifs::getNotifs();        
 
-        $terr = Auth::user()->territory;
-        $owner = User::where('territory', 'like', $terr.'%')->where('role', '=', 2)->pluck('id');
-        $kta = Kta::where('kta', '=', 'validated')->whereIn('owner', $owner)->get();
-
-        $carbon = new Carbon();
-        $monthsago = $carbon->subMonths(6)->month;
-        $monthslater = new Carbon();
-
-        $labels = array();
-        $data = array();
-        for ($i=0; $i <7 ; $i++) {
-            if ($monthsago==13) {
-                $monthsago = 1;
-            }
-                
-            $labels[] = date('F', strtotime("2000-$monthsago-01"));
-            $data[] = Kta::where('kta', '=', 'validated')->whereMonth('created_at', '=', $monthsago)->count();
-                        
-            $monthsago++;
-        }
-        // for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) {
-        //     if ($i==12) {
-        //         $i = 0;
-        //     }
-        // }
-
-    	return view('provinsi.kta.request.index', compact('notifs', 'kta', 'labels', 'data'));
+    	return view('provinsi.kta.request.index', compact('notifs'));
     }
 
     public function ajaxKta() {        
@@ -184,7 +158,7 @@ class KadinProvinsiController extends Controller
             }            
             $regat = Form_result::where('id_user', '=', $kta->owner)->first()->created_at->format('d/m/Y');
 
-            $dt->push([                       
+            $dt->push([                    
                     'company' => $comptype." ".$comp,
                     'comprep' => $kta->user->name,
                     'registered_at' => $regat,
@@ -225,35 +199,9 @@ class KadinProvinsiController extends Controller
     }
 
     public function ktaCancel() {
-        $notifs = \App\Helpers\Notifs::getNotifs();
+        $notifs = \App\Helpers\Notifs::getNotifs();        
 
-        $terr = Auth::user()->territory;
-        $owner = User::where('territory', 'like', $terr.'%')->where('role', '=', 2)->pluck('id');
-        $kta = Kta::where('kta', '=', 'cancelled')->whereIn('owner', $owner)->get();
-
-        $carbon = new Carbon();
-        $monthsago = $carbon->subMonths(6)->month;
-        $monthslater = new Carbon();
-
-        $labels = array();
-        $data = array();
-        for ($i=0; $i <7 ; $i++) {
-            if ($monthsago==13) {
-                $monthsago = 1;
-            }
-                
-            $labels[] = date('F', strtotime("2000-$monthsago-01"));
-            $data[] = Kta::where('kta', '=', 'cancelled')->whereMonth('created_at', '=', $monthsago)->count();
-                        
-            $monthsago++;
-        }
-        // for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
-        //     if ($i==12) {
-        //         $i = 0;
-        //     }            
-        // }
-
-        return view('provinsi.kta.canceled.index', compact('notifs', 'kta', 'labels', 'data'));
+        return view('provinsi.kta.canceled.index', compact('notifs'));
     }
 
     public function ajaxKtaCancel() {
@@ -337,36 +285,7 @@ class KadinProvinsiController extends Controller
     {        
         $notifs = \App\Helpers\Notifs::getNotifs();
 
-        $terr = Auth::user()->territory;
-        $owner = User::where('territory', 'like', $terr.'%')->whereIn('role', [2, 6])->pluck('id');        
-        $kta = Kta::where('kta', '<>', 'requested')->where('kta', '<>', 'validated')->where('kta', '<>', 'cancelled')->whereIn('owner', $owner)->get();
-
-        $carbon = new Carbon();
-        $monthsago = $carbon->subMonths(6)->month;
-        $monthslater = new Carbon();
-
-        $labels = array();
-        $data = array();
-        for ($i=0; $i <7 ; $i++) {
-            if ($monthsago==13) {
-                $monthsago = 1;
-            }
-                
-            $labels[] = date('F', strtotime("2000-$monthsago-01"));
-            $data[] = Kta::where('kta', '<>', 'requested')
-                        ->where('kta', '<>', 'cancelled')
-                        ->whereMonth('created_at', '=', $monthsago)
-                        ->count();
-
-            $monthsago++;
-        }
-        // for ($i=$monthsago; $i != $monthslater->month+1 ; $i++) { 
-        //     if ($i==12) {
-        //         $i = 0;
-        //     }            
-        // }
-
-        return view('provinsi.kta.list.index', compact('notifs', 'kta', 'labels', 'data'));
+        return view('provinsi.kta.list.index', compact('notifs'));
     }
 
     public function ajaxKtaList() {        
@@ -395,7 +314,7 @@ class KadinProvinsiController extends Controller
             $dt->push([
                 'id_user' => $id,
                 'answer' => $fr->answer,
-                'created_at' => $kta->created_at,
+                'created_at' => $kta->created_at->format('Y-m-d H:i:s'),
                 'granted_at' => $kta->granted_at,
                 'kta' => $kta->kta,
             ]);
@@ -595,5 +514,5 @@ class KadinProvinsiController extends Controller
         }
 
         return Datatables::of($fr)->make(true);
-    }        
+    }    
 }
