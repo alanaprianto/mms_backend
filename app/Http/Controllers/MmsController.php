@@ -185,7 +185,7 @@ class MmsController extends Controller
     {                       
       $notifs = \App\Helpers\Notifs::getNotifs();      
 
-      return view('form.dashboard.index', compact('notifs'));
+      return view('admin.dashboard.index', compact('notifs'));
     }    
 
     public function ktatrack(Request $request) {

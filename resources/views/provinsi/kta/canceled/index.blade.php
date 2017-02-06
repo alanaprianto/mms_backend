@@ -66,7 +66,7 @@
 		    processing: true,
 		    serverSide: true,
 		    iDisplayLength: 100,
-		    ajax: "{{ url('/dashboard/provinsi/ajax/ktacancelled')}}",
+		    ajax: "{{ url('provinsi/ajax/ktacancelled')}}",
 		    columns: [
 		      { "data" : "answer" },
 		      { "data" : "created_at"},

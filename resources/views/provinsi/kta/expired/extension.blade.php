@@ -68,7 +68,7 @@
       processing: true,
       serverSide: true,
       iDisplayLength: 100,
-      ajax: "{{ url('/dashboard/provinsi/ajax/ktaext')}}",
+      ajax: "{{ url('provinsi/ajax/ktaext')}}",
       columns: [
         { "data" : "company" },
       { "data" : "companyrep" },

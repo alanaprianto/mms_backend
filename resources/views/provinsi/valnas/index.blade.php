@@ -60,7 +60,7 @@
 		  $('#member-table').DataTable({
 		    processing: true,
 		    serverSide: true,
-		    ajax: "{{ url('dashboard/provinsi/ajax/valnas')}}",
+		    ajax: "{{ url('provinsi/ajax/valnas')}}",
 		    columns: [            
 		      { "data" : "name" },
 		      { "data" : "username" },

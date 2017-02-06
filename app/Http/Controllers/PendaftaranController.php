@@ -576,7 +576,7 @@ class PendaftaranController extends Controller
                 'territory' => $terr
             ]);
 
-        return redirect('/member'); 
+        return redirect('/member/compprof'); 
     }
 
     public function rules($idqg) {        

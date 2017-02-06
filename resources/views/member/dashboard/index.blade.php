@@ -157,28 +157,28 @@
       </div>
       <div class="ibox-content">
         <div class="row">
-        <div class="col-lg-12">
-          <!-- identitas user -->
-          <div class="form-group col-md-12 no-padding">
-            <label class="col-lg-4 control-label no-padding">Username</label>
-            <div class="col-lg-8">
-              <p class="form-control-static no-padding">{{ $member->username }}</p>
+          <div class="col-lg-12">
+            <!-- identitas user -->
+            <div class="form-group col-md-12 no-padding">
+              <label class="col-lg-4 control-label no-padding">Username</label>
+              <div class="col-lg-8">
+                <p class="form-control-static no-padding">{{ $member->username }}</p>
+              </div>
             </div>
+            <div class="form-group col-md-12 no-padding">
+              <label class="col-lg-4 control-label no-padding">Tracking Code</label>
+              <div class="col-lg-8">
+                <p class="form-control-static no-padding">{{ $detail[0]['trackingcode'] }}</p>
+              </div>
+            </div>
+            <div class="form-group col-md-12 no-padding">
+              <label class="col-lg-4 control-label no-padding">Submitted At</label>
+              <div class="col-lg-8">
+                <p class="form-control-static no-padding">{{ $member->created_at }}</p>
+              </div>
+            </div>          
           </div>
-          <div class="form-group col-md-12 no-padding">
-            <label class="col-lg-4 control-label no-padding">Tracking Code</label>
-            <div class="col-lg-8">
-              <p class="form-control-static no-padding">{{ $detail[0]['trackingcode'] }}</p>
-            </div>
-          </div>
-          <div class="form-group col-md-12 no-padding">
-            <label class="col-lg-4 control-label no-padding">Submitted At</label>
-            <div class="col-lg-8">
-              <p class="form-control-static no-padding">{{ $member->created_at }}</p>
-            </div>
-          </div>          
         </div>
-      </div>
       </div>
     </div>
 

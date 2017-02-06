@@ -222,7 +222,7 @@
     printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
     remaining essentially unchanged.</p>
     <div class="text-center">
-      <form id="form" method="post" action="{{ url('dashboard/provinsi/kta/insertkta/') }}">
+      <form id="form" method="post" action="{{ url('provinsi/kta/insertkta/') }}">
       <input type="hidden" id="id_user" name="id_user" value="">
       <input id="st" name="st" type="text" width="124" placeholder="20201">&nbsp;&nbsp;-&nbsp;&nbsp;
       <input id="nd" name="nd" type="text" width="60%" placeholder="12345678">&nbsp;&nbsp;
@@ -411,7 +411,7 @@
       var id_user = $('#id_user').val();
       var kta = st+"-"+nd+"/"+rd;       
         
-      var url = "{{ url('dashboard/provinsi/kta/insertkta/') }}";
+      var url = "{{ url('provinsi/kta/insertkta/') }}";
 
       if ($("#form").valid()) {
         $.ajax({    
@@ -432,7 +432,7 @@
           if (data.success) {
             toastr.success(data.msg);
 
-            window.location.href = "{{ url('dashboard/provinsi/kta/request') }}";
+            window.location.href = "{{ url('provinsi/kta/request') }}";
           } else {
             toastr.error(data.msg);
 
@@ -446,7 +446,7 @@
       var id_user = $('#id_usercancel').val();
       var keterangan = $('#keterangan').val();
 
-      var url = "{{ url('dashboard/provinsi/kta/cancelkta/') }}";  
+      var url = "{{ url('provinsi/kta/cancelkta/') }}";  
 
       if ($("#formcancel").valid()) {
         $.ajax({    
@@ -465,7 +465,7 @@
           if (data.success) {
             toastr.success(data.msg);
 
-            window.location.href = "{{ url('dashboard/provinsi/kta/request') }}";
+            window.location.href = "{{ url('provinsi/kta/request') }}";
           } else {
             toastr.error(data.msg);
 

@@ -88,7 +88,7 @@
       processing: true,
       serverSide: true,
       iDisplayLength: 100,
-      ajax: "{{ url('/dashboard/pusat/ajax/ktaext')}}",
+      ajax: "{{ url('pusat/ajax/ktaext')}}",
       columns: [
         { "data" : "company" },
         { "data" : "companyrep" },
@@ -138,7 +138,7 @@
   });
 
   $('#proceed').on('click', function (event) {      
-    var url = "{{ url('dashboard/pusat/ktaext/process') }}";
+    var url = "{{ url('pusat/ktaext/process') }}";
             
     $.ajax({
       url: url,

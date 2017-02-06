@@ -35,7 +35,7 @@
           {{ $exp_text1 }}<br><br>
           <strong>{{ $exp_text2 }}</strong>          
           <br><br>
-          <a href="{{ url('dashboard/alb/kta') }}">
+          <a href="{{ url('alb/kta') }}">
             <button type="submit" class="btn btn-success">
               See your KTA detail.
             </button>
@@ -52,14 +52,14 @@
             Waiting for Generation.
           @elseif ($kta=="cancelled")
             Your KTA request is cancelled.<br><br>
-            <a href="{{ url('dashboard/alb/kta') }}">
+            <a href="{{ url('alb/kta') }}">
               <button type="submit" class="btn btn-danger">
                 See Why your KTA is cancelled.
               </button>
             </a>
           @else
             Your KTA is generated.<br><br>
-            <a href="{{ url('dashboard/alb/kta') }}">
+            <a href="{{ url('alb/kta') }}">
               <button type="submit" class="btn btn-success">
                 See your KTA detail.
               </button>
@@ -85,14 +85,14 @@
           Still in process.
         @elseif ($rn=="cancelled")
           Your RN Number request is cancelled.<br><br>
-          <a href="{{ url('dashboard/alb/kta') }}">
+          <a href="{{ url('alb/kta') }}">
             <button type="submit" class="btn btn-danger">
               See Why your RN is cancelled.
             </button>
           </a>
         @else
           Your RN Number is generated.<br><br>
-          <a href="{{ url('dashboard/alb/rn') }}">
+          <a href="{{ url('alb/rn') }}">
             <button type="submit" class="btn btn-success">
               See your RN detail.
             </button>
@@ -158,25 +158,24 @@
         <div class="row">
         <div class="col-lg-12">
           <!-- identitas user -->
-          <div class="form-group">
-            <label class="col-lg-4 control-label">Username</label>
+          <div class="form-group no-padding">
+            <label class="col-lg-4 control-label no-padding">Username</label>
             <div class="col-lg-8">
-              <p class="form-control-static">{{ $member->username }}</p>
+              <p class="form-control-static no-padding">{{ $member->username }}</p>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-lg-4 control-label">Tracking Code</label>
+          <div class="form-group no-padding">
+            <label class="col-lg-4 control-label no-padding">Tracking Code</label>
             <div class="col-lg-8">
-              <p class="form-control-static">{{ $detail[0]['trackingcode'] }}</p>
+              <p class="form-control-static no-padding">{{ $detail[0]['trackingcode'] }}</p>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-lg-4 control-label">Submitted At</label>
+          <div class="form-group no-padding">
+            <label class="col-lg-4 control-label no-padding">Submitted At</label>
             <div class="col-lg-8">
-              <p class="form-control-static">{{ $member->created_at }}</p>
+              <p class="form-control-static no-padding">{{ $member->created_at }}</p>
             </div>
-          </div>
-          <div class="hr-line-dashed"></div>
+          </div>          
         </div>
       </div>
       </div>
@@ -197,31 +196,30 @@
             <h5>Your Account Information</h5>
 
             <!-- identitas user -->
-            <div class="form-group">
-              <label class="col-lg-6 control-label">Nama Asosiasi/Himpunan</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-6 control-label no-padding">Nama Asosiasi/Himpunan</label>
               <div class="col-lg-6">
-                <p class="form-control-static">{{ $nasosiasi }}</p>
+                <p class="form-control-static no-padding">{{ $nasosiasi }}</p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-6 control-label">Tingkat</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-6 control-label no-padding">Tingkat</label>
               <div class="col-lg-6">
-                <p class="form-control-static">{{ $tingkat }}</p>
+                <p class="form-control-static no-padding">{{ $tingkat }}</p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-6 control-label">Daerah</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-6 control-label no-padding">Daerah</label>
               <div class="col-lg-6">
-                <p class="form-control-static">{{ $daerah }}</p>
+                <p class="form-control-static no-padding">{{ $daerah }}</p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-6 control-label">Provinsi</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-6 control-label no-padding">Provinsi</label>
               <div class="col-lg-6">
-                <p class="form-control-static">{{ $provinsi }}</p>
+                <p class="form-control-static no-padding">{{ $provinsi }}</p>
               </div>
-            </div>
-            <div class="hr-line-dashed"></div>
+            </div>            
           </div>
         </div>
       </div>

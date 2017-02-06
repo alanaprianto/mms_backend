@@ -27,12 +27,12 @@ class FormQuestionController extends Controller
         // $fquestions = Form_question::where('question','like','%'.$search.'%')->paginate(7);
 
         // if (Request::ajax()) {                                            
-        //     return view('form.question.questions', compact('fquestions'));
+        //     return view('admin.dform.question.questions', compact('fquestions'));
         // }        
         
         // return implode("|", $fquestions->rules_detail->parameter);           
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.question.index', compact('notifs'));
+        return view('admin.dform.question.index', compact('notifs'));
     }
     
     public function indexAjax() {    
@@ -55,7 +55,7 @@ class FormQuestionController extends Controller
         // return $rules;
 
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.question.create', compact('gqs', 'ats', 'types', 'rules', 'notifs'));
+        return view('admin.dform.question.create', compact('gqs', 'ats', 'types', 'rules', 'notifs'));
     }
 
     /**
@@ -79,7 +79,7 @@ class FormQuestionController extends Controller
         // return $input;
         Form_question::create($input);
 
-        return redirect('/crud/form/question');
+        return redirect('/admin/question');
     }
 
     /**
@@ -98,7 +98,7 @@ class FormQuestionController extends Controller
         }
         
         return \Response::json($fq);
-        return redirect('/crud/form/question');
+        return redirect('/admin/question');
     }
 
     /**
@@ -123,7 +123,7 @@ class FormQuestionController extends Controller
         }        
         
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.question.edit', compact('fq', 'gqs', 'ats', 'types', 'rules', 'data', 'notifs')); 
+        return view('admin.dform.question.edit', compact('fq', 'gqs', 'ats', 'types', 'rules', 'data', 'notifs')); 
     }
 
     /**
@@ -144,7 +144,7 @@ class FormQuestionController extends Controller
 
         $fq->update($request->all());
 
-        return redirect('/crud/form/question');
+        return redirect('/admin/question');
     }
 
     /**
@@ -185,6 +185,6 @@ class FormQuestionController extends Controller
         }
         
         return \Response::json($fq);
-        return redirect('/crud/form/question');
+        return redirect('/admin/question');
     } 
 }

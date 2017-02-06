@@ -34,12 +34,12 @@ class FormSettingController extends Controller
 
         // if (Request::ajax()) {                    
             
-        //     return view('form.setting.settings', compact('fsettings'));
+        //     return view('admin.dform.setting.settings', compact('fsettings'));
         // }
 
-        // return view('form.setting.index', compact('fsettings'));               
+        // return view('admin.dform.setting.index', compact('fsettings'));               
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.setting.index', compact('notifs'));
+        return view('admin.dform.setting.index', compact('notifs'));
     }
 
     public function indexAjax() {        
@@ -55,7 +55,7 @@ class FormSettingController extends Controller
     public function create()
     {        
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.setting.create', compact('notifs'));
+        return view('admin.dform.setting.create', compact('notifs'));
     }
 
     /**
@@ -70,7 +70,7 @@ class FormSettingController extends Controller
 
         Form_setting::create($input);
 
-        return redirect('/crud/form/setting');
+        return redirect('/admin/setting');
     }
 
     /**
@@ -90,7 +90,7 @@ class FormSettingController extends Controller
         }
         
         return \Response::json($fq);
-        return redirect('/crud/form/setting');
+        return redirect('/admin/setting');
     }
 
     /**
@@ -105,7 +105,7 @@ class FormSettingController extends Controller
 
         // return $fsetting;
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.setting.edit', compact('fsetting', 'notifs')); 
+        return view('admin.dform.setting.edit', compact('fsetting', 'notifs')); 
     }
 
     /**
@@ -121,7 +121,7 @@ class FormSettingController extends Controller
 
         $fsetting->update($request->all());
 
-        return redirect('/crud/form/setting');
+        return redirect('/admin/setting');
     }
 
     /**

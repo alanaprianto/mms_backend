@@ -1,5 +1,5 @@
 <li class="@yield('active-dashboard')">
-  <a href="{{ url('dashboard/pusat') }}">
+  <a href="{{ url('pusat/dashboard') }}">
 	  <i class="fa fa-dashboard"></i>
 	  <span class="nav-label">Dashboard</span>
   </a>
@@ -11,12 +11,12 @@
   	<span class="fa arrow"></span>
   </a>
   <ul class="nav nav-second-level">
-  	<li class="@yield('active-nrlist')"><a href="{{ url('dashboard/pusat/rn/list') }}">List NR</a></li>
-    <li class="@yield('active-nrreq')"><a href="{{ url('dashboard/pusat/rn/request') }}">NR Number Request</a></li> 
+  	<li class="@yield('active-nrlist')"><a href="{{ url('pusat/rn/list') }}">List NR</a></li>
+    <li class="@yield('active-nrreq')"><a href="{{ url('pusat/rn/request') }}">NR Number Request</a></li> 
   </ul>
 </li>
 <li class="@yield('active-ktaext')">
-  <a href="{{ url('dashboard/pusat/ktaext') }}">
+  <a href="{{ url('pusat/ktaext') }}">
     <i class="fa fa-dashboard"></i>
     <span class="nav-label">KTA Extension Request</span>
   </a>

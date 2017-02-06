@@ -25,13 +25,13 @@ class FormAnswerController extends Controller
         // $fanswers = Form_answer::where('answer','like','%'.$search.'%')->paginate(7);
         
         // if (Request::ajax()) {                                            
-        //     return view('form.answer.answers', compact('fanswers'));
+        //     return view('admin.dform.answer.answers', compact('fanswers'));
         // }
         
         // $deleted = false;        
 
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.answer.index', compact('notifs'));        
+        return view('admin.dform.answer.index', compact('notifs'));        
     }
 
     public function indexAjax() {        
@@ -53,7 +53,7 @@ class FormAnswerController extends Controller
         $ats = Form_setting::where('name', 'like', '%Option%')->pluck('name', 'id');
 
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.answer.create', compact('fqs', 'ats', 'notifs'));
+        return view('admin.dform.answer.create', compact('fqs', 'ats', 'notifs'));
     }
 
     /**
@@ -68,7 +68,7 @@ class FormAnswerController extends Controller
 
         Form_answer::create($input);
         
-        return redirect('/crud/form/answer');
+        return redirect('/admin/answer');
     }
 
     /**
@@ -81,7 +81,7 @@ class FormAnswerController extends Controller
     {
         $fa = Form_answer::findOrFail($id);
                 
-        return redirect('/crud/form/answer');
+        return redirect('/admin/answer');
     }
 
     /**
@@ -97,7 +97,7 @@ class FormAnswerController extends Controller
         $ats = Form_setting::where('name', 'like', '%Option%')->pluck('name', 'id');
 
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.answer.edit', compact('fa', 'fqs', 'ats', 'notifs')); 
+        return view('admin.dform.answer.edit', compact('fa', 'fqs', 'ats', 'notifs')); 
     }
 
     /**
@@ -113,7 +113,7 @@ class FormAnswerController extends Controller
 
         $fa->update($request->all());
 
-        return redirect('/crud/form/answer');
+        return redirect('/admin/answer');
     }
 
     /**

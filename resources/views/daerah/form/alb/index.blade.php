@@ -113,7 +113,7 @@
 		    serverSide: true,
 		    iDisplayLength: 100,
 		    aaSorting: [[1, 'desc']],
-		    ajax: "{{ url('/dashboard/daerah/ajax/submittedforms/alb')}}",
+		    ajax: "{{ url('daerah/ajax/submittedforms/alb')}}",
 		    columns: [
 		      { "data" : "answer" },
 		      { "data" : "name" },
@@ -165,7 +165,7 @@
 		});
 
 		$('#submit_delete').on('click', function (event) {		  
-		  var url = "{{ url('dashboard/daerah/submitted/delete/') }}/"+id;
+		  var url = "{{ url('daerah/submitted/delete/') }}/"+id;
 
 		  $.ajax({    
 		    url: url,
@@ -201,7 +201,7 @@
 		});
 
 		$('#submit_approve').on('click', function (event) {
-		  var url = "{{ url('dashboard/daerah/submitted/alb/approve') }}"
+		  var url = "{{ url('daerah/submitted/alb/approve') }}"
 
 		  $.ajax({    
 		    url: url,

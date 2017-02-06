@@ -253,7 +253,7 @@ class PercobaanController extends Controller
             $fr->save();                        
         }
 
-        return redirect('/crud/form/result');         
+        return redirect('/admin/result');         
     }
 
     public function rules($idqg) {        

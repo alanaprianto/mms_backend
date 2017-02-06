@@ -207,14 +207,14 @@
 <script type="text/javascript">
   function printpage() {
     $.ajax({
-      url: "{{ url('dashboard/alb/ktaprint') }}",
+      url: "{{ url('alb/ktaprint') }}",
       type: "post",
       data: {
         _token: "{{ csrf_token() }}"
       }
     }).done(function(data) {
       if (data.success) {
-        var win = window.open("{{ url('dashboard/alb/printkta') }}", '_blank');
+        var win = window.open("{{ url('alb/printkta') }}", '_blank');
         if (win) {
             //Browser has allowed it to be opened
             win.focus();
@@ -230,7 +230,7 @@
 
   function requestKta() {    
     $.ajax({    
-      url: "{{ url('dashboard/alb/requestkta/') }}",
+      url: "{{ url('alb/requestkta/') }}",
       type: "post",
       data: {
         _token: "{{ csrf_token() }}",
@@ -257,7 +257,7 @@
       bFilter: false, 
       bInfo: false,
       bPaginate: false,
-      ajax: "{{ url('dashboard/alb/ajax/kta')}}",
+      ajax: "{{ url('alb/ajax/kta')}}",
       columns: [
         { "data" : "kta" },
         { "data" : "requested_at" },

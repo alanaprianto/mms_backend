@@ -261,7 +261,7 @@
     printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
     remaining essentially unchanged.</p>
     <div class="text-center">
-      <form id="form" method="post" action="{{ url('dashboard/pusat/rn/insertrn/') }}">
+      <form id="form" method="post" action="{{ url('pusat/rn/insertrn/') }}">
       <input type="hidden" id="id_user" name="id_user" value="">
       <input id="st" name="st" type="text" width="124" placeholder="20201">&nbsp;&nbsp;-&nbsp;&nbsp;
       <input id="nd" name="nd" type="text" width="60%" placeholder="12345678">&nbsp;&nbsp;
@@ -342,7 +342,7 @@
             var id_user = $('#id_user').val();
             var kta = st+"-"+nd+"/"+rd;       
             
-            var url = "{{ url('dashboard/pusat/rn/insertrn/') }}";
+            var url = "{{ url('pusat/rn/insertrn/') }}";
 
             if ($("#form").valid()) {
               $.ajax({    

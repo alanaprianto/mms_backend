@@ -70,7 +70,7 @@
 		    processing: true,
 		    serverSide: true,
 		    iDisplayLength: 100,
-		    ajax: "{{ url('/dashboard/provinsi/ajax/ktalist')}}",
+		    ajax: "{{ url('provinsi/ajax/ktalist')}}",
 		    columns: [
 		      { "data" : "answer" },
 		      { "data" : "created_at"},

@@ -49,7 +49,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'auth.role' => \App\Http\Middleware\AuthRole::class,
+        'auth.role.member' => \App\Http\Middleware\AuthRoleMember::class,
         'auth.role.admin' => \App\Http\Middleware\AuthRoleAdmin::class,
         'auth.role.alb' => \App\Http\Middleware\AuthRoleAlb::class,
         'auth.role.pusat' => \App\Http\Middleware\AuthRolePusat::class,

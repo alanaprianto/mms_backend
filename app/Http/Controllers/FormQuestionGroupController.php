@@ -23,13 +23,13 @@ class FormQuestionGroupController extends Controller
         // $fqgroups = Form_question_group::where('name','like','%'.$search.'%')->paginate(7);
 
         // if (Request::ajax()) {                                            
-        //     return view('form.question.questions', compact('fquestions'));
+        //     return view('admin.dform.question.questions', compact('fquestions'));
         // }
 
         // $deleted = false;
-        // return view('form.questiongroup.index', compact('fqgroups', 'deleted'));
+        // return view('admin.dform.questiongroup.index', compact('fqgroups', 'deleted'));
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.questiongroup.index', compact('notifs'));
+        return view('admin.dform.questiongroup.index', compact('notifs'));
     }
 
     public function indexAjax() {        
@@ -46,7 +46,7 @@ class FormQuestionGroupController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
 
-        return view('form.questiongroup.create', compact('notifs'));
+        return view('admin.dform.questiongroup.create', compact('notifs'));
     }
 
     /**
@@ -61,7 +61,7 @@ class FormQuestionGroupController extends Controller
 
         Form_question_group::create($input);
 
-        return redirect('/crud/form/question_group');
+        return redirect('/admin/question_group');
     }
 
     /**
@@ -72,8 +72,8 @@ class FormQuestionGroupController extends Controller
      */
     public function show($id)
     {
-        // terjadi error jika ke '/crud/form/question_group'
-        return redirect('/crud/form/question_group_');
+        // terjadi error jika ke '/admin/question_group'
+        return redirect('/admin/question_group_');
     }
 
     /**
@@ -89,7 +89,7 @@ class FormQuestionGroupController extends Controller
         // return $fsetting;
 
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.questiongroup.edit', compact('fqg', 'notifs')); 
+        return view('admin.dform.questiongroup.edit', compact('fqg', 'notifs')); 
     }
 
     /**
@@ -105,7 +105,7 @@ class FormQuestionGroupController extends Controller
 
         $fqg->update($request->all());
 
-        return redirect('/crud/form/question_group');
+        return redirect('/admin/question_group');
     }
 
     /**

@@ -143,7 +143,7 @@
 		    processing: true,
 		    serverSide: true,
 		    iDisplayLength: 100,
-		    ajax: "{{ url('/dashboard/pusat/ajax/rn/list')}}",
+		    ajax: "{{ url('pusat/ajax/rn/list')}}",
 		    columns: [       		      
 		      { "data" : "answer" },     
 		      { "data" : "created_at"},                  

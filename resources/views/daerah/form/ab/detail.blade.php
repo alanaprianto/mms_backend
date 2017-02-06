@@ -113,7 +113,7 @@
       bFilter: false, 
       bInfo: false,
       bPaginate: false,
-      ajax: "{{ url('/dashboard/daerah/ajax/payment')}}"+"/{{ $detail[0]['trackingcode'] }}",
+      ajax: "{{ url('daerah/ajax/payment')}}"+"/{{ $detail[0]['trackingcode'] }}",
       columns: [
         { "data" : "id" },
         { "data" : "amount" },

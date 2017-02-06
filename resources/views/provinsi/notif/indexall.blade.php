@@ -10,7 +10,7 @@
         <div class="feed-activity-list">          
         @foreach ($notifs as $key=>$notif)
           <div class="feed-element">
-            <a href="{{ url('/dashboard/provinsi/notif') }}/{{ $notif->id }}" class="pull-left">
+            <a href="{{ url('provinsi/notif') }}/{{ $notif->id }}" class="pull-left">
               <img alt="image" class="img-circle" src="{{ url('/images') }}/{{ $notif->sender_uname }}">
             </a>
             <div class="media-body ">

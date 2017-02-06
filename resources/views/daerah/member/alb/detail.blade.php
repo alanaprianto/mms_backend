@@ -238,7 +238,7 @@
       commentary = document.getElementById('commentary').value;
 
       $.ajax({
-          url: "{{ url('dashboard/daerah/member/validate') }}/"+id,
+          url: "{{ url('daerah/member/validate') }}/"+id,
           type: "post",
           data: {              
             _token: "{{ csrf_token() }}",
@@ -295,7 +295,7 @@
       commentary = document.getElementById('commentaryimg').value;
 
       $.ajax({
-          url: "{{ url('dashboard/daerah/member/validate') }}/"+id,
+          url: "{{ url('daerah/member/validate') }}/"+id,
           type: "post",
           data: {              
             _token: "{{ csrf_token() }}",
@@ -334,7 +334,7 @@
       note = "{{ $notes }} catatan";
 
       $.ajax({
-          url: "{{ url('dashboard/daerah/member/requestkta') }}",
+          url: "{{ url('daerah/member/requestkta') }}",
           type: "post",
           data: {              
             _token: "{{ csrf_token() }}",        
@@ -347,7 +347,7 @@
           if (data.success) {
             toastr.success(data.msg);
 
-            window.location.href = "{{ url('dashboard/daerah/member/alb') }}";
+            window.location.href = "{{ url('daerah/member/alb') }}";
           } else {
             toastr.error(data.msg);
             

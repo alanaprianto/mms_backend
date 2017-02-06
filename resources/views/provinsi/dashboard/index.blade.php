@@ -276,7 +276,7 @@
       return prev+pagination+next;
     }
 
-    $.post("{{ url('dashboard/provinsi/chart/kta_stat') }}", {_token: "{{ csrf_token() }}"}, function(result){      
+    $.post("{{ url('provinsi/chart/kta_stat') }}", {_token: "{{ csrf_token() }}"}, function(result){      
       if (result.success) {        
         var l = result.labels;
         var dgen = result.data_gen;

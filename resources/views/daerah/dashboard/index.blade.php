@@ -320,7 +320,7 @@
       return prev+pagination+next;
     }    
 
-    $.post("{{ url('dashboard/daerah/chart/sf_stat') }}", {_token: "{{ csrf_token() }}"}, function(result){      
+    $.post("{{ url('daerah/chart/sf_stat') }}", {_token: "{{ csrf_token() }}"}, function(result){      
       if (result.success) {        
         var l = result.labels;
         var dab = result.data_ab;
@@ -373,7 +373,7 @@
       }
     });
 
-    $.post("{{ url('dashboard/daerah/chart/member_stat') }}", {_token: "{{ csrf_token() }}"}, function(result){      
+    $.post("{{ url('daerah/chart/member_stat') }}", {_token: "{{ csrf_token() }}"}, function(result){      
       if (result.success) {        
         var l = result.labels;
         var dab = result.data_ab;

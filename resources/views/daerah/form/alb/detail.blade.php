@@ -183,7 +183,7 @@
       bFilter: false, 
       bInfo: false,
       bPaginate: false,
-      ajax: "{{ url('/dashboard/daerah/ajax/payment')}}"+"/{{ $detail[0]['trackingcode'] }}",
+      ajax: "{{ url('daerah/ajax/payment')}}"+"/{{ $detail[0]['trackingcode'] }}",
       columns: [
         { "data" : "id" },
         { "data" : "amount" },
@@ -221,7 +221,7 @@
     });
 
     $('#submit_delete').on('click', function (event) {      
-      var url = "{{ url('dashboard/daerah/submitted/delete/') }}/"+id;
+      var url = "{{ url('daerah/submitted/delete/') }}/"+id;
 
       $.ajax({    
         url: url,
@@ -238,7 +238,7 @@
         if (data.success) {
           toastr.success(data.msg);
 
-          window.location.href = "{{ url('dashboard/daerah/submitted/alb') }}";
+          window.location.href = "{{ url('daerah/submitted/alb') }}";
         } else {
           toastr.error(data.msg);
         }        
@@ -257,7 +257,7 @@
     });
 
     $('#submit_approve').on('click', function (event) {
-      var url = "{{ url('dashboard/daerah/submitted/alb/approve') }}"
+      var url = "{{ url('daerah/submitted/alb/approve') }}"
 
       $.ajax({    
         url: url,
@@ -274,7 +274,7 @@
         if (data.success) {
           toastr.success(data.msg);
 
-          window.location.href = "{{ url('dashboard/daerah/submitted/alb') }}";
+          window.location.href = "{{ url('daerah/submitted/alb') }}";
         } else {
           toastr.error(data.msg);
         }        

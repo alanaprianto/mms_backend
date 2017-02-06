@@ -124,7 +124,7 @@ $(function() {
     processing: true,
     serverSide: true,
     iDisplayLength: 50,
-    ajax: "{{ url('dashboard/daerah/ajax/notifresult/')}}/{{ $code }}",
+    ajax: "{{ url('daerah/ajax/notifresult/')}}/{{ $code }}",
     columns: [       
       { "data" : "question" },      
       { "data" : "answer" },     

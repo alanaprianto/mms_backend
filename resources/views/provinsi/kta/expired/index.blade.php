@@ -71,7 +71,7 @@
 	  processing: true,
 	  serverSide: true,
 	  iDisplayLength: 100,
-	  ajax: "{{ url('/dashboard/provinsi/ajax/ktaexpired')}}",
+	  ajax: "{{ url('provinsi/ajax/ktaexpired')}}",
 	  columns: [
 	    { "data" : "company" },
 		{ "data" : "companyrep" },

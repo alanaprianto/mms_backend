@@ -1,5 +1,5 @@
 <li class="@yield('active-dashboard')">
-	<a href="{{ url('member')}}">
+	<a href="{{ url('member/dashboard')}}">
 		<i class="fa fa-dashboard"></i>
 		<span class="nav-label">Dashboard</span>
 	</a>
@@ -20,5 +20,11 @@
 	<a href="{{ url('member/compprof')}}">
 		<i class="fa fa-user"></i>
 		<span class="nav-label">Company Profile</span>
+	</a>
+</li>
+<li class="@yield('active-market')">
+	<a href="{{ url('member/marketplace')}}">
+		<i class="fa fa-shopping-cart"></i>
+		<span class="nav-label">Marketplace</span>
 	</a>
 </li>

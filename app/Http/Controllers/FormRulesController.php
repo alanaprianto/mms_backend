@@ -18,9 +18,9 @@ class FormRulesController extends Controller
      */
     public function index()
     {
-        // return view('form.rules.index');
+        // return view('admin.dform.rules.index');
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.rules.index', compact('notifs'));
+        return view('admin.dform.rules.index', compact('notifs'));
     }
 
     public function indexAjax() {        
@@ -36,7 +36,7 @@ class FormRulesController extends Controller
     public function create()
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.rules.create', compact('notifs'));
+        return view('admin.dform.rules.create', compact('notifs'));
     }
 
     /**
@@ -51,7 +51,7 @@ class FormRulesController extends Controller
 
         Form_rules::create($input);
 
-        return redirect('/crud/form/rules');
+        return redirect('/admin/rules');
     }
 
     /**
@@ -62,8 +62,8 @@ class FormRulesController extends Controller
      */
     public function show($id)
     {
-        // terjadi error jika ke '/crud/form/rules'
-        return redirect('/crud/form/rules_');
+        // terjadi error jika ke '/admin/rules'
+        return redirect('/admin/rules_');
     }
 
     /**
@@ -79,7 +79,7 @@ class FormRulesController extends Controller
         // return $frules;
 
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.rules.edit', compact('frules', 'notifs')); 
+        return view('admin.dform.rules.edit', compact('frules', 'notifs')); 
     }
 
     /**
@@ -95,7 +95,7 @@ class FormRulesController extends Controller
 
         $frules->update($request->all());
 
-        return redirect('/crud/form/rules');
+        return redirect('/admin/rules');
     }
 
     /**

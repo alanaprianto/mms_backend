@@ -88,7 +88,7 @@
                         <ul class="dropdown-menu dropdown-alerts">
                             @foreach ($notifs->slice(0, 3) as $key=>$notif)
                                 <li>
-                                    <a href="{{ url('/dashboard/pusat/notif') }}/{{ $notif->id }}">
+                                    <a href="{{ url('pusat/notif') }}/{{ $notif->id }}">
                                         <div>
                                             <i class="fa fa-envelope fa-fw"></i> {{ $notif->value }}
                                             <span class="pull-right text-muted small">{{ $notif->crt_human }}</span>
@@ -99,7 +99,7 @@
                             @endforeach
                             <li>
                                 <div class="text-center link-block">
-                                    <a href="{{ url('/dashboard/pusat/notif/all') }}">
+                                    <a href="{{ url('pusat/notif/all') }}">
                                         <strong>See All Alerts</strong>
                                         <i class="fa fa-angle-right"></i>
                                     </a>

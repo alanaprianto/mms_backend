@@ -58,18 +58,18 @@ class LoginController extends Controller
                 // return "admin";
                           
                 // return view('form.app', compact('notifs'));                              
-                return redirect('/crud/form/dashboard');
+                return redirect('/admin/dashboard');
             } else if (Auth::user()->role=="2") {                
                 // return redirect('/')->with('name', Auth::user()->name)->with('loginRole', Auth::user()->role);
-                return redirect('/member');
+                return redirect('/member/dashboard');
             } else if (Auth::user()->role=="3") {
-                return redirect('/dashboard/pusat');
+                return redirect('/pusat/dashboard');
             } else if (Auth::user()->role=="4") {
-                return redirect('/dashboard/provinsi');
+                return redirect('provinsi/dashboard');
             } else if (Auth::user()->role=="5") {
-                return redirect('/dashboard/daerah');
+                return redirect('daerah/dashboard');
             } else if (Auth::user()->role=="6") {
-                return redirect('/dashboard/alb');
+                return redirect('alb/dashboard');
             } else {
                 return redirect('/')
                 ->withErrors(['message' => 'Invalid Username or Password']) // send back all errors to the login form

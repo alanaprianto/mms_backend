@@ -18,9 +18,9 @@ class FormTypeController extends Controller
      */
     public function index()
     {
-        // return view('form.type.index');
+        // return view('admin.dform.type.index');
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.type.index', compact('notifs'));
+        return view('admin.dform.type.index', compact('notifs'));
     }
 
     public function indexAjax() {        
@@ -36,7 +36,7 @@ class FormTypeController extends Controller
     public function create()
     {           
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.type.create1', compact('notifs'));
+        return view('admin.dform.type.create1', compact('notifs'));
     }
 
     /**
@@ -51,7 +51,7 @@ class FormTypeController extends Controller
 
         Form_type::create($input);
 
-        return redirect('/crud/form/types');
+        return redirect('/admin/types');
     }
 
     /**
@@ -62,8 +62,8 @@ class FormTypeController extends Controller
      */
     public function show($id)
     {
-        // terjadi error jika ke '/crud/form/types'
-        return redirect('/crud/form/types_');
+        // terjadi error jika ke '/admin/types'
+        return redirect('/admin/types_');
     }
 
     /**
@@ -78,7 +78,7 @@ class FormTypeController extends Controller
 
         // return $ftype;
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.type.edit', compact('ftype', 'notifs')); 
+        return view('admin.dform.type.edit', compact('ftype', 'notifs')); 
     }
 
     /**
@@ -94,7 +94,7 @@ class FormTypeController extends Controller
 
         $ftype->update($request->all());
 
-        return redirect('/crud/form/types');
+        return redirect('/admin/types');
     }
 
     /**

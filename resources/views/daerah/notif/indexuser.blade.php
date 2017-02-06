@@ -89,12 +89,12 @@ $('#submit_delete').on('click', function (event) {
 });
 
 $(function() {
-  var url = "{{ url('dashboard/daerah/member')}}";
+  var url = "{{ url('daerah/member')}}";
   $('#user-table').DataTable({
     processing: true,
     serverSide: true,
     iDisplayLength: 50,
-    ajax: "{{ url('dashboard/daerah/ajax/notifuser/')}}/{{ $id }}",
+    ajax: "{{ url('daerah/ajax/notifuser/')}}/{{ $id }}",
     columns: [            
       { "data" : "name" },
       { "data" : "username" },

@@ -109,7 +109,7 @@
 		    processing: true,
 		    serverSide: true,
 		    iDisplayLength: 100,
-		    ajax: "{{ url('/dashboard/daerah/ajax/members')}}",
+		    ajax: "{{ url('daerah/ajax/members')}}",
 		    columns: [       		      
 		      { "data" : "name" },
 		      { "data" : "username" },
@@ -217,7 +217,7 @@
 		$('#validate').on('click', function (event) {
 		  console.log("validate clicked");		  		  
 
-		  var url = "{{ url('dashboard/daerah/member/validate/') }}/"+id;
+		  var url = "{{ url('daerah/member/validate/') }}/"+id;
 		  		  
 		  $.ajax({    
 		    url: url,
@@ -239,7 +239,7 @@
 		});
 
 		$('#submit_delete').on('click', function (event) {		  
-		  var url = "{{ url('dashboard/daerah/member/delete/') }}/"+id;
+		  var url = "{{ url('daerah/member/delete/') }}/"+id;
 
 		  $.ajax({    
 		    url: url,

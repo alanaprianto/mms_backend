@@ -48,10 +48,14 @@ class KadinPusatController extends Controller
     {                           
         $notif = Notification::find($id);
 
-        $notif->active=false;
-        $notif->save();                     
+        if (str_contains($notif->value, 'KTA Extension')) {
+            $notif->active=false;
+            $notif->save();
+
+            return redirect('pusat/ktaext');
+        }        
         
-        return redirect('dashboard/pusat');
+        return redirect('pusat/dashboard');
     }    
 
     public function notifall()

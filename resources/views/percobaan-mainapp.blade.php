@@ -128,6 +128,24 @@
             <br>
             @yield('iframe')
 
+            <div class="col-lg-12">
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <strong>Test API REGNUM</strong>
+    </div>
+    <div class="ibox-content">      
+      <div class="row">
+        <div class="col-lg-12">
+          <div id="wadah">
+              
+          </div>
+          <input type="text" name="rn" id="rn">
+          <button onclick="api_post()">API POST</button>
+        </div>
+      </div>      
+    </div>
+  </div>
+</div>
             </div>
         </div>                                       
 
@@ -195,5 +213,19 @@
 
         <!-- Image cropper -->
         <script src="{{ asset('resources/assets/js/plugins/cropper/cropper.min.js') }}"></script>
+        <script type="text/javascript">
+            function api_post() 
+            {
+                var rn = document.getElementById("rn").value;
+
+                $.post("{{ url('api/check_rn/') }}"+"/"+rn, null, function(result){                    
+                  var element = document.getElementById("wadah");
+                  $("<strong>Validity = "+result.validity+"</strong><br>"+
+                    "<strong>RN = "+result.rn+"</strong><br><br>").appendTo(element);
+
+                  console.log(result);
+                });
+            }
+        </script>
     </body>
 </html>

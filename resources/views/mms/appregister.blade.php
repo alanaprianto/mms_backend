@@ -90,15 +90,15 @@
               <li class="@yield('helpactive')"><a class="page" href="{{ url('bantuan')}}">Bantuan</a></li>
               @if(Auth::check())
                 @if (Auth::user()->role==1)
-                  <li class="@yield('loginactive')"><a class="page" href="{{ url('/crud/form/setting/')}}">Admin Panel</a></li>
+                  <li class="@yield('loginactive')"><a class="page" href="{{ url('/admin/dashboard')}}">Admin Panel</a></li>
                 @elseif (Auth::user()->role==2)
-                  <li class="@yield('loginactive')"><a class="page" href="{{ url('/member')}}">Panel</a></li>
+                  <li class="@yield('loginactive')"><a class="page" href="{{ url('/member/dashboard')}}">Panel</a></li>
                 @elseif (Auth::user()->role==3)
                   <li class="@yield('loginactive')"><a class="page" href="{{ url('/dashboard/pusat')}}">Panel</a></li>
                 @elseif (Auth::user()->role==4)
-                  <li class="@yield('loginactive')"><a class="page" href="{{ url('/dashboard/provinsi')}}">Panel</a></li>
+                  <li class="@yield('loginactive')"><a class="page" href="{{ url('provinsi/dashboard')}}">Panel</a></li>
                 @elseif (Auth::user()->role==5)
-                  <li class="@yield('loginactive')"><a class="page" href="{{ url('/dashboard/daerah')}}">Panel</a></li>
+                  <li class="@yield('loginactive')"><a class="page" href="{{ url('daerah/dashboard')}}">Panel</a></li>
                 @elseif (Auth::user()->role==6)
                   <li class="@yield('loginactive')"><a class="page" href="{{ url('/dashboard/alb')}}">Panel</a></li>
                 @endif

@@ -11,6 +11,7 @@ use App\Form_answer;
 use App\User;
 use App\Http\Requests\FormResultRequest;
 use Datatables;
+use Illuminate\Support\Collection;
 
 class FormResultController extends Controller
 {
@@ -28,22 +29,37 @@ class FormResultController extends Controller
         // })->paginate(7);                
 
         // if (Request::ajax()) {                                            
-        //     return view('form.result.results', compact('fresults'));
+        //     return view('admin.dform.result.results', compact('fresults'));
         // }        
 
         // // return $fanswers[0]->question;
-        // return view('form.result.index', compact('fresults'));        
+        // return view('admin.dform.result.index', compact('fresults'));        
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.result.index', compact('notifs'));
+        return view('admin.dform.result.index', compact('notifs'));
     }
 
     public function indexAjax() {
-        // return 'asdad';
-        $fr = Form_result::
-                // leftJoin('form_question', 'form_result.id_question', '=', 'form_question.id')          
-                leftJoin('users', 'form_result.id_user', '=', 'users.id')->get();
-                // ->select(['form_result.id', 'form_question.question', 'form_result.answer_value', 'users.name', 'form_result.trackingcode', 'form_result.id_question']);   
-        return Datatables::of($fr)->make(true);
+        $frs = Form_result::get();
+
+        $dt = new Collection;        
+        foreach ($frs as $key => $fr) {
+
+            $question = $fr->question;
+            $atype = $fr->answer_type;
+            $answer = $fr->answer;
+            $name = $fr->val_by;            
+            
+            $dt->push([
+                    'question' => $question,
+                    'answer_type' => $atype,
+                    'answer' => $answer,
+                    'name' => $name,
+                    'trackingcode' => $fr->trackingcode,
+                    'id' => $fr->id,                    
+                ]);
+        }
+
+        return Datatables::of($dt)->make(true);
         // ->where('form_result.id_user', '=', '13')
     }
 
@@ -59,7 +75,7 @@ class FormResultController extends Controller
         $users = User::pluck('username', 'id');
         
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.result.create', compact('fqs', 'fas', 'users', 'notifs'));
+        return view('admin.dform.result.create', compact('fqs', 'fas', 'users', 'notifs'));
     }
 
     /**
@@ -74,7 +90,7 @@ class FormResultController extends Controller
          
         Form_result::create($input);
 
-        return redirect('/crud/form/result');
+        return redirect('/admin/result');
     }
 
     /**
@@ -85,7 +101,7 @@ class FormResultController extends Controller
      */
     public function show($id)
     {      
-        return redirect('/crud/form/result_');
+        return redirect('/admin/result_');
     }
 
     /**
@@ -96,13 +112,13 @@ class FormResultController extends Controller
      */
     public function edit($id)
     {
-        $fr = Form_result::findOrFail($id);
+        $fr = Form_result::find($id);        
         $fqs = Form_question::pluck('question', 'id');
         $fas = Form_answer::pluck('answer', 'id');
         $users = User::pluck('username', 'id');
         
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('form.result.edit', compact('fr', 'fqs', 'fas', 'users', 'notifs'));
+        return view('admin.dform.result.edit', compact('fr', 'fqs', 'fas', 'users', 'notifs'));
     }
 
     /**
@@ -118,7 +134,7 @@ class FormResultController extends Controller
 
         $fa->update($request->all());
 
-        return redirect('/crud/form/result_');
+        return redirect('/admin/result_');
     }
 
     /**

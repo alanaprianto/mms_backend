@@ -343,7 +343,7 @@ class KadinProvinsiController extends Controller
         $notifs = \App\Helpers\Notifs::getNotifs();
         
         if ($notif->value == "New Request KTA") {            
-            return redirect('/dashboard/provinsi/kta/request');
+            return redirect('/provinsi/kta/request');
         }
         
 
