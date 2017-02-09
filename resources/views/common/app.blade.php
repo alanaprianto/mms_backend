@@ -8,10 +8,7 @@
         <!-- Simple Sidebar CSS -->
         <!-- <link href="{{ asset('resources/assets/css/simple-sidebar.css') }}" rel="stylesheet">        -->
         <!-- Datatables CSS -->
-        <!-- <link href="{{ asset('resources/assets/css/jquery.dataTables.min.css') }}" rel="stylesheet"> -->
-        <link href="{{ asset('resources/assets/css/plugins/dataTables/dataTables.bootstrap.css') }}" rel="stylesheet">
-        <link href="{{ asset('resources/assets/css/plugins/dataTables/dataTables.responsive.css') }}" rel="stylesheet">
-        <link href="{{ asset('resources/assets/css/plugins/dataTables/dataTables.tableTools.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('resources/assets/css/jquery.dataTables.min.css') }}" rel="stylesheet">  
         <!-- Toastr -->
         <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/css/plugins/toastr/toastr.min.css') }}">  
         <!-- Font Awesome -->
@@ -22,13 +19,13 @@
         <link href="{{ asset('resources/assets/css/animate.css') }}" rel="stylesheet">
         <link href="{{ asset('resources/assets/css/style.css') }}" rel="stylesheet">
 
-        <!-- <link href="{{ asset('resources/assets/css/plugins/cropper/cropper.min.css') }}" rel="stylesheet"> -->
+        <link href="{{ asset('resources/assets/css/plugins/cropper/cropper.min.css') }}" rel="stylesheet">
         
         <!-- Kraaje Fileinputmin CSS -->
-        <!-- <link href="{{ asset('resources/assets/css/fileinput.min.css') }}" rel="stylesheet"> -->
+        <link href="{{ asset('resources/assets/css/fileinput.min.css') }}" rel="stylesheet">
         @yield('head')
     </head>
-    <body>                          
+    <body>                        
         <div id="wrapper">
             <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
@@ -44,9 +41,9 @@
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ Auth::user()->name }}</strong>
                              </span> <span class="text-muted text-xs block">{{ Auth::user()->myrole->name }}<b class="caret"></b></span> </span> </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a href="{{ url('profile') }}">Profile</a></li>
-                                <li><a href="{{ url('contacts') }}">Contacts</a></li>
-                                <li><a href="{{ url('mailbox') }}">Mailbox</a></li>
+                                <li><a href="{{ url('profile')}}">Profile</a></li>
+                                <li><a href="{{ url('contacts')}}">Contacts</a></li>
+                                <li><a href="{{ url('mailbox')}}">Mailbox</a></li>
                                 <li class="divider"></li>
                                 <li><a href="{{ url('/logout')}}">Logout</a></li>
                             </ul>
@@ -56,55 +53,50 @@
                         </div>
                     </li>                    
                     <!-- @yield('sidebar') -->
-                                        
-                    <li class="@yield('active-groupnr')">
-                      <a href="#">
-                        <i class="fa fa-list-alt"></i>
-                        <span class="nav-label">National Register</span>
-                        <span class="fa arrow"></span>
-                      </a>
-                      <ul class="nav nav-second-level">
-                        <li class="@yield('active-nrlist')"><a href="{{ url('dashboard/pusat/rn/list') }}">List NR</a></li>
-                        <li class="@yield('active-nrreq')"><a href="{{ url('dashboard/pusat/rn/request') }}">NR Number Request</a></li> 
-                      </ul>
-                    </li>                    
+                    @include('member.sidebar')
+                </ul>
 
-                    <li>
-                        <a href="index-2.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li ><a href="index-2.html">Dashboard v.1</a></li>
-                            <li ><a href="dashboard_2.html">Dashboard v.2</a></li>
-                            <li ><a href="dashboard_3.html">Dashboard v.3</a></li>
-                            <li ><a href="dashboard_4_1.html">Dashboard v.4</a></li>
-                        </ul>
-                    </li>
-
-                </ul>                
             </div>
-            </nav>              
+            </nav>
             <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="row border-bottom">
+            <div id="div2" class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0"> 
                 <div class="navbar-header">
-                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>         
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>                    
                     <form role="search" class="navbar-form-custom" action="">
                         <div class="form-group">
                             <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
                         </div>
-                    </form>           
+                    </form>
                 </div>          
-                <ul class="nav navbar-top-links navbar-right">     
+                <ul class="nav navbar-top-links navbar-right">           
                     <li>
-                        <span class="m-r-sm text-muted welcome-message">Welcome to KADIN Indonesia Panel.</span>
-                    </li>                                   
+                        <span class="m-r-sm text-muted welcome-message">Welcome to KADIN Member Panel.</span>
+                    </li>                             
                     <li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">                            
-                            <i class="fa fa-bell"></i>                                  
+                            <i class="fa fa-bell"></i>  
+                                @if (count($notifs) > 0)
+                                    <span class="label label-primary">
+                                        {{ count($notifs) }}
+                                    </span>
+                                @endif
                         </a>
-                        <ul class="dropdown-menu dropdown-alerts">                            
+                        <ul class="dropdown-menu dropdown-alerts">
+                            @foreach ($notifs->slice(0, 3) as $key=>$notif)
+                                <li>
+                                    <a href="{{ url('/dashboard/daerah/notif') }}/{{ $notif->id }}">
+                                        <div>
+                                            <i class="fa fa-envelope fa-fw"></i> {{ $notif->value }}
+                                            <span class="pull-right text-muted small">{{ $notif->crt_human }}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                            @endforeach
                             <li>
                                 <div class="text-center link-block">
-                                    <a href="{{ url('/dashboard/pusat/notif/all') }}">
+                                    <a href="{{ url('/dashboard/daerah/notif/all') }}">
                                         <strong>See All Alerts</strong>
                                         <i class="fa fa-angle-right"></i>
                                     </a>
@@ -122,32 +114,17 @@
             </nav>
             </div>
             
-            <div class="row  border-bottom white-bg dashboard-header">
+            <div id="div3" class="row  border-bottom white-bg dashboard-header">
                 @yield('content')
-
-                {{ $code }}
             </div>       
             <br>
             @yield('iframe')
 
-            <div class="col-lg-12">
-  <div class="ibox float-e-margins">
-    <div class="ibox-title">
-      <strong>Test API REGNUM</strong>
-    </div>
-    <div class="ibox-content">      
-      <div class="row">
-        <div class="col-lg-12">
-          <div id="wadah">
-              
-          </div>
-          <input type="text" name="rn" id="rn">
-          <button onclick="api_post()">API POST</button>
-        </div>
-      </div>      
-    </div>
-  </div>
-</div>
+            <div id="div4" class="footer">
+              <div>
+                <strong>Copyright</strong> MMS Kadin Indonesia &copy; 2016
+              </div>
+            </div>
             </div>
         </div>                                       
 
@@ -192,7 +169,7 @@
                 <div class="modal-footer">
                 </div>
             </div>
-        </div>
+        </div>     
 
         <!-- JQuery -->
         <script src="{{ asset('resources/assets/js/jquery-3.1.0.min.js') }}"></script>
@@ -215,19 +192,58 @@
 
         <!-- Image cropper -->
         <script src="{{ asset('resources/assets/js/plugins/cropper/cropper.min.js') }}"></script>
+
         <script type="text/javascript">
-            function api_post() 
-            {
-                var rn = document.getElementById("rn").value;
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
 
-                $.post("{{ url('api/check_rn/') }}"+"/"+rn, null, function(result){                    
-                  var element = document.getElementById("wadah");
-                  $("<strong>Validity = "+result.validity+"</strong><br>"+
-                    "<strong>RN = "+result.rn+"</strong><br><br>").appendTo(element);
+                    reader.onload = function (e) {
+                        $('#theimage').attr('src', e.target.result);
+                    }
 
-                  console.log(result);
-                });
+                    reader.readAsDataURL(input.files[0]);
+                }
             }
+
+            $("#imgInp").change(function(){
+                readURL(this);
+            });
+
+            $('#profileimgModal').on('show.bs.modal', function (event) {  
+              $('#theimage').attr('src', "{{ url('/images') }}/{{ Auth::user()->username}}");
+            });
+
+            $('#imgUploadForm').on('submit',(function(e) {
+                e.preventDefault()                
+                var formData = new FormData(this);
+
+                $.ajax({
+                    type:'POST',
+                    url: $(this).attr('action'),
+                    data:formData,
+                    cache:false,
+                    contentType: false,
+                    processData: false,
+                    success:function(data){                        
+                        toastr.success(data.msg);
+
+                        $('#profileimgModal').modal('hide'); 
+                        location.reload();
+                    },
+                    error: function(data){
+                        console.log(data);
+                        if (data.msg) {
+                            toastr.error(data.msg);
+                        } else if (data.responseText) {
+                            toastr.error(data.responseText);
+                        }
+
+                        $('#profileimgModal').modal('hide');                         
+                    }
+                });
+            }));
         </script>
+        @stack('scripts')
     </body>
 </html>

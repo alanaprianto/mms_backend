@@ -87,64 +87,53 @@ class PendaftaranController extends Controller
         $input = $request->all();        
         $alb = $request['alb'];
 
-        // return $input;
-        // $name = $input['name'];
-        // $username = $input['username'];
-        // $email = $input['email'];
-        // $password1 = $input['password'];
-        // $password2 = $input['password_confirmation'];
-
-        // if ($password1 != $password2) {
-        //     return Redirect::to('register1')
-        //             ->withErrors(['message' => 'Password is not match!'])
-        //             ->withInput(Input::except(['id_question_19', 'id_question_20']));
-        // } else {
-        // }
-
         $id_namapenanggungjawab = Form_question::where('question', 'like', '%Nama Penanggung Jawab%')->first()->id;
         $idfqg = Form_question_group::where('name', 'like', '%Pendaftaran%')->first()->id;     
         $rules = $this->rules($idfqg);        
-            $attributeNames = $this->names($idfqg);
+        $attributeNames = $this->names($idfqg);
             
-            // Create a new validator instance.
-            $validator = Validator::make($input, $rules);
-            $validator->setAttributeNames($attributeNames);
+        // Create a new validator instance.
+        $validator = Validator::make($input, $rules);
+        $validator->setAttributeNames($attributeNames);
 
-            if ($validator->passes()) {
-                // $name = "Syahril Rachman";
-                // $code = "AS32FLF9";
-                // $date = "2016-11-04 11:07:36";
-                // $email = 'rachman.syahril@gmail.com';
-                // Mail::send('emails.register_confirmation', ['name' => $name, 'code' => $code, 'date' => $date], function($message) use ($email) {
-                //     $message->from('no-reply@kadin-indonesia.org', 'no-reply');
-                //     $message->to($email)->subject('Kadin Registration');                    
-                // });
-                // return $input;
+        if ($validator->passes()) {
+            // $name = "Syahril Rachman";
+            // $code = "AS32FLF9";
+            // $date = "2016-11-04 11:07:36";
+            // $email = 'rachman.syahril@gmail.com';
+            // Mail::send('emails.register_confirmation', ['name' => $name, 'code' => $code, 'date' => $date], function($message) use ($email) {
+            //     $message->from('no-reply@kadin-indonesia.org', 'no-reply');
+            //     $message->to($email)->subject('Kadin Registration');                    
+            // });
+            // return $input;
 
-                $random_string = md5(microtime());
-                $first = substr($random_string, 0, 4);
-                $last = substr($random_string, -4);
-                $code = $first.$last;
+            // method tracking code lama
+            // $random_string = md5(microtime());
+            // $first = substr($random_string, 0, 4);
+            // $last = substr($random_string, -4);
+            // $code = $first.$last;
+
+            $code = $this->getCode().'-ABS';
                 
-                $admins = User::where('role', '=', '1')->get();                
-                foreach ($admins as $key => $admin) {
-                    $notif = new Notification;
+            $admins = User::where('role', '=', '1')->get();                
+            foreach ($admins as $key => $admin) {
+                $notif = new Notification;
 
-                    $notif->target = $admin->id;
-                    $notif->sendercode = $code;
-                    $notif->value = "New submitted form";
-                    $notif->active = true;
+                $notif->target = $admin->id;
+                $notif->sendercode = $code;
+                $notif->value = "New submitted form";
+                $notif->active = true;
                     
-                    $notif->save();
-                }
-
-                // notif kadin kabupaten/kota
-            } else {
-                return Redirect::to('register1')->withErrors($validator);
-                // return Redirect::to('register1')
-                //     ->withInput(Input::except(['password', 'password_confirmation']))
-                //     ->withErrors($validator);
+                $notif->save();
             }
+
+            // notif kadin kabupaten/kota
+        } else {
+            return Redirect::to('register1')->withErrors($validator);
+            // return Redirect::to('register1')
+            //     ->withInput(Input::except(['password', 'password_confirmation']))
+            //     ->withErrors($validator);
+        }
 
         $datas = array();
         foreach ($input as $key => $value) {
@@ -379,7 +368,7 @@ class PendaftaranController extends Controller
      */
     public function indexii()
     {        
-        return "asdad1";
+        // return "asdad1";
         $user = Auth::user();
         $fr = Form_result::                
                 where('id_user', '=', $user->id)
@@ -485,7 +474,7 @@ class PendaftaranController extends Controller
                         $filess[] = "ada file ".$names[0];
                         $path = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
                         if(!\File::exists($path)) {
-                            \File::makeDirectory($path);                            
+                            \File::makeDirectory($path);
                         }
                         
                         $uname = $keys[3];
@@ -498,11 +487,11 @@ class PendaftaranController extends Controller
                         {
                             $files = pathinfo($delPath);
                             if ($files['filename'] == $names[0]) { // uname diganti names[0]
-                                $fileToDelete = $files['dirname'].'/'.$files['basename'];                             
-                                \File::delete($fileToDelete);                                
+                                $fileToDelete = $files['dirname'].'/'.$files['basename'];
+                                \File::delete($fileToDelete);
                             } else if ($files['filename'] == $names[0].'-thumbs') { // uname diganti names[0]
-                                $fileToDelete1 = $files['dirname'].'/'.$files['basename'];                             
-                                \File::delete($fileToDelete1);                                
+                                $fileToDelete1 = $files['dirname'].'/'.$files['basename'];
+                                \File::delete($fileToDelete1);
                             }
                         }
 
@@ -698,10 +687,13 @@ class PendaftaranController extends Controller
                 // });
                 // return $input;
 
-                $random_string = md5(microtime());
-                $first = substr($random_string, 0, 4);
-                $last = substr($random_string, -4);
-                $code = $first.$last;
+                // method tracking code lama
+                // $random_string = md5(microtime());
+                // $first = substr($random_string, 0, 4);
+                // $last = substr($random_string, -4);
+                // $code = $first.$last;
+
+                $code = $this->getCode().'-ALB';
                 
                 $admins = User::where('role', '=', '1')->get();                
                 foreach ($admins as $key => $admin) {
@@ -820,6 +812,21 @@ class PendaftaranController extends Controller
             }
         }                
         return redirect('/register1success');
+    }
+
+    public function getCode()
+    {
+        // Available alpha caracters
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        // generate a pin based on 2 * 7 digits + a random character
+        $pin = mt_rand(1000000, 9999999)
+            . mt_rand(1000000, 9999999)
+            . $characters[rand(0, strlen($characters) - 1)]
+            . $characters[rand(0, strlen($characters) - 1)];
+
+        // shuffle the result
+        $string = str_shuffle($pin);
+        return $string;
     }
 }
 

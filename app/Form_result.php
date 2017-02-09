@@ -124,7 +124,7 @@ class Form_result extends Model
         $request = ['id_question' => $id];        
 
         $validator = Validator::make($request, [
-            'id_question' => 'integer|required',            
+            'id_question' => 'integer|required',
         ]);
 
         if ($validator->passes()) {

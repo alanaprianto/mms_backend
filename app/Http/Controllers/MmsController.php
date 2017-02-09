@@ -140,7 +140,7 @@ class MmsController extends Controller
         $input['id_user'] = $userid;
         $input['attempt'] = $attempt;
         $input['amount'] = 250000;
-        $input['payment_date'] = new Carbon();        
+        $input['payment_date'] = new Carbon();
         Payment::create($input);
 
         Mail::send('emails.register_succesfull', ['name' => $name, 'username' => $code, 'password' => $random_string], function($message) use ($email) {

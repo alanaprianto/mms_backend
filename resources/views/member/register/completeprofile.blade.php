@@ -385,18 +385,22 @@
                 }                   
             }
 
-            if (list_answer.length>0) {                 
-                for (u = 0; u < list_answer.length; u++) {          
+            if (list_answer.length>0) {
+                for (u = 0; u < list_answer.length; u++) {
                     var answer = list_answer[u];
-                    options += answer.options_tag
+                    if (answer.id == value) {
+                        options += answer.options_tag
+                                .replace("[value]", answer.id)
+                                .replace("[answer]", answer.answer)
+                                .replace("[name]", qid)
+                                .replace(">", " selected='selected'>");
+                    } else {
+                        options += answer.options_tag
                                 .replace("[value]", answer.id)
                                 .replace("[answer]", answer.answer)
                                 .replace("[name]", qid);
-
-                    if (answer.id == value) {
-                        options.replace(">", " selected='selected'>");
                     }
-                }       
+                }
             }
 
             var rules = json.rules_detail;
@@ -418,10 +422,11 @@
                 input_value = " value='"+value+"'>";                        
             }
            
+           console.log(qid+input_value);
             $(  "<div class='form-group'>"+
                     "<label for='"+qid+"'>"+json.question+" :</label>"+
                         req+"<br>"+
-                        html[0].replace("[name]", qid).replace(">", input_value)+
+                        html[0].replace("[name]>", qid+input_value)+
                         options+
                         text_value+
                         html[1].replace("[name]", qid)+                                

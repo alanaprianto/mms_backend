@@ -10,10 +10,10 @@
     <h2>Member Index</h2>
     <ol class="breadcrumb">
         <li>
-            <a>Member</a>
+            <a>Admin</a>
         </li>
         <li class="active">
-            <strong>Index</strong>
+            <strong>Member</strong>
         </li>
     </ol>
   </div>

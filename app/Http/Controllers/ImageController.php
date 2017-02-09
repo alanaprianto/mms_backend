@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Image;
 use Illuminate\Support\Facades\Auth;
+use App\Gallery;
 
 class ImageController extends Controller
 {
@@ -114,7 +115,7 @@ class ImageController extends Controller
             $ext = "png";
         }   
         
-        $file = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;        
+        $file = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;
         $img = Image::make($file);
 
         return $img->response($ext);
@@ -203,5 +204,46 @@ class ImageController extends Controller
 
         return $img->response($ext);
         // return $manuals;
+    }
+
+    public function imageProduct($id) {
+        $img = Gallery::find($id);
+
+        $path = storage_path() . '/app/uploadedfiles/'.$img->user->username.'/product/'.$img->product_id."/";
+
+        $imgParts = explode(".", $img->filename);
+        $file = $path.$imgParts[0].".".$imgParts[1];
+        $img = Image::make($file);
+
+        return $img->response($imgParts[1]);
+    }
+
+    public function imageThumbProduct($id) {
+        $img = Gallery::find($id);
+
+        $path = storage_path() . '/app/uploadedfiles/'.$img->user->username.'/product/'.$img->product_id."/";
+
+        $thumbs = explode(".", $img->filename);
+        $file = $path.$thumbs[0]."-thumbs.".$thumbs[1];
+        $img = Image::make($file);
+
+        return $img->response($thumbs[1]);
+    }
+
+    public function imageSlider($name) {
+        $path = storage_path() . '/app/slider/'.$name;
+
+        $imgParts = explode(".", $name);
+        $img = Image::make($path);
+        return $img->response($imgParts[1]);
+    }
+
+    public function imageThumbSlider($name) {
+        $names = explode(".", $name);
+        $name = $names[0]."-thumbs.".$names[1];
+        $path = storage_path() . '/app/slider/'.$name;
+        
+        $img = Image::make($path);
+        return $img->response($names[1]);
     }
 }

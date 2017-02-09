@@ -18,13 +18,13 @@
     <h2>Form Setting</h2>
     <ol class="breadcrumb">
         <li>
-            <a>CRUD Forms</a>
+            <a>Admin</a>
         </li>
         <li>
-            <a>Form Setting</a>
+            <a>CRUD Forms</a>
         </li>
         <li class="active">
-            <strong>Index</strong>
+            <strong>Form Setting</strong>
         </li>
     </ol>
   </div>

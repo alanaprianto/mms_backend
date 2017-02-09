@@ -337,7 +337,7 @@ class MemberController extends Controller
                 $complead = $result->answer;
             } else if (str_contains($question, "Alamat Lengkap")) {
                 $compaddr = $result->answer;
-            } else if (str_contains($question, "Kegiatan Usaha")) {
+            } else if (str_contains($question, "Bidang Usaha")) {
                 $compbdus = $result->answer;
             } else if (str_contains($question, "No SIUP/SIUJK")) {
                 $comppermit = $result->answer;
@@ -369,7 +369,7 @@ class MemberController extends Controller
             return response()->json(['success' => false, 'msg' => "Field 'Alamat Lengkap' is required!"]);
         }
         if ($compbdus=="") {
-            return response()->json(['success' => false, 'msg' => "Field 'Kegiatan Usaha' is required!"]);
+            return response()->json(['success' => false, 'msg' => "Field 'Bidang Usaha' is required!"]);
         }
         if ($comppermit=="") {
             return response()->json(['success' => false, 'msg' => "Field 'No SIUP/SIUJK' is required!"]);

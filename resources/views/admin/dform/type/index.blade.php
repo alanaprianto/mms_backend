@@ -17,13 +17,13 @@
     <h2>Form Type</h2>
     <ol class="breadcrumb">
         <li>
-            <a>CRUD Forms</a>
+            <a>Admin</a>
         </li>
         <li>
-            <a>Form Type</a>
+            <a>CRUD Forms</a>
         </li>
         <li class="active">
-            <strong>Index</strong>
+            <strong>Form Type</strong>
         </li>
     </ol>
   </div>

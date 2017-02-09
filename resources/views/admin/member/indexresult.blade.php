@@ -10,10 +10,10 @@
     <h2>Detail Member</h2>
     <ol class="breadcrumb">
         <li>
-            <a>Member</a>
+            <a>Admin</a>
         </li>
         <li>
-            <a>Detail</a>
+            <a>Member</a>
         </li>
         <li class="active">
             <strong>{{ $member->username }}</strong>

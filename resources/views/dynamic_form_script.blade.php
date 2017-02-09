@@ -221,7 +221,7 @@
 						req+"<br>"+
 						html[0].replace("[name]", qid)+
 						options+
-						html[1]+	    		
+						html[1].replace("[name]", qid)+	    		
 				"</div>").appendTo(element);
 	    }
 

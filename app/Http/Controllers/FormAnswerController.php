@@ -97,7 +97,7 @@ class FormAnswerController extends Controller
         $ats = Form_setting::where('name', 'like', '%Option%')->pluck('name', 'id');
 
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('admin.dform.answer.edit', compact('fa', 'fqs', 'ats', 'notifs')); 
+        return view('admin.dform.answer.edit', compact('fa', 'fqs', 'ats', 'notifs'));
     }
 
     /**

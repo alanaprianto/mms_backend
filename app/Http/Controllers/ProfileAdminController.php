@@ -50,18 +50,22 @@ class ProfileAdminController extends Controller
      */
     public function updateCAI(Request $request, $id)
     {            	
-        $uname = $request['username'];
-        $unameexist = User::where('username', '=', $uname)->first();
+        $uname = $request['username'];        
+        $unameexist = User::where('username', '=', $uname)->where('id', '<>', $id)->first();
 
-        if ($unameexist) {
+        if ($unameexist) {            
             $deleted = false;
-            $deletedMsg = "The Username is Exist!";
+            $deletedMsg = "The Username Exist!";            
         } else {
             try {
-                $pathold = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
-                $pathnew = storage_path() . '/app/uploadedfiles/'.$uname.'/';
-                \File::copyDirectory($pathold, $pathnew);                
-                \File::deleteDirectory($pathold);
+                $user = User::findOrFail($id);
+
+                if ($user->username!=$uname) {
+                    $pathold = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
+                    $pathnew = storage_path() . '/app/uploadedfiles/'.$uname.'/';
+                    \File::copyDirectory($pathold, $pathnew);
+                    \File::deleteDirectory($pathold);
+                }
 
                 $name = "";
                 $ext = "";
@@ -80,8 +84,7 @@ class ProfileAdminController extends Controller
                         \File::move($imgold, $imgnew);
                     }
                 }
-
-                $user = User::findOrFail($id);
+                
                 $user->update($request->all());
                 
                 $deleted = true;

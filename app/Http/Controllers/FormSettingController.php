@@ -42,7 +42,7 @@ class FormSettingController extends Controller
         return view('admin.dform.setting.index', compact('notifs'));
     }
 
-    public function indexAjax() {        
+    public function indexAjax() {
         $fr = Form_setting::select(['id', 'name', 'description', 'html_tag']);
         return Datatables::of($fr)->make(true);
     }
@@ -105,7 +105,7 @@ class FormSettingController extends Controller
 
         // return $fsetting;
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('admin.dform.setting.edit', compact('fsetting', 'notifs')); 
+        return view('admin.dform.setting.edit', compact('fsetting', 'notifs'));
     }
 
     /**
@@ -117,7 +117,7 @@ class FormSettingController extends Controller
      */
     public function update(FormSettingRequest $request, $id)
     {
-        $fsetting = Form_setting::findOrFail($id);        
+        $fsetting = Form_setting::findOrFail($id);
 
         $fsetting->update($request->all());
 

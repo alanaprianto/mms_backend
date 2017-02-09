@@ -12,6 +12,9 @@
   <div class="col-lg-10">
     <h2>New Submitted Form</h2>
     <ol class="breadcrumb">
+      <li>
+        <a>Admin</a>
+      </li>  
         <li>
             <a>Notification</a>
         </li>        

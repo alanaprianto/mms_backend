@@ -115,7 +115,7 @@
     <div class="row">
       <div class="col-lg-9 col-lg-offset-1">
         @if ($detail1->count()>=1)            
-          <table class="table">            
+          <table class="table">
             @foreach ($detail1 as $row)
               @if ($row->correction||$row->commentary)
                 <tr bgcolor="#F6CECE">

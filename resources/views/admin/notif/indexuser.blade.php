@@ -17,6 +17,9 @@
   <div class="col-lg-10">
     <h2>Users Index</h2>
     <ol class="breadcrumb">
+      <li>
+        <a>Admin</a>
+      </li>  
         <li>
             <a>Notification</a>
         </li>        

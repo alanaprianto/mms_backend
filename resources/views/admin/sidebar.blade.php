@@ -32,3 +32,14 @@
     <span class="nav-label">Members</span>
   </a>
 </li>
+<li class="@yield('active-market')">
+  <a href="#">
+    <i class="fa fa-shopping-cart"></i>
+    <span class="nav-label">Marketplace</span>
+    <span class="fa arrow"></span>
+  </a>
+  <ul class="nav nav-second-level" aria-expanded="true">
+      <li class="@yield('active-market-category')"><a href="{{ url('admin/marketplace/category')}}">Category</a></li>
+      <li class="@yield('active-market-slider')"><a href="{{ url('admin/marketplace/slider')}}">Slider</a></li>      
+  </ul>
+</li>

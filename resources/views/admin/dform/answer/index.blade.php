@@ -13,13 +13,13 @@
     <h2>Form Answer</h2>
     <ol class="breadcrumb">
         <li>
-            <a>CRUD Forms</a>
+            <a>Admin</a>
         </li>
         <li>
-            <a>Form Answer</a>
+            <a>CRUD Forms</a>
         </li>
         <li class="active">
-            <strong>Index</strong>
+            <strong>Form Answer</strong>
         </li>
     </ol>
   </div>
@@ -107,9 +107,9 @@ $('#submit_delete').on('click', function (event) {
     type: "post",
     data: {
       _method: 'DELETE', 
-      _token: "{{ csrf_token() }}",        
+      _token: "{{ csrf_token() }}",
     }
-  }).done(function(data) {                    
+  }).done(function(data) {
     console.log(data);
 
     $('#myModal').modal('hide'); 
@@ -121,7 +121,7 @@ $('#submit_delete').on('click', function (event) {
     }
 
     var ref = $('#answer-table').DataTable();
-    ref.ajax.reload(null, false);    
+    ref.ajax.reload(null, false);
   });
 });
 

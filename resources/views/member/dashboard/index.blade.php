@@ -209,27 +209,27 @@
 
             <!-- identitas user -->
             <div class="form-group col-md-12 no-padding">
-              <label class="col-lg-6 control-label no-padding">Nama Perusahaan</label>
-              <div class="col-lg-6">
+              <label class="col-lg-4 control-label no-padding">Nama Perusahaan</label>
+              <div class="col-lg-8">
                 <p class="form-control-static no-padding">{{ $compform }} {{ $compname }}</p>
               </div>
             </div>
             <div class="form-group col-md-12 no-padding">
-              <label class="col-lg-6 control-label no-padding">Klasifikasi Perusahaan</label>
-              <div class="col-lg-6">
+              <label class="col-lg-4 control-label no-padding">Klasifikasi Perusahaan</label>
+              <div class="col-lg-8">
                 <p class="form-control-static no-padding">{{ $compclass }}</p>
               </div>
             </div>
             <br>
             <div class="form-group col-md-12 no-padding">
-              <label class="col-lg-6 control-label no-padding">Daerah</label>
-              <div class="col-lg-6">
+              <label class="col-lg-4 control-label no-padding">Daerah</label>
+              <div class="col-lg-8">
                 <p class="form-control-static no-padding">{{ $daerah }}</p>
               </div>
             </div>
             <div class="form-group col-md-12 no-padding">
-              <label class="col-lg-6 control-label no-padding">Provinsi</label>
-              <div class="col-lg-6">
+              <label class="col-lg-4 control-label no-padding">Provinsi</label>
+              <div class="col-lg-8">
                 <p class="form-control-static no-padding">{{ $provinsi }}</p>
               </div>
             </div>            

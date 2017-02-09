@@ -196,7 +196,6 @@ class AlbController extends Controller
         return view('alb.compprof.index', compact('notifs', 'member', 'detail'));
     }
 
-
     public function requestkta(Request $request) {
         $user = Auth::user();
 

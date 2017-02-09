@@ -27,7 +27,14 @@ class PercobaanController extends Controller
      */
     public function percobaan()
     {
-        return view('percobaan-mainapp');
+        $random_string = md5(microtime());
+        $first = substr($random_string, 0, 4);
+        $last = substr($random_string, -4);
+        $code = $first.$last;
+        
+        $code = $this->getCode().'-ABS';
+
+        return view('percobaan-mainapp', compact('code'));
         // $form = Form_result_kadin_daerah::where('id', '=', '525')->first();
         // // return $form;
 
@@ -331,6 +338,21 @@ class PercobaanController extends Controller
         }
 
         return $names;
+    }
+
+    public function getCode()
+    {
+        // Available alpha caracters
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        // generate a pin based on 2 * 7 digits + a random character
+        $pin = mt_rand(1000000, 9999999)
+            . mt_rand(1000000, 9999999)
+            . $characters[rand(0, strlen($characters) - 1)]
+            . $characters[rand(0, strlen($characters) - 1)];
+
+        // shuffle the result
+        $string = str_shuffle($pin);
+        return $string;
     }
 }
 

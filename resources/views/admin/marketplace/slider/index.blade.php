@@ -1,34 +1,31 @@
 @extends('admin.app')
 
-@section('active-dform')
+@section('active-market')
   active
 @stop
-@section('active-dform-question')
+@section('active-market-slider')
   active
 @stop
 
 @section('content')
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2>Form Question</h2>
+    <h2>Slider</h2>
     <ol class="breadcrumb">
         <li>
             <a>Admin</a>
         </li>
         <li>
-            <a>CRUD Forms</a>
+            <a>Marketplace</a>
         </li>
         <li class="active">
-            <strong>Form Question</strong>
+            <strong>Slider</strong>
         </li>
     </ol>
   </div>
   <div class="col-lg-2">
     <div class="title-action">
-      <a href='question/create' class="btn btn-primary">
-        <span class="glyphicon glyphicon-plus"></span>
-        &nbsp;&nbsp;Tambah Data
-      </a>
+      <a href='slider/create' class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
     </div>
   </div>
 </div>
@@ -38,19 +35,16 @@
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
         <div class="ibox-title">
-          <h5>List Question</h5>
+          <h5>List Slider for Marketplace</h5>
           <div class="ibox-tools"><!-- any link icon --></div>
         </div>
         <div class="ibox-content">
-          <table class="table table-striped table-bordered table-hover dataTables-example" id="question-table">
+          <table class="table table-striped table-bordered table-hover dataTables-example" id="slider-table">
             <thead>
               <tr>
-                <th>Question</th>
-                <th>Group Question</th>
-                <th>Question Type</th>
-                <th>Answer Type</th>
-                <th>Rules</th>
-                <th>Order</th>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Link</th>
                 <th>Options</th>
               </tr>
             </thead>
@@ -84,17 +78,48 @@
     </div>
   </div>
 </div>
-@stop
+@endsection
 
 @push('scripts')
 <script>
+$(function() {
+  var url = "{{ url('admin/marketplace/slider/') }}";
+  $('#slider-table').DataTable({
+    processing: true,
+    serverSide: true,
+    order: [[ 3, "asc" ]],
+    ajax: "{{ url('admin/ajax/marketplace/slider')}}",
+    columns: [            
+      { "data" : "img" },
+      { "data" : "title" },
+      { "data" : "link" },        
+      { "data" : "id"}    
+    ],
+    "columnDefs": [
+      {          
+          "render": function ( data, type, row ) {
+            return "<img src='"+row.slider_thmb_url+"' class='img img-responsive' style='width:100%;'>";
+          },
+          "targets": 0
+        },
+      {        
+        "render": function ( data, type, row ) {
+        return "<div class='pull-right'>"+                  
+                  "<a href='slider/"+row.id+"/edit' class='btn btn-xs btn-warning'><i class='fa fa-edit'></i> Edit </a>&nbsp;"+
+                  "<a class='btn btn-xs btn-danger' data-toggle='modal' data-target='#myModal' data-id='"+row.id+"' data-name='"+row.title+"' data-url='slider' title='Delete Item'><i class='fa fa-trash'></i> Delete </a>&nbsp;"+
+                "</div>";
+        },
+        "targets": 3
+      },      
+    ]
+  });
+});
+
 $('#myModal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) // Button that triggered the modal
   url = button.data('url');
   id = button.data('id');
-  name = button.data('name');
-
-  console.log(url + " " + id + " " + name);
+  name = button.data('name');  
 
   var modal = $(this);
   modal.find('.recordname').text('"' + name + '"?').css('font-weight', 'bold');
@@ -102,10 +127,7 @@ $('#myModal').on('show.bs.modal', function (event) {
 
 });
 
-$('#submit_delete').on('click', function (event) {
-  console.log("submit clicked");
-  console.log(url+"/"+id);
-
+$('#submit_delete').on('click', function (event) {  
   $.ajax({
     url: url+"/"+id,
     type: "post",
@@ -124,48 +146,10 @@ $('#submit_delete').on('click', function (event) {
       toastr.error(data.msg);
     }
 
-    var ref = $('#question-table').DataTable();
+    var ref = $('#slider-table').DataTable();
     ref.ajax.reload(null, false);
   });
 });
 
-$(function() {
-    $('#question-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ url('admin/ajax/question')}}",
-        columns: [
-            { "data" : "question" },
-            { "data" : "group_name" },
-            { "data" : "question_type.name" },
-            { "data" : "setting.name" },
-            { "data" : "rules_names" },
-            { "data" : "order" },
-            { "data" : "id" },
-        ],
-        "columnDefs": [
-            {
-                // The `data` parameter refers to the data for the cell (defined by the
-                // `data` option, which defaults to the column being worked with, in
-                // this case `data: 0`.
-                "render": function ( data, type, row ) {
-                	return '<a href="question/'+row.id+'/edit" class="btn btn-white btn-xs">'+
-                            '<span class="fa fa-edit fa-fw"></span>'+
-                            '&nbsp;&nbsp;Edit'+
-                          '</a>'+
-                          '<a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.question+'" data-url="question" title="Delete Item">'+
-                            '<span class="fa fa-trash fa-fw"></span>'+
-                          '</a>';
-                    // return data +' ('+ row[3]+')';
-                },
-                "targets": 6
-            }
-        ]
-    });
-});
-  
-  function goBack() {
-    window.history.back();
-  }
 </script>
 @endpush

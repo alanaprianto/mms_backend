@@ -68,7 +68,19 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('images/{filename}', 'ImageController@images');
   Route::get('image-upload','ImageController@imageUpload');
   Route::post('image-upload','ImageController@imageUploadPost');  
-  Route::get('uploadedfiles/{filename}', 'ImageController@uploadedfiles');  
+  Route::get('uploadedfiles/{filename}', 'ImageController@uploadedfiles');
+  Route::get('images/product/thumbnail/{id}', 'ImageController@imageThumbProduct');
+  Route::get('images/product/{id}', 'ImageController@imageProduct');
+  Route::get('images/slider/thumbnail/{name}', 'ImageController@imageThumbSlider');
+  Route::get('images/slider/{name}', 'ImageController@imageSlider');
+
+
+  // Marketplace
+  Route::post('marketplace/create_gallery/', 'MarketPlaceController@create_gallery');
+  Route::post('marketplace/update_gallery/', 'MarketPlaceController@update_gallery');
+  Route::post('marketplace/delete_gallery/', 'MarketPlaceController@delete_gallery');
+  Route::get('marketplace/ajax/listBarang/', 'MarketPlaceController@listBarang');
+  Route::get('marketplace/ajax/listJasa/', 'MarketPlaceController@listJasa');
 });
 
 // Member
@@ -89,7 +101,6 @@ Route::group(['prefix' => 'member/', 'middleware' => 'auth.role.member'], functi
   Route::post('extkta', 'MemberController@extkta');
 
   // Market
-  Route::get('marketplace/category/{id}', 'MarketPlaceController@get_category');
   Route::resource('marketplace', 'MarketPlaceController');
 });
 
@@ -130,8 +141,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
     Route::get('memberresultAjax/{id}', 'AdminMemberController@memberresultAjax');
     Route::get('notifresult/{id}', 'NotifController@notifresultAjax');
     Route::get('notifuser/{id}', 'NotifController@notifuserAjax');
+    Route::get('marketplace/category', 'AdminCategoryController@indexAjax');
+    Route::get('marketplace/slider', 'AdminSliderController@indexAjax');
   });
-  Route::get('question/whereSetting/{id}', 'FormQuestionController@whereSetting');  
+  Route::get('question/whereSetting/{id}', 'FormQuestionController@whereSetting');
+  Route::resource('marketplace/category', 'AdminCategoryController');
+  Route::resource('marketplace/slider', 'AdminSliderController');
 });
 
 // Kadin Daerah 
@@ -248,13 +263,16 @@ Route::group(['prefix' => 'alb/', 'middleware' => 'auth.role.alb'], function () 
   Route::post('extkta', 'AlbController@extkta');
   Route::post('ktaprint', 'AlbController@ktaprint');
   Route::get('printkta', 'AlbController@printkta');
-  
 
+  Route::resource('marketplace', 'MarketPlaceController');
 });
 
 // API
 Route::group(['prefix' => 'api/'], function() {
   Route::post('check_rn/{rn}', 'APIController@check_rn');
+  Route::post('marketplace/list', 'APIController@marketplace_list');
+  Route::post('marketplace/detail', 'APIController@marketplace_detail');
+  Route::get('marketplace/category/{id}', 'APIController@get_category');
 });
 
 // Percobaan
