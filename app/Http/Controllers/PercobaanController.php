@@ -42,103 +42,104 @@ class PercobaanController extends Controller
 
         // $request = \Illuminate\Http\Request::create('https://kadin-member.cf/api/v1/login', 'POST', ['user' => 'admin', 'password' => '123qweasdzxc']);        
         // return $request;
-        $name = "Asdad Swardada";
-    	$username = "asdad";
-    	$email = "asdad.swardada@gmail.com";
-    	$password = "Asdad123!";
-        try {
-           	$client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);
-           	$response = $client->request('POST', 'v1/login', [
-                    'headers' => [
-                    ],
-                    'json' => ['user' => 'admin', 'password' => '123qweasdzxc']
-            ]);
-            $json = json_decode($response->getBody(true), true);
-            $authtoken = $json['data']['authToken'];
-            $authId = $json['data']['userId'];
-            
-            $response = $client->request('GET', 'v1/users.list', [
-            	'headers' => [
-            		'X-Auth-Token' => $authtoken, 
-            		'X-User-Id' => $authId
-            	],
-            	'json' => []
-            ]);
+//        $name = "Asdad Swardada";
+//    	$username = "asdad";
+//    	$email = "asdad.swardada@gmail.com";
+//    	$password = "Asdad123!";
+//        try {
+//           	$client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);
+//           	$response = $client->request('POST', 'v1/login', [
+//                    'headers' => [
+//                    ],
+//                    'json' => ['user' => 'admin', 'password' => '123qweasdzxc']
+//            ]);
+//            $json = json_decode($response->getBody(true), true);
+//            $authtoken = $json['data']['authToken'];
+//            $authId = $json['data']['userId'];
+//
+//            $response = $client->request('GET', 'v1/users.list', [
+//            	'headers' => [
+//            		'X-Auth-Token' => $authtoken,
+//            		'X-User-Id' => $authId
+//            	],
+//            	'json' => []
+//            ]);
+//
+//            $userId = '';
+//            $userExist = false;
+//            $lusers = json_decode($response->getBody(true), true);
+//            $users = $lusers['users'];
+//            foreach ($users as $key => $user) {
+//            	if ($user['username']==$username) {
+//            		$userExist = true;
+//                    $userId = $user['_id'];
+//            	}
+//            }
+//
+//            if ($userExist) {
+//            	// $response = $client->request('POST', 'v1/users.update', [
+//             //            'headers' => [
+//             //                'X-Auth-Token' => $authtoken,
+//             //                'X-User-Id' => $authId,
+//             //                'Content-type' => 'application/json'
+//             //            ],
+//             //            'json' => ['userId' => $userId, 'data' => ['name' => 'Asdad Swardada1', 'email' => 'asdad.swardada@gmail.com1', 'username' => 'asdad1']]
+//             //    ]);
+//
+//             //    $usercrt = json_decode($response->getBody(true), true);
+//             //    return $response;
+//
+//                $response = $client->request('POST', 'v1/users.update', [
+//                        'headers' => [
+//                            'X-Auth-Token' => $authtoken,
+//                            'X-User-Id' => $authId,
+//                            'Content-type' => 'application/json'
+//                        ],
+//                        'json' => ['userId' => $userId]
+//                ]);
+//
+//                $dltjson = json_decode($response->getBody(true), true);
+//                return $response;
+//            } else {
+//            	$response = $client->request('POST', 'v1/users.create', [
+//	                    'headers' => [
+//	                        'X-Auth-Token' => $authtoken,
+//            				'X-User-Id' => $userId,
+//	                        'Content-type' => 'application/json'
+//	                    ],
+//	                    'json' => ['name' => $name, 'email' => $email, 'password' => $password, 'username' => $username]
+//	            ]);
+//	            $usercrt = json_decode($response->getBody(true), true);
+//	            $success = $usercrt['success'];
+//	            if (!$success) {
+//	            	return "Failed Creating User, Failing Process";
+//	            } else {
+//	            	return "User Created";
+//	            }
+//            }
+//
+//			$response = $client->request('GET', 'v1/logout', [
+//            	'headers' => [
+//            		'X-Auth-Token' => $authtoken,
+//            		'X-User-Id' => $userId
+//            	],
+//            	'json' => []
+//            ]);
+//        } catch (RequestException $e) {
+//            $response = json_decode($e->getResponse()->getBody(true));
+//            $json = $response;
+//        }
+//        return $response;
+//
+//        $random_string = md5(microtime());
+//        $first = substr($random_string, 0, 4);
+//        $last = substr($random_string, -4);
+//        $code = $first.$last;
+//
+//        $code = $this->getCode().'-ABS';
+//
+//        return view('percobaan-mainapp', compact('code'));
 
-            $userId = '';
-            $userExist = false;
-            $lusers = json_decode($response->getBody(true), true);
-            $users = $lusers['users'];
-            foreach ($users as $key => $user) {            	
-            	if ($user['username']==$username) {
-            		$userExist = true;
-                    $userId = $user['_id'];
-            	}
-            }
-
-            if ($userExist) {
-            	// $response = $client->request('POST', 'v1/users.update', [
-             //            'headers' => [
-             //                'X-Auth-Token' => $authtoken, 
-             //                'X-User-Id' => $authId,
-             //                'Content-type' => 'application/json'
-             //            ],                        
-             //            'json' => ['userId' => $userId, 'data' => ['name' => 'Asdad Swardada1', 'email' => 'asdad.swardada@gmail.com1', 'username' => 'asdad1']]
-             //    ]);
-
-             //    $usercrt = json_decode($response->getBody(true), true);
-             //    return $response;
-
-                $response = $client->request('POST', 'v1/users.update', [
-                        'headers' => [
-                            'X-Auth-Token' => $authtoken, 
-                            'X-User-Id' => $authId,
-                            'Content-type' => 'application/json'
-                        ],                        
-                        'json' => ['userId' => $userId]
-                ]);
-
-                $dltjson = json_decode($response->getBody(true), true);
-                return $response;
-            } else {
-            	$response = $client->request('POST', 'v1/users.create', [
-	                    'headers' => [
-	                        'X-Auth-Token' => $authtoken, 
-            				'X-User-Id' => $userId,
-	                        'Content-type' => 'application/json'
-	                    ],
-	                    'json' => ['name' => $name, 'email' => $email, 'password' => $password, 'username' => $username]
-	            ]);	            
-	            $usercrt = json_decode($response->getBody(true), true);
-	            $success = $usercrt['success'];
-	            if (!$success) {
-	            	return "Failed Creating User, Failing Process";
-	            } else {
-	            	return "User Created";
-	            }
-            }
-
-			$response = $client->request('GET', 'v1/logout', [
-            	'headers' => [
-            		'X-Auth-Token' => $authtoken, 
-            		'X-User-Id' => $userId
-            	],
-            	'json' => []
-            ]);            
-        } catch (RequestException $e) {
-            $response = json_decode($e->getResponse()->getBody(true));
-            $json = $response;
-        }
-        return $response;
-        
-        $random_string = md5(microtime());
-        $first = substr($random_string, 0, 4);
-        $last = substr($random_string, -4);
-        $code = $first.$last;
-        
-        $code = $this->getCode().'-ABS';
-
-        return view('percobaan-mainapp', compact('code'));
         // $form = Form_result_kadin_daerah::where('id', '=', '525')->first();
         // // return $form;
 
@@ -175,10 +176,11 @@ class PercobaanController extends Controller
         // $date = "2016-11-04 11:07:36";
         // // return view('emails.register_confirmation', compact('name', 'code', 'date'));        
 
-        // $name = "Syahril Rachman";
-        // $username = "syahril";
-        // $password = "ASDAD";
-        // // return view('emails.register_succesfull', compact('name', 'username', 'password'));
+         $name = "Syahril Rachman";
+         $username = "syahril";
+         $password = "ASDAD";
+         $position = "WKU Bidang Konstruksi dan Infrastruktur";
+          return view('emails.register_chat', compact('name', 'username', 'password', 'position'));
 
         // $user = Auth::user();
         // $fr = Form_result::                

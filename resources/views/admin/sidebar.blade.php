@@ -32,6 +32,17 @@
     <span class="nav-label">Members</span>
   </a>
 </li>
+<li class="@yield('active-organizer')">
+  <a href="{{ url('admin/organizer')}}">
+    <i class="fa fa-sitemap"></i>
+    <span class="nav-label">Organizers</span>
+    <span class="fa arrow"></span>
+  </a>
+  <ul class="nav nav-second-level" aria-expanded="true">
+    <li class="@yield('active-organizer-setting')"><a href="{{ url('admin/organizer/setting')}}">Setting</a></li>
+    <li class="@yield('active-organizer-list')"><a href="{{ url('admin/organizer/list')}}">List</a></li>
+  </ul>
+</li>
 <li class="@yield('active-market')">
   <a href="#">
     <i class="fa fa-shopping-cart"></i>

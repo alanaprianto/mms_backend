@@ -54,7 +54,9 @@
                         </div>
                     </li>                    
                     <!-- @yield('sidebar') -->
-                    @if (Auth::user()->role==2)
+                    @if (Auth::user()->role==1)
+                        @include('admin.sidebar')
+                    @elseif (Auth::user()->role==2)
                         @include('member.sidebar')
                     @elseif (Auth::user()->role==6)
                         @include('alb.sidebar')

@@ -51,11 +51,11 @@ class AdminSliderController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->hasFile('img')) {
-            return 'ada file';
-        } else {
-            return 'tidak ada file';
-        }
+//        if ($request->hasFile('img')) {
+//            return 'ada file';
+//        } else {
+//            return 'tidak ada file';
+//        }
 
         $input = $request->all();        
 
