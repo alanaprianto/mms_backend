@@ -152,7 +152,7 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,    
         Intervention\Image\ImageServiceProvider::class,
         Fedeisas\LaravelMailCssInliner\LaravelMailCssInlinerServiceProvider::class,
-        
+        Zjango\Laracurl\LaracurlServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -211,7 +211,7 @@ return [
         'Menu' => Lavary\Menu\Facade::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,   
         'Image' => Intervention\Image\Facades\Image::class,
-
+        'Laracurl'  =>  Zjango\Laracurl\Facades\Laracurl::class,
     ],
 
 ];

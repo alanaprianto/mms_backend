@@ -148,6 +148,24 @@
     </div>
   </div>
 </div>
+
+        <div class="col-lg-12">
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <strong>Test Rocket Chat</strong>
+    </div>
+    <div class="ibox-content">      
+      <div class="row">
+        <div class="col-lg-12">
+          <div id="wd">
+              
+          </div>
+          <button onclick="rchatLogin()">Rocket Chat Login</button>
+        </div>
+      </div>      
+    </div>
+  </div>
+</div>
             </div>
         </div>                                       
 
@@ -227,6 +245,19 @@
 
                   console.log(result);
                 });
+            }
+
+            function rchatLogin() {
+                $.post("{{ url('percobaan/rchatLogin') }}", null, function(result){
+                  var element = document.getElementById("wd");
+                  $("<textarea>"+result+"</textarea>").appendTo(element);
+                });
+
+                // $.post("https://kadin-member.cf/api/login", {"user":"admin", "password":"123qweasdzxc"}, function(result) {
+                //     console.log(result);
+                //     var element = document.getElementById("wd");
+                //     $("<textarea>"+result+"</textarea>").appendTo(element);
+                // });
             }
         </script>
     </body>

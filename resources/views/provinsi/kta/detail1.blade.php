@@ -70,31 +70,30 @@
         <div class="row">
           <div class="col-lg-12">
             <!-- identitas user -->
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Username</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-2 control-label no-padding">Username</label>
               <div class="col-lg-10">
-                <p class="form-control-static">{{ $member->username }}</p>
+                <p class="form-control-static no-padding">{{ $member->username }}</p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Tracking Code</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-2 control-label no-padding">Tracking Code</label>
               <div class="col-lg-10">
-                <p class="form-control-static"><?php echo @$detail[0]['trackingcode'];?></p>
+                <p class="form-control-static no-padding"><?php echo @$detail[0]['trackingcode'];?></p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Submitted At</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-2 control-label no-padding">Submitted At</label>
               <div class="col-lg-10">
-                <p class="form-control-static">{{ $member->created_at }}</p>
+                <p class="form-control-static no-padding">{{ $member->created_at }}</p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Territory</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-2 control-label no-padding">Territory</label>
               <div class="col-lg-10">
-                <p class="form-control-static">{{ $member->territory_name }}</p>
+                <p class="form-control-static no-padding">{{ $member->territory_name }}</p>
               </div>
-            </div>
-            <div class="hr-line-dashed"></div>
+            </div>            
           </div>
 
           <br><br><br><br><br><br><br>
@@ -110,7 +109,7 @@
                     <td><strong>{{ $row->question }}</strong></td>
                     <td>:</td>
                     <td>{{ $row->answer }}</td>
-                    <td>                                            
+                    <td>
                       @if (in_array($row->id_question, $fileq))
                         <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valImgModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
                           <i class="fa fa-edit fa-fw"></i>
@@ -119,7 +118,7 @@
                         <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
                           <i class="fa fa-edit fa-fw"></i>
                         </a>
-                      @endif                      
+                      @endif
                     </td>
                   </tr>
                 @endforeach            

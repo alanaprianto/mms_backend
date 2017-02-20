@@ -41,7 +41,7 @@ class ImageController extends Controller
 
     public function imageUploadPost(Request $request)
 
-    {    	
+    {    	        
     	$this->validate($request, [
 
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -131,7 +131,8 @@ class ImageController extends Controller
         // $file = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/'
         $file = storage_path() . '/app/uploadedfiles/'.$filepath[0].'/';
         $filesInFolder = \File::files($file);
-
+        // return $filepath[0];
+        
         foreach($filesInFolder as $path)
         {
             $files = pathinfo($path);

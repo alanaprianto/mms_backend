@@ -75,6 +75,7 @@
 			  <th>Company</th>
 			  <th>Company Representative</th>
 			  <th>Registered At</th>
+			  <th>Member</th>
 			  <th>NR Number</th>
 			  <th>Options</th>
 			</tr>
@@ -92,13 +93,9 @@
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 		<i class="fa fa-laptop modal-icon"></i>
-		<h4 class="modal-title">Insert NR Number</h4>
-		<small class="font-bold">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
+		<h4 class="modal-title">Insert NR Number</h4>		
 	  </div>
-	  <div class="modal-body">
-		<p><strong>Lorem Ipsum is simply dummy</strong> text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-		printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-		remaining essentially unchanged.</p>
+	  <div class="modal-body">		
 		<div class="text-center">
 		  <form id="form" method="post" action="{{ url('pusat/rn/insertrn/') }}">
 			<input type="hidden" id="id_user" name="id_user" value="">
@@ -180,10 +177,20 @@
 		      { "data" : "answer" },
 		      { "data" : "name" },
 		      { "data" : "created_at"},
-		      { "data" : "id_user"},
+		      { "data" : "role"},
 		      { "data" : "id_user"},
 		    ],    
 		    "columnDefs": [
+		      {		        
+		        "render": function ( data, type, row ) {
+				     if (row.role==2) {
+				     	return 'Ordinary';
+				     } else {
+				     	return 'Extraordinary';
+				     }
+			 	},
+		        "targets": 3
+		      },
 		      {		        
 		        "render": function ( data, type, row ) {
 		        return '<a href="" class="btn btn-success btn-xs" data-toggle="modal" data-target="#insertModal" data-id="'+row.id_user+'" data-name="'+row.answer+'" data-terr="'+row.territory+'" data-url="insertrn">'+
@@ -191,7 +198,7 @@
 		        			'&nbsp;&nbsp;Insert NR Number'+
 		        		'</a>';
 		        },
-		        "targets": 3
+		        "targets": 4
 		      },
 		      {		        
 		        "render": function ( data, type, row ) {
@@ -200,7 +207,7 @@
 		        			'&nbsp;&nbsp; Detail'+
 		        		'</a>';
 		        },
-		        "targets": 4
+		        "targets": 5
 		      },		      
 		    ]
 		  });
@@ -219,6 +226,9 @@
 		  	dd = "0"+dd;
 		  }
 		  var mm = today.getMonth()+1; //January is 0!
+		  if (mm<10) {
+		  	mm = "0"+mm;
+		  }
 		  var yyyy = today.getFullYear();
 		  var yy = today.getFullYear().toString().substr(2,2);
 

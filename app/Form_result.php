@@ -10,7 +10,6 @@ class Form_result extends Model
     protected  $table = "form_result";
 
     protected $appends = ['answer_type', 'answer', 'question_group', 'question', 'territory_name', 'val_by'];
-
     protected $hidden = ['password', 'remember_token'];
 
     /**
@@ -85,16 +84,16 @@ class Form_result extends Model
     }
 
     public function getAnswerAttribute() 
-    {
-        $id = $this->attributes['answer_value'];        
+    {        
+        $id = $this->attributes['answer_value'];
         $request = ['answer_value' => $id];        
 
         $validator = Validator::make($request, [
-            'answer_value' => 'integer|required',            
+            'answer_value' => 'integer|required|max:2147483647',            
         ]);
 
         if ($validator->passes()) {                   
-            $answers = Form_answer::find($id);            
+            $answers = Form_answer::find($id);
             if ($answers) {
                 return $answers->answer;
             } else {
@@ -168,7 +167,7 @@ class Form_result extends Model
             $request = ['id' => $terr];        
 
             $validator = Validator::make($request, [
-                'id' => 'integer|required',            
+                'id' => 'integer|required|max:2147483647',            
             ]);
 
             if ($validator->passes()) {

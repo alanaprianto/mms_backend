@@ -37,9 +37,13 @@ class MemberController extends Controller
                 ->where('id_question', '=', "1")
                 ->first();
 
-        $required = $this->required();
-        $percentage = $this->percentage();
-        $completed = $this->completed();
+        // $required = $this->required();
+        // $percentage = $this->percentage();
+        // $completed = $this->completed();
+
+        $required = 10;
+        $percentage = 10;
+        $completed= 10;
 
         $kta = Kta::where('owner', '=', $member->id)->first();
         $exp_show = false;
@@ -126,9 +130,12 @@ class MemberController extends Controller
         $cdoc = $fdoc->count();
         $docs = $fdoc->get();
 
+        $comm = Form_result::where('id_user', '=', $member->id)->where('commentary', '!=', '')->count();
+        $corr = Form_result::where('id_user', '=', $member->id)->where('correction', '!=', '')->count();
+
         return view('member.dashboard.index', compact('notifs', 'member', 'detail', 'required', 'completed', 
                 'percentage', 'kta', 'compclass', 'compform', 'compname', 'daerah', 'provinsi', 'cdoc', 'rdoc', 
-                'docs', 'rn', 'exp_at', 'exp_show', 'exp_text1', 'exp_text2'));
+                'docs', 'rn', 'exp_at', 'exp_show', 'exp_text1', 'exp_text2', 'comm', 'corr'));
     }
 
     public function kta()
@@ -203,18 +210,18 @@ class MemberController extends Controller
     }
     
     public function compprof()
-    {                               
+    {                                       
         $notifs = \App\Helpers\Notifs::getNotifs();
-
         $member = Auth::user();
-        
+
+        $trackingcode = Form_result::where('id_user', '=', $member->id)->first()->trackingcode;
         //detail 1 
         $qg1 = Form_question_group::where('name', 'like', '%Pendaftaran%')->first();
         $q1 = Form_question::where('group_question', '=', $qg1->id)->pluck('id');
-        $detail1 = Form_result::                    
-                    where('id_user', '=', $member->id)
-                    ->whereIn('id_question', $q1)
-                    ->get();
+        $detail1 = Form_result::where('id_user', '=', $member->id)->get();
+                    // ->whereIn('id_question', $q1)
+                    // ->get();
+        
         //detail 2
         $detail2 = Form_result::                
                 where('id_user', '=', $member->id)                
@@ -268,7 +275,7 @@ class MemberController extends Controller
 
 
         return view('member.compprof.index', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs', 
-                'qg1', 'qg2', 'qg3', 'qgd'));
+                'qg1', 'qg2', 'qg3', 'qgd', 'trackingcode'));
     }
 
     public function indexii()
@@ -280,6 +287,7 @@ class MemberController extends Controller
                 ->where('id_question', '=', "1")
                 ->first()->answer;
         $btk = Str::upper($fr);
+        // return $btk;
 
         $tahap2 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->id;
         $tahap3 = Form_question_group::where('name', 'like', '%Tahap 3%')->first()->id;
@@ -298,10 +306,9 @@ class MemberController extends Controller
     public function completeprofile($id)
     {                
         $user = Auth::user();        
-        
         $fqg = Form_question_group::where('id', '=', $id)->first();
         $fquestions = Form_question::where('group_question', '=', $id)->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();        
-        $fresults = Form_result::where('id_user', '=', $user->id)->get();
+        $fresults = Form_result::where('id_user', '=', $user->id)->get();        
 
         $notifs = \App\Helpers\Notifs::getNotifs();        
         return view('member.register.completeprofile', compact('notifs', 'fquestions', 'fresults', 'fqg'));

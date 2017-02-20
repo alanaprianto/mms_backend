@@ -35,6 +35,13 @@ class APIController extends Controller
         return $cat;
     }
 
+    public function list_category()
+    {
+        $cat = Category::get();
+
+        return $cat;
+    }
+    
     public function marketplace_list(Request $request)
     {
     	$catid = $request['category'];    	
@@ -45,7 +52,7 @@ class APIController extends Controller
     	$sort = $request['sort'];
     	$offset = $request['offset']+1;
     	$limit = $request['limit'];
-
+        
     	$category = Category::find($catid);
   		$cat = $category->id;
         $ccat = Category::where('parent_id', '=', $cat)->pluck('id');

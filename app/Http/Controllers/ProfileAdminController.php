@@ -51,14 +51,14 @@ class ProfileAdminController extends Controller
     public function updateCAI(Request $request, $id)
     {            	
         $uname = $request['username'];        
-        $unameexist = User::where('username', '=', $uname)->where('id', '<>', $id)->first();
+        $unameexist = User::where('username', '=', $uname)->where('id', '<>', $id)->first();            
 
-        if ($unameexist) {            
+        if ($unameexist) {
             $deleted = false;
-            $deletedMsg = "The Username Exist!";            
+            $deletedMsg = "The Username Exist!";
         } else {
             try {
-                $user = User::findOrFail($id);
+                $user = User::findOrFail($id);                                        
 
                 if ($user->username!=$uname) {
                     $pathold = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
@@ -84,16 +84,18 @@ class ProfileAdminController extends Controller
                         \File::move($imgold, $imgnew);
                     }
                 }
-                
+                                
+                $name = $request['name'];
+                $email = $request['email'];
+                $uname = $request['username'];
+                $updtChat = \App\Helpers\Collaboration::updtCAI($name, $email, $uname, $user->username);
                 $user->update($request->all());
                 
                 $deleted = true;
                 $deletedMsg = "Your Account is Updated";
-
             }catch(\Exception $e){
                 $deleted = false;
                 $deletedMsg = "Error while Updating Your Account!";
-
                 return $e;
             }
         }        

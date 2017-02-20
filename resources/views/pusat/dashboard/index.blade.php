@@ -38,19 +38,18 @@
         <div class="row">
         <div class="col-lg-12">
           <!-- identitas user -->
-          <div class="form-group">
-            <label class="col-lg-4 control-label">Username</label>
+          <div class="form-group no-padding">
+            <label class="col-lg-4 control-label no-padding">Username</label>
             <div class="col-lg-8">
-              <p class="form-control-static">{{ $user->username }}</p>
+              <p class="form-control-static no-padding">{{ $user->username }}</p>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-lg-4 control-label">Role</label>
+          <div class="form-group no-padding">
+            <label class="col-lg-4 control-label no-padding">Role</label>
             <div class="col-lg-8">
-              <p class="form-control-static">{{ $user->myrole->name }}</p>
+              <p class="form-control-static no-padding">{{ $user->myrole->name }}</p>
             </div>
-          </div>                    
-          <div class="hr-line-dashed"></div>
+          </div>          
         </div>
       </div>
       </div>
@@ -84,7 +83,7 @@
     
     function getNews() {
       $.ajax({    
-        url: "http://110.74.178.215/portal/kadin-indonesia/list/view_detail/list",
+        url: "https://devtes.com/portal/kadin-indonesia/list/view_detail/list",
         type: "post",
         data: {
           id: "berita_kadin",

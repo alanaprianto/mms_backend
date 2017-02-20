@@ -115,9 +115,11 @@ class AlbController extends Controller
             }
         }
 
-        
+        $comm = Form_result::where('id_user', '=', $member->id)->where('commentary', '!=', '')->count();
+        $corr = Form_result::where('id_user', '=', $member->id)->where('correction', '!=', '')->count();
+
         return view('alb.dashboard.index', compact('notifs', 'member', 'kta', 'exp_show', 'exp_text1', 'exp_text2', 'rn', 
-        		'cdoc', 'rdoc', 'docs', 'detail', 'nasosiasi', 'tingkat', 'daerah', 'provinsi'));
+        		'cdoc', 'rdoc', 'docs', 'detail', 'nasosiasi', 'tingkat', 'daerah', 'provinsi', 'comm', 'corr'));
     }
 
     public function kta()
@@ -192,8 +194,11 @@ class AlbController extends Controller
         $detail = Form_result::                    
                     where('id_user', '=', $member->id)
                     ->get();
+        $trackingcode = Form_result::where('id_user', '=', $member->id)->first()->trackingcode;
+        $fileqg = Form_type::where('name', 'like', '%File Upload%')->pluck('id');
+        $fileq = Form_question::whereIn('type', $fileqg)->pluck('id')->toArray();
 
-        return view('alb.compprof.index', compact('notifs', 'member', 'detail'));
+        return view('alb.compprof.index', compact('notifs', 'member', 'detail', 'trackingcode', 'fileq'));
     }
 
     public function requestkta(Request $request) {
@@ -362,4 +367,16 @@ class AlbController extends Controller
         
         return view('alb.kta.print', compact('kta', 'rn', 'exp', 'compname', 'complead', 'compaddr', 'compbdus', 'postcode', 'kblicode', 'provinsi'));
     }
+
+    public function completeprofile()
+    {                
+        $user = Auth::user();        
+        $fqg = Form_question_group::where('name', '=', 'Anggota Luar Biasa')->first();
+        $fquestions = Form_question::where('group_question', '=', $fqg->id)->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();        
+        $fresults = Form_result::where('id_user', '=', $user->id)->get();        
+
+        $notifs = \App\Helpers\Notifs::getNotifs();        
+        return view('alb.compprof.completeprofile', compact('notifs', 'fquestions', 'fresults', 'fqg'));
+    }
+
 }

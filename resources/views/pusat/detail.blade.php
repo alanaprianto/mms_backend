@@ -34,31 +34,30 @@
         <div class="row">
           <div class="col-lg-12">
             <!-- identitas user -->
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Username</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-2 control-label no-padding">Username</label>
               <div class="col-lg-10">
-                <p class="form-control-static">{{ $member->username }}</p>
+                <p class="form-control-static no-padding">{{ $member->username }}</p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Tracking Code</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-2 control-label no-padding">Tracking Code</label>
               <div class="col-lg-10">
-                <p class="form-control-static"><?php echo @$detail[0]['trackingcode'];?></p>
+                <p class="form-control-static no-padding">{{ $trackingcode }}</p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Submitted At</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-2 control-label no-padding">Submitted At</label>
               <div class="col-lg-10">
-                <p class="form-control-static">{{ $member->created_at }}</p>
+                <p class="form-control-static no-padding">{{ $member->created_at }}</p>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Territory</label>
+            <div class="form-group no-padding">
+              <label class="col-lg-2 control-label no-padding">Territory</label>
               <div class="col-lg-10">
-                <p class="form-control-static">{{ $member->territory_name }}</p>
+                <p class="form-control-static no-padding">{{ $member->territory_name }}</p>
               </div>
-            </div>
-            <div class="hr-line-dashed"></div>
+            </div>            
           </div>
         </div>                
       </div>

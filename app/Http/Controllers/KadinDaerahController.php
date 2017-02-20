@@ -132,6 +132,7 @@ class KadinDaerahController extends Controller
         $user = User::where('id', '=', $id)->first();
 
         try {
+            $delChat = \App\Helpers\Collaboration::deleteAccount($user->username);
             $user->delete();            
 
             $path = storage_path() . '/app/uploadedfiles/'.$user->username.'/';
@@ -206,6 +207,7 @@ class KadinDaerahController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
         $member = User::find($id);
+        $trackingcode = Form_result::where('id_user', '=', $member->id)->where('id_question', '=', 1)->first()->trackingcode;
         $detail = Form_result::where('id_user', '=', $member->id)->get();
 
         $detail1 = \App\Helpers\Details::detail1($member->id);
@@ -213,7 +215,7 @@ class KadinDaerahController extends Controller
         $detail3 = \App\Helpers\Details::detail3($member->id);
         $docs = \App\Helpers\Details::docs($member->id);
 
-        return view('daerah.member.ab.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
+        return view('daerah.member.ab.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs', 'trackingcode'));
     }
 
     public function ajaxMembers() {
@@ -378,10 +380,12 @@ class KadinDaerahController extends Controller
                 // });
                 // return $input;
 
-                $random_string = md5(microtime());
-                $first = substr($random_string, 0, 4);
-                $last = substr($random_string, -4);
-                $code = $first.$last;
+                // $random_string = md5(microtime());
+                // $first = substr($random_string, 0, 4);
+                // $last = substr($random_string, -4);
+                // $code = $first.$last;
+
+                $code = $this->getCode().'-ABS';
                 
                 $admins = User::where('role', '=', '1')->get();                
                 foreach ($admins as $key => $admin) {
@@ -630,14 +634,14 @@ class KadinDaerahController extends Controller
         $dt = new Collection;
         foreach ($fr as $key => $value) {
             $iduser = $value->id_user;
-            $name = "-";
+            $username = "-";
             if ($iduser) {
-                $name = User::find($iduser)->name;
+                $username = User::find($iduser)->username;
             }      
 
             $dt->push([                       
                     'answer' => $value->answer,
-                    'name' => $name,
+                    'username' => $username,
                     'created_at' => $value->created_at->format('Y-m-d H:i:s'),
                     'trackingcode' => $value->trackingcode,
                 ]);
@@ -828,6 +832,21 @@ class KadinDaerahController extends Controller
          
         // return $fileq;        
         return view('daerah.member.alb.detail', compact('notifs', 'member', 'detail', 'fileq'));
+    }
+
+    public function getCode()
+    {
+        // Available alpha caracters
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        // generate a pin based on 2 * 7 digits + a random character
+        $pin = mt_rand(1000000, 9999999)
+            . mt_rand(1000000, 9999999)
+            . $characters[rand(0, strlen($characters) - 1)]
+            . $characters[rand(0, strlen($characters) - 1)];
+
+        // shuffle the result
+        $string = str_shuffle($pin);
+        return $string;
     }
 }
 

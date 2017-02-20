@@ -100,7 +100,7 @@
                 @elseif (Auth::user()->role==5)
                   <li class="@yield('loginactive')"><a class="page" href="{{ url('daerah/dashboard')}}">Panel</a></li>
                 @elseif (Auth::user()->role==6)
-                  <li class="@yield('loginactive')"><a class="page" href="{{ url('/dashboard/alb')}}">Panel</a></li>
+                  <li class="@yield('loginactive')"><a class="page" href="{{ url('alb/dashboard/')}}">Panel</a></li>
                 @endif
                 <li class="@yield('loginactive')"><a class="page" href="{{ url('logout')}}">Logout</a></li>
               @else

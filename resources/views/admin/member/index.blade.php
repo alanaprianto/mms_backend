@@ -36,6 +36,7 @@
                 <th>Name</th>
                 <th>Member name</th>
                 <th>Email</th>
+                <th>Member</th>
                 <th>Options</th>
               </tr>
             </thead>
@@ -126,12 +127,18 @@ $(function() {
       { "data" : "email" },        
       { "data" : "id"}    
     ],
-    "columnDefs": [            
-      {
-        // The `data` parameter refers to the data for the cell (defined by the
-        // `data` option, which defaults to the column being worked with, in
-        // this case `data: 0`.
-        // <a href="member/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>
+    "columnDefs": [
+      {        
+        "render": function ( data, type, row ) {
+          if (row.role==2) {
+            return 'Ordinary';
+          } else {
+            return 'Extraordinary';
+          }        
+        },
+        "targets": 3
+      },
+      {        
         "render": function ( data, type, row ) {
         return '<a href="member/'+row.id+'" class="btn btn-warning btn-xs">'+
                   'Detail'+
@@ -140,14 +147,8 @@ $(function() {
                   '<span class="fa fa-trash fa-fw"></span>'+
                 '</a>';
         },
-        "targets": 3
+        "targets": 4
       },
-      // {        
-      //   "render": function ( data, type, row ) {
-      //   return '<p>"'+row.html_tag+'"</p>';
-      //   },
-      //   "targets": 2
-      // }
     ]
   });
 });

@@ -26,7 +26,7 @@ class AdminMemberController extends Controller
     }
 
      public function indexAjax() {        
-        $fr = User::where('role', '=', '2')->get();
+        $fr = User::whereIn('role', ['2', '6'])->get();
         // ->select(['id', 'name', 'username', 'email']);
         return Datatables::of($fr)->make(true);
     }
@@ -68,7 +68,7 @@ class AdminMemberController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {        
+    {
         $notifs = \App\Helpers\Notifs::getNotifs();        
         $member = User::find($id);        
 
@@ -114,6 +114,7 @@ class AdminMemberController extends Controller
         $member = User::findOrFail($id);         
 
         try {
+            $delChat = \App\Helpers\Collaboration::deleteAccount($member->username);
             $member->delete();
 
             $path = storage_path() . '/app/uploadedfiles/'.$member->username.'/';

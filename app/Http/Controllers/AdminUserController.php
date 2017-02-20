@@ -32,7 +32,7 @@ class AdminUserController extends Controller
     }
 
     public function indexAjax() {        
-        $fr = User::where('role', '<>', '2')->get();
+        $fr = User::where('role', '<>', '2')->where('role', '<>', '6')->get();
         // ->select(['id', 'name', 'username', 'email']);
         return Datatables::of($fr)->make(true);
     }    
@@ -55,7 +55,7 @@ class AdminUserController extends Controller
      */
     public function create()
     {
-        $role = Role::where('id', '<>', 2)->pluck('name', 'id');
+        $role = Role::where('id', '<>', 2)->where('id', '<>', 6)->pluck('name', 'id');
         $notifs = \App\Helpers\Notifs::getNotifs();
         return view('admin.user.create', compact('notifs', 'role'));
     }

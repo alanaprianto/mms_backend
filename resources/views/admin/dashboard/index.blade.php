@@ -26,6 +26,18 @@
 </div>
 
 <br>
+<div class="row">  
+  <div class="col-lg-12">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">        
+        <h5>Total Member (By Province)</h5>
+      </div>
+      <div class="ibox-content">
+        <div id="morris-bar-chart"></div>        
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row">
   <div class="col-lg-4">
     <div class="ibox float-e-margins">
@@ -128,20 +140,6 @@
       <div class="ibox-content">              
         <!-- <div id="morris-donut-chart" ></div> -->
         <div class="flot-chart-pie-content" id="flot-pie-chart"></div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div class="row">  
-  <div class="col-lg-12">
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">        
-        <h5>Total Member (By Province)</h5>
-      </div>
-      <div class="ibox-content">
-        <div id="morris-bar-chart"></div>        
       </div>
     </div>
   </div>

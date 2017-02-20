@@ -116,7 +116,7 @@
 		    ajax: "{{ url('daerah/ajax/submittedforms/alb')}}",
 		    columns: [
 		      { "data" : "answer" },
-		      { "data" : "name" },
+		      { "data" : "username" },
 		      { "data" : "created_at"},                  
 		      { "data" : "trackingcode"},            
 		      { "data" : "trackingcode"},

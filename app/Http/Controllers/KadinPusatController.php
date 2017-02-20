@@ -136,44 +136,73 @@ class KadinPusatController extends Controller
         foreach ($regnums as $key => $id) {
             $member = User::find($id);
 
-            if ($member->asdad==2) {
-                $anjing = "asdad";
+            if ($member->role==2) {
+                $fr = Form_result::where('id_user', '=', $id)->where('id_question', '=', '8')->first();
             } else if ($member->role==6) {
-                $anjing = "asdad1";
+                $fr = Form_result::where('id_user', '=', $id)->where('id_question', '=', '96')->first();
             }
 
+            $alb = false;
+            if ($fr->alb) {
+                $alb = $fr->alb;
+            }
+
+            $regnum = Regnum::where('owner', '=', $id)->first();
             $cl->push([
-                    'answer' => $anjing,
-                ]);
+                'id_user' => $id,
+                'answer' => $fr->answer,
+                'created_at' => $regnum->created_at->format('Y-m-d H:i:s'),
+                'granted_at' => $regnum->granted_at,
+                'alb' => $alb,
+                'regnum' => $regnum->regnum,
+            ]);
         }
 
-        return $cl;
+        return Datatables::of($cl)->make(true);
     }
 
     public function rnListDetail($id)
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
         $member = User::find($id);        
+        $trackingcode = Form_result::where('id_user', '=', $member->id)->get();
 
-        $detail1 = $this->detail1($member->id);
-        $detail2 = $this->detail2($member->id);
-        $detail3 = $this->detail3($member->id);
-        $docs = $this->docs($member->id);
+        if (!$trackingcode[0]->alb) {
+            $detail1 = $this->detail1($member->id);
+            $detail2 = $this->detail2($member->id);
+            $detail3 = $this->detail3($member->id);
+            $docs = $this->docs($member->id);
+        } else {
+            $detail1 = $trackingcode;
+            $detail2 = new Collection;
+            $detail3 = new Collection;
+            $docs = new Collection;
+        }
+        $trackingcode = $trackingcode[0]->trackingcode;
 
-        return view('pusat.rn.list.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
+        return view('pusat.rn.list.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs', 'trackingcode'));
     }
 
     public function rnRequestDetail($id)
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
         $member = User::find($id);        
+        $trackingcode = Form_result::where('id_user', '=', $member->id)->get();
 
-        $detail1 = $this->detail1($member->id);
-        $detail2 = $this->detail2($member->id);
-        $detail3 = $this->detail3($member->id);
-        $docs = $this->docs($member->id);
+        if (!$trackingcode[0]->alb) {
+            $detail1 = $this->detail1($member->id);
+            $detail2 = $this->detail2($member->id);
+            $detail3 = $this->detail3($member->id);
+            $docs = $this->docs($member->id);
+        } else {
+            $detail1 = $trackingcode;
+            $detail2 = new Collection;
+            $detail3 = new Collection;
+            $docs = new Collection;
+        }
+        $trackingcode = $trackingcode[0]->trackingcode;
 
-        return view('pusat.rn.request.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
+        return view('pusat.rn.request.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs', 'trackingcode'));
     }
 
     public function rnRequest()
@@ -218,9 +247,11 @@ class KadinPusatController extends Controller
             $member = User::where('id', '=', $rn)->first();
             
             if ($member->role==2) {
-                $fr = Form_result::where('id_user', '=', $rn)->where('id_question', '=', '8')->first();
+                $id_question = Form_question::where('question', '=', 'Nama Perusahaan')->first()->id;
+                $fr = Form_result::where('id_user', '=', $rn)->where('id_question', '=', $id_question)->first();
             } else if ($member->role==6) {
-                $fr = Form_result::where('id_user', '=', $rn)->where('id_question', '=', '96')->first();
+                $id_question = Form_question::where('question', '=', 'Nama Asosiasi/Himpunan')->first()->id;
+                $fr = Form_result::where('id_user', '=', $rn)->where('id_question', '=', $id_question)->first();
             }
 
             $regnum = Regnum::where('owner', '=', $rn)->first();
@@ -230,7 +261,8 @@ class KadinPusatController extends Controller
                 'name' =>  $member->name,
                 'territory' => $member->territory,
                 'answer' => $fr->answer,
-                'created_at' => $regnum->created_at->format('d/m/Y'),
+                'created_at' => $regnum->created_at->format('Y-m-d H:i:s'),
+                'role' =>  $member->role,
             ]);
         }
         // $fr = Form_result::leftJoin('users', 'form_result.id_user', '=', 'users.id')
@@ -348,13 +380,22 @@ class KadinPusatController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
         $member = User::find($id);
-        
-        $detail1 = $this->detail1($member->id);
-        $detail2 = $this->detail2($member->id);
-        $detail3 = $this->detail3($member->id);
-        $docs = $this->docs($member->id);
+        $trackingcode = Form_result::where('id_user', '=', $member->id)->get();
 
-        return view('pusat.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
+        if (!$trackingcode[0]->alb) {
+            $detail1 = $this->detail1($member->id);
+            $detail2 = $this->detail2($member->id);
+            $detail3 = $this->detail3($member->id);
+            $docs = $this->docs($member->id);
+        } else {
+            $detail1 = $trackingcode;
+            $detail2 = new Collection;
+            $detail3 = new Collection;
+            $docs = new Collection;
+        }
+        $trackingcode = $trackingcode[0]->trackingcode;
+
+        return view('pusat.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs', 'trackingcode'));
     }    
 
     public function ktaExtensionProcess(Request $request) {

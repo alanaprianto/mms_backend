@@ -98,6 +98,14 @@ class MmsController extends Controller
         $input = Request::all();
 
         $trcode = $input['trackingcode'];
+        $alb = substr($trcode, -3);
+        $nn = "Nama Penanggung Jawab";
+        $role = "2";
+        if ($alb=="ALB") {
+          $nn = "Nama Asosiasi/Himpunan";
+          $role = "6";
+        }
+
         $results = Form_result::where('trackingcode', '=', $trcode)->get();
         if (count($results)<=0) {
           return redirect('/');
@@ -108,77 +116,121 @@ class MmsController extends Controller
         $name = "";
         $email = "";        
         $territory = "";
-        foreach ($results as $key => $result) {
-            $question = $result->question;
-            if (str_contains($question, "Nama Penanggung Jawab")) {
-                $name = $result->answer;                
-            } else if (str_contains($question, "Email Penanggung Jawab")) {
-                $email = $result->answer;
-            } else if (str_contains($question, "Kabupaten / Kota")) {
-                $territory = $result->answer_value;
-            }
-        }        
-      
-        $random_string = md5(microtime());
-        $first = substr($random_string, 0, 4);
-        $last = substr($random_string, -4);
-        $code = $first.$last;
-
         $user = new User;
-        $user->name = $name;
-        $user->username = $code; //ini
-        $user->email = $email;
-        $user->password = Hash::make($random_string); //ini
-        $user->role = "2";
-        // $user->no_kta = "0";
-        // $user->no_rn = "0";
-        $user->territory = $territory;
-        $user->save();
+        $payment = new Payment;
+        try {
+          foreach ($results as $key => $result) {
+              $question = $result->question;
+              if (str_contains($question, $nn)) {
+                  $name = $result->answer;                
+              } else if (str_contains($question, "Email")) {
+                  $email = $result->answer;
+              } else if (str_contains($question, "Kabupaten / Kota")) {
+                  $territory = $result->answer_value;
+              }
+          }
+                          
+          $random_string = md5(microtime());
+          $first = substr($random_string, 0, 4);
+          $last = substr($random_string, -4);
+          $username = $first.$last;
+          $password = substr($random_string, 5, 14);
 
-        $userid = $user->id;
-        $attempt = Payment::where('id_user', $userid)->count()+1;        
-        $input['id_user'] = $userid;
-        $input['attempt'] = $attempt;
-        $input['amount'] = 250000;
-        $input['payment_date'] = new Carbon();
-        Payment::create($input);
+          $user->name = $name;
+          $user->username = $username; //ini
+          $user->email = $email;
+          $user->password = Hash::make($password);
+          $user->role = $role;
+          // $user->no_kta = "0";
+          // $user->no_rn = "0";
+          $crtChat = \App\Helpers\Collaboration::crtAccount($name, $username, $email, $password);
+          if ($crtChat) {
+            $user->chat_acc = "created";
+          } else {
+            $user->chat_acc = "failed";
+          }
+          $user->territory = $territory;
+          $user->save();          
 
-        Mail::send('emails.register_succesfull', ['name' => $name, 'username' => $code, 'password' => $random_string], function($message) use ($email) {
-            $message->from('no-reply@kadin-indonesia.org', 'no-reply');
-            $message->to($email)->subject('Kadin Registration');                    
-        });
+          $userid = $user->id;
+          $attempt = Payment::where('id_user', $userid)->count()+1;
+          $payment->id_user = $userid;
+          $payment->attempt = $attempt;
+          $payment->amount = 250000;
+          $payment->payment_date = new Carbon();
+          $payment->save();
 
-        $admins = User::where('role', '=', '1')->get();
-        foreach ($admins as $key => $admin) {
-            $notif = new Notification;
+          Mail::send('emails.register_succesfull', ['name' => $name, 'username' => $username, 'password' => $password], function($message) use ($email) {
+              $message->from('no-reply@kadin-indonesia.org', 'no-reply');
+              $message->to($email)->subject('Kadin Registration');                    
+          });
 
-            $notif->target = $admin->id;
-            $notif->senderid = $user->id;
-            $notif->value = "New User Registered";
-            $notif->active = true;
-                    
-            $notif->save();
-        }
+          $pathold = storage_path() . '/app/uploadedfiles1/'.$trcode.'/';
+          $pathnew = storage_path() . '/app/uploadedfiles/'.$username.'/';
+          \File::copyDirectory($pathold, $pathnew);
 
-        $kadinKota = User::where('role', '=', '5')->where('territory', '=', $territory)->get();
-        foreach ($kadinKota as $key => $kota) {
-            $notif = new Notification;
+          $name = "";
+          $ext = "";
+          $file = storage_path() . '/app/uploadedfiles1/'.$trcode;
+          $filesInFolder = \File::files($file);
+                
+          foreach($filesInFolder as $path)
+          {
+            $files = pathinfo($path);
+            if ($files['filename'] == $username) {
+              $name = $files['filename'];
+              $ext = $files['extension'];
 
-            $notif->target = $kota->id;
-            $notif->senderid = $user->id;
-            $notif->value = "New User Registered";
-            $notif->active = true;
-                    
-            $notif->save();
-        }
+              $imgold = storage_path() . '/app/uploadedfiles1/'.$trcode.'/'.$name.'.'.$ext;
+              $imgnew = storage_path() . '/app/uploadedfiles/'.$username.'/'.$name.'.'.$ext;
+              \File::move($imgold, $imgnew);
+            }
+          }
 
-        $results = Form_result::where('trackingcode', '=', $trcode)->get();
-        foreach ($results as $key => $result) {
-            $result->id_user = $user->id;
-            $result->update();
-        }            
-        
-        return redirect('register1success');
+          \File::deleteDirectory($pathold);
+
+          $admins = User::where('role', '=', '1')->get();
+          foreach ($admins as $key => $admin) {
+              $notif = new Notification;
+
+              $notif->target = $admin->id;
+              $notif->senderid = $user->id;
+              $notif->value = "New User Registered";
+              $notif->active = true;
+                      
+              $notif->save();
+          }
+
+          $kadinKota = User::where('role', '=', '5')->where('territory', '=', $territory)->get();
+          foreach ($kadinKota as $key => $kota) {
+              $notif = new Notification;
+
+              $notif->target = $kota->id;
+              $notif->senderid = $user->id;
+              $notif->value = "New User Registered";
+              $notif->active = true;
+                      
+              $notif->save();
+          }
+
+          $results = Form_result::where('trackingcode', '=', $trcode)->get();
+          foreach ($results as $key => $result) {
+              $result->id_user = $user->id;
+              $result->update();
+          }            
+          
+          return redirect('register1success');
+        } catch(\Exception $e){
+            $user->delete();
+            $payment->delete();
+            $results = Form_result::where('trackingcode', '=', $trcode)->get();
+            foreach ($results as $key => $result) {
+                $result->id_user = "0";
+                $result->update();
+            }
+            return $e;
+            return redirect('/');
+        }        
     }
 
     public function dashboardAdmin()

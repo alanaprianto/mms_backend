@@ -75,6 +75,7 @@
 			  <th>Company</th>
 			  <th>Registered At</th>
 			  <th>Granted At</th>
+			  <th>Member</th>
 			  <th>NR Number</th>
 			  <th>Options</th>
 			</tr>
@@ -148,19 +149,30 @@
 		      { "data" : "answer" },     
 		      { "data" : "created_at"},                  
 		      { "data" : "granted_at"},
+		      { "data" : "alb" },
 		      { "data" : "regnum"},
 		      { "data" : "id_user"},
 		    ],    
 		    "columnDefs": [
-		      {		        
+		      {
+		        "render": function ( data, type, row ) {
+		        	if (row.alb) {
+		        		return 'Extraordinary';
+		        	} else {
+		        		return 'Ordinary';
+		        	}
+		        },
+		        "targets": 3
+		      },
+		      {
 		        "render": function ( data, type, row ) {
 		        return '<a href="list/'+row.id_user+'" class="btn btn-warning btn-xs">'+
 		        			'<span class="glyphicon glyphicon-search"></span>'+
 		        			'&nbsp;&nbsp; Detail'+
 		        		'</a>';
 		        },
-		        "targets": 4
-		      },		      
+		        "targets": 5
+		      },
 		    ]
 		  });
 		});

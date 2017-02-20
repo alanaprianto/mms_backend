@@ -236,17 +236,14 @@
         _token: "{{ csrf_token() }}",
 
       }
-    }).done(function(data) {                    
+    }).done(function(data) {
       if (data.success) {
         toastr.success(data.msg);
+        setTimeout(location.reload.bind(location), 1200);
       } else {
         toastr.error(data.msg);
+        setTimeout(window.open("{{ url('alb/compprof') }}", "_blank"), 3000)
       }
-
-      console.log(data);
-      // location.reload();
-      setTimeout(location.reload.bind(location), 1000);
-         
     });
   }
 
@@ -291,14 +288,12 @@
     }).done(function(data) {                    
       if (data.success) {
         toastr.success(data.msg);
+        setTimeout(location.reload.bind(location), 1000);
       } else {
         toastr.error(data.msg);
-      }
-
-      console.log(data);
-      // location.reload();
-      setTimeout(location.reload.bind(location), 1000);
-         
+        setTimeout(window.open("{{ url('alb/compprof') }}", "_blank"), 1000)
+      }      
+      // location.reload();      
     });
   }
 </script>

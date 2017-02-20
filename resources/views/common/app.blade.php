@@ -8,7 +8,8 @@
         <!-- Simple Sidebar CSS -->
         <!-- <link href="{{ asset('resources/assets/css/simple-sidebar.css') }}" rel="stylesheet">        -->
         <!-- Datatables CSS -->
-        <link href="{{ asset('resources/assets/css/jquery.dataTables.min.css') }}" rel="stylesheet">  
+        <!-- <link href="{{ asset('resources/assets/css/jquery.dataTables.min.css') }}" rel="stylesheet"> -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/r-2.1.1/datatables.min.css"/>
         <!-- Toastr -->
         <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/css/plugins/toastr/toastr.min.css') }}">  
         <!-- Font Awesome -->
@@ -53,7 +54,12 @@
                         </div>
                     </li>                    
                     <!-- @yield('sidebar') -->
-                    @include('member.sidebar')
+                    @if (Auth::user()->role==2)
+                        @include('member.sidebar')
+                    @elseif (Auth::user()->role==6)
+                        @include('alb.sidebar')
+                    @endif
+                    
                 </ul>
 
             </div>
@@ -176,9 +182,10 @@
         <!-- Bootstrap JS -->
         <script src="{{ asset('resources/assets/js/bootstrap.js') }}"></script>                
         <!-- DataTables -->
-        <script src="{{ asset('resources/assets/js/datatables/jquery.dataTables.min.js') }}"></script>  
+        <!-- <script src="{{ asset('resources/assets/js/datatables/jquery.dataTables.min.js') }}"></script>  
         <script src="{{ asset('resources/assets/js/datatables/dataTables.bootstrap.js') }}"></script>
-        <script src="{{ asset('resources/assets/js/datatables/dataTables.bootstrap.min.js') }}"></script>
+        <script src="{{ asset('resources/assets/js/datatables/dataTables.bootstrap.min.js') }}"></script> -->
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/r-2.1.1/datatables.min.js"></script>
         <!-- Toastr -->
         <script src="{{ asset('resources/assets/js/plugins/toastr/toastr.min.js') }}"></script>
 

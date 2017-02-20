@@ -81,6 +81,11 @@ Route::group(['middleware' => 'auth'], function() {
   Route::post('marketplace/delete_gallery/', 'MarketPlaceController@delete_gallery');
   Route::get('marketplace/ajax/listBarang/', 'MarketPlaceController@listBarang');
   Route::get('marketplace/ajax/listJasa/', 'MarketPlaceController@listJasa');
+
+  // Percobaan
+  Route::get('percobaan', 'PercobaanController@percobaan');
+  Route::post('percobaan', 'PercobaanController@percobaanstore');
+  Route::post('percobaan/rchatLogin', 'PercobaanController@rchatLogin');
 });
 
 // Member
@@ -256,6 +261,8 @@ Route::group(['prefix' => 'alb/', 'middleware' => 'auth.role.alb'], function () 
   Route::get('kta', 'AlbController@kta');
   Route::get('rn', 'AlbController@regnum');
   Route::get('compprof', 'AlbController@compprof');
+  Route::get('compprof/edit', 'AlbController@compprofEdit');
+  Route::get('completeprofile', 'AlbController@completeprofile');
 
   // KTA
   Route::post('requestkta/', 'AlbController@requestkta');
@@ -272,12 +279,9 @@ Route::group(['prefix' => 'api/'], function() {
   Route::post('check_rn/{rn}', 'APIController@check_rn');
   Route::post('marketplace/list', 'APIController@marketplace_list');
   Route::post('marketplace/detail', 'APIController@marketplace_detail');
+  Route::get('marketplace/category/list', 'APIController@list_category');
   Route::get('marketplace/category/{id}', 'APIController@get_category');
 });
-
-// Percobaan
-Route::get('percobaan', 'PercobaanController@percobaan');
-Route::post('percobaan', 'PercobaanController@percobaanstore');
 
 // Crud Navigation Bar
 // Menu::make('MyNavBar', function($menu){

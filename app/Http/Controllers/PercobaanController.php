@@ -17,6 +17,9 @@ use Image;
 use App\Form_result_kadin_daerah;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
+use Laracurl;
+use GuzzleHttp\Client;
+
 
 class PercobaanController extends Controller
 {
@@ -27,6 +30,107 @@ class PercobaanController extends Controller
      */
     public function percobaan()
     {
+        // $url = Laracurl::buildUrl('https://kadin-member.cf/api/v1/users.list', ['X-Auth-Token' => '_Bz8nfexCYRC96kQhK3e6GFOe8O-z3uHgpxeBo_FV7E', 'X-User-Id' => 'YnGx6ioBwxwrQtwGK']);
+        // $response = Laracurl::get($url);
+        // // $response = Laracurl::post($url, ['name' => 'asdad', "email" => "email@user.tld", "password" => "anypassyouwant", "username" => "uniqueusername"]);
+        // // return $response;
+
+        // $url = Laracurl::buildUrl('https://kadin-member.cf/api/v1/login', []);
+        // $response = Laracurl::post($url, ['user' => 'admin', 'password' => '123qweasdzxc']);      
+        // $asdad = json_encode($response->body);
+        // dd($response);
+
+        // $request = \Illuminate\Http\Request::create('https://kadin-member.cf/api/v1/login', 'POST', ['user' => 'admin', 'password' => '123qweasdzxc']);        
+        // return $request;
+        $name = "Asdad Swardada";
+    	$username = "asdad";
+    	$email = "asdad.swardada@gmail.com";
+    	$password = "Asdad123!";
+        try {
+           	$client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);
+           	$response = $client->request('POST', 'v1/login', [
+                    'headers' => [
+                    ],
+                    'json' => ['user' => 'admin', 'password' => '123qweasdzxc']
+            ]);
+            $json = json_decode($response->getBody(true), true);
+            $authtoken = $json['data']['authToken'];
+            $authId = $json['data']['userId'];
+            
+            $response = $client->request('GET', 'v1/users.list', [
+            	'headers' => [
+            		'X-Auth-Token' => $authtoken, 
+            		'X-User-Id' => $authId
+            	],
+            	'json' => []
+            ]);
+
+            $userId = '';
+            $userExist = false;
+            $lusers = json_decode($response->getBody(true), true);
+            $users = $lusers['users'];
+            foreach ($users as $key => $user) {            	
+            	if ($user['username']==$username) {
+            		$userExist = true;
+                    $userId = $user['_id'];
+            	}
+            }
+
+            if ($userExist) {
+            	// $response = $client->request('POST', 'v1/users.update', [
+             //            'headers' => [
+             //                'X-Auth-Token' => $authtoken, 
+             //                'X-User-Id' => $authId,
+             //                'Content-type' => 'application/json'
+             //            ],                        
+             //            'json' => ['userId' => $userId, 'data' => ['name' => 'Asdad Swardada1', 'email' => 'asdad.swardada@gmail.com1', 'username' => 'asdad1']]
+             //    ]);
+
+             //    $usercrt = json_decode($response->getBody(true), true);
+             //    return $response;
+
+                $response = $client->request('POST', 'v1/users.update', [
+                        'headers' => [
+                            'X-Auth-Token' => $authtoken, 
+                            'X-User-Id' => $authId,
+                            'Content-type' => 'application/json'
+                        ],                        
+                        'json' => ['userId' => $userId]
+                ]);
+
+                $dltjson = json_decode($response->getBody(true), true);
+                return $response;
+            } else {
+            	$response = $client->request('POST', 'v1/users.create', [
+	                    'headers' => [
+	                        'X-Auth-Token' => $authtoken, 
+            				'X-User-Id' => $userId,
+	                        'Content-type' => 'application/json'
+	                    ],
+	                    'json' => ['name' => $name, 'email' => $email, 'password' => $password, 'username' => $username]
+	            ]);	            
+	            $usercrt = json_decode($response->getBody(true), true);
+	            $success = $usercrt['success'];
+	            if (!$success) {
+	            	return "Failed Creating User, Failing Process";
+	            } else {
+	            	return "User Created";
+	            }
+            }
+
+			$response = $client->request('GET', 'v1/logout', [
+            	'headers' => [
+            		'X-Auth-Token' => $authtoken, 
+            		'X-User-Id' => $userId
+            	],
+            	'json' => []
+            ]);            
+        } catch (RequestException $e) {
+            $response = json_decode($e->getResponse()->getBody(true));
+            $json = $response;
+        }
+        return $response;
+        
         $random_string = md5(microtime());
         $first = substr($random_string, 0, 4);
         $last = substr($random_string, -4);
@@ -353,6 +457,35 @@ class PercobaanController extends Controller
         // shuffle the result
         $string = str_shuffle($pin);
         return $string;
+    }
+
+    public function rchatLogin()
+    {
+      try {
+        $client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);             
+
+        $response = $client->request('POST', 'v1/login', [
+                    'headers' => [
+                            'Origin' => 'https://kadin-member.cf',
+                            'X-Auth-Token' => '',
+                            'Accept' => 'application/json',
+                    ],                            
+                    'json' => ['user' => 'admin', 'password' => '123qweasdZXc']
+        ]);
+
+                    // $response = $client->request('POST', 'v1/users.create', [
+                    //         'headers' => [
+                    //             'X-Auth-Token' => '6iurmF1SaKq682NFy8HDF2lxXA3tWFcGkkvw8JSQpyR',
+                    //             'X-User-Id' => 'S3L2dshaFzbkhHs9W',
+                    //             'Content-type' => 'application/json'
+                    //         ],
+                    //         'json' => ['name' => $name, 'email' => $email, 'password' => $password1, 'username' => $username]
+                    //     ]);   
+                } catch (RequestException $e) {                    
+                    $response = json_decode($e->getResponse()->getBody(true));                    
+                }
+
+        return $response;
     }
 }
 

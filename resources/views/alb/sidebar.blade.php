@@ -23,7 +23,7 @@
 	</a>
 </li>
 <li class="@yield('active-market')">
-	<a href="">
+	<a href="{{ url('alb/marketplace')}}">
 		<i class="fa fa-shopping-cart"></i>
 		<span class="nav-label">Marketplace</span>
 	</a>

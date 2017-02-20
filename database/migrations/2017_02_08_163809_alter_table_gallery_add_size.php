@@ -13,7 +13,7 @@ class AlterTableGalleryAddSize extends Migration
     public function up()
     {
         Schema::table('gallery', function ($table) {
-            $table->integer('size')->nullable();            
+            $table->integer('size')->nullable();
         });
     }
 
@@ -25,7 +25,7 @@ class AlterTableGalleryAddSize extends Migration
     public function down()
     {
         Schema::table('gallery', function ($table) {
-            $table->dropColumn('size');            
+            $table->dropColumn('size');
         });
     }
 }

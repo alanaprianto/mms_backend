@@ -60,14 +60,15 @@ class KadinProvinsiController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
         $member = User::find($id);
-        
+        $trackingcode = Form_result::where('id_user', '=', $member->id)->first()->trackingcode;
+
         if ($member->role==2) {
             $detail1 = \App\Helpers\Details::detail1($member->id);
             $detail2 = \App\Helpers\Details::detail2($member->id);
             $detail3 = \App\Helpers\Details::detail3($member->id);
             $docs = \App\Helpers\Details::docs($member->id);        
 
-            return view('provinsi.kta.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs'));
+            return view('provinsi.kta.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs', 'trackingcode'));
         } elseif ($member->role==6) {
             $fileqg = Form_type::where('name', 'like', '%File Upload%')->pluck('id');
             $fileq = Form_question::whereIn('type', $fileqg)->pluck('id')->toArray();
@@ -76,7 +77,7 @@ class KadinProvinsiController extends Controller
                     where('id_user', '=', $member->id)
                     ->get();
 
-            return view('provinsi.kta.detail1', compact('notifs', 'member', 'detail', 'fileq'));
+            return view('provinsi.kta.detail1', compact('notifs', 'member', 'detail', 'fileq', 'trackingcode'));
         }        
     }
 
@@ -85,7 +86,7 @@ class KadinProvinsiController extends Controller
 
         $user = Auth::user();
         $fr = Form_result::                
-                where('id_user', '=', $user->id)                
+                where('id_user', '=', $user->id)
                 ->where('id_question', '=', "1")
                 ->first();
 
