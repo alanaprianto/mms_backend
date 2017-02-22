@@ -84,12 +84,12 @@
 @push('scripts')
 <script>
     $(function() {
-        var url = "{{ url('admin/organizer/setting/') }}";
+        var url = "{{ url('admin/organizer/setting_/') }}";
         $('#setting-table').DataTable({
             processing: true,
             serverSide: true,
             order: [[ 3, "asc" ]],
-            ajax: "{{ url('admin/ajax/organizer/setting/')}}",
+            ajax: "{{ url('admin/ajax/organizer/setting-/')}}",
             columns: [
                 { "data" : "title" },
                 { "data" : "short_title" },
@@ -101,8 +101,8 @@
                 {
                     "render": function ( data, type, row ) {
                         return "<div class='pull-right'>"+
-                            "<a href='setting/"+row.id+"/edit' class='btn btn-xs btn-warning'><i class='fa fa-edit'></i> Edit </a>&nbsp;"+
-                            "<a class='btn btn-xs btn-danger' data-toggle='modal' data-target='#myModal' data-id='"+row.id+"' data-name='"+row.title+"' data-url='setting' title='Delete Item'><i class='fa fa-trash'></i> Delete </a>&nbsp;"+
+                            "<a href='setting_/"+row.id+"/edit' class='btn btn-xs btn-warning'><i class='fa fa-edit'></i> Edit </a>&nbsp;"+
+                            "<a class='btn btn-xs btn-danger' data-toggle='modal' data-target='#myModal' data-id='"+row.id+"' data-name='"+row.title+"' data-url='setting_' title='Delete Item'><i class='fa fa-trash'></i> Delete </a>&nbsp;"+
                             "</div>";
                     },
                     "targets": 4

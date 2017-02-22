@@ -64,7 +64,7 @@ class OrganizerSettingController extends Controller
             return Redirect::to('/admin/organizer/setting/create')->withErrors($validator);
         }
 
-        return redirect('/admin/organizer/setting');
+        return redirect('/admin/organizer/setting_');
     }
 
     /**
@@ -75,7 +75,7 @@ class OrganizerSettingController extends Controller
      */
     public function show($id)
     {
-        return redirect('/admin/organizer/setting');
+        return redirect('/admin/organizer/setting_');
     }
 
     /**
@@ -114,10 +114,10 @@ class OrganizerSettingController extends Controller
             $setting = Pjabatan::find($id);
             $setting->update($input);
         } else {
-            return Redirect::to('/admin/organizer/setting/'.$id.'/edit')->withErrors($validator);
+            return Redirect::to('/admin/organizer/setting_/'.$id.'/edit')->withErrors($validator);
         }
 
-        return redirect('/admin/organizer/setting');
+        return redirect('/admin/organizer/setting_');
     }
 
     /**

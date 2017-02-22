@@ -1,8 +1,4 @@
-@extends('form.app')
-
-@section('sidebar')
-  @include('form.result.sidebar')
-@stop
+@extends('admin.app')
 
 @section('content')
 <!-- <h1> Form Result </h1>
@@ -177,7 +173,7 @@ $(function() {
     processing: true,
     serverSide: true,
     iDisplayLength: 50,
-    ajax: "{{ url('crud/form/ajax/notifresult/')}}/{{ $code }}",
+    ajax: "{{ url('admin/ajax/notifresult/')}}/{{ $code }}",
     columns: [       
       { "data" : "question" },      
       { "data" : "answer" },     

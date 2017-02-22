@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Laracurl;
 use GuzzleHttp\Client;
-
+use Illuminate\Support\Facades\Mail;
 
 class PercobaanController extends Controller
 {
@@ -29,7 +29,7 @@ class PercobaanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function percobaan()
-    {
+    {        
         // $url = Laracurl::buildUrl('https://kadin-member.cf/api/v1/users.list', ['X-Auth-Token' => '_Bz8nfexCYRC96kQhK3e6GFOe8O-z3uHgpxeBo_FV7E', 'X-User-Id' => 'YnGx6ioBwxwrQtwGK']);
         // $response = Laracurl::get($url);
         // // $response = Laracurl::post($url, ['name' => 'asdad', "email" => "email@user.tld", "password" => "anypassyouwant", "username" => "uniqueusername"]);

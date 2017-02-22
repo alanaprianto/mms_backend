@@ -148,15 +148,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
     Route::get('notifuser/{id}', 'NotifController@notifuserAjax');
     Route::get('marketplace/category', 'AdminCategoryController@indexAjax');
     Route::get('marketplace/slider', 'AdminSliderController@indexAjax');
-    Route::get('organizer/setting', 'OrganizerSettingController@indexAjax');
-    Route::get('organizer/list', 'OrganizerListController@indexAjax');
+    Route::get('organizer/setting-', 'OrganizerSettingController@indexAjax');
+    Route::get('organizer/list-', 'OrganizerListController@indexAjax');
   });
   Route::get('question/whereSetting/{id}', 'FormQuestionController@whereSetting');
   Route::resource('marketplace/category', 'AdminCategoryController');
   Route::resource('marketplace/slider', 'AdminSliderController');
 
-  Route::resource('organizer/setting', 'OrganizerSettingController');
+  Route::resource('organizer/setting_', 'OrganizerSettingController');
+  Route::get('organizer/setting/create', 'OrganizerSettingController@create');
   Route::resource('organizer/list', 'OrganizerListController');
+  Route::get('organizer/list_/create', 'OrganizerListController@create');
 });
 
 // Kadin Daerah 

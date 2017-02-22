@@ -1,8 +1,4 @@
-@extends('form.app')
-
-@section('sidebar')
-  @include('form.setting.sidebar') 
-@stop
+@extends('admin.app')
 
 @section('content')
 <div class="col-lg-12">
@@ -10,10 +6,10 @@
     <h1>All Notifications</h1>
     <div class="ibox-content">
       <div>
-        <div class="feed-activity-list">          
+        <div class="feed-activity-list">
         @foreach ($notifs as $key=>$notif)
           <div class="feed-element">
-            <a href="{{ url('/crud/form/notif') }}/{{ $notif->id }}" class="pull-left">
+            <a href="{{ url('/admin/notif') }}/{{ $notif->id }}" class="pull-left">
               <img alt="image" class="img-circle" src="{{ url('/images') }}/{{ $notif->sender_uname }}">
             </a>
             <div class="media-body ">
@@ -21,7 +17,7 @@
               {{ $notif->value }}<br>
               <small class="text-muted">{{ $notif->created_at }}</small>
             </div>
-          </div>                                                
+          </div>
         @endforeach
       </div>
       <!-- <button class="btn btn-primary btn-block m-t"><i class="fa fa-arrow-down"></i> Show More</button> -->

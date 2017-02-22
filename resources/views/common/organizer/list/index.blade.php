@@ -24,7 +24,7 @@
     </div>
     <div class="col-lg-2">
         <div class="title-action">
-            <a href='list/create' class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
+            <a href='list_/create' class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
         </div>
     </div>
 @stop
@@ -89,7 +89,7 @@
             processing: true,
             serverSide: true,
             order: [[ 3, "asc" ]],
-            ajax: "{{ url('admin/ajax/organizer/list/')}}",
+            ajax: "{{ url('admin/ajax/organizer/list-/')}}",
             columns: [
                 { "data" : "name" },
                 { "data" : "email" },

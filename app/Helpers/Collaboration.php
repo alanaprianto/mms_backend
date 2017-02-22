@@ -180,4 +180,50 @@ class Collaboration
         return $success;
     }
 
+    public static function deleteAccbyEmail($email) {
+        $success = false;
+        $client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);
+        $_this = new Collaboration;
+        try {
+            $json = $_this->login($client);
+            $authtoken = $json['data']['authToken'];
+            $authId = $json['data']['userId'];
+
+            $userExist = false;
+            $lusers = $_this->listUser($client, $authtoken, $authId);
+            $users = $lusers['users'];
+            $userId = '';            
+            foreach ($users as $key => $user) {
+                $uemail = $user['emails'][0]['address'];
+                if ($uemail==$email) {
+                    $userExist = true;
+                    $userId = $user['_id'];                    
+                } else {
+                    $userExist = false;                    
+                }
+            }
+
+            if ($userExist) {            
+                $response = $client->request('POST', 'v1/users.update', [
+                        'headers' => [
+                            'X-Auth-Token' => $authtoken, 
+                            'X-User-Id' => $authId,
+                            'Content-type' => 'application/json'
+                        ],                        
+                        'json' => ['userId' => $userId]
+                ]);
+
+                $dltjson = json_decode($response->getBody(true), true);
+                $success = $dltjson['success'];
+            }
+
+            $_this->logout($client, $authtoken, $authId);
+        } catch (RequestException $e) {
+            $response = json_decode($e->getResponse()->getBody(true));
+            $json = $response;
+            $success = $json;            
+        }
+        return $success;
+    }
+
 }

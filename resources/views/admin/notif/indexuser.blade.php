@@ -1,8 +1,4 @@
-@extends('form.app')
-
-@section('sidebar')
-  @include('form.user.sidebar') 
-@stop
+@extends('admin.app')
 
 @section('content')
 <!-- <h1> Users Index </h1>
@@ -124,12 +120,12 @@ $('#submit_delete').on('click', function (event) {
 });
 
 $(function() {
-  var url = "{{ url('crud/form/user/')}}";
+  var url = "{{ url('admin/user/')}}";
   $('#user-table').DataTable({
     processing: true,
     serverSide: true,
     iDisplayLength: 50,
-    ajax: "{{ url('crud/form/ajax/notifuser/')}}/{{ $id }}",
+    ajax: "{{ url('admin/ajax/notifuser/')}}/{{ $id }}",
     columns: [            
       { "data" : "name" },
       { "data" : "username" },

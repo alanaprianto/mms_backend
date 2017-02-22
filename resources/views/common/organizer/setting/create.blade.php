@@ -3,6 +3,9 @@
 @section('active-organizer')
     active
 @stop
+@section('active-organizer-setting')
+    active
+@stop
 
 @section('content')
     @php
@@ -48,7 +51,3 @@
     </div>
     <br/><br/>
 @stop
-
-@push('scripts')
-
-@endpush

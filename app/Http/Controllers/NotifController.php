@@ -30,13 +30,13 @@ class NotifController extends Controller
             $id = "0";
             if ($user) {
         	   $id = $user->id;	            
-            }
-        	return view('form.notif.indexuser', compact('notifs', 'id'));
+            }            
+        	return view('admin.notif.indexuser', compact('notifs', 'id'));
         }
 
         $code = $notif->sendercode;
-        $fr = Form_result::where('trackingcode', '=', $code)->get();     
-        return view('form.notif.indexresult', compact('notifs', 'code', 'fr'));
+        $fr = Form_result::where('trackingcode', '=', $code)->get();        
+        return view('admin.notif.indexresult', compact('notifs', 'code', 'fr'));
     }
 
     public function notifresultAjax($code) {        
@@ -56,9 +56,9 @@ class NotifController extends Controller
     }
 
     public function notifall()
-    {                           
+    {                                 
         $notifs = \App\Helpers\Notifs::getNotifs();        
         
-       	return view('form.notif.indexall', compact('notifs'));
+       	return view('admin.notif.indexall', compact('notifs'));
     }
 }

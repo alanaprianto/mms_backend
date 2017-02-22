@@ -39,7 +39,7 @@
     <span class="fa arrow"></span>
   </a>
   <ul class="nav nav-second-level" aria-expanded="true">
-    <li class="@yield('active-organizer-setting')"><a href="{{ url('admin/organizer/setting')}}">Setting</a></li>
+    <li class="@yield('active-organizer-setting')"><a href="{{ url('admin/organizer/setting_')}}">Setting</a></li>
     <li class="@yield('active-organizer-list')"><a href="{{ url('admin/organizer/list')}}">List</a></li>
   </ul>
 </li>

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTablePengurusAddEmail extends Migration
+class AlterTablePengurusAddUnamePassword extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,8 @@ class AlterTablePengurusAddEmail extends Migration
     public function up()
     {
         Schema::table('pengurus', function ($table) {
-            $table->string('email')->unique();
+            $table->string('username')->unique()->nullable();
+            $table->string('password')->nullable();
         });
     }
 
@@ -25,7 +26,8 @@ class AlterTablePengurusAddEmail extends Migration
     public function down()
     {
         Schema::table('pengurus', function ($table) {
-            $table->dropColumn('email');
+            $table->dropColumn('username');
+            $table->dropColumn('password');
         });
     }
 }
