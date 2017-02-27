@@ -91,14 +91,41 @@ class KadinDaerahController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function ajaxForms() {
-        $terr = Auth::user()->territory;
-        $codes = Form_result::where('answer_value', '=', $terr)->get()->pluck('trackingcode');        
+//        $terr = Auth::user()->territory;
+//        $codes = Form_result::where('answer_value', '=', $terr)->get()->pluck('trackingcode');
+//
+//        $fr = Form_result::leftJoin('users', 'form_result.id_user', '=', 'users.id')
+//                ->where('form_result.id_question', '=', '8')
+//                ->whereIn('form_result.trackingcode', $codes)
+//                ->get();
+//        return Datatables::of($fr)->make(true);
 
-        $fr = Form_result::leftJoin('users', 'form_result.id_user', '=', 'users.id')
-                ->where('form_result.id_question', '=', '8')
-                ->whereIn('form_result.trackingcode', $codes)
-                ->get();        
-        return Datatables::of($fr)->make(true);
+        $terr = Auth::user()->territory;
+        $codes = Form_result::where('alb', '!=', true)->where('answer_value', '=', $terr)->get()->pluck('trackingcode');
+
+        $fq = Form_question::where('question', 'like', '%Nama Perusahaan%')->first();
+        $fr = Form_result::
+        where('id_question', '=', $fq->id)
+            ->whereIn('form_result.trackingcode', $codes)
+            ->get();
+
+        $dt = new Collection;
+        foreach ($fr as $key => $value) {
+            $iduser = $value->id_user;
+            $username = "-";
+            if ($iduser) {
+                $username = User::find($iduser)->username;
+            }
+
+            $dt->push([
+                'answer' => $value->answer,
+                'name' => $username,
+                'created_at' => $value->created_at->format('Y-m-d H:i:s'),
+                'trackingcode' => $value->trackingcode,
+            ]);
+        }
+//         return $dt;
+        return Datatables::of($dt)->make(true);
     }
 
     public function submittedFormsDelete($code)

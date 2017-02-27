@@ -145,12 +145,12 @@ class MmsController extends Controller
           $user->role = $role;
           // $user->no_kta = "0";
           // $user->no_rn = "0";
-//          $crtChat = \App\Helpers\Collaboration::crtAccount($name, $username, $email, $password);
-//          if ($crtChat) {
-//            $user->chat_acc = "created";
-//          } else {
-//            $user->chat_acc = "failed";
-//          }
+          $crtChat = \App\Helpers\Collaboration::crtAccount($name, $username, $email, $password);
+          if ($crtChat) {
+            $user->chat_acc = "created";
+          } else {
+            $user->chat_acc = "failed";
+          }
           $user->chat_acc = "failed";
           $user->territory = $territory;
           $user->save();          

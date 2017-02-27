@@ -365,8 +365,8 @@ class PendaftaranController extends Controller
     public function storeii(FormResultRequest $request, $idqg)
     {
         $input = $request->all();           
-//         return $input;
-        
+//        return $input;
+
         $fqg = Form_question_group::find($idqg);
         $alb = false;
         if ($fqg) {
@@ -385,6 +385,7 @@ class PendaftaranController extends Controller
         $validator->setAttributeNames($attributeNames);
 
         $userid = Auth::user()->id;
+        $code = Form_result::where('id_user', '=', $userid)->where('trackingcode', '!=', '')->first()->trackingcode;
         $username = Auth::user()->username;
         $territory = Auth::user()->territory;
 
@@ -485,12 +486,9 @@ class PendaftaranController extends Controller
 
                     } else {
                         $form_result->answer_value = $value;
-                        if (str_contains($value, '@')) {
-                            $email = $value;
-                        }
                         $filess[] = "tidak ada file2";
-                    }                      
-                    
+                    }
+
                     if ($form_result->answer_value!="") {
                         $datas[] = $form_result;
                     }                     
@@ -499,9 +497,6 @@ class PendaftaranController extends Controller
                 return "Exception ".$e;
             }              
         }
-        // return $filess;
-        // return $keyss;
-        // return $datas;
 
         $user = Auth::user();
         $terr = $user->territory;
@@ -512,16 +507,15 @@ class PendaftaranController extends Controller
                     $fr->update([
                         'id_question' => $data->id_question,
                         'answer_value' => $data->answer_value,
-                        'id_user' => $userid,                    
+                        'id_user' => $userid,
                     ]);
                 } else {
                     $fr = new Form_result;
-
                     $fr->id_question = $data->id_question;
                     $fr->answer_value = $data->answer_value;
-                    $fr->id_user = $userid;                
-
-                    $fr->save(); 
+                    $fr->id_user = $userid;
+                    $fr->trackingcode = $code;
+                    $fr->save();
                 }
 
                 if ($data->id_question=="Provinsi") {

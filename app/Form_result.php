@@ -109,8 +109,6 @@ class Form_result extends Model
                     }
                 }
             }
-
-            return $id;
         }
 
         return $id;     

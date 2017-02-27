@@ -2,77 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2bb2e7d-e26a-47a4-9814-555c19c49854" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminCategoryController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/AdminCategoryController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminChartController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/AdminChartController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminMemberController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/AdminMemberController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminSliderController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/AdminSliderController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminUserController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/AdminUserController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/AlbController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Alb/AlbController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/FormAnswerController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/FormAnswerController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/FormQuestionController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/FormQuestionController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/FormQuestionGroupController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/FormQuestionGroupController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/FormResultController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/FormResultController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/FormRulesController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/FormRulesController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/FormSettingController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/FormSettingController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/FormTypeController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/FormTypeController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/Http/Controllers/MemberController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Member/MemberController.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/resources/views/daerah/notif/indexall.blade.php" afterPath="$PROJECT_DIR$/resources/views/common/notif/indexall.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Helpers/Notifs.php" afterPath="$PROJECT_DIR$/app/Helpers/Notifs.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Form_result.php" afterPath="$PROJECT_DIR$/app/Form_result.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/KadinDaerahController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/KadinDaerahController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/KadinProvinsiController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/KadinProvinsiController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/KadinPusatController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/KadinPusatController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/MmsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/MmsController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/PendaftaranController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/PendaftaranController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/routes.php" afterPath="$PROJECT_DIR$/app/Http/routes.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Slider.php" afterPath="$PROJECT_DIR$/app/Slider.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/User.php" afterPath="$PROJECT_DIR$/app/User.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/answer/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/answer/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/answer/edit.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/answer/edit.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/question/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/question/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/question/edit.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/question/edit.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/questiongroup/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/questiongroup/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/questiongroup/edit.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/questiongroup/edit.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/result/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/result/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/result/edit.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/result/edit.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/rules/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/rules/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/rules/edit.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/rules/edit.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/setting/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/setting/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/setting/edit.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/setting/edit.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/type/create1.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/type/create1.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/dform/type/edit.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/dform/type/edit.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alb/compprof/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/alb/compprof/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alb/dashboard/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/alb/dashboard/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alb/kta/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/alb/kta/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/alb/sidebar.blade.php" afterPath="$PROJECT_DIR$/resources/views/alb/sidebar.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/common/app.blade.php" afterPath="$PROJECT_DIR$/resources/views/common/app.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/common/marketplace/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/common/marketplace/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/common/organizer/list/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/common/organizer/list/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/common/organizer/setting/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/common/organizer/setting/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/daerah/form/ab/detail.blade.php" afterPath="$PROJECT_DIR$/resources/views/daerah/form/ab/detail.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/daerah/form/alb/detail.blade.php" afterPath="$PROJECT_DIR$/resources/views/daerah/form/alb/detail.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/daerah/member/ab/detail.blade.php" afterPath="$PROJECT_DIR$/resources/views/daerah/member/ab/detail.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/daerah/member/ab/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/daerah/member/ab/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/daerah/member/alb/detail.blade.php" afterPath="$PROJECT_DIR$/resources/views/daerah/member/alb/detail.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/daerah/member/alb/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/daerah/member/alb/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/daerah/notif/indexresult.blade.php" afterPath="$PROJECT_DIR$/resources/views/daerah/notif/indexresult.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/daerah/notif/indexuser.blade.php" afterPath="$PROJECT_DIR$/resources/views/daerah/notif/indexuser.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/dynamic_form_script.blade.php" afterPath="$PROJECT_DIR$/resources/views/dynamic_form_script.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/member/app.blade.php" afterPath="$PROJECT_DIR$/resources/views/member/app.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/member/compprof/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/member/compprof/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/member/dashboard/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/member/dashboard/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/member/kta/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/member/kta/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/member/register/completeprofile.blade.php" afterPath="$PROJECT_DIR$/resources/views/member/register/completeprofile.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/member/register/tahapii.blade.php" afterPath="$PROJECT_DIR$/resources/views/member/register/tahapii.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/mms/ktatracking-frame.blade.php" afterPath="$PROJECT_DIR$/resources/views/mms/ktatracking-frame.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/mms/pendaftaran2-content.blade.php" afterPath="$PROJECT_DIR$/resources/views/mms/pendaftaran2-content.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/mms/tahapii-content.blade.php" afterPath="$PROJECT_DIR$/resources/views/mms/tahapii-content.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/mms/tahapii-frame.blade.php" afterPath="$PROJECT_DIR$/resources/views/mms/tahapii-frame.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/provinsi/dashboard/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/provinsi/dashboard/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/provinsi/kta/detail.blade.php" afterPath="$PROJECT_DIR$/resources/views/provinsi/kta/detail.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/provinsi/kta/detail1.blade.php" afterPath="$PROJECT_DIR$/resources/views/provinsi/kta/detail1.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/pusat/detail.blade.php" afterPath="$PROJECT_DIR$/resources/views/pusat/detail.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/setkbli_script.blade.php" afterPath="$PROJECT_DIR$/resources/views/setkbli_script.blade.php" />
     </list>
     <ignored path="kadinweb.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -107,78 +41,38 @@
       <file leaf-file-name="routes.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="285" column="58" lean-forward="true" selection-start-line="285" selection-start-column="58" selection-end-line="285" selection-end-column="58" />
+            <state relative-caret-position="176">
+              <caret line="64" column="65" lean-forward="false" selection-start-line="64" selection-start-column="58" selection-end-line="64" selection-end-column="65" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MemberController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Member/MemberController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="91">
-              <caret line="416" column="12" lean-forward="false" selection-start-line="416" selection-start-column="12" selection-end-line="416" selection-end-column="64" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlbController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alb/AlbController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="287" column="42" lean-forward="false" selection-start-line="287" selection-start-column="42" selection-end-line="287" selection-end-column="42" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlbNotifController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Alb/AlbNotifController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="30" column="36" lean-forward="false" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MemberNotifController.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Member/MemberNotifController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="413">
-              <caret line="30" column="39" lean-forward="false" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="KadinDaerahController.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="KadinDaerahController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/KadinDaerahController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="613" column="16" lean-forward="false" selection-start-line="613" selection-start-column="16" selection-end-line="618" selection-end-column="17" />
+            <state relative-caret-position="200">
+              <caret line="108" column="47" lean-forward="true" selection-start-line="108" selection-start-column="47" selection-end-line="108" selection-end-column="47" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="KadinProvinsiController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/KadinProvinsiController.php">
+      <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/daerah/form/ab/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="285" column="102" lean-forward="true" selection-start-line="284" selection-start-column="16" selection-end-line="285" selection-end-column="102" />
+            <state relative-caret-position="153">
+              <caret line="93" column="30" lean-forward="false" selection-start-line="93" selection-start-column="26" selection-end-line="93" selection-end-column="30" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="KadinPusatController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/KadinPusatController.php">
+      <file leaf-file-name="MmsController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MmsController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="298" column="106" lean-forward="false" selection-start-line="298" selection-start-column="106" selection-end-line="298" selection-end-column="106" />
+            <state relative-caret-position="205">
+              <caret line="147" column="47" lean-forward="false" selection-start-line="147" selection-start-column="34" selection-end-line="147" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -188,20 +82,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>required</find>
-      <find>compprof</find>
-      <find>function complete</find>
-      <find>registerii</find>
-      <find>complete</find>
-      <find>tahapii</find>
-      <find>function completed</find>
-      <find>form.alb.index</find>
-      <find>store</find>
-      <find>func</find>
-      <find>clearElement</find>
-      <find>kbli</find>
-      <find>storeii</find>
-      <find>store2</find>
       <find>pay</find>
       <find>notifUser</find>
       <find>albDetail</find>
@@ -214,10 +94,24 @@
       <find>postpone</find>
       <find>$notes</find>
       <find>postModal</find>
-      <find>requestKta</find>
       <find>Notifs::create</find>
       <find>notif</find>
       <find>requestkta</find>
+      <find>requestKta</find>
+      <find>del</find>
+      <find>-&gt;delete</find>
+      <find>Form_result</find>
+      <find>store</find>
+      <find>tahap</find>
+      <find>trackingcode</find>
+      <find>code</find>
+      <find>$form_result-&gt;trackingcode = $code;</find>
+      <find>trackingcode =</find>
+      <find>storeii</find>
+      <find>Collaboration</find>
+      <find>post</find>
+      <find>ajax</find>
+      <find>ajaxForms</find>
     </findStrings>
     <replaceStrings>
       <replace>setting</replace>
@@ -235,7 +129,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/views/mms/tahapii-content.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mms/tahapii-frame.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/member/compprof/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/daerah/form/ab/detail.blade.php" />
@@ -255,7 +148,6 @@
         <option value="$PROJECT_DIR$/resources/views/dynamic_form_script.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mms/pendaftaran2-content.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/setkbli_script.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/PendaftaranController.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/dform/answer/edit.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/dform/setting/create.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/dform/answer/create.blade.php" />
@@ -270,9 +162,7 @@
         <option value="$PROJECT_DIR$/resources/views/admin/dform/setting/edit.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/dform/type/create1.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/dform/type/edit.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/MmsController.php" />
         <option value="$PROJECT_DIR$/resources/views/daerah/notif/indexresult.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/KadinDaerahController.php" />
         <option value="$PROJECT_DIR$/resources/views/daerah/notif/indexuser.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/routes.php" />
         <option value="$PROJECT_DIR$/resources/views/member/kta/index.blade.php" />
@@ -286,6 +176,10 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/KadinPusatController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Alb/AlbNotifController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Member/MemberNotifController.php" />
+        <option value="$PROJECT_DIR$/app/Form_result.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/PendaftaranController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/MmsController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/KadinDaerahController.php" />
       </list>
     </option>
   </component>
@@ -461,7 +355,63 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="pusat" />
+              <option name="myItemId" value="daerah" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mms" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="daerah" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="form" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mms" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="daerah" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="form" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ab" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -555,33 +505,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Member" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mms" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mms" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Http" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Controllers" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Alb" />
+              <option name="myItemId" value="Admin" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -689,12 +613,12 @@
       <workItem from="1487731846893" duration="20165000" />
       <workItem from="1487816913814" duration="20335000" />
       <workItem from="1487904304770" duration="15634000" />
-      <workItem from="1488162574272" duration="16749000" />
+      <workItem from="1488162574272" duration="19827000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="106854000" />
+    <option name="totallyTimeSpent" value="109932000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -757,36 +681,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/FormQuestionRequest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/FormAnswerController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="116" column="36" lean-forward="false" selection-start-line="116" selection-start-column="36" selection-end-line="116" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/pusat/detail.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="489">
-          <caret line="232" column="17" lean-forward="false" selection-start-line="232" selection-start-column="17" selection-end-line="232" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/pusat/ktaext/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Helpers/Notifs.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="353">
@@ -1011,44 +905,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="285" column="58" lean-forward="true" selection-start-line="285" selection-start-column="58" selection-end-line="285" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MmsController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="133" column="0" lean-forward="false" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
-          <folding>
-            <element signature="e#40#68#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/PendaftaranController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="74">
-          <caret line="678" column="60" lean-forward="false" selection-start-line="678" selection-start-column="60" selection-end-line="678" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Slider.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="19" column="25" lean-forward="false" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="27" column="37" lean-forward="true" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -1123,14 +983,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/KadinDaerahController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="613" column="16" lean-forward="false" selection-start-line="613" selection-start-column="16" selection-end-line="618" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/pusat/app.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="103">
@@ -1171,10 +1023,82 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Form_result.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-119">
+          <caret line="9" column="38" lean-forward="true" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Provinsi.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1007">
+          <caret line="27" column="37" lean-forward="false" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Member/MemberNotifController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
+        <state relative-caret-position="353">
           <caret line="30" column="39" lean-forward="false" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="64" column="65" lean-forward="false" selection-start-line="64" selection-start-column="58" selection-end-line="64" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ProfileAdminController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="90" column="54" lean-forward="false" selection-start-line="90" selection-start-column="41" selection-end-line="90" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/PendaftaranController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="39" column="46" lean-forward="false" selection-start-line="39" selection-start-column="46" selection-end-line="39" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MmsController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="147" column="47" lean-forward="false" selection-start-line="147" selection-start-column="34" selection-end-line="147" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/daerah/form/ab/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="93" column="30" lean-forward="false" selection-start-line="93" selection-start-column="26" selection-end-line="93" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/KadinDaerahController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="108" column="47" lean-forward="true" selection-start-line="108" selection-start-column="47" selection-end-line="108" selection-end-column="47" />
           <folding />
         </state>
       </provider>
