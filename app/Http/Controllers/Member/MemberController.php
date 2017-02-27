@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Member;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
@@ -37,13 +38,9 @@ class MemberController extends Controller
                 ->where('id_question', '=', "1")
                 ->first();
 
-        // $required = $this->required();
-        // $percentage = $this->percentage();
-        // $completed = $this->completed();
-
-        $required = 10;
-        $percentage = 10;
-        $completed= 10;
+        $required = $this->required();
+        $completed = $this->completed();
+        $percentage = $this->percentage();
 
         $kta = Kta::where('owner', '=', $member->id)->first();
         $exp_show = false;
@@ -218,10 +215,13 @@ class MemberController extends Controller
         //detail 1 
         $qg1 = Form_question_group::where('name', 'like', '%Pendaftaran%')->first();
         $q1 = Form_question::where('group_question', '=', $qg1->id)->pluck('id');
-        $detail1 = Form_result::where('id_user', '=', $member->id)->get();
-                    // ->whereIn('id_question', $q1)
-                    // ->get();
-        
+        $q1[] = 'Provinsi';
+        $q1[] = 'Kabupaten / Kota';
+        $q1[] = 'Alamat Lengkap';
+        $q1[] = 'Kode Pos';
+        $detail1 = Form_result::where('id_user', '=', $member->id)
+                     ->whereIn('id_question', $q1)
+                     ->get();
         //detail 2
         $detail2 = Form_result::                
                 where('id_user', '=', $member->id)                
@@ -261,20 +261,32 @@ class MemberController extends Controller
         }
         
         //documents uploded
-        $docs = Form_result::                
+        $docs = Form_result::
                 where('id_user', '=', $member->id)                
-                ->get();            
+                ->get();
         $fqg = Form_question_group::where('name', 'like', '%Upload%')->first()->name;
         $qgd = Form_question_group::where('name', 'like', '%Upload%')->first();
         foreach ($docs as $key => $value) {
-            if ($value->question_group == $fqg) {                
-            } else {                
+            if ($value->question_group == $fqg) {
+            } else {
                 unset($docs[$key]);
             }
         }
 
+        $show = true;
+        $thekta = Kta::where('owner', '=', $member->id)->first();
+        if ($thekta) {
+            $kta = $member->kta->first()->kta;
+            if ($kta=="requested"||$kta=="validated") {
+                $show = false;
+            } else {
+                if ($thekta->perpanjangan=="requested") {
+                    $show = false;
+                }
+            }
+        }
 
-        return view('member.compprof.index', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs', 
+        return view('member.compprof.index', compact('notifs', 'member', 'show', 'detail1', 'detail2', 'detail3', 'docs',
                 'qg1', 'qg2', 'qg3', 'qgd', 'trackingcode'));
     }
 
@@ -296,26 +308,27 @@ class MemberController extends Controller
         //     $q->whereIn('name', 'like', '%'.$btk.'%')
         //     ->where('name', 'like', '%Pendaftaran%');
         // })->orderBy('order', 'asc')->get();
-        
-        $fquestions = Form_question::whereIn('group_question', [1, $tahap2, $tahap3])->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();      
+
+        $fquestions = Form_question::whereIn('group_question', [$tahap2, $tahap3])->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();
         $fresults = Form_result::where('id_user', '=', $user->id)->get();
         $notifs = \App\Helpers\Notifs::getNotifs();
         return view('member.register.tahapii', compact('notifs', 'user', 'fquestions', 'fresults'));
     }
 
     public function completeprofile($id)
-    {                
-        $user = Auth::user();        
+    {
+        $user = Auth::user();
         $fqg = Form_question_group::where('id', '=', $id)->first();
         $fquestions = Form_question::where('group_question', '=', $id)->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();        
-        $fresults = Form_result::where('id_user', '=', $user->id)->get();        
+        $fresults = Form_result::where('id_user', '=', $user->id)->get();
 
-        $notifs = \App\Helpers\Notifs::getNotifs();        
+        $notifs = \App\Helpers\Notifs::getNotifs();
         return view('member.register.completeprofile', compact('notifs', 'fquestions', 'fresults', 'fqg'));
     }
 
     public function requestkta(Request $request) {
         $user = Auth::user();
+        $type = $request['type'];
 
         $idoc = Form_question_group::where('name', 'like', '%Upload%')->first()->id;
         $qdoc = Form_question::where('group_question', '=', $idoc);
@@ -401,37 +414,45 @@ class MemberController extends Controller
         }
 
         try {                
-            $kta = Kta::find($user->id);
-
-            $deleted = false;
-            $deletedMsg = "asdad";
+            $kta = Kta::where('owner', '=', $user->id)->first();
 
             if ($kta) {
-                $deleted = false;
-                $deletedMsg = "Your KTA is Already Generated";
+                if ($type=="reqpostkta") {
+                    $kta->owner = $user->id;
+                    $kta->kta = 'requested';
+                    $kta->requested_at = new Carbon();
+                    $kta->granted_at = "";
+                    $kta->save();
+
+                    $idSender = Auth::user()->id;
+                    $idDaerah = Auth::user()->territory;
+                    $daerah = User::where('role', '=', '5')->where('territory', '=', $idDaerah)->get();
+                    foreach ($daerah as $key => $d) {
+                        \App\Helpers\Notifs::create($d->id, $idSender, null, "New KTA Request");
+                    }
+                    \App\Helpers\Notifs::create($user->id, $user->id, null, "KTA Request is Sent");
+
+                    $deleted = true;
+                    $deletedMsg = "KTA Request is Sent";
+                } else {
+                    $deleted = false;
+                    $deletedMsg = "Your KTA is Already Generated";
+                }
             } else {
                 $kta = new Kta;
-                    
                 $kta->owner = $user->id;
                 $kta->kta = 'requested';
                 $kta->requested_at = new Carbon();
                 $kta->granted_at = "";
-
                 $kta->save();
 
-                $idProv = str_limit(Auth::user()->territory, 3);
                 $idSender = Auth::user()->id;
-                $provinsi = User::where('role', '=', '4')->where('territory', '=', $idProv)->get();
-                foreach ($provinsi as $key => $prov) {
-                    $notif = new Notification;
-
-                    $notif->target = $prov->id;
-                    $notif->senderid = $idSender;
-                    $notif->value = "New Request KTA";
-                    $notif->active = true;
-                            
-                    $notif->save();
+                $idDaerah = Auth::user()->territory;
+                $daerah = User::where('role', '=', '5')->where('territory', '=', $idDaerah)->get();
+                foreach ($daerah as $key => $d) {
+                    \App\Helpers\Notifs::create($d->id, $idSender, null, "New KTA Request");
                 }
+                \App\Helpers\Notifs::create($user->id, $user->id, null, "KTA Request is Sent");
 
                 $deleted = true;
                 $deletedMsg = "KTA Request is Sent";
@@ -445,53 +466,40 @@ class MemberController extends Controller
     }
 
     function required() {
-        $member = Auth::user();
-        $fr = Form_result::                
-                where('id_user', '=', $member->id)                
-                ->where('id_question', '=', "1")
-                ->first();
+        $user = Auth::user();
+        $fr = Form_result::
+        where('id_user', '=', $user->id)
+            ->where('id_question', '=', "1")
+            ->first()->answer;
+        $btk = Str::upper($fr);
+        // return $btk;
 
-        if ($fr) {
-            $comp = $fr->answer;
-            $btk = Str::upper($comp);
-            
-            // required
-            $total = Form_question::count();
+        $tahap2 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->id;
+        $tahap3 = Form_question_group::where('name', 'like', '%Tahap 3%')->first()->id;
 
-            $qgs = Form_question_group::where('name', 'like', '%Tahap 2%')->pluck('id');
-            $minqg = Form_question::whereIn('group_question', $qgs)->count(); //pengurang
+        $fquestions = Form_question::whereIn('group_question', [$tahap2, $tahap3])->count();
 
-            $usertahap2 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->id;
-            $plusqg = Form_question::where('group_question', '=', $usertahap2)->count(); // penambah
-
-            $ftaddress = Form_type::where('name', 'like', '%Address%')->first()->id;
-            $minaddress = Form_question::where('type', '=', $ftaddress)->count(); //pengurang
-            $plusaddress = $minaddress*4;//penambah
-
-            $dividermin = Form_type::where('name', 'like', '%Divider%')->pluck('id');
-            $mindivider = Form_question::whereIn('type', $dividermin)->count(); //pengurang
-
-            $fuploadtipe = Form_type::where('name', 'like', '%Upload%')->pluck('id');
-            $minfileuploads = Form_question::whereIn('type', $fuploadtipe)->count(); //pengurang            
-                
-            return $total-$minqg+$plusqg-$mindivider-$minfileuploads-$minaddress+$plusaddress;
-        } else {
-            return 0;
-        }
+        return $fquestions;
     }
 
     function completed() {
-        $member = Auth::user();
-        $dividermin = Form_type::where('name', 'like', '%Divider%')->pluck('id');
-        $mindivider = Form_question::whereIn('type', $dividermin)->count(); //pengurang
+        $user = Auth::user();
+        $fr = Form_result::
+        where('id_user', '=', $user->id)
+            ->where('id_question', '=', "1")
+            ->first()->answer;
+        $btk = Str::upper($fr);
+        // return $btk;
 
-        $fuploadtipe = Form_type::where('name', 'like', '%Upload%')->pluck('id');        
-        $fuploadquestions = Form_question::whereIn('type', $fuploadtipe)->pluck('id'); //pengurang
-        $document_user = Form_result::where('id_user', '=', $member->id)
-                                ->whereIn('id_question', $fuploadquestions)->count();                    
+        $tahap2 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->id;
+        $tahap3 = Form_question_group::where('name', 'like', '%Tahap 3%')->first()->id;
 
-        $completed = Form_result::where('id_user', '=', $member->id)->count()-$mindivider-$document_user;
-        return $completed;
+        $fquestions = Form_question::whereIn('group_question', [$tahap2, $tahap3])->pluck('id');
+        $fresults = Form_result::where('id_user', '=', $user->id)
+                        ->whereIn('id_question', $fquestions)
+                        ->count();
+
+        return $fresults;
     }
 
     function percentage() {
@@ -575,59 +583,30 @@ class MemberController extends Controller
 
             if (!$kta) {
                 $deleted = false;
-                $deletedMsg = "Error while requesting KTA";
+                $deletedMsg = "KTA Data not Found!";
             } else {                
                                     
                 $kta->update([
                         "perpanjangan" => "requested",
                     ]);
-                
+
                 $idSender = Auth::user()->id;
-                $idProv = str_limit(Auth::user()->territory, 3);
-                $provinsi = User::where('role', '=', '4')->where('territory', '=', $idProv)->get();                    
-                foreach ($provinsi as $key => $prov) {
-                    $notif = new Notification;
-
-                    $notif->target = $prov->id;
-                    $notif->senderid = $idSender;
-                    $notif->value = "New KTA Extension Request";
-                    $notif->active = true;
-                            
-                    $notif->save();
-                }
-
-                $idDaerah = Auth::user()->territory;
-                $daerah = User::where('role', '=', '5')->where('territory', '=', $idDaerah)->get();
-                foreach ($daerah as $key => $d) {
-                    $notif = new Notification;
-
-                    $notif->target = $d->id;
-                    $notif->senderid = $idSender;
-                    $notif->value = "New KTA Extension Request";
-                    $notif->active = true;
-                            
-                    $notif->save();
-                }
-                
                 $pusat = User::where('role', '=', '3')->get();
                 foreach ($pusat as $key => $p) {
-                    $notif = new Notification;
-
-                    $notif->target = $p->id;
-                    $notif->senderid = $idSender;
-                    $notif->value = "New KTA Extension Request";
-                    $notif->active = true;
-                            
-                    $notif->save();
+                    \App\Helpers\Notifs::create($p->id, $idSender, null, "New KTA Extension Request");
                 }
 
+                \App\Helpers\Notifs::create($user->id, $user->id, null, "KTA Extension Request is Sent");
                 $deleted = true;
                 $deletedMsg = "KTA Extension Request is Sent";
             }
         }catch(\Exception $e){
-            return $e;
             $deleted = false;
             $deletedMsg = "Error while requesting KTA";
+
+            $kta->update([
+                "perpanjangan" => "",
+            ]);
         }
 
         return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);

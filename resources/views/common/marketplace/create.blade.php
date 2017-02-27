@@ -26,8 +26,16 @@
 
 @section('content')
 @php
-  if (Auth::user()->role==2) {
+  if (Auth::user()->role==1) {
+    $url = url('admin/marketplace/');
+  } else if (Auth::user()->role==2) {
     $url = url('member/marketplace/');
+  } else if (Auth::user()->role==3) {
+    $url = url('pusat/marketplace/');
+  } else if (Auth::user()->role==4) {
+    $url = url('provinsi/marketplace/');
+  } else if (Auth::user()->role==5) {
+    $url = url('daerah/marketplace/');
   } else if (Auth::user()->role==6) {
     $url = url('alb/marketplace/');
   }

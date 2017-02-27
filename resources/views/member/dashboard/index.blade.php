@@ -1,7 +1,15 @@
 @extends('member.app')
 
 @section('head')  
-  <link href="{{ asset('resources/assets/css/plugins/blueimp/css/blueimp-gallery.min.css') }}" rel="stylesheet">  
+  <link href="{{ asset('resources/assets/css/plugins/blueimp/css/blueimp-gallery.min.css') }}" rel="stylesheet">
+  <style rel="stylesheet">
+    .link
+    {
+      color:white;
+      text-decoration: none;
+      background-color: none;
+    }
+  </style>
 @stop
 
 @section('active-dashboard')
@@ -25,32 +33,36 @@
 @section('iframe')
 <div class="col-lg-6">
   @if ($corr>0||$comm>0)
-  <div class="row">
-    <div class="col-lg-6">
-      <div class="widget style1 yellow-bg">
-        <div class="row">
-          <div class="col-xs-4">
-            <i class="fa fa-warning fa-5x"></i>
-          </div>
-          <div class="col-xs-8 text-right">
-            <span> Commentary </span>
-            <h2 class="font-bold">{{ $comm }}</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6">
-      <div class="widget style1 red-bg">
-        <div class="row">
-          <div class="col-xs-4">
-            <i class="fa fa-warning fa-5x"></i>
-          </div>
-          <div class="col-xs-8 text-right">
-            <span> Correction </span>
-            <h2 class="font-bold">{{ $corr }}</h2>
+  <div class="row link">
+    <a href="{{ url('member/compprof') }}">
+      <div class="col-lg-6">
+        <div class="widget style1 yellow-bg">
+          <div class="row">
+            <div class="col-xs-4">
+              <i class="fa fa-warning fa-5x"></i>
+            </div>
+            <div class="col-xs-8 text-right">
+              <span> Commentary </span>
+              <h2 class="font-bold">{{ $comm }}</h2>
+            </div>
           </div>
         </div>
       </div>
+    </a>
+    <div class="col-lg-6">
+      <a href="{{ url('member/compprof') }}">
+        <div class="widget style1 red-bg">
+          <div class="row">
+            <div class="col-xs-4">
+              <i class="fa fa-warning fa-5x"></i>
+            </div>
+            <div class="col-xs-8 text-right">
+              <span> Correction </span>
+              <h2 class="font-bold">{{ $corr }}</h2>
+            </div>
+          </div>
+        </div>
+      </a>
     </div>
   </div>
   @endif

@@ -55,7 +55,6 @@ class KadinDaerahController extends Controller
         $totalunverified = $totalmember-$totalverified;
         $provcode = substr($terr, 0, 3);
         $provinsi = Provinsi::where('id', '=', $provcode)->first();
-        
         return view('daerah.dashboard.index', compact('notifs', 'totalsubmitted', 'totalmember', 'totalverified', 'totalunverified', 'user', 'provinsi'));
     }
 
@@ -132,7 +131,7 @@ class KadinDaerahController extends Controller
         $user = User::where('id', '=', $id)->first();
 
         try {
-            $delChat = \App\Helpers\Collaboration::deleteAccount($user->username);
+//            $delChat = \App\Helpers\Collaboration::deleteAccount($user->username);
             $user->delete();            
 
             $path = storage_path() . '/app/uploadedfiles/'.$user->username.'/';
@@ -165,7 +164,7 @@ class KadinDaerahController extends Controller
             $deletedMsg = "Data " . $name . " is deleted";
         }catch(\Exception $e){
             $deleted = false;
-            $deletedMsg = "Error while deleting data";      
+            $deletedMsg = "Error while deleting data";
         }
         
         // hapus juga image profile
@@ -177,7 +176,12 @@ class KadinDaerahController extends Controller
         $notifs = \App\Helpers\Notifs::getNotifs();        
         $detail = Form_result::where('trackingcode', '=', $code)->get();
 
-        return view('daerah.form.ab.detail', compact('notifs', 'detail'));   
+        $notes = Form_result::where('trackingcode', '=', $code)
+                    ->where('commentary', '!=', '')->count();
+        $notes = $notes+Form_result::where('trackingcode', '=', $code)
+                    ->where('correction', '!=', '')->count();
+
+        return view('daerah.form.ab.detail', compact('notifs', 'detail', 'notes'));
     }
 
     /**
@@ -207,7 +211,8 @@ class KadinDaerahController extends Controller
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
         $member = User::find($id);
-        $trackingcode = Form_result::where('id_user', '=', $member->id)->where('id_question', '=', 1)->first()->trackingcode;
+        $trackingcode = Form_result::where('id_user', '=', $member->id)
+            ->where('id_question', '=', 'Kode Pos')->first()->trackingcode;
         $detail = Form_result::where('id_user', '=', $member->id)->get();
 
         $detail1 = \App\Helpers\Details::detail1($member->id);
@@ -215,7 +220,13 @@ class KadinDaerahController extends Controller
         $detail3 = \App\Helpers\Details::detail3($member->id);
         $docs = \App\Helpers\Details::docs($member->id);
 
-        return view('daerah.member.ab.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3', 'docs', 'trackingcode'));
+        $notes = Form_result::where('id_user', '=', $member->id)
+                    ->where('commentary', '!=', '')->count();
+        $notes = $notes+Form_result::where('id_user', '=', $member->id)
+                    ->where('correction', '!=', '')->count();
+
+        return view('daerah.member.ab.detail', compact('notifs', 'member', 'detail1', 'detail2', 'detail3',
+            'docs', 'trackingcode', 'notes'));
     }
 
     public function ajaxMembers() {
@@ -318,6 +329,9 @@ class KadinDaerahController extends Controller
             if ($user) {
                $id = $user->id;             
             }
+            if (str_contains($notif->value, 'Extension')) {
+                $id = $notif->sendercode;
+            }
             return view('daerah.notif.indexuser', compact('notifs', 'id'));
         }
 
@@ -339,6 +353,12 @@ class KadinDaerahController extends Controller
         $fr = User::
                 where('id', '=', $id)->get();
                 // ->select(['id', 'name', 'username', 'email']);
+        $fr = User::select( 'users.*',
+            DB::raw('(select kta from kta where owner = users.id order by id asc limit 1) as kta'),
+            DB::raw('(select perpanjangan from kta where owner = users.id order by id asc limit 1) as ext')  )
+            ->where('id', '=', $id)
+            ->whereIn('role', [2, 6])
+            ->get();
         return Datatables::of($fr)->make(true);
     }
 
@@ -346,7 +366,7 @@ class KadinDaerahController extends Controller
     {                           
         $notifs = \App\Helpers\Notifs::getNotifs();        
         
-        return view('daerah.notif.indexall', compact('notifs'));
+        return view('common.notif.indexall', compact('notifs'));
     }
 
     public function paymentAjax($code) {        
@@ -389,14 +409,7 @@ class KadinDaerahController extends Controller
                 
                 $admins = User::where('role', '=', '1')->get();                
                 foreach ($admins as $key => $admin) {
-                    $notif = new Notification;
-
-                    $notif->target = $admin->id;
-                    $notif->sendercode = $code;
-                    $notif->value = "New submitted form";
-                    $notif->active = true;
-                    
-                    $notif->save();
+                    \App\Helpers\Notifs::create($admin->id, null, $code, "New Submitted Form");
                 }
 
             } else {                
@@ -420,14 +433,7 @@ class KadinDaerahController extends Controller
 
                         $kadinKota = User::where('role', '=', '5')->where('territory', '=', $value)->get();                        
                         foreach ($kadinKota as $key => $kota) {
-                            $notif = new Notification;
-
-                            $notif->target = $kota->id;
-                            $notif->sendercode = $code;
-                            $notif->value = "New submitted form";
-                            $notif->active = true;
-                            
-                            $notif->save();
+                            \App\Helpers\Notifs::create($kota->id, null, $code, "New Submitted Form");
                         }
 
                     } else if (str_contains($keys[2], "Alamat")) {
@@ -586,8 +592,8 @@ class KadinDaerahController extends Controller
         $keterangan = $request['keterangan'];
         $id_owner = $request['id_user'];
 
-        $kta = Kta::where('owner', '=', $id_owner)->first();        
-                
+        $kta = Kta::where('owner', '=', $id_owner)->first();
+
         if ($kta) {
             try {
                 $kta->kta = "validated";
@@ -599,12 +605,35 @@ class KadinDaerahController extends Controller
                     'validation' => 'validated'
                 ]);
 
+                $ext = str_contains($kta->perpanjangan, 'processed');
+                $msg = "KTA Request";
+                if ($ext) {
+                    $msg = "KTA Extension Request";
+                }
+
+                $idProv = substr(Auth::user()->territory, 0, 3);
+                $idSender = Auth::user()->id;
+                $provinsi = User::where('role', '=', '4')->where('territory', '=', $idProv)->get();
+                foreach ($provinsi as $key => $prov) {
+                    \App\Helpers\Notifs::create($prov->id, $idSender, null, $msg." from ".$member->username);
+                }
+
+                \App\Helpers\Notifs::create($member->id, $idSender, null, "Your ".$msg." is Validated");
+
                 $deleted = true;
-                $deletedMsg = "KTA request from " . $member->username . " is proceeded";      
+                $deletedMsg = $msg." from " . $member->username . " is proceeded";
             }catch(\Exception $e){
-                return $e;
                 $deleted = false;
-                $deletedMsg = "Error while executing command";      
+                $deletedMsg = "Error while executing command";
+
+                $kta->kta = "requested";
+                $kta->keterangan = "";
+                $kta->save();
+
+                $member = User::where('id', '=', $id_owner)->first();
+                $member->update([
+                    'validation' => ''
+                ]);
             }        
         } else {
             $deleted = false;
@@ -614,8 +643,47 @@ class KadinDaerahController extends Controller
         return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
     }
 
+    public function memberPostKta(Request $request) {
+        $keterangan = $request['keterangan'];
+        $id_owner = $request['id_user'];
+        $kta = Kta::where('owner', '=', $id_owner)->first();
+        if ($kta) {
+            try {
+                $kta->kta = "postponed";
+                $kta->keterangan = $keterangan;
+                $kta->save();
+
+                $member = User::where('id', '=', $id_owner)->first();
+                $member->update([
+                    'validation' => 'postponed'
+                ]);
+
+                $ext = str_contains($kta->perpanjangan, 'processed');
+                $msg = "KTA Request";
+                if ($ext) {
+                    $msg = "KTA Extension Request";
+                }
+
+                $idSender = Auth::user()->id;
+                \App\Helpers\Notifs::create($member->id, $idSender, null, "Your ".$msg." is Postponed");
+
+                $deleted = true;
+                $deletedMsg = $msg." from " . $member->username . " is Postponed";
+            }catch(\Exception $e){
+                return $e;
+                $deleted = false;
+                $deletedMsg = "Error while executing command";
+            }
+        } else {
+            $deleted = false;
+            $deletedMsg = "Data is not available";
+        }
+
+        return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
+    }
+
     public function submittedAlbForms()
-    {                       
+    {
         $notifs = \App\Helpers\Notifs::getNotifs();
 
         return view('daerah.form.alb.index', compact('notifs'));
@@ -659,8 +727,13 @@ class KadinDaerahController extends Controller
         $fr = Form_result::where('id_question', '=', $fq->id)->first();
         $name = $fr->answer;
         $trcode = $fr->trackingcode;
-        
-        return view('daerah.form.alb.detail', compact('notifs', 'detail', 'name', 'trcode'));   
+
+        $notes = Form_result::where('trackingcode', '=', $code)
+            ->where('commentary', '!=', '')->count();
+        $notes = $notes+Form_result::where('trackingcode', '=', $code)
+                ->where('correction', '!=', '')->count();
+
+        return view('daerah.form.alb.detail', compact('notifs', 'detail', 'name', 'trcode', 'notes'));
     }
 
     public function submittedAlbApprove(Request $request) {           
@@ -733,14 +806,7 @@ class KadinDaerahController extends Controller
 
             $admins = User::where('role', '=', '1')->get();        
             foreach ($admins as $key => $admin) {
-                $notif = new Notification;
-
-                $notif->target = $admin->id;
-                $notif->senderid = $user->id;
-                $notif->value = "New Extraordinary User Registered";
-                $notif->active = true;
-                        
-                $notif->save();
+                \App\Helpers\Notifs::create($admin->id, $user->id, null, "New Extraordinary User Registered");
             }
 
             // $kadinKota = User::where('role', '=', '5')->where('territory', '=', $territory)->get();
@@ -829,9 +895,13 @@ class KadinDaerahController extends Controller
 
         $fileqg = Form_type::where('name', 'like', '%File Upload%')->pluck('id');
         $fileq = Form_question::whereIn('type', $fileqg)->pluck('id')->toArray();
-         
-        // return $fileq;        
-        return view('daerah.member.alb.detail', compact('notifs', 'member', 'detail', 'fileq'));
+
+        $notes = Form_result::where('id_user', '=', $member->id)
+            ->where('commentary', '!=', '')->count();
+        $notes = $notes+Form_result::where('id_user', '=', $member->id)
+                ->where('correction', '!=', '')->count();
+
+        return view('daerah.member.alb.detail', compact('notifs', 'member', 'detail', 'fileq', 'notes'));
     }
 
     public function getCode()

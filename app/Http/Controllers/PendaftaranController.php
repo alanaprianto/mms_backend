@@ -70,7 +70,7 @@ class PendaftaranController extends Controller
         //     ->where('name', 'like', '%Pendaftaran%');
         // })->orderBy('order', 'asc')->get();
         
-        $fquestions = Form_question::whereIn('group_question', [1, $tahap2, $tahap3])->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();      
+        $fquestions = Form_question::whereIn('group_question', [$tahap2, $tahap3])->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();
         $fresults = Form_result::where('id_user', '=', $user->id)->get();
                 
         return view('mms.tahapii-frame', compact('fquestions', 'fresults'));
@@ -84,12 +84,12 @@ class PendaftaranController extends Controller
      */
     public function store(FormResultRequest $request)
     {        
-        $input = $request->all();        
+        $input = $request->all();
         $alb = $request['alb'];
 
         $id_namapenanggungjawab = Form_question::where('question', 'like', '%Nama Penanggung Jawab%')->first()->id;
-        $idfqg = Form_question_group::where('name', 'like', '%Pendaftaran%')->first()->id;     
-        $rules = $this->rules($idfqg);        
+        $idfqg = Form_question_group::where('name', 'like', '%Pendaftaran%')->first()->id;
+        $rules = $this->rules($idfqg);
         $attributeNames = $this->names($idfqg);
             
         // Create a new validator instance.
@@ -117,14 +117,7 @@ class PendaftaranController extends Controller
                 
             $admins = User::where('role', '=', '1')->get();                
             foreach ($admins as $key => $admin) {
-                $notif = new Notification;
-
-                $notif->target = $admin->id;
-                $notif->sendercode = $code;
-                $notif->value = "New submitted form";
-                $notif->active = true;
-                    
-                $notif->save();
+                \App\Helpers\Notifs::create($admin->id, null, $code, "New Submitted Form");
             }
 
             // notif kadin kabupaten/kota
@@ -150,14 +143,7 @@ class PendaftaranController extends Controller
 
                         $kadinKota = User::where('role', '=', '5')->where('territory', '=', $value)->get();                        
                         foreach ($kadinKota as $key => $kota) {
-                            $notif = new Notification;
-
-                            $notif->target = $kota->id;
-                            $notif->sendercode = $code;
-                            $notif->value = "New submitted form";
-                            $notif->active = true;
-                            
-                            $notif->save();
+                            \App\Helpers\Notifs::create($kota->id, null, $code, "New Submitted Form");
                         }
 
                     } else if (str_contains($keys[2], "Alamat")) {
@@ -325,26 +311,12 @@ class PendaftaranController extends Controller
 
         $admins = User::where('role', '=', '1')->get();        
         foreach ($admins as $key => $admin) {
-            $notif = new Notification;
-
-            $notif->target = $admin->id;
-            $notif->senderid = $user->id;
-            $notif->value = "New User Registered";
-            $notif->active = true;
-                    
-            $notif->save();
+            \App\Helpers\Notifs::create($admin->id, $user->id, null, "New User Registered");
         }
 
         $kadinKota = User::where('role', '=', '5')->where('territory', '=', $territory)->get();
         foreach ($kadinKota as $key => $kota) {
-            $notif = new Notification;
-
-            $notif->target = $kota->id;
-            $notif->senderid = $user->id;
-            $notif->value = "New User Registered";
-            $notif->active = true;
-                    
-            $notif->save();
+            \App\Helpers\Notifs::create($kota->id, $user->id, null, "New User Registered");
         }
 
         $results = Form_result::where('trackingcode', '=', $code)->get();
@@ -384,7 +356,7 @@ class PendaftaranController extends Controller
         //     ->where('name', 'like', '%Pendaftaran%');
         // })->orderBy('order', 'asc')->get();
         
-        $fquestions = Form_question::whereIn('group_question', [1, $tahap2, $tahap3])->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();      
+        $fquestions = Form_question::whereIn('group_question', [$tahap2, $tahap3])->orderBy('group_question', 'asc')->orderBy('order', 'asc')->get();
         $fresults = Form_result::where('id_user', '=', $user->id)->get();
         // return $fresults;
         return view('mms.tahapii-content', compact('fquestions', 'fresults'));
@@ -393,12 +365,14 @@ class PendaftaranController extends Controller
     public function storeii(FormResultRequest $request, $idqg)
     {
         $input = $request->all();           
-        // return $input;
+//         return $input;
         
         $fqg = Form_question_group::find($idqg);
         $alb = false;
-        if ($fqg->name=="Anggota Luar Biasa") {
-            $alb = true;
+        if ($fqg) {
+            if ($fqg->name=="Anggota Luar Biasa") {
+                $alb = true;
+            }
         }
 
         $rules = $this->rules($idqg);           
@@ -417,26 +391,12 @@ class PendaftaranController extends Controller
         if ($validator->passes()) {            
             $admins = User::where('role', '=', '1')->get();            
             foreach ($admins as $key => $admin) {
-                $notif = new Notification;
-
-                $notif->target = $admin->id;
-                $notif->senderid = $userid;
-                $notif->value = "User ".$username." updated his/her profile";
-                $notif->active = true;
-                    
-                $notif->save();
+                \App\Helpers\Notifs::create($admin->id, $userid, null, "User ".$username." updated his/her profile");
             }
 
             $kadinKota = User::where('role', '=', '5')->where('territory', '=', $territory)->get();        
             foreach ($kadinKota as $key => $kota) {
-                $notif = new Notification;
-
-                $notif->target = $kota->id;
-                $notif->senderid = $userid;
-                $notif->value = "User ".$username." updated his/her profile";
-                $notif->active = true;
-                    
-                $notif->save();
+                \App\Helpers\Notifs::create($kota->id, $userid, null, "User ".$username." updated his/her profile");
             }
 
         } else {                
@@ -611,7 +571,7 @@ class PendaftaranController extends Controller
                 $rules["email"] = implode("|", $parameter);
             } else if (str_contains($type, "Address")) {
                 $rules["id_question_Provinsi"] = implode("|", $parameter);
-                // $rules["id_question_KabKot"] = implode("|", $parameter);
+                $rules["id_question_KabKot"] = implode("|", $parameter);
                 $rules["id_question_Alamat"] = implode("|", $parameter);
                 $rules["id_question_KodePos"] = implode("|", $parameter);
             } else if (str_contains($type, "fileupload")) {
@@ -683,11 +643,12 @@ class PendaftaranController extends Controller
     {        
         $input = $request->all();
         $alb = $request['alb'];
-        // return $input;
+//         return $input;
 
         $id_nama = Form_question::where('question', 'like', '%Nama Asosiasi/Himpunan%')->first()->id;
         $idfqg = Form_question_group::where('name', 'like', '%Anggota Luar Biasa%')->first()->id;
-        $rules = $this->rules($idfqg);        
+        $rules = $this->rules($idfqg);
+//        return $rules;
         $attributeNames = $this->names($idfqg);
             
             // Create a new validator instance.
@@ -713,16 +674,9 @@ class PendaftaranController extends Controller
 
                 $code = $this->getCode().'-ALB';
                 
-                $admins = User::where('role', '=', '1')->get();                
+                $admins = User::where('role', '=', '1')->get();
                 foreach ($admins as $key => $admin) {
-                    $notif = new Notification;
-
-                    $notif->target = $admin->id;
-                    $notif->sendercode = $code;
-                    $notif->value = "New submitted form";
-                    $notif->active = true;
-                    
-                    $notif->save();
+                    \App\Helpers\Notifs::create($admin->id, null, $code, "New Submitted Form");
                 }
 
                 // notif kadin kabupaten/kota
@@ -748,14 +702,7 @@ class PendaftaranController extends Controller
 
                         $kadinKota = User::where('role', '=', '5')->where('territory', '=', $value)->get();                        
                         foreach ($kadinKota as $key => $kota) {
-                            $notif = new Notification;
-
-                            $notif->target = $kota->id;
-                            $notif->sendercode = $code;
-                            $notif->value = "New submitted form";
-                            $notif->active = true;
-                            
-                            $notif->save();
+                            \App\Helpers\Notifs::create($kota->id, null, $code, "New Submitted Form");
                         }
 
                     } else if (str_contains($keys[2], "Alamat")) {

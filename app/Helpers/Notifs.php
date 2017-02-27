@@ -18,4 +18,15 @@ class Notifs
                     ])->orderBy('created_at', 'desc')->get();
         return $notifs;
     }
+
+    public static function create($targer, $sender, $senderc, $msg)
+    {
+        $notif = new Notification;
+        $notif->target = $targer;
+        $notif->senderid = $sender;
+        $notif->sendercode = $senderc;
+        $notif->value = $msg;
+        $notif->active = true;
+        $notif->save();
+    }
 }

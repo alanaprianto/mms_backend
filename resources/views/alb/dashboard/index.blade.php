@@ -26,32 +26,36 @@
 <div class="col-lg-6">
   @if ($corr>0||$comm>0)
   <div class="row">
-    <div class="col-lg-6">
-      <div class="widget style1 yellow-bg">
-        <div class="row">
-          <div class="col-xs-4">
-            <i class="fa fa-warning fa-5x"></i>
-          </div>
-          <div class="col-xs-8 text-right">
-            <span> Commentary </span>
-            <h2 class="font-bold">{{ $comm }}</h2>
-          </div>
-        </div>
-      </div>
-    </div>  
-    <div class="col-lg-6">
-      <div class="widget style1 red-bg">
-        <div class="row">
-          <div class="col-xs-4">
-            <i class="fa fa-warning fa-5x"></i>
-          </div>
-          <div class="col-xs-8 text-right">
-            <span> Correction </span>
-            <h2 class="font-bold">{{ $corr }}</h2>
+    <a href="{{ url('alb/compprof') }}">
+      <div class="col-lg-6">
+        <div class="widget style1 yellow-bg">
+          <div class="row">
+            <div class="col-xs-4">
+              <i class="fa fa-warning fa-5x"></i>
+            </div>
+            <div class="col-xs-8 text-right">
+              <span> Commentary </span>
+              <h2 class="font-bold">{{ $comm }}</h2>
+            </div>
           </div>
         </div>
       </div>
-    </div>  
+    </a>
+    <a href="{{ url('alb/compprof') }}">
+      <div class="col-lg-6">
+        <div class="widget style1 red-bg">
+          <div class="row">
+            <div class="col-xs-4">
+              <i class="fa fa-warning fa-5x"></i>
+            </div>
+            <div class="col-xs-8 text-right">
+              <span> Correction </span>
+              <h2 class="font-bold">{{ $corr }}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
   </div>
   @endif
   <div class="row">

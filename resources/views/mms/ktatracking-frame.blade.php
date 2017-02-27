@@ -139,6 +139,40 @@
 	                  </td>
 	                </tr>
 	              </table>
+				@elseif ($kta->kta=="postponed")
+					<table class="main" width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="alert alert-bad">
+								Your KTA Information
+							</td>
+						</tr>
+						<tr>
+							<td class="content-wrap">
+								<table width="100%" cellpadding="0" cellspacing="0">
+									<tr>
+										<td class="content-block">
+											Berikut Keterangan KTA Anda.
+										</td>
+									</tr>
+									<tr>
+										<td class="content-block" align="center">
+											<strong>Permintaan KTA anda Ditangguhkan!</strong>
+										</td>
+									</tr>
+									<tr>
+										<td class="content-block" align="justify">
+											Permintaan KTA anda telah ditangguhkan. Harap perhatikan data-data yang anda masukan serta syarat dan ketentuan anggota kadin. Untuk pengajuan ulang silahkan klik link di bawah.
+										</td>
+									</tr>
+									<tr>
+										<td class="content-block">
+											Terima Kasih atas kepercayaan anda pada kami.
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
                 @else
                   <table class="main" width="100%" cellpadding="0" cellspacing="0">
 	                <tr>

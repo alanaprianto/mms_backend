@@ -185,12 +185,21 @@ class KadinProvinsiController extends Controller
                 $kta->keterangan = $keterangan;
                 $kta->save();
 
+                $ext = str_contains($kta->perpanjangan, 'processed');
+                $msg = "KTA Request";
+                if ($ext) {
+                    $msg = "KTA Extension Request";
+                }
+
+                $idSender = Auth::user()->id;
+                \App\Helpers\Notifs::create($id_owner, $idSender, null, "Your ".$msg." is Cancelled");
+
                 $deleted = true;
-                $deletedMsg = "KTA request from " . $kta->user->name . " is cancelled";      
+                $deletedMsg = $msg." from " . $kta->user->name . " is Cancelled";
             }catch(\Exception $e){
                 $deleted = false;
                 $deletedMsg = "Error while executing command";      
-            }        
+            }
         } else {
             $deleted = false;
             $deletedMsg = "Data is not available";
@@ -266,8 +275,22 @@ class KadinProvinsiController extends Controller
                     $rn->requested_at = new Carbon();
                     $rn->granted_at = "";
                     $rn->save();
-                }                                
-                
+                }
+
+                $ext = str_contains($kta->perpanjangan, 'processed');
+                $msg = "KTA Request";
+                if ($ext) {
+                    $msg = "KTA Extension Request";
+                }
+                $idSender = Auth::user()->id;
+                \App\Helpers\Notifs::create($id_owner, $idSender, null, "Your ".$msg." is Generated");
+
+                $member = User::find($id_owner);
+                $pusats = User::where('role', '=', '3')->get();
+                foreach ($pusats as $key => $pusat) {
+                    \App\Helpers\Notifs::create($pusat->id, $idSender, null, "NR Request from ".$member->username);
+                }
+
                 $deleted = true;
                 $deletedMsg = "KTA for " . $kta->user->name . " is set";
             }catch(\Exception $e){
@@ -343,18 +366,18 @@ class KadinProvinsiController extends Controller
 
         $notifs = \App\Helpers\Notifs::getNotifs();
         
-        if ($notif->value == "New Request KTA") {            
+        if (str_contains($notif->value, ["KTA", "Request"])) {
             return redirect('/provinsi/kta/request');
         }
-        
 
+        return redirect('/provinsi/dashboard');
     }    
 
     public function notifall()
     {                           
         $notifs = \App\Helpers\Notifs::getNotifs();        
         
-        return view('provinsi.notif.indexall', compact('notifs'));
+        return view('common.notif.indexall', compact('notifs'));
     }
 
     public function valnas()

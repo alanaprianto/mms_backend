@@ -151,7 +151,9 @@
 			        	return 'Profile Validated, waiting for KTA Generation';
 			        } else if (row.kta=="cancelled") {
 			        	return 'KTA Request Cancelled';
-			        } else {
+			        } else if (row.kta=="postponed") {
+                        return 'KTA Request Postponed';
+                    } else {
 			        	return 'KTA Generated';
 			        }
 		        			        	

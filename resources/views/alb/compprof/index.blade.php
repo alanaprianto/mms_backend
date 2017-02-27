@@ -68,16 +68,18 @@
 </div>
 <div class="col-lg-12">
   <div class="ibox float-e-margins">
-    <div class="ibox-title">    
-      <h5>Detail Member</h5>    
-      <div class="ibox-tools">
+    <div class="ibox-title">
+      <h5>Detail Member -</h5>&nbsp;&nbsp;
+      @if ($show)
         <a href="{{ url('alb/completeprofile') }}">
+          <i class="fa fa-gear"></i>
           Edit
         </a>
-        &nbsp;&nbsp;
+      @endif
+      <div class="ibox-tools">
         <a class="collapse-link">
           <i class="fa fa-chevron-up"></i>
-        </a>                       
+        </a>
       </div>
     </div>
     <div class="ibox-content" style="display: block;">    

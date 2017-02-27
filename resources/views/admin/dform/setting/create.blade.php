@@ -44,7 +44,7 @@
         <div class="ibox-content">
           @include('errors.error_list')
 
-        	{!! Form::open(['action' => ['FormSettingController@index'], 'class' => 'form-horizontal']) !!}
+        	{!! Form::open(['action' => ['Admin\FormSettingController@index'], 'class' => 'form-horizontal']) !!}
         		@include('admin.dform.setting.form', ['submitButtonText' => 'Add Form Setting'])
         	{!! Form::close() !!}
         </div>

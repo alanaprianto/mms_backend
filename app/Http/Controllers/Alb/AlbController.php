@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Alb;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Kta;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +14,6 @@ use App\Form_result;
 use App\Form_question_group;
 use Carbon\Carbon;
 use App\User;
-use App\Notification;
 use Datatables;
 
 class AlbController extends Controller
@@ -198,11 +197,25 @@ class AlbController extends Controller
         $fileqg = Form_type::where('name', 'like', '%File Upload%')->pluck('id');
         $fileq = Form_question::whereIn('type', $fileqg)->pluck('id')->toArray();
 
-        return view('alb.compprof.index', compact('notifs', 'member', 'detail', 'trackingcode', 'fileq'));
+        $show = true;
+        $thekta = Kta::where('owner', '=', $member->id)->first();
+        if ($thekta) {
+            $kta = $member->kta->first()->kta;
+            if ($kta=="requested"||$kta=="validated") {
+                $show = false;
+            } else {
+                if ($thekta->perpanjangan=="requested") {
+                    $show = false;
+                }
+            }
+        }
+
+        return view('alb.compprof.index', compact('notifs', 'member', 'show', 'detail', 'trackingcode', 'fileq'));
     }
 
     public function requestkta(Request $request) {
         $user = Auth::user();
+        $type = $request['type'];
 
         $pdoc = Form_question_group::where('name', 'like', '%Anggota Luar Biasa%')->first()->id;        
         $idoc = Form_type::where('name', 'like', '%File Upload%')->first()->id;
@@ -264,38 +277,46 @@ class AlbController extends Controller
             return response()->json(['success' => false, 'msg' => "Field 'Provinsi' is required!"]);
         }
 
-        try {                   	
-            $kta = Kta::find($user->id);
-
-            $deleted = false;
-            $deletedMsg = "asdad";
+        try {
+            $kta = Kta::where('owner', '=', $user->id)->first();
 
             if ($kta) {
-                $deleted = false;
-                $deletedMsg = "Your KTA is Already Generated";
+                if ($type=="reqpostkta") {
+                    $kta->owner = $user->id;
+                    $kta->kta = 'requested';
+                    $kta->requested_at = new Carbon();
+                    $kta->granted_at = "";
+                    $kta->save();
+
+                    $idSender = Auth::user()->id;
+                    $idDaerah = Auth::user()->territory;
+                    $daerah = User::where('role', '=', '5')->where('territory', '=', $idDaerah)->get();
+                    foreach ($daerah as $key => $d) {
+                        \App\Helpers\Notifs::create($d->id, $idSender, null, "New KTA Request");
+                    }
+                    \App\Helpers\Notifs::create($user->id, $user->id, null, "KTA Request is Sent");
+
+                    $deleted = true;
+                    $deletedMsg = "KTA Request is Sent";
+                } else {
+                    $deleted = false;
+                    $deletedMsg = "Your KTA is Already Generated";
+                }
             } else {
                 $kta = new Kta;
-                    
                 $kta->owner = $user->id;
                 $kta->kta = 'requested';
                 $kta->requested_at = new Carbon();
                 $kta->granted_at = "";
-
                 $kta->save();
 
-                $idProv = str_limit(Auth::user()->territory, 3);
                 $idSender = Auth::user()->id;
-                $provinsi = User::where('role', '=', '4')->where('territory', '=', $idProv)->get();
-                foreach ($provinsi as $key => $prov) {
-                    $notif = new Notification;
-
-                    $notif->target = $prov->id;
-                    $notif->senderid = $idSender;
-                    $notif->value = "New Request KTA";
-                    $notif->active = true;
-                            
-                    $notif->save();
+                $idDaerah = Auth::user()->territory;
+                $daerah = User::where('role', '=', '5')->where('territory', '=', $idDaerah)->get();
+                foreach ($daerah as $key => $d) {
+                    \App\Helpers\Notifs::create($d->id, $idSender, null, "New KTA Request");
                 }
+                \App\Helpers\Notifs::create($user->id, $user->id, null, "KTA Request is Sent");
 
                 $deleted = true;
                 $deletedMsg = "KTA Request is Sent";

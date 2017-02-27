@@ -49,7 +49,7 @@
                       <tr>
                         <td class="content-block" align="center">
                           <br>                                                  
-                          <button type="submit" class="btn btn-primary" onclick="requestKta()">
+                          <button type="submit" class="btn btn-primary" onclick="requestKta('request')">
                             <i class="fa fa-paper-plane"></i>
                             &nbsp;
                             Kirim Permintaan KTA
@@ -117,6 +117,39 @@
                   Terima Kasih atas kepercayaan anda pada kami.                            
                 </td>
               </tr>
+            </tbody>
+          </table>
+        @elseif ($kta=="postponed")
+          <table class="main" width="100%" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr>
+              <td class="alert alert-good">
+                Permintaan KTA anda Ditangguhkan!
+              </td>
+            </tr>
+            <tr>
+              <td class="alert alert-good">
+                Member Kadin yang terhormat.<br>
+                <br>
+                Permintaan KTA anda telah ditangguhkan. Harap perhatikan data-data yang anda masukan serta syarat dan ketentuan anggota kadin. Untuk pengajuan ulang silahkan klik link di bawah.<br>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tbody>
+                  <tr>
+                    <td class="content-block" align="center">
+                      <br>
+                      <button type="submit" class="btn btn-primary" onclick="requestKta('reqpostkta')">
+                        <i class="fa fa-paper-plane"></i>
+                        &nbsp;
+                        Kirim Permintaan KTA
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                <br>
+                Terima Kasih atas kepercayaan anda pada kami.
+              </td>
+            </tr>
             </tbody>
           </table>
         @else
@@ -228,22 +261,23 @@
     });
   }
 
-  function requestKta() {    
+  function requestKta($type) {
     $.ajax({    
       url: "{{ url('alb/requestkta/') }}",
       type: "post",
       data: {
         _token: "{{ csrf_token() }}",
-
+        type: $type
       }
     }).done(function(data) {
       if (data.success) {
         toastr.success(data.msg);
-        setTimeout(location.reload.bind(location), 1200);
       } else {
         toastr.error(data.msg);
-        setTimeout(window.open("{{ url('alb/compprof') }}", "_blank"), 3000)
       }
+
+      setTimeout(location.reload.bind(location), 1200);
+      {{--setTimeout(window.open("{{ url('alb/compprof') }}", "_blank"), 3000)--}}
     });
   }
 
@@ -278,22 +312,22 @@
     });
   });
 
-  function extRequestKta() {    
-    $.ajax({    
+  function extRequestKta() {
+      $.ajax({
       url: "{{ url('alb/extkta/') }}",
       type: "post",
-      data: {        
+      data: {
         _token: "{{ csrf_token() }}"
       }
-    }).done(function(data) {                    
+    }).done(function(data) {
       if (data.success) {
         toastr.success(data.msg);
-        setTimeout(location.reload.bind(location), 1000);
       } else {
         toastr.error(data.msg);
-        setTimeout(window.open("{{ url('alb/compprof') }}", "_blank"), 1000)
-      }      
-      // location.reload();      
+      }
+
+      // location.reload();
+      setTimeout(location.reload.bind(location), 1000);
     });
   }
 </script>

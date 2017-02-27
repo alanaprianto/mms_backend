@@ -42,7 +42,7 @@
             <div class="ibox-tools"><!-- any link icon --></div>
           </div>
           <div class="ibox-content">
-            {!! Form::open(['action' => ['FormResultController@index'], 'class' => 'form-horizontal']) !!}
+            {!! Form::open(['action' => ['Admin\FormResultController@index'], 'class' => 'form-horizontal']) !!}
           		@include('admin.dform.result.form', ['submitButtonText' => 'Add Form Result'])
           	{!! Form::close() !!}
           </div>

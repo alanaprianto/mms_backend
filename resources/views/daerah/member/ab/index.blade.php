@@ -151,7 +151,9 @@
 			        	return 'Profile Validated, waiting for KTA Generation';
 			        } else if (row.kta=="cancelled") {
 			        	return 'KTA Request Cancelled';
-			        } else {
+			        } else if (row.kta=="postponed") {
+                        return 'KTA Request Postponed';
+                    } else {
 			        	return 'KTA Generated';
 			        }
 		        			        	
@@ -222,9 +224,7 @@
 		  $.ajax({    
 		    url: url,
 		    type: "get",		    
-		  }).done(function(data) {                    
-		    console.log(data);
-
+		  }).done(function(data) {
 		    $('#valModal').modal('hide'); 
 
 		    if (data.success) {
@@ -248,9 +248,7 @@
 		      _method: 'DELETE', 
 		      _token: "{{ csrf_token() }}",        
 		    }
-		  }).done(function(data) {                    
-		    console.log(data);
-
+		  }).done(function(data) {
 		    $('#myModal').modal('hide'); 
 
 		    if (data.success) {

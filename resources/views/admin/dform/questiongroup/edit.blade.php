@@ -47,7 +47,7 @@
         <div class="ibox-content">
           @include('errors.error_list')
 
-        	{!! Form::model($fqg, ['method' => 'PATCH', 'action' => ['FormQuestionGroupController@update', $fqg->id], 'class' => 'form-horizontal']) !!}
+        	{!! Form::model($fqg, ['method' => 'PATCH', 'action' => ['Admin\FormQuestionGroupController@update', $fqg->id], 'class' => 'form-horizontal']) !!}
         		@include('admin.dform.questiongroup.form', ['submitButtonText' => 'Update Form Question Group'])
         	{!! Form::close() !!}
         </div>

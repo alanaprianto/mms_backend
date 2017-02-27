@@ -52,12 +52,17 @@
                         <div class="logo-element">
                             <img class="logo-name" src="{{ asset('resources/img/icon144-128x128-10.png') }}" height="48" width="48"/>
                         </div>
-                    </li>                    
-                    <!-- @yield('sidebar') -->
+                    </li>
                     @if (Auth::user()->role==1)
                         @include('admin.sidebar')
                     @elseif (Auth::user()->role==2)
                         @include('member.sidebar')
+                    @elseif (Auth::user()->role==3)
+                        @include('pusat.sidebar')
+                    @elseif (Auth::user()->role==4)
+                        @include('provinsi.sidebar')
+                    @elseif (Auth::user()->role==5)
+                        @include('daerah.sidebar')
                     @elseif (Auth::user()->role==6)
                         @include('alb.sidebar')
                     @endif
@@ -91,9 +96,24 @@
                                 @endif
                         </a>
                         <ul class="dropdown-menu dropdown-alerts">
+                            @php
+                                if (Auth::user()->role==1) {
+                                    $nurl = url('admin/notif/');
+                                } else if (Auth::user()->role==2) {
+                                    $nurl = url('member/notif/');
+                                } else if (Auth::user()->role==3) {
+                                    $nurl = url('pusat/notif/');
+                                } else if (Auth::user()->role==4) {
+                                    $nurl = url('provinsi/notif/');
+                                } else if (Auth::user()->role==5) {
+                                    $nurl = url('daerah/notif/');
+                                } else if (Auth::user()->role==6) {
+                                    $nurl = url('alb/notif/');
+                                }
+                            @endphp
                             @foreach ($notifs->slice(0, 3) as $key=>$notif)
                                 <li>
-                                    <a href="{{ url('/dashboard/daerah/notif') }}/{{ $notif->id }}">
+                                    <a href="{{ $nurl }}/{{ $notif->id }}">
                                         <div>
                                             <i class="fa fa-envelope fa-fw"></i> {{ $notif->value }}
                                             <span class="pull-right text-muted small">{{ $notif->crt_human }}</span>
@@ -104,7 +124,7 @@
                             @endforeach
                             <li>
                                 <div class="text-center link-block">
-                                    <a href="{{ url('/dashboard/daerah/notif/all') }}">
+                                    <a href="{{ $nurl }}/all">
                                         <strong>See All Alerts</strong>
                                         <i class="fa fa-angle-right"></i>
                                     </a>

@@ -44,7 +44,7 @@
         <div class="ibox-content">
           @include('errors.error_list')
 
-        	{!! Form::open(['action' => ['FormQuestionGroupController@index'], 'class' => 'form-horizontal']) !!}
+        	{!! Form::open(['action' => ['Admin\FormQuestionGroupController@index'], 'class' => 'form-horizontal']) !!}
         		@include('admin.dform.questiongroup.form', ['submitButtonText' => 'Add Form Question Group'])
         	{!! Form::close() !!}
         </div>

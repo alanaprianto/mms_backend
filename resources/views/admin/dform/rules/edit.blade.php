@@ -47,7 +47,7 @@
         <div class="ibox-content">
           @include('errors.error_list')
 
-        	{!! Form::model($frules, ['method' => 'PATCH', 'action' => ['FormRulesController@update', $frules->id], 'class' => 'form-horizontal']) !!}
+        	{!! Form::model($frules, ['method' => 'PATCH', 'action' => ['Admin\FormRulesController@update', $frules->id], 'class' => 'form-horizontal']) !!}
         		@include('admin.dform.rules.form', ['submitButtonText' => 'Update Form Rules'])
         	{!! Form::close() !!}
         </div>

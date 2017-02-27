@@ -54,83 +54,81 @@
 </div>
 @stop
 
-@section('iframe')  
-<div class="row">
-  <div class="col-lg-12">
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">
-        <h5>{{ $member->kta->first()->kta }} </h5>
-        <div class="ibox-tools">
-          <a class="collapse-link">
-            <i class="fa fa-chevron-up"></i>
-          </a>
-        </div>
+@section('iframe')
+<div class="col-lg-12">
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <h5>{{ $member->kta->first()->kta }} </h5>
+      <div class="ibox-tools">
+        <a class="collapse-link">
+          <i class="fa fa-chevron-up"></i>
+        </a>
       </div>
-      <div class="ibox-content">
-        <div class="row">
-          <div class="col-lg-12">
-            <!-- identitas user -->
-            <div class="form-group no-padding">
-              <label class="col-lg-2 control-label no-padding">Username</label>
-              <div class="col-lg-10">
-                <p class="form-control-static no-padding">{{ $member->username }}</p>
-              </div>
+    </div>
+    <div class="ibox-content">
+      <div class="row">
+        <div class="col-lg-12">
+          <!-- identitas user -->
+          <div class="form-group no-padding">
+            <label class="col-lg-2 control-label no-padding">Username</label>
+            <div class="col-lg-10">
+              <p class="form-control-static no-padding">{{ $member->username }}</p>
             </div>
-            <div class="form-group no-padding">
-              <label class="col-lg-2 control-label no-padding">Tracking Code</label>
-              <div class="col-lg-10">
-                <p class="form-control-static no-padding"><?php echo @$detail[0]['trackingcode'];?></p>
-              </div>
-            </div>
-            <div class="form-group no-padding">
-              <label class="col-lg-2 control-label no-padding">Submitted At</label>
-              <div class="col-lg-10">
-                <p class="form-control-static no-padding">{{ $member->created_at }}</p>
-              </div>
-            </div>
-            <div class="form-group no-padding">
-              <label class="col-lg-2 control-label no-padding">Territory</label>
-              <div class="col-lg-10">
-                <p class="form-control-static no-padding">{{ $member->territory_name }}</p>
-              </div>
-            </div>            
           </div>
-
-          <br><br><br><br><br><br><br>
-          <div class="col-lg-9 col-lg-offset-1">
-            @if (count($detail)>=1)            
-              <table class="table">            
-                @foreach ($detail as $row)
-                  @if ($row->correction||$row->commentary)
-                    <tr bgcolor="#F6CECE">                    
-                  @else 
-                    <tr>
-                  @endif
-                    <td><strong>{{ $row->question }}</strong></td>
-                    <td>:</td>
-                    <td>{{ $row->answer }}</td>
-                    <td>
-                      @if (in_array($row->id_question, $fileq))
-                        <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valImgModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
-                          <i class="fa fa-edit fa-fw"></i>
-                        </a>
-                      @else
-                        <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
-                          <i class="fa fa-edit fa-fw"></i>
-                        </a>
-                      @endif
-                    </td>
-                  </tr>
-                @endforeach            
-              </table>
-            @else
-              <div class="text-center">
-                No Data
-              </div>
-            @endif
+          <div class="form-group no-padding">
+            <label class="col-lg-2 control-label no-padding">Tracking Code</label>
+            <div class="col-lg-10">
+              <p class="form-control-static no-padding"><?php echo @$detail[0]['trackingcode'];?></p>
+            </div>
           </div>
+          <div class="form-group no-padding">
+            <label class="col-lg-2 control-label no-padding">Submitted At</label>
+            <div class="col-lg-10">
+              <p class="form-control-static no-padding">{{ $member->created_at }}</p>
+            </div>
+          </div>
+          <div class="form-group no-padding">
+            <label class="col-lg-2 control-label no-padding">Territory</label>
+            <div class="col-lg-10">
+              <p class="form-control-static no-padding">{{ $member->territory_name }}</p>
+            </div>
+          </div>
+        </div>
 
-        </div>                
+        <br><br><br><br><br><br><br>
+        <div class="col-lg-9 col-lg-offset-1">
+          @if (count($detail)>=1)
+            <table class="table">
+              @foreach ($detail as $row)
+                @if ($row->correction||$row->commentary)
+                  <tr bgcolor="#F6CECE">
+                @else
+                  <tr>
+                @endif
+                  <td><strong>{{ $row->question }}</strong></td>
+                  <td>:</td>
+                  <td>{{ $row->answer }}</td>
+                  <td>
+                    @if (in_array($row->id_question, $fileq))
+                      <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valImgModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
+                        <i class="fa fa-edit fa-fw"></i>
+                      </a>
+                    @else
+                      <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
+                        <i class="fa fa-edit fa-fw"></i>
+                      </a>
+                    @endif
+                  </td>
+                </tr>
+              @endforeach
+            </table>
+          @else
+            <div class="text-center">
+              No Data
+            </div>
+          @endif
+        </div>
+
       </div>
     </div>
   </div>
@@ -167,6 +165,9 @@
     </div>
   </div>
 </div>
+<div class="row">
+</div>
+<br/><br/>
 
 <!-- Validation Modal With Image-->
 <div class="modal inmodal" id="valImgModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -206,35 +207,31 @@
 <!-- Insert Modal -->
 <div class="modal inmodal" id="insertModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
-  <div class="modal-content animated bounceInRight">
-    <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">
-      <span aria-hidden="true">&times;</span>
-      <span class="sr-only">Close</span>
-    </button>
-    <i class="fa fa-laptop modal-icon"></i>
-    <h4 class="modal-title">Insert KTA</h4>
-    <small class="font-bold">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
+    <div class="modal-content animated bounceInRight">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <i class="fa fa-laptop modal-icon"></i>
+        <h4 class="modal-title">Insert KTA</h4>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <form id="form" method="post" action="{{ url('provinsi/kta/insertkta/') }}">
+            <input type="hidden" id="id_user" name="id_user" value="">
+            <input id="st" name="st" type="text" width="124" placeholder="20201">&nbsp;&nbsp;-&nbsp;&nbsp;
+            <input id="nd" name="nd" type="text" width="60%" placeholder="12345678">&nbsp;&nbsp;
+            <!-- /&nbsp;&nbsp;
+            <input id="rd" name="rd" type="text" width="20%" placeholder="7-2-2016" readonly> -->
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+        <button id="btnKTA" type="button" class="btn btn-primary">Insert KTA</button>
+      </div>
     </div>
-    <div class="modal-body">
-    <p><strong>Lorem Ipsum is simply dummy</strong> text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-    printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-    remaining essentially unchanged.</p>
-    <div class="text-center">
-      <form id="form" method="post" action="{{ url('provinsi/kta/insertkta/') }}">
-      <input type="hidden" id="id_user" name="id_user" value="">
-      <input id="st" name="st" type="text" width="124" placeholder="20201">&nbsp;&nbsp;-&nbsp;&nbsp;
-      <input id="nd" name="nd" type="text" width="60%" placeholder="12345678">&nbsp;&nbsp;
-      <!-- /&nbsp;&nbsp;
-      <input id="rd" name="rd" type="text" width="20%" placeholder="7-2-2016" readonly> -->
-      </form>
-    </div>
-    </div>
-    <div class="modal-footer">
-    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-    <button id="btnKTA" type="button" class="btn btn-primary">Insert KTA</button>
-    </div>
-  </div>
   </div>
 </div>
 

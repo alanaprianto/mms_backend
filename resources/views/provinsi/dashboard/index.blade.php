@@ -127,7 +127,7 @@
     <div class="ibox float-e-margins">
       <div class="ibox-title">
         <h5>KTA Statistic ( {{ $user->territory_name }} )</h5>
-        <div class="ibox-tools">        
+        <div class="ibox-tools">
         </div>
       </div>
       <div class="ibox-content">
@@ -172,7 +172,7 @@
         <div>
           <canvas id="ktaLineChart" height="70"></canvas>
         </div>
-        <div class="m-t-md">      
+        <div class="m-t-md">
         </div>
       </div>
     </div>

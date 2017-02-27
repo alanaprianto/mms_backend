@@ -53,7 +53,12 @@ class KadinPusatController extends Controller
             $notif->save();
 
             return redirect('pusat/ktaext');
-        }        
+        } else if (str_contains($notif->value, 'NR Request')) {
+            $notif->active=false;
+            $notif->save();
+
+            return redirect('pusat/rn/request');
+        }
         
         return redirect('pusat/dashboard');
     }    
@@ -61,7 +66,7 @@ class KadinPusatController extends Controller
     public function notifall()
     {                           
         $notifs = \App\Helpers\Notifs::getNotifs();                
-        return view('pusat.notif.indexall', compact('notifs'));
+        return view('common.notif.indexall', compact('notifs'));
     }
 
     public function rnList()
@@ -289,7 +294,10 @@ class KadinPusatController extends Controller
                 $rn->granted_at = $carbon;
                 $rn->expired_at = $carbon->addYear(1);
                 $rn->save();
-                
+
+                $idSender = Auth::user()->id;
+                \App\Helpers\Notifs::create($id_owner, $idSender, null, "Your National Registration Number is Generated");
+
                 $deleted = true;
                 $deletedMsg = "National Registration Number for " . $rn->user->name . " is set";
             }catch(\Exception $e){
@@ -402,7 +410,6 @@ class KadinPusatController extends Controller
         $id = $request['id_kta'];
         $name = $request['compname'];
 
-
         try {            
             $kta = Kta::where('id', '=', $id)->first();            
             $pp = 'processed_'.$kta->kta;
@@ -410,7 +417,17 @@ class KadinPusatController extends Controller
             $kta->update([
                     'kta' => 'requested',
                     'perpanjangan' => $pp,
-                ]);            
+                ]);
+
+            $idSender = Auth::user()->id;
+            $user = User::find($kta->owner);
+            $idDaerah = $user->territory;
+            $daerah = User::where('role', '=', '5')->where('territory', '=', $idDaerah)->get();
+            foreach ($daerah as $key => $d) {
+                \App\Helpers\Notifs::create($d->id, $idSender, $user->id, "New KTA Extension Request");
+            }
+
+            \App\Helpers\Notifs::create($user->id, $idSender, null, "KTA Extension Request is Processed");
 
             $deleted = true;
             $deletedMsg = "Extension Request from ".$name." is Proceeded";

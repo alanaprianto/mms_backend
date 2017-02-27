@@ -260,7 +260,7 @@
             $.ajax({
                 url: "{{ url('ajax/listdaerah') }}" + "/" + value
             }).done(function(datas) {  
-                clearElement();               
+                clearElement("daerah");
                 var element = document.getElementById("daerah");                    
                 for (u = 0; u < datas.length; u++) {        
                     if (datas[u].id==selected) {
@@ -272,8 +272,8 @@
             });   
         }
 
-        function clearElement() {
-            var select = document.getElementById("daerah");
+        function clearElement(id) {
+            var select = document.getElementById(id);
             var i;
             for(i = select.options.length - 1 ; i >= 0 ; i--)
             {

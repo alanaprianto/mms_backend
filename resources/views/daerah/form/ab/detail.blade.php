@@ -100,6 +100,7 @@
     </div>
   </div>
 </div>
+<br/><br/>
 @stop
 
 @push('scripts')  

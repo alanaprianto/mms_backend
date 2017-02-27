@@ -10,10 +10,18 @@
 @section('content')
     @php
         if (Auth::user()->role==1) {
-          $url = url('admin/organizer/');
-        } else {
-          $url = url('admin/organizer/');
-        }
+        $url = url('admin/organizer/');
+      } else if (Auth::user()->role==2) {
+        $url = url('member/organizer/');
+      } else if (Auth::user()->role==3) {
+        $url = url('pusat/organizer/');
+      } else if (Auth::user()->role==4) {
+        $url = url('provinsi/organizer/');
+      } else if (Auth::user()->role==5) {
+        $url = url('daerah/organizer/');
+      } else if (Auth::user()->role==6) {
+        $url = url('alb/organizer/');
+      }
     @endphp
 
     <div class="col-lg-10">

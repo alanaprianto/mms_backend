@@ -47,7 +47,7 @@
         <div class="ibox-content">
           @include('errors.error_list')
 
-        	{!! Form::model($fsetting, ['method' => 'PATCH', 'action' => ['FormSettingController@update', $fsetting->id], 'class' => 'form-horizontal']) !!}
+        	{!! Form::model($fsetting, ['method' => 'PATCH', 'action' => ['Admin\FormSettingController@update', $fsetting->id], 'class' => 'form-horizontal']) !!}
         		@include('admin.dform.setting.form', ['submitButtonText' => 'Update Form Setting'])
         	{!! Form::close() !!}
         </div>

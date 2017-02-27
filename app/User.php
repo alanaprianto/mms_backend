@@ -87,7 +87,7 @@ class User extends Authenticatable
     }
 
     public function getTrackingcodeAttribute()
-    {        
+    {
         $id = $this->attributes['id'];        
         $code = Form_result::where('id_user', '=', $id)->first();
         if ($code) {
@@ -98,7 +98,7 @@ class User extends Authenticatable
     }
 
     public function getCompanyAttribute()
-    {        
+    {
         $id = $this->attributes['id'];        
         $code = Form_result::where('id_user', '=', $id)
                     ->where('id_question', '=', '8')

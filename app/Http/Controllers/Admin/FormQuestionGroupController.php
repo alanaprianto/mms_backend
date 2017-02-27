@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Request;
 
 use App\Http\Requests;
-use App\Form_type;
+use App\Form_question_group;
+use App\Http\Requests\FormQuestionGroupRequest;
 use Datatables;
-use App\Http\Requests\FormTypeRequest;
 
-class FormTypeController extends Controller
+class FormQuestionGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,13 +19,22 @@ class FormTypeController extends Controller
      */
     public function index()
     {
-        // return view('admin.dform.type.index');
+        // $search = \Request::get('search');
+        
+        // $fqgroups = Form_question_group::where('name','like','%'.$search.'%')->paginate(7);
+
+        // if (Request::ajax()) {                                            
+        //     return view('admin.dform.question.questions', compact('fquestions'));
+        // }
+
+        // $deleted = false;
+        // return view('admin.dform.questiongroup.index', compact('fqgroups', 'deleted'));
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('admin.dform.type.index', compact('notifs'));
+        return view('admin.dform.questiongroup.index', compact('notifs'));
     }
 
     public function indexAjax() {        
-        $fr = Form_type::select(['id', 'name', 'description', 'html_tag']);
+        $fr = Form_question_group::select(['id', 'name', 'description']);
         return Datatables::of($fr)->make(true);
     }
 
@@ -34,9 +44,10 @@ class FormTypeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {           
+    {
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('admin.dform.type.create1', compact('notifs'));
+
+        return view('admin.dform.questiongroup.create', compact('notifs'));
     }
 
     /**
@@ -45,13 +56,13 @@ class FormTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(FormTypeRequest $request)
-    {        
-        $input = $request->all();
+    public function store(FormQuestionGroupRequest $request)
+    {
+         $input = $request->all();
 
-        Form_type::create($input);
+        Form_question_group::create($input);
 
-        return redirect('/admin/types');
+        return redirect('/admin/question_group');
     }
 
     /**
@@ -62,8 +73,8 @@ class FormTypeController extends Controller
      */
     public function show($id)
     {
-        // terjadi error jika ke '/admin/types'
-        return redirect('/admin/types_');
+        // terjadi error jika ke '/admin/question_group'
+        return redirect('/admin/question_group_');
     }
 
     /**
@@ -74,11 +85,12 @@ class FormTypeController extends Controller
      */
     public function edit($id)
     {
-        $ftype = Form_type::findOrFail($id);
+        $fqg = Form_question_group::findOrFail($id);
 
-        // return $ftype;
+        // return $fsetting;
+
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('admin.dform.type.edit', compact('ftype', 'notifs')); 
+        return view('admin.dform.questiongroup.edit', compact('fqg', 'notifs')); 
     }
 
     /**
@@ -88,13 +100,13 @@ class FormTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(FormTypeRequest $request, $id)
-    {        
-        $ftype = Form_type::findOrFail($id);        
+    public function update(FormQuestionGroupRequest $request, $id)
+    {
+        $fqg = Form_question_group::findOrFail($id);
 
-        $ftype->update($request->all());
+        $fqg->update($request->all());
 
-        return redirect('/admin/types');
+        return redirect('/admin/question_group');
     }
 
     /**
@@ -105,12 +117,12 @@ class FormTypeController extends Controller
      */
     public function destroy($id)
     {
-        $ftype = Form_type::findOrFail($id);         
+        $fqg = Form_question_group::findOrFail($id);
 
         try {
-            $ftype->delete();
+            $fqg->delete();
             $deleted = true;
-            $deletedMsg = "Data " . $ftype->name . " is deleted";      
+            $deletedMsg = "Data " . $fqg->name . " is deleted";      
         }catch(\Exception $e){
             $deleted = false;
             $deletedMsg = "Error while deleting data";      

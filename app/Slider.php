@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Slider extends Model
 {
     protected  $table = "slider";
+
     /**
      * The attributes that are mass assignable.
      *

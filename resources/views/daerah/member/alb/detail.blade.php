@@ -8,7 +8,7 @@
 @stop
 
 @section('content')
-<div class="col-lg-10">
+<div class="col-lg-6">
   <h2>Member Detail</h2>
   <ol class="breadcrumb">
     <li>
@@ -19,7 +19,7 @@
     </li>
   </ol>
 </div>
-<div class="col-lg-2">
+<div class="col-lg-6">
   <div class="title-action">
     @if($member->kta->first())
       @if($member->kta->first()->kta=="requested")
@@ -27,92 +27,93 @@
           <span class="glyphicon glyphicon-check"></span>
           &nbsp;&nbsp;Request KTA
         </a>
+        @if($notes>0)
+          <a href="" class="btn btn-danger" data-toggle="modal" data-target="#postModal" data-id="{{ $member->id }}">
+            <span class="glyphicon glyphicon-check"></span>
+            &nbsp;&nbsp;Postpone Request
+          </a>
+        @endif
       @endif
     @endif
   </div>
 </div>
 @stop
 
-@section('iframe')	
-@php 
-  $notes = 0; 
-@endphp
-<div class="row">
-  <div class="col-lg-12">
-    <div class="ibox float-e-margins">
-      <div class="ibox-title">
-        <h5>{{ $member->name }} </h5>
-        <div class="ibox-tools">
-          <a class="collapse-link">
-            <i class="fa fa-chevron-up"></i>
-          </a>
-        </div>
+@section('iframe')
+<div class="col-lg-12">
+  <div class="ibox float-e-margins">
+    <div class="ibox-title">
+      <h5>{{ $member->name }} </h5>
+      <div class="ibox-tools">
+        <a class="collapse-link">
+          <i class="fa fa-chevron-up"></i>
+        </a>
       </div>
-      <div class="ibox-content">
-        <div class="row">
-          <div class="col-lg-12">
-            <!-- identitas user -->
-            <div class="form-group no-padding">
-              <label class="col-lg-2 control-label no-padding">Username</label>
-              <div class="col-lg-10">
-                <p class="form-control-static no-padding">{{ $member->username }}</p>
-              </div>
+    </div>
+    <div class="ibox-content">
+      <div class="row">
+        <div class="col-lg-12">
+          <!-- identitas user -->
+          <div class="form-group no-padding">
+            <label class="col-lg-2 control-label no-padding">Username</label>
+            <div class="col-lg-10">
+              <p class="form-control-static no-padding">{{ $member->username }}</p>
             </div>
-            <div class="form-group no-padding">
-              <label class="col-lg-2 control-label no-padding">Tracking Code</label>
-              <div class="col-lg-10">
-                <p class="form-control-static no-padding"><?php echo @$detail[0]['trackingcode'];?></p>
-              </div>
+          </div>
+          <div class="form-group no-padding">
+            <label class="col-lg-2 control-label no-padding">Tracking Code</label>
+            <div class="col-lg-10">
+              <p class="form-control-static no-padding"><?php echo @$detail[0]['trackingcode'];?></p>
             </div>
-            <div class="form-group no-padding">
-              <label class="col-lg-2 control-label no-padding">Submitted At</label>
-              <div class="col-lg-10">
-                <p class="form-control-static no-padding">{{ $member->created_at }}</p>
-              </div>
-            </div>            
           </div>
-          <br><br><br><br><br><br><br>
-          <div class="col-lg-12" style="margin-right:10px;margin-left:10px;">
-            @if (count($detail)>=1)            
-              <table class="table">
-                @foreach ($detail as $row)
-                  @if ($row->correction||$row->commentary)
-                    <tr bgcolor="#F6CECE">
-                    @php 
-                      $notes = $notes+1; 
-                    @endphp
-                  @else 
-                    <tr>
-                  @endif
-                    <td><strong>{{ $row->question }}</strong></td>
-                    <td>:</td>
-                    <td>{{ $row->answer }}</td>
-                    <td>                                            
-                      @if (in_array($row->id_question, $fileq))
-                        <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valImgModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
-                          <i class="fa fa-edit fa-fw"></i>
-                        </a>
-                      @else
-                        <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
-                          <i class="fa fa-edit fa-fw"></i>
-                        </a>
-                      @endif                      
-                    </td>
-                  </tr>
-                @endforeach            
-              </table>
-            @else
-              <div class="text-center">
-                No Data
-              </div>
-            @endif
+          <div class="form-group no-padding">
+            <label class="col-lg-2 control-label no-padding">Submitted At</label>
+            <div class="col-lg-10">
+              <p class="form-control-static no-padding">{{ $member->created_at }}</p>
+            </div>
           </div>
+        </div>
+        <br><br><br><br><br><br><br>
+        <div class="col-lg-12" style="margin-right:10px;margin-left:10px;">
+          @if (count($detail)>=1)
+            <table class="table">
+              @foreach ($detail as $row)
+                @if ($row->correction||$row->commentary)
+                  <tr bgcolor="#F6CECE">
+                @else
+                  <tr>
+                @endif
+                  <td><strong>{{ $row->question }}</strong></td>
+                  <td>:</td>
+                  <td>{{ $row->answer }}</td>
+                  <td>
+                    @if (in_array($row->id_question, $fileq))
+                      <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valImgModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
+                        <i class="fa fa-edit fa-fw"></i>
+                      </a>
+                    @else
+                      <a href="" class="btn btn-white btn-xs" data-toggle="modal" data-target="#valModal" data-id="{{ $row->id }}" data-answer="{{ $row->answer }}" data-question="{{ $row->question }}" data-corr="{{ $row->correction }}" data-comm="{{ $row->commentary }}">
+                        <i class="fa fa-edit fa-fw"></i>
+                      </a>
+                    @endif
+                  </td>
+                </tr>
+              @endforeach
+            </table>
+          @else
+            <div class="text-center">
+              No Data
+            </div>
+          @endif
+        </div>
 
-        </div>                
       </div>
     </div>
   </div>
 </div>
+<div class="row">
+</div>
+<br/><br/>
 <!-- Validation Modal -->
 <div class="modal inmodal" id="valModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
@@ -144,7 +145,7 @@
     </div>
   </div>
 </div>
-
+<br/><br/>
 <!-- Validation Modal With Image-->
 <div class="modal inmodal" id="valImgModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
@@ -206,6 +207,26 @@
       <button id="lanjutkan" type="button" class="btn btn-primary">Lanjutkan</button>
     </div>
   </div>
+  </div>
+</div>
+
+<!-- Postpone Modal -->
+<div class="modal inmodal" id="postModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content animated bounceInRight">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Confirm</h4>
+      </div>
+      <div class="modal-body">
+        <p class="thetext"></p>
+        <p>Postpone request KTA untuk diperbaiki Member?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-white" data-dismiss="modal">Batal</button>
+        <button id="postpone" type="button" class="btn btn-danger">Lanjutkan</button>
+      </div>
+    </div>
   </div>
 </div>
 @stop
@@ -330,6 +351,16 @@
 
     });
 
+    $('#postModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        idreq = button.data('id');
+
+        notes = "{{$notes}}";
+        if (notes>=1) {
+            $(".thetext").html("Member ini memiliki "+notes+" catatan");
+        }
+    });
+
     $('#lanjutkan').on('click', function (event) {            
       note = "{{ $notes }} catatan";
 
@@ -357,5 +388,31 @@
         });
     });
 
+    $('#postpone').on('click', function (event) {
+        note = "{{ $notes }} catatan";
+
+        $.ajax({
+            url: "{{ url('daerah/member/postponekta') }}",
+            type: "post",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id_user: idreq,
+                keterangan: note
+            }
+        }).done(function(data) {
+            console.log(data);
+
+            if (data.success) {
+                toastr.success(data.msg);
+
+                window.location.href = "{{ url('daerah/member') }}";
+            } else {
+                toastr.error(data.msg);
+
+                $('#reqModal').modal('hide');
+            }
+
+        });
+    });
   </script>
 @endpush

@@ -91,22 +91,26 @@ Route::group(['middleware' => 'auth'], function() {
 // Member
 Route::group(['prefix' => 'member/', 'middleware' => 'auth.role.member'], function () {
   // Member
-  Route::get('dashboard', 'MemberController@dashboard');
-  Route::get('kta', 'MemberController@kta');
-  Route::get('ajax/kta', 'MemberController@ajaxKta');
-  Route::post('ktaprint', 'MemberController@ktaprint');
-  Route::get('printkta', 'MemberController@printkta');
-  Route::get('rn', 'MemberController@regnum');
-  Route::get('compprof', 'MemberController@compprof');
-  Route::get('registerii', 'MemberController@indexii');
-  Route::get('completeprofile/{id}', 'MemberController@completeprofile');
+  Route::get('dashboard', 'Member\MemberController@dashboard');
+  Route::get('kta', 'Member\MemberController@kta');
+  Route::get('ajax/kta', 'Member\MemberController@ajaxKta');
+  Route::post('ktaprint', 'Member\MemberController@ktaprint');
+  Route::get('printkta', 'Member\MemberController@printkta');
+  Route::get('rn', 'Member\MemberController@regnum');
+  Route::get('compprof', 'Member\MemberController@compprof');
+  Route::get('registerii', 'Member\MemberController@indexii');
+  Route::get('completeprofile/{id}', 'Member\MemberController@completeprofile');
 
   // KTA
-  Route::post('requestkta/', 'MemberController@requestkta');
-  Route::post('extkta', 'MemberController@extkta');
+  Route::post('requestkta/', 'Member\MemberController@requestkta');
+  Route::post('extkta', 'Member\MemberController@extkta');
 
   // Market
   Route::resource('marketplace', 'MarketPlaceController');
+
+  // Notif
+  Route::get('notif/all', 'Member\MemberNotifController@notif_all');
+  Route::get('notif/{id}', 'Member\MemberNotifController@notif_show');
 });
 
 // Get Territory
@@ -116,44 +120,44 @@ Route::get('ajax/listdaerah/{id}', 'MmsController@listDaerah');
 // Mms crud
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function () {
   Route::get('dashboard', 'MmsController@dashboardAdmin');
-  Route::post('chart/adm_donut', 'AdminChartController@adm_donut');
-  Route::post('chart/adm_dblbar', 'AdminChartController@adm_dblbar');
-  Route::post('chart/adm_member', 'AdminChartController@adm_member');
-  Route::post('chart/adm_dynform', 'AdminChartController@adm_dynform');
+  Route::post('chart/adm_donut', 'Admin\AdminChartController@adm_donut');
+  Route::post('chart/adm_dblbar', 'Admin\AdminChartController@adm_dblbar');
+  Route::post('chart/adm_member', 'Admin\AdminChartController@adm_member');
+  Route::post('chart/adm_dynform', 'Admin\AdminChartController@adm_dynform');
   
-  Route::resource('setting', 'FormSettingController');
-  Route::resource('types', 'FormTypeController');
-  Route::resource('rules', 'FormRulesController');
-  Route::resource('question', 'FormQuestionController');  
-  Route::resource('question_group', 'FormQuestionGroupController'); 
-  Route::resource('answer', 'FormAnswerController');
-  Route::resource('result', 'FormResultController');
-  Route::resource('user', 'AdminUserController');
-  Route::resource('member', 'AdminMemberController');
+  Route::resource('setting', 'Admin\FormSettingController');
+  Route::resource('types', 'Admin\FormTypeController');
+  Route::resource('rules', 'Admin\FormRulesController');
+  Route::resource('question', 'Admin\FormQuestionController');
+  Route::resource('question_group', 'Admin\FormQuestionGroupController');
+  Route::resource('answer', 'Admin\FormAnswerController');
+  Route::resource('result', 'Admin\FormResultController');
+  Route::resource('user', 'Admin\AdminUserController');
+  Route::resource('member', 'Admin\AdminMemberController');
   Route::get('notif/all', 'NotifController@notifall');
   Route::get('notif/{id}', 'NotifController@notif');
   Route::group(['prefix' => 'ajax/'], function () {
-    Route::get('setting', 'FormSettingController@indexAjax');
-    Route::get('types', 'FormTypeController@indexAjax');
-    Route::get('rules', 'FormRulesController@indexAjax');
-    Route::get('question', 'FormQuestionController@indexAjax');
-    Route::get('question_group', 'FormQuestionGroupController@indexAjax');
-    Route::get('answer', 'FormAnswerController@indexAjax');
-    Route::get('result', 'FormResultController@indexAjax');
-    Route::get('user', 'AdminUserController@indexAjax');
-    Route::get('userresultAjax/{id}', 'AdminUserController@userresultAjax');
-    Route::get('member', 'AdminMemberController@indexAjax');
-    Route::get('memberresultAjax/{id}', 'AdminMemberController@memberresultAjax');
+    Route::get('setting', 'Admin\FormSettingController@indexAjax');
+    Route::get('types', 'Admin\FormTypeController@indexAjax');
+    Route::get('rules', 'Admin\FormRulesController@indexAjax');
+    Route::get('question', 'Admin\FormQuestionController@indexAjax');
+    Route::get('question_group', 'Admin\FormQuestionGroupController@indexAjax');
+    Route::get('answer', 'Admin\FormAnswerController@indexAjax');
+    Route::get('result', 'Admin\FormResultController@indexAjax');
+    Route::get('user', 'Admin\AdminUserController@indexAjax');
+    Route::get('userresultAjax/{id}', 'Admin\AdminUserController@userresultAjax');
+    Route::get('member', 'Admin\AdminMemberController@indexAjax');
+    Route::get('memberresultAjax/{id}', 'Admin\AdminMemberController@memberresultAjax');
     Route::get('notifresult/{id}', 'NotifController@notifresultAjax');
     Route::get('notifuser/{id}', 'NotifController@notifuserAjax');
-    Route::get('marketplace/category', 'AdminCategoryController@indexAjax');
-    Route::get('marketplace/slider', 'AdminSliderController@indexAjax');
+    Route::get('marketplace/category', 'Admin\AdminCategoryController@indexAjax');
+    Route::get('marketplace/slider', 'Admin\AdminSliderController@indexAjax');
     Route::get('organizer/setting-', 'OrganizerSettingController@indexAjax');
     Route::get('organizer/list-', 'OrganizerListController@indexAjax');
   });
-  Route::get('question/whereSetting/{id}', 'FormQuestionController@whereSetting');
-  Route::resource('marketplace/category', 'AdminCategoryController');
-  Route::resource('marketplace/slider', 'AdminSliderController');
+  Route::get('question/whereSetting/{id}', 'Admin\FormQuestionController@whereSetting');
+  Route::resource('marketplace/category', 'Admin\AdminCategoryController');
+  Route::resource('marketplace/slider', 'Admin\AdminSliderController');
 
   Route::resource('organizer/setting_', 'OrganizerSettingController');
   Route::get('organizer/setting/create', 'OrganizerSettingController@create');
@@ -162,11 +166,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
 });
 
 // Kadin Daerah 
-Route::group(['prefix' => 'daerah/', 'middleware' => 'auth.role.daerah'], function () {  
+Route::group(['prefix' => 'daerah/', 'middleware' => 'auth.role.daerah'], function () {
   Route::get('dashboard', 'KadinDaerahController@dashboard');
 
   // pendaftaran
-  Route::get('pendaftaran', 'KadinDaerahController@pendaftaran'); 
+  Route::get('pendaftaran', 'KadinDaerahController@pendaftaran');
 
   // form anggota biasa
   Route::get('submitted', 'KadinDaerahController@submittedForms'); 
@@ -174,7 +178,7 @@ Route::group(['prefix' => 'daerah/', 'middleware' => 'auth.role.daerah'], functi
   Route::delete('submitted/delete/{code}', 'KadinDaerahController@submittedFormsDelete'); 
   Route::get('submitted/detail/{code}/a', 'KadinDaerahController@submittedFormDetail');
   // Route::get('daerah/ajax/submittedforms/{code}', 'KadinDaerahController@ajaxFormDetail');
-  
+
   // member anggota biasa
   Route::get('member', 'KadinDaerahController@member');
   Route::get('ajax/members', 'KadinDaerahController@ajaxMembers');
@@ -182,6 +186,7 @@ Route::group(['prefix' => 'daerah/', 'middleware' => 'auth.role.daerah'], functi
   Route::get('member/validate/{id}', 'KadinDaerahController@memberValidate');
   Route::post('member/validate/{id}', 'KadinDaerahController@memberValidate');
   Route::post('member/requestkta', 'KadinDaerahController@memberReqKta');
+  Route::post('member/postponekta/', 'KadinDaerahController@memberPostKta');
   Route::get('member/detail/{id}', 'KadinDaerahController@memberDetail');
   // Route::get('daerah/ajax/members/{id}', 'KadinDaerahController@ajaxMemberDetail');
 
@@ -264,21 +269,25 @@ Route::group(['prefix' => 'pusat/', 'middleware' => 'auth.role.pusat'], function
 
 // Member ALB
 Route::group(['prefix' => 'alb/', 'middleware' => 'auth.role.alb'], function () {  
-  Route::get('dashboard', 'AlbController@dashboard');
-  Route::get('kta', 'AlbController@kta');
-  Route::get('rn', 'AlbController@regnum');
-  Route::get('compprof', 'AlbController@compprof');
-  Route::get('compprof/edit', 'AlbController@compprofEdit');
-  Route::get('completeprofile', 'AlbController@completeprofile');
+  Route::get('dashboard', 'Alb\AlbController@dashboard');
+  Route::get('kta', 'Alb\AlbController@kta');
+  Route::get('rn', 'Alb\AlbController@regnum');
+  Route::get('compprof', 'Alb\AlbController@compprof');
+  Route::get('compprof/edit', 'Alb\AlbController@compprofEdit');
+  Route::get('completeprofile', 'Alb\AlbController@completeprofile');
 
   // KTA
-  Route::post('requestkta/', 'AlbController@requestkta');
-  Route::get('ajax/kta', 'AlbController@ajaxKta');
-  Route::post('extkta', 'AlbController@extkta');
-  Route::post('ktaprint', 'AlbController@ktaprint');
-  Route::get('printkta', 'AlbController@printkta');
+  Route::post('requestkta/', 'Alb\AlbController@requestkta');
+  Route::get('ajax/kta', 'Alb\AlbController@ajaxKta');
+  Route::post('extkta', 'Alb\AlbController@extkta');
+  Route::post('ktaprint', 'Alb\AlbController@ktaprint');
+  Route::get('printkta', 'Alb\AlbController@printkta');
 
   Route::resource('marketplace', 'MarketPlaceController');
+
+  // Notif
+  Route::get('notif/all', 'Alb\AlbNotifController@notif_all');
+  Route::get('notif/{id}', 'Alb\AlbNotifController@notif_show');
 });
 
 // API

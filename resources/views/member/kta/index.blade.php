@@ -49,7 +49,7 @@
                       <tr>
                         <td class="content-block" align="center">
                           <br>
-                          <button type="submit" class="btn btn-primary" onclick="requestKta()">
+                          <button type="submit" class="btn btn-primary" onclick="requestKta('request')">
                             <i class="fa fa-paper-plane"></i>
                             &nbsp;
                             Kirim Permintaan KTA
@@ -74,7 +74,7 @@
                 <td class="alert alert-good">
                   Member Kadin yang terhormat.<br>
                   <br>
-                  Permintaan KTA anda telah berhasil dikirimkan. Proses registrasi dan implementasi KTA akan memakan waktu beberapa saat. Kami ucapkan terima kasih atas pengertian dan kesabaran anda.<br>
+                  Permintaan KTA anda telah berhasil dikirimkan. Permintaan KTA anda saat ini sedang dalam proses validasi pada Kadin Kabupaten/Kota dimana anda terdaftar. Proses registrasi dan implementasi KTA akan memakan waktu beberapa saat. Kami ucapkan terima kasih atas pengertian dan kesabaran anda.<br>
                   <br>
                   Terima Kasih atas kepercayaan anda pada kami.
                 </td>
@@ -93,7 +93,7 @@
                 <td class="alert alert-good">
                   Member Kadin yang terhormat.<br>
                   <br>
-                  Permintaan KTA anda telah berhasil dikirimkan. Permintaan KTA anda saat ini sedang dalam proses validasi pada Kadin Kabupaten/Kota dimana anda terdaftar. Proses registrasi dan implementasi KTA akan memakan waktu beberapa saat. Kami ucapkan terima kasih atas pengertian dan kesabaran anda.<br>
+                  Permintaan KTA anda telah berhasil dikirimkan. Proses registrasi dan implementasi KTA akan memakan waktu beberapa saat. Kami ucapkan terima kasih atas pengertian dan kesabaran anda.<br>
                   <br>
                   Terima Kasih atas kepercayaan anda pada kami.
                 </td>
@@ -117,6 +117,39 @@
                   Terima Kasih atas kepercayaan anda pada kami.
                 </td>
               </tr>
+            </tbody>
+          </table>
+        @elseif ($kta=="postponed")
+          <table class="main" width="100%" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr>
+              <td class="alert alert-good">
+                Permintaan KTA anda Ditangguhkan!
+              </td>
+            </tr>
+            <tr>
+              <td class="alert alert-good">
+                Member Kadin yang terhormat.<br>
+                <br>
+                Permintaan KTA anda telah ditangguhkan. Harap perhatikan data-data yang anda masukan serta syarat dan ketentuan anggota kadin. Untuk pengajuan ulang silahkan klik link di bawah.<br>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tbody>
+                  <tr>
+                    <td class="content-block" align="center">
+                      <br>
+                      <button type="submit" class="btn btn-primary" onclick="requestKta('reqpostkta')">
+                        <i class="fa fa-paper-plane"></i>
+                        &nbsp;
+                        Kirim Permintaan KTA
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                <br>
+                Terima Kasih atas kepercayaan anda pada kami.
+              </td>
+            </tr>
             </tbody>
           </table>
         @else
@@ -201,6 +234,7 @@
       </div>
     </div>
   </div>
+  <br/><br/>
 @stop
 
 @push('scripts')
@@ -228,13 +262,13 @@
     });
   }
 
-  function requestKta() {    
+  function requestKta($type) {
     $.ajax({    
       url: "{{ url('member/requestkta/') }}",
       type: "post",
       data: {        
         _token: "{{ csrf_token() }}",        
-
+        type: $type
       }
     }).done(function(data) {                    
       if (data.success) {
@@ -295,7 +329,7 @@
         toastr.error(data.msg);
       }
 
-      console.log(data);
+//      console.log(data);
       // location.reload();
       setTimeout(location.reload.bind(location), 1000);
          

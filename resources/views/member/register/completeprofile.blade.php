@@ -13,7 +13,7 @@
     </li>
     <li>
       <a>Company Profile</a>
-    </li>    
+    </li>
     <li class="active">
       <strong>{{ $fqg->name }}</strong>
     </li>

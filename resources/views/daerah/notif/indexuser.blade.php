@@ -5,24 +5,29 @@
 @stop
 
 @section('content')
-<h1> Notification from Member </h1>
-<br><br>
-  
-<!-- <div class="nopadding" align="left">
-  <a href='user/create' class="btn btn-primary btn-md"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
-</div>  
-<br> -->
+  <div class="col-lg-1o">
+    <h1> Notification from Member </h1>
+  </div>
+@endsection
 
-<table class="table table-bordered" id="user-table" width=100%>
-  <thead>
-    <tr>
-      <th>Name</th>    
-      <th>Username</th>
-      <th>Email</th>    
-      <th>Options</th>      
-    </tr>        
-  </thead>
-</table>
+@section('iframe')
+<div class="col-lg-12">
+  <div class="ibox float-e-margins">
+    <div class="ibox-content">
+      <table class="table table-bordered" id="user-table" width=100%>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Status KTA</th>
+          <th>Options</th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -101,23 +106,62 @@ $(function() {
       { "data" : "email" },  
       { "data" : "id"}      
     ],
-    "columnDefs": [            
+    "columnDefs": [
       {
-        // The `data` parameter refers to the data for the cell (defined by the
-        // `data` option, which defaults to the column being worked with, in
-        // this case `data: 0`.
-        // <a href="user/'+row.id+'/edit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>        
-        "render": function ( data, type, row ) {        
-        return '<a href="'+url+'/'+row.id+'" class="btn btn-warning btn-xs">'+
-                  '<span class="glyphicon glyphicon-search"></span>'+
-                  '&nbsp;&nbsp;Detail'+
-                '</a>'+
-                '<a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="user">'+
-                  '<span class="glyphicon glyphicon-trash"></span>'+
-                  '&nbsp;&nbsp;Delete'+
-                '</a>';
+          "render": function ( data, type, row ) {
+              if (row.ext) {
+                  if (row.ext=="requested") {
+                      if (row.kta=="requested") {
+                          return 'KTA Extension Requested, Waiting for Validation';
+                      } else if (row.kta=="validated") {
+                          return 'Profile Validated, waiting for KTA Extension';
+                      } else if (row.kta=="cancelled") {
+                          return 'KTA Extension Request Cancelled';
+                      } else {
+                          return 'KTA is Expired, Extension Requested';
+                      }
+                  } else if (row.ext.indexOf("processed") !== -1) {
+                      if (row.kta=="requested") {
+                          return 'KTA Extension is Processed, Waiting for Validation';
+                      } else if (row.kta=="validated") {
+                          return 'Profile Validated, waiting for KTA Extension';
+                      } else if (row.kta=="cancelled") {
+                          return 'KTA Extension Request Cancelled';
+                      } else {
+                          return 'KTA is Expired, Extension Requested';
+                      }
+                  }
+              }
+
+              if (row.kta==""||row.kta==null) {
+                  return 'Not Yet Requested, Completing Profile Information';
+              } else if (row.kta=="requested") {
+                  return 'KTA Requested, Waiting for Validation';
+              } else if (row.kta=="validated") {
+                  return 'Profile Validated, waiting for KTA Generation';
+              } else if (row.kta=="cancelled") {
+                  return 'KTA Request Cancelled';
+              } else {
+                  return 'KTA Generated';
+              }
+          },
+          "targets": 3
+      },
+      {
+        "render": function ( data, type, row ) {
+            if (row.trackingcode.indexOf('ALB') !== -1) {
+                url = "{{ url('daerah/member/alb') }}";
+            }
+            return '<a href="'+url+'/detail/'+row.id+'" class="btn btn-warning btn-xs">'+
+                      '<span class="glyphicon glyphicon-search"></span>'+
+                      '&nbsp;&nbsp;Detail'+
+                    '</a>'+
+                    '<a href="" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id="'+row.id+'" data-name="'+row.name+'" data-url="user">'+
+                      '<span class="glyphicon glyphicon-trash"></span>'+
+                      '&nbsp;&nbsp;Delete'+
+                    '</a>';
         },
-        "targets": 3
+        "targets": 4
       },
       // {        
       //   "render": function ( data, type, row ) {

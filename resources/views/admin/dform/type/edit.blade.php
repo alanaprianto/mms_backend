@@ -47,7 +47,7 @@
         <div class="ibox-content">
           @include('errors.error_list')
 
-        	{!! Form::model($ftype, ['method' => 'PATCH', 'action' => ['FormTypeController@update', $ftype->id], 'class' => 'form-horizontal']) !!}
+        	{!! Form::model($ftype, ['method' => 'PATCH', 'action' => ['Admin\FormTypeController@update', $ftype->id], 'class' => 'form-horizontal']) !!}
         		@include('admin.dform.type.form', ['submitButtonText' => 'Update Form Type'])
         	{!! Form::close() !!}
         </div>

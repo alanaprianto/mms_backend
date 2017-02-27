@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Form_question_group;
-use App\Http\Requests\FormQuestionGroupRequest;
+use App\Form_rules;
 use Datatables;
+use App\Http\Requests\FormRulesRequest;
 
-class FormQuestionGroupController extends Controller
+class FormRulesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,22 +19,13 @@ class FormQuestionGroupController extends Controller
      */
     public function index()
     {
-        // $search = \Request::get('search');
-        
-        // $fqgroups = Form_question_group::where('name','like','%'.$search.'%')->paginate(7);
-
-        // if (Request::ajax()) {                                            
-        //     return view('admin.dform.question.questions', compact('fquestions'));
-        // }
-
-        // $deleted = false;
-        // return view('admin.dform.questiongroup.index', compact('fqgroups', 'deleted'));
+        // return view('admin.dform.rules.index');
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('admin.dform.questiongroup.index', compact('notifs'));
+        return view('admin.dform.rules.index', compact('notifs'));
     }
 
     public function indexAjax() {        
-        $fr = Form_question_group::select(['id', 'name', 'description']);
+        $fr = Form_rules::select(['id', 'name', 'parameter', 'description']);
         return Datatables::of($fr)->make(true);
     }
 
@@ -45,8 +37,7 @@ class FormQuestionGroupController extends Controller
     public function create()
     {
         $notifs = \App\Helpers\Notifs::getNotifs();
-
-        return view('admin.dform.questiongroup.create', compact('notifs'));
+        return view('admin.dform.rules.create', compact('notifs'));
     }
 
     /**
@@ -55,13 +46,13 @@ class FormQuestionGroupController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(FormQuestionGroupRequest $request)
+    public function store(FormRulesRequest $request)
     {
-         $input = $request->all();
+        $input = $request->all();
 
-        Form_question_group::create($input);
+        Form_rules::create($input);
 
-        return redirect('/admin/question_group');
+        return redirect('/admin/rules');
     }
 
     /**
@@ -72,8 +63,8 @@ class FormQuestionGroupController extends Controller
      */
     public function show($id)
     {
-        // terjadi error jika ke '/admin/question_group'
-        return redirect('/admin/question_group_');
+        // terjadi error jika ke '/admin/rules'
+        return redirect('/admin/rules_');
     }
 
     /**
@@ -84,12 +75,12 @@ class FormQuestionGroupController extends Controller
      */
     public function edit($id)
     {
-        $fqg = Form_question_group::findOrFail($id);
+        $frules = Form_rules::findOrFail($id);
 
-        // return $fsetting;
+        // return $frules;
 
         $notifs = \App\Helpers\Notifs::getNotifs();
-        return view('admin.dform.questiongroup.edit', compact('fqg', 'notifs')); 
+        return view('admin.dform.rules.edit', compact('frules', 'notifs')); 
     }
 
     /**
@@ -99,13 +90,13 @@ class FormQuestionGroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(FormQuestionGroupRequest $request, $id)
+    public function update(FormRulesRequest $request, $id)
     {
-        $fqg = Form_question_group::findOrFail($id);
+        $frules = Form_rules::findOrFail($id);        
 
-        $fqg->update($request->all());
+        $frules->update($request->all());
 
-        return redirect('/admin/question_group');
+        return redirect('/admin/rules');
     }
 
     /**
@@ -116,12 +107,12 @@ class FormQuestionGroupController extends Controller
      */
     public function destroy($id)
     {
-        $fqg = Form_question_group::findOrFail($id);
+        $frules = Form_rules::findOrFail($id);         
 
         try {
-            $fqg->delete();
+            $frules->delete();
             $deleted = true;
-            $deletedMsg = "Data " . $fqg->name . " is deleted";      
+            $deletedMsg = "Data " . $frules->name . " is deleted";      
         }catch(\Exception $e){
             $deleted = false;
             $deletedMsg = "Error while deleting data";      

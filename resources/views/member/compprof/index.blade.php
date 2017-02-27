@@ -70,10 +70,12 @@
   <div class="ibox float-e-margins">
     <div class="ibox-title">    
       <h5>Pendaftaran -</h5>&nbsp;&nbsp;
-      <a href="{{ url('member/completeprofile') }}/{{ $qg1->id }}">
-        <i class="fa fa-gear"></i>
-        Edit
-      </a>
+      @if ($show)
+        <a href="{{ url('member/completeprofile') }}/{{ $qg1->id }}">
+          <i class="fa fa-gear"></i>
+          Edit
+        </a>
+      @endif
       <div class="ibox-tools">      
         <a class="collapse-link">
           <i class="fa fa-chevron-up"></i>
@@ -126,7 +128,7 @@
             </table>
           @else
             <div class="text-center">
-              No Data
+                <h4>No Data</h4>
             </div>
           @endif
         </div>
@@ -138,10 +140,12 @@
   <div class="ibox float-e-margins">
     <div class="ibox-title">
       <h5>Profile Tahap 2 -</h5>&nbsp;&nbsp;
-      <a href="{{ url('member/completeprofile') }}/{{ $qg2->id }}">
-        <i class="fa fa-gear"></i>
-        Edit
-      </a>
+      @if ($show)
+        <a href="{{ url('member/completeprofile') }}/{{ $qg2->id }}">
+          <i class="fa fa-gear"></i>
+          Edit
+        </a>
+      @endif
       <div class="ibox-tools">      
         <a class="collapse-link">
           <i class="fa fa-chevron-up"></i>
@@ -191,10 +195,12 @@
   <div class="ibox float-e-margins">
     <div class="ibox-title">
       <h5>Profile Tahap 3 -</h5>&nbsp;&nbsp;
-      <a href="{{ url('member/completeprofile') }}/{{ $qg3->id }}">
-        <i class="fa fa-gear"></i>
-        Edit
-      </a>
+      @if ($show)
+        <a href="{{ url('member/completeprofile') }}/{{ $qg3->id }}">
+          <i class="fa fa-gear"></i>
+          Edit
+        </a>
+      @endif
       <div class="ibox-tools">
         <a class="collapse-link">
           <i class="fa fa-chevron-up"></i>
@@ -244,10 +250,12 @@
   <div class="ibox float-e-margins">
     <div class="ibox-title">
       <h5>Documents Uploaded -</h5>&nbsp;&nbsp;
-      <a href="{{ url('member/completeprofile') }}/{{ $qgd->id }}">
-        <i class="fa fa-gear"></i>
-        Edit
-      </a>
+      @if ($show)
+        <a href="{{ url('member/completeprofile') }}/{{ $qgd->id }}">
+          <i class="fa fa-gear"></i>
+          Edit
+        </a>
+      @endif
       <div class="ibox-tools">
         <a class="collapse-link">
           <i class="fa fa-chevron-up"></i>

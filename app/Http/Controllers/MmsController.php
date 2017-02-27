@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use FontLib\Table\Type\name;
+use Mockery\Matcher\Not;
 use Request;
 
 use App\Http\Requests;
@@ -129,7 +131,7 @@ class MmsController extends Controller
                   $territory = $result->answer_value;
               }
           }
-                          
+
           $random_string = md5(microtime());
           $first = substr($random_string, 0, 4);
           $last = substr($random_string, -4);
@@ -143,12 +145,13 @@ class MmsController extends Controller
           $user->role = $role;
           // $user->no_kta = "0";
           // $user->no_rn = "0";
-          $crtChat = \App\Helpers\Collaboration::crtAccount($name, $username, $email, $password);
-          if ($crtChat) {
-            $user->chat_acc = "created";
-          } else {
-            $user->chat_acc = "failed";
-          }
+//          $crtChat = \App\Helpers\Collaboration::crtAccount($name, $username, $email, $password);
+//          if ($crtChat) {
+//            $user->chat_acc = "created";
+//          } else {
+//            $user->chat_acc = "failed";
+//          }
+          $user->chat_acc = "failed";
           $user->territory = $territory;
           $user->save();          
 
@@ -218,7 +221,14 @@ class MmsController extends Controller
               $result->id_user = $user->id;
               $result->update();
           }            
-          
+
+          $notif = new Notification;
+          $notif->target = $user->id;
+          $notif->senderid = 0;
+          $notif->value = "Welcome!, Your Account has been succesfully created.";
+          $notif->active = true;
+          $notif->save();
+
           return redirect('register1success');
         } catch(\Exception $e){
             $user->delete();
@@ -291,7 +301,7 @@ class MmsController extends Controller
                   $ext_show = false;
               }
           }
-      }            
+      }
       
       return view('mms.ktatracking-frame', compact('kta', 'exp_show', 'exp_text1', 'exp_text2', 'exp_text3', 'ext_show'));
     }
