@@ -331,7 +331,7 @@
           }          
 
           // location.reload();
-          // setTimeout(location.reload.bind(location), 1000);
+          setTimeout(location.reload.bind(location), 1000);
         });
       }      
     });

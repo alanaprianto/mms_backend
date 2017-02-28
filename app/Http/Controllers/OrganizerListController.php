@@ -81,7 +81,7 @@ class OrganizerListController extends Controller
             $input['username'] = $username;
             $input['password'] = Hash::make($password);            
             $crtChat = \App\Helpers\Collaboration::crtAccount($name, $username, $email, $password);
-            if ($crtChat) {
+            if ($crtChat['success']) {
             	// return $username.' '.$password.' '.$name.' '.$position.' '.$email;
                 Mail::send('emails.register_chat', ['name' => $name, 'username' => $username, 'password' => $password, 'position' => $position],
                     function($message) use ($email) {
@@ -89,6 +89,7 @@ class OrganizerListController extends Controller
                         $message->to($email)->subject('Registered Kadin Organizer');
                     });
 
+                $input['chatid'] = $crtChat['user']['_id'];
                 $pengurus = Pengurus::create($input);
             }   
         } else {
@@ -142,17 +143,36 @@ class OrganizerListController extends Controller
             'email' => 'required|email',
             'address' => 'required',
             'position' => 'required',
+            'username' => 'unique:pengurus,username|unique:users,username',
         ]);
         if ($validator->passes()) {
-            $pengurus = Pengurus::find($id);
-            $pengurus->update($input);
+        	try {
+        		$pengurus = Pengurus::find($id);
+            
+	            $name = $request['name'];
+	            $email = $request['email'];
+	            $uname = $request['username'];
+	            
+	            \App\Helpers\Collaboration::updtCAI($name, $email, $uname, $pengurus->username);
+	            $pengurus->update($input);
+        	} catch(\GuzzleHttp\Exception\ClientException $e) {
+        		$pengurus = Pengurus::find($id);
+            
+	            $name = $request['name'];
+	            $email = $request['email'];
+	            $uname = $request['username'];
+	            
+	            \App\Helpers\Collaboration::updtCAI($name, $email, $uname, $pengurus->username);
+	            $pengurus->update($input);
 
-            // email update uname & password chat
-
+        		return redirect('/admin/organizer/list');
+        	} catch(\Exception $e){
+        		$validator->errors()->add('name', 'Error while updating data!');        		
+        		return Redirect::to('/admin/organizer/list/'.$id.'/edit')->withErrors($validator);
+        	}
         } else {
             return Redirect::to('/admin/organizer/list/'.$id.'/edit')->withErrors($validator);
         }
-
         return redirect('/admin/organizer/list');
     }
 
@@ -167,17 +187,70 @@ class OrganizerListController extends Controller
         $pengurus = Pengurus::find($id);
         
         try {
-            $pengurus->delete();
+            \App\Helpers\Collaboration::deleteAccount($pengurus->username);
+            
+            $pengurus->delete();           
+
             $deleted = true;
             $deletedMsg = "Data " . $pengurus->name . " is deleted";
-
-            \App\Helpers\Collaboration::deleteAccount($pengurus->username);
-        }catch(\Exception $e){
+        } catch (\GuzzleHttp\Exception\ServerException $e) {
+        	$deleted = true;
+            $deletedMsg = "Data " . $pengurus->name . " is deleted";
+        } catch(\Exception $e){
             return $e;
             $deleted = false;
             $deletedMsg = "Error while deleting data";
         }
 
+        return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
+    }
+
+    public function updateCYP(Request $request, $id)
+    {       
+    	$opass = $request['oldpassword'];
+    	$npass = $request['newpassword'];
+    	$cpass = $request['confirmpassword'];
+
+    	if ($npass!=$cpass) {
+    		$deleted = false;
+            $deletedMsg = "New Password didn't Match!";
+    	} else {
+    		try {
+	        	$pengurus = Pengurus::findOrFail($id);
+	        	if (Hash::check($opass, $pengurus->password)) {
+	        		$pengurus->password = Hash::make($npass);
+	        		$pengurus->save();
+	        		
+                    \App\Helpers\Collaboration::updtCYP($npass, $pengurus->username);
+
+	        		$deleted = true;
+	            	$deletedMsg = "Chat Account Password is Updated";
+	        	} else {
+
+	        		$deleted = false;
+            		$deletedMsg = "The Old Password is not Correct!";            		
+	        	}	            
+	        } catch(\GuzzleHttp\Exception\ClientException $e) {
+                $pengurus = Pengurus::findOrFail($id);
+	        	if (Hash::check($opass, $pengurus->password)) {
+	        		$pengurus->password = Hash::make($npass);
+	        		$pengurus->save();
+	        		
+                    \App\Helpers\Collaboration::updtCYP($npass, $pengurus->username);
+
+	        		$deleted = true;
+	            	$deletedMsg = "Chat Account Password is Updated";
+	        	} else {
+
+	        		$deleted = false;
+            		$deletedMsg = "The Old Password is not Correct!";            		
+	        	}
+            } catch(\Exception $e){               
+	            $deleted = false;
+	            $deletedMsg = "Error while Updating Chat Account Password!";
+	        }
+    	}        
+        
         return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
     }
 }

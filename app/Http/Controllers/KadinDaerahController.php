@@ -156,16 +156,16 @@ class KadinDaerahController extends Controller
     public function memberDelete($id)
     {
         $user = User::where('id', '=', $id)->first();
+        $name = "";
+        $ext = "";
 
         try {
-//            $delChat = \App\Helpers\Collaboration::deleteAccount($user->username);
+            \App\Helpers\Collaboration::deleteAccount($user->username);
             $user->delete();            
 
             $path = storage_path() . '/app/uploadedfiles/'.$user->username.'/';
             \File::deleteDirectory($path);
-
-            $name = "";
-            $ext = "";
+            
             $file = storage_path() . '/app/photoprofile'.'/';
             $filesInFolder = \File::files($file);
 
@@ -189,7 +189,10 @@ class KadinDaerahController extends Controller
 
             $deleted = true;
             $deletedMsg = "Data " . $name . " is deleted";
-        }catch(\Exception $e){
+        } catch (\GuzzleHttp\Exception\ServerException $e) {
+            $deleted = true;
+            $deletedMsg = "Data " . $name . " is deleted";
+        } catch(\Exception $e){
             $deleted = false;
             $deletedMsg = "Error while deleting data";
         }

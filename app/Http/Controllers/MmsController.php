@@ -146,7 +146,7 @@ class MmsController extends Controller
           // $user->no_kta = "0";
           // $user->no_rn = "0";
           $crtChat = \App\Helpers\Collaboration::crtAccount($name, $username, $email, $password);
-          if ($crtChat) {
+          if ($crtChat['success']) {
             $user->chat_acc = "created";
           } else {
             $user->chat_acc = "failed";

@@ -85,7 +85,8 @@ class Collaboration
                 ]);
 
                 $usercrt = json_decode($response->getBody(true), true);
-                $success = $usercrt['success'];
+                // $success = $usercrt['success'];
+                $success = $usercrt;
             }
 
             $_this->logout($client, $authtoken, $userId);
@@ -100,6 +101,7 @@ class Collaboration
         $success = false;
         $client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);
         $_this = new Collaboration;
+
         try {            
             $json = $_this->login($client);
             $authtoken = $json['data']['authToken'];
@@ -117,13 +119,56 @@ class Collaboration
             }
 
             if ($userExist) {            
-                $response = $client->request('POST', 'v1/users.update', [
+                $response = $client->request('POST', 'v1/user.update', [
                         'headers' => [
                             'X-Auth-Token' => $authtoken, 
                             'X-User-Id' => $authId,
                             'Content-type' => 'application/json'
                         ],                        
                         'json' => ['userId' => $userId, 'data' => ['name' => $name, 'email' => $email, 'username' => $username]]
+                ]);
+
+                $usercrt = json_decode($response->getBody(true), true);
+                $success = $usercrt['success'];
+            }
+
+            $_this->logout($client, $authtoken, $authId);
+        } catch (RequestException $e) {
+            $response = json_decode($e->getResponse()->getBody(true));
+            $json = $response;
+        }
+        return $success;
+    }
+
+    public static function updtCYP($password, $ousername) {        
+        $success = false;
+        $client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);
+        $_this = new Collaboration;
+
+        try {            
+            $json = $_this->login($client);
+            $authtoken = $json['data']['authToken'];
+            $authId = $json['data']['userId'];            
+
+            $userExist = false;
+            $lusers = $_this->listUser($client, $authtoken, $authId);
+            $users = $lusers['users'];
+            $userId = '';
+            foreach ($users as $key => $user) {             
+                if ($user['username']==$ousername) {
+                    $userExist = true;
+                    $userId = $user['_id'];
+                }
+            }
+
+            if ($userExist) {            
+                $response = $client->request('POST', 'v1/user.update', [
+                        'headers' => [
+                            'X-Auth-Token' => $authtoken, 
+                            'X-User-Id' => $authId,
+                            'Content-type' => 'application/json'
+                        ],                        
+                        'json' => ['userId' => $userId, 'data' => ['password' => $password]]
                 ]);
 
                 $usercrt = json_decode($response->getBody(true), true);
@@ -159,7 +204,7 @@ class Collaboration
             }
 
             if ($userExist) {            
-                $response = $client->request('POST', 'v1/users.update', [
+                $response = $client->request('POST', 'v1/users.delete', [
                         'headers' => [
                             'X-Auth-Token' => $authtoken, 
                             'X-User-Id' => $authId,

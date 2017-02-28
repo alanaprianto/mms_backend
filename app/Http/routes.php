@@ -163,6 +163,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
   Route::get('organizer/setting/create', 'OrganizerSettingController@create');
   Route::resource('organizer/list', 'OrganizerListController');
   Route::get('organizer/list_/create', 'OrganizerListController@create');
+  Route::post('organizer/list/updateCYP/{id}', 'OrganizerListController@updateCYP');
 });
 
 // Kadin Daerah 

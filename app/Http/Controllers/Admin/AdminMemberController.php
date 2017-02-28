@@ -115,7 +115,7 @@ class AdminMemberController extends Controller
         $member = User::findOrFail($id);         
 
         try {
-            $delChat = \App\Helpers\Collaboration::deleteAccount($member->username);
+            \App\Helpers\Collaboration::deleteAccount($member->username);
             $member->delete();
 
             $path = storage_path() . '/app/uploadedfiles/'.$member->username.'/';
@@ -140,7 +140,10 @@ class AdminMemberController extends Controller
             
             $deleted = true;
             $deletedMsg = "Data " . $member->name . " is deleted";      
-        }catch(\Exception $e){
+        } catch (\GuzzleHttp\Exception\ServerException $e) {
+            $deleted = true;
+            $deletedMsg = "Data " . $member->name . " is deleted";
+        } catch(\Exception $e){
             $deleted = false;
             $deletedMsg = "Error while deleting data";      
         }

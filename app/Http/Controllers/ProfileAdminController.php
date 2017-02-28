@@ -27,7 +27,7 @@ class ProfileAdminController extends Controller
     	$notifs = \App\Helpers\Notifs::getNotifs();
 
         if (Auth::user()->role==1) {
-            return view('form.profile.index', compact('notifs', 'name', 'email', 'username'));
+            return view('admin.profile.index', compact('notifs', 'name', 'email', 'username'));
         } else if (Auth::user()->role==2) {
             return view('member.profile.index', compact('notifs', 'name', 'email', 'username'));
         } else if (Auth::user()->role==3) {
@@ -93,10 +93,45 @@ class ProfileAdminController extends Controller
                 
                 $deleted = true;
                 $deletedMsg = "Your Account is Updated";
-            }catch(\Exception $e){
+            } catch(\GuzzleHttp\Exception\ClientException $e) {
+                $user = User::findOrFail($id);                                        
+
+                if ($user->username!=$uname) {
+                    $pathold = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
+                    $pathnew = storage_path() . '/app/uploadedfiles/'.$uname.'/';
+                    \File::copyDirectory($pathold, $pathnew);
+                    \File::deleteDirectory($pathold);
+                }
+
+                $name = "";
+                $ext = "";
+                $file = storage_path() . '/app/photoprofile'.'/';
+                $filesInFolder = \File::files($file);
+                
+                foreach($filesInFolder as $path)
+                {
+                    $files = pathinfo($path);            
+                    if ($files['filename'] == Auth::user()->username) {                
+                        $name = $files['filename'];
+                        $ext = $files['extension'];
+
+                        $imgold = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;
+                        $imgnew = storage_path() . '/app/photoprofile'.'/'.$uname.'.'.$ext;
+                        \File::move($imgold, $imgnew);
+                    }
+                }
+                                
+                $name = $request['name'];
+                $email = $request['email'];
+                $uname = $request['username'];
+                \App\Helpers\Collaboration::updtCAI($name, $email, $uname, $user->username);
+                $user->update($request->all());
+
+                $deleted = true;
+                $deletedMsg = "Your Account is Updated";
+            } catch(\Exception $e){        
                 $deleted = false;
                 $deletedMsg = "Error while Updating Your Account!";
-                return $e;
             }
         }        
         
@@ -119,6 +154,8 @@ class ProfileAdminController extends Controller
 	        		$user->password = Hash::make($npass);
 	        		$user->save();
 	        		
+                    \App\Helpers\Collaboration::updtCYP($npass, $user->username);
+
 	        		$deleted = true;
 	            	$deletedMsg = "Your Account Password is Updated";
 	        	} else {
@@ -126,7 +163,23 @@ class ProfileAdminController extends Controller
 	        		$deleted = false;
             		$deletedMsg = "The Old Password is not Correct!";            		
 	        	}	            
-	        }catch(\Exception $e){
+	        } catch(\GuzzleHttp\Exception\ClientException $e) {
+                $user = User::findOrFail($id);
+                if (Hash::check($opass, $user->password)) {
+                    $user->password = Hash::make($npass);
+                    $user->save();
+                    
+                    \App\Helpers\Collaboration::updtCYP($npass, $user->username);
+
+                    $deleted = true;
+                    $deletedMsg = "Your Account Password is Updated 1";
+                } else {
+
+                    $deleted = false;
+                    $deletedMsg = "The Old Password is not Correct! 1";                   
+                }     
+            } catch(\Exception $e){
+                return $e;
 	            $deleted = false;
 	            $deletedMsg = "Error while Updating Your Account Password!";
 	        }

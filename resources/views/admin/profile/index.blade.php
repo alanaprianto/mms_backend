@@ -91,51 +91,50 @@
 </div>
 
 <!-- Modal Change Profile Picture -->
-        <div class="modal inmodal fade" id="profileimgModal" tabindex="-1" role="dialog" aria-labelledby="profileimgModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content animated bounceInRight">
-              <form id="imgUploadForm" action="{{ url('image-upload') }}" enctype="multipart/form-data" method="POST">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<div class="modal inmodal fade" id="profileimgModal" tabindex="-1" role="dialog" aria-labelledby="profileimgModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content animated bounceInRight">
+      <form id="imgUploadForm" action="{{ url('image-upload') }}" enctype="multipart/form-data" method="POST">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 
-                  <i class="fa fa-image modal-icon"></i>
-                  <h4 class="modal-title" id="profileimgModalLabel">Your Photo</h4>
-                  <small class="font-bold">Change Your Profile Image</small>
+          <i class="fa fa-image modal-icon"></i>
+          <h4 class="modal-title" id="profileimgModalLabel">Your Photo</h4>
+          <small class="font-bold">Change Your Profile Image</small>
+        </div>
+        <div class="modal-body">
+          <div class="center-block" align="center">
+            <img id="theimage" src="{{ url('/images') }}/{{ Auth::user()->username}}" alt="your image" class="img-responsive center-block" width="250px"/>
+            &nbsp;
+            @if (count($errors) > 0)
+              <p>
+                <div class="alert alert-danger">
+                  <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                  <ul>
+                    @foreach ($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                    @endforeach
+                  </ul>
                 </div>
-                <div class="modal-body">
-                  <div class="center-block" align="center">
-                    <img id="theimage" src="{{ url('/images') }}/{{ Auth::user()->username}}" alt="your image" class="img-responsive center-block" width="250px"/>
-                    &nbsp;
-                    @if (count($errors) > 0)
-                      <p>
-                        <div class="alert alert-danger">
-                          <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                          <ul>
-                            @foreach ($errors->all() as $error)
-                              <li>{{ $error }}</li>
-                            @endforeach
-                          </ul>
-                        </div>
-                      </p>
-                    @endif
-                    
-                    {{ csrf_field() }}
-                    <div class="input-group-btn">
-                      <div class="btn btn-primary btn-file">
-                        <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
-                        <span class="hidden-xs">Browse …</span>
-                        <input name="image" type="file" id="imgInp">
-                      </div>
-                      &nbsp;
-                      <button type="submit" class="btn btn-success">Upload</button>
-                    </div>
-
-                </div>
+              </p>
+            @endif
+            
+            {{ csrf_field() }}
+            <div class="input-group-btn">
+              <div class="btn btn-primary btn-file">
+                <i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+                <span class="hidden-xs">Browse …</span>
+                <input name="image" type="file" id="imgInp">
               </div>
-            </form>
+              &nbsp;
+              <button type="submit" class="btn btn-success">Upload</button>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 <!-- Modal Change Account Information -->
 <div class="modal inmodal fade" id="modalCAI" tabindex="-1" role="dialog" aria-labelledby="modalCAILabel">
@@ -179,7 +178,7 @@
   </div>
 </div>
 
-<!-- Modal Change Account Information -->
+<!-- Modal Change Password -->
 <div class="modal inmodal fade" id="modalCYP" tabindex="-1" role="dialog" aria-labelledby="modalCYPLabel">
   <div class="modal-dialog">
     <div class="modal-content animated bounceInRight">

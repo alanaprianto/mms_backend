@@ -9,7 +9,7 @@ class Pengurus extends Model
     protected  $table = "pengurus";
 
     protected $fillable = [
-        'name', 'address', 'position', 'description', 'email', 'username', 'password'
+        'name', 'address', 'position', 'description', 'email', 'username', 'password', 'chatid'
     ];
 
     protected $appends = ['pos_name'];
