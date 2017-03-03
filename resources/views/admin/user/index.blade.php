@@ -1,20 +1,19 @@
-@extends('admin.app')
+@extends('common.app')
 
 @section('active-user')
   active
 @stop
 
 @section('content')
-<div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
     <h2>Users Index</h2>
     <ol class="breadcrumb">
-        <li>
-            <a>Admin</a>
-        </li>
-        <li class="active">
-            <strong>Users</strong>
-        </li>
+      <li>
+        <a>Admin</a>
+      </li>
+      <li class="active">
+        <strong>Users</strong>
+      </li>
     </ol>
   </div>
   <div class="col-lg-2">
@@ -22,8 +21,9 @@
       <a href='user/create' class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
     </div>
   </div>
-</div>
+@stop
 
+@section('iframe')
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
     <div class="col-lg-12">

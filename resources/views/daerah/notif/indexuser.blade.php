@@ -1,8 +1,4 @@
-@extends('daerah.app')
-
-@section('sidebar')
-  @include('daerah.sidebar-plain') 
-@stop
+@extends('common.app')
 
 @section('content')
   <div class="col-lg-1o">

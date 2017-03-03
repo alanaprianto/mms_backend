@@ -19,6 +19,13 @@ use Illuminate\Support\Str;
 
 class AdminUserController extends Controller
 {
+    public function dashboardAdmin()
+    {
+        $notifs = \App\Helpers\Notifs::getNotifs();
+
+        return view('admin.dashboard.index', compact('notifs'));
+    }
+
     /**
      * Display a listing of the resource.
      *

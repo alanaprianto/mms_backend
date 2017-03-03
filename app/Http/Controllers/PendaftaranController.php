@@ -24,28 +24,17 @@ use GuzzleHttp\Exception\RequestException;
 
 class PendaftaranController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
-    {        
-        
+    {
         $fquestions = Form_question::whereHas('group', function ($q) {        
 		    $q->where('name', 'like', '%Pendaftaran%');
 		})->orderBy('order', 'asc')->get();
 
-        // if (Request::ajax()) {                                            
-        //     return view('mms.pendaftaran-content', compact('fquestions'));
-        // }
-        // return $fquestions;
-		return view('mms.pendaftaran-content', compact('fquestions'));
+		return view('frontpage.pendaftaran-content', compact('fquestions'));
     }
     
     public function indexFrame()
-    {        
-        
+    {
         $fquestions = Form_question::whereHas('group', function ($q) {        
             $q->where('name', 'like', '%Pendaftaran%');
         })->orderBy('order', 'asc')->get();
@@ -122,8 +111,8 @@ class PendaftaranController extends Controller
 
             // notif kadin kabupaten/kota
         } else {
-            return Redirect::to('register1')->withErrors($validator);
-            // return Redirect::to('register1')
+            return Redirect::to('register/ab')->withErrors($validator);
+            // return Redirect::to('register/ab')
             //     ->withInput(Input::except(['password', 'password_confirmation']))
             //     ->withErrors($validator);
         }
@@ -229,7 +218,7 @@ class PendaftaranController extends Controller
             $message->from('no-reply@kadin-indonesia.org', 'no-reply');
             $message->to($email)->subject('Kadin Registration');
         });
-        return redirect('/register1success');
+        return redirect('/register/success');
     }
 
     /**
@@ -616,14 +605,6 @@ class PendaftaranController extends Controller
         return $names;
     }
 
-    public function success() {
-        return view('mms.pendaftaran-success');
-    }
-
-    public function successframe() {
-        return view('mms.pendaftaran-successframe');
-    }
-
     public function index2()
     {                
         $fquestions = Form_question::whereHas('group', function ($q) {        
@@ -675,8 +656,8 @@ class PendaftaranController extends Controller
 
                 // notif kadin kabupaten/kota
             } else {
-                return Redirect::to('register2')->withErrors($validator);
-                // return Redirect::to('register1')
+                return Redirect::to('register/alb')->withErrors($validator);
+                // return Redirect::to('register/ab')
                 //     ->withInput(Input::except(['password', 'password_confirmation']))
                 //     ->withErrors($validator);
             }
@@ -779,7 +760,7 @@ class PendaftaranController extends Controller
             $message->from('no-reply@kadin-indonesia.org', 'no-reply');
             $message->to($email)->subject('Kadin Registration');
         });            
-        return redirect('/register1success');
+        return redirect('/register/success');
     }
 
     public function getCode()

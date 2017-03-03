@@ -1,12 +1,12 @@
 @extends('common.app')
 
 @section('head')
-<link href="{{ asset('resources/assets/css/plugins/dropzone/basic.css') }}" rel="stylesheet">
-<link href="{{ asset('resources/assets/css/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
+<link href="{{ asset('css/plugins/dropzone/basic.css') }}" rel="stylesheet">
+<link href="{{ asset('css/plugins/dropzone/dropzone.css') }}" rel="stylesheet">
 
 <!-- SLIDER -->
-<link href="{{ asset('resources/assets/css/plugins/ionRangeSlider/ion.rangeSlider-2.0.3.css') }}" rel="stylesheet">
-<link href="{{ asset('resources/assets/css/plugins/ionRangeSlider/ion.rangeSlider.skinHTML5.css') }}" rel="stylesheet">
+<link href="{{ asset('css/plugins/ionRangeSlider/ion.rangeSlider-2.0.3.css') }}" rel="stylesheet">
+<link href="{{ asset('css/plugins/ionRangeSlider/ion.rangeSlider.skinHTML5.css') }}" rel="stylesheet">
 
 <style type="text/css">
   .col-centered{
@@ -51,7 +51,11 @@
   </ol>
 </div>
 <div class="col-lg-2">
-  <div class="title-action">      
+  <div class="title-action">
+    <a href='/' class="btn btn-primary" onclick="goBack()">
+      <span class="fa fa-arrow-left fa-fw"></span>
+      &nbsp;&nbsp;Back
+    </a>
   </div>
 </div>
 @stop
@@ -141,16 +145,16 @@
     </div>      
   </div>
 </div>
-
+<br/><br/>
 @stop
 
 @push('scripts')
 <!-- DROPZONE -->
-<script src="{{ asset('resources/assets/js/plugins/dropzone/dropzone.js') }}"></script>
+<script src="{{ asset('js/plugins/dropzone/dropzone.js') }}"></script>
 <!-- IonRangeSlider -->
-<script src="{{ asset('resources/assets/js/plugins/ionRangeSlider/ion.rangeSlider-2.1.6.js') }}"></script>
+<script src="{{ asset('js/plugins/ionRangeSlider/ion.rangeSlider-2.1.6.js') }}"></script>
 <!-- Jquery Validate -->
-<script src="{{ asset('resources/assets/js/plugins/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/plugins/validate/jquery.validate.min.js') }}"></script>
 
 <script type="text/javascript">
   function changeCat() {
@@ -381,5 +385,9 @@
       }
     });
   });
+
+  function goBack() {
+      window.history.back();
+  }
 </script>
 @endpush

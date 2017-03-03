@@ -1,4 +1,4 @@
-@extends('pusat.app')
+@extends('common.app')
 
 @section('active-groupnr')
   active
@@ -281,7 +281,7 @@
 
 @push('scripts')
 <!-- Jquery Validate -->
-<script src="{{ asset('resources/assets/js/plugins/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/plugins/validate/jquery.validate.min.js') }}"></script>
 <script type="text/javascript">
   $('#insertModal').on('show.bs.modal', function (event) {  
       var button = $(event.relatedTarget) // Button that triggered the modal    

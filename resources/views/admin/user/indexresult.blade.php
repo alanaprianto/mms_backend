@@ -1,23 +1,22 @@
-@extends('admin.app')
+@extends('common.app')
 
 @section('active-user')
   active
 @stop
 
 @section('content')
-<div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
     <h2>Detail User</h2>
     <ol class="breadcrumb">
-        <li>
-            <a>Admin</a>
-        </li>
-        <li>
-            <a>Users</a>
-        </li>
-        <li class="active">
-            <strong>{{ $member->username }}</strong>
-        </li>
+      <li>
+        <a>Admin</a>
+      </li>
+      <li>
+        <a>Users</a>
+      </li>
+      <li class="active">
+        <strong>{{ $member->username }}</strong>
+      </li>
     </ol>
   </div>
   <div class="col-lg-2">
@@ -28,8 +27,9 @@
       </a>
     </div>
   </div>
-</div>
+@stop
 
+@section('iframe')
 <div class="wrapper wrapper-content animated fadeInRight">
 @if ($member->role==2) 
   <div class="row">

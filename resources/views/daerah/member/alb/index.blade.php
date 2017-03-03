@@ -1,4 +1,4 @@
-@extends('daerah.app')
+@extends('common.app')
 
 @section('active-groupmember')
   active
@@ -31,7 +31,7 @@
 @section('iframe')
 <div class="row">
   <div class="col-lg-12">
-	<div class="ibox float-e-margins">-
+	<div class="ibox float-e-margins">
 	  <div class="ibox-title">
 		<h5>List Member {{ Auth::user()->name }} </h5>
 		<div class="ibox-tools">
@@ -102,7 +102,7 @@
 
 @push('scripts')
 	<!-- ChartJS-->	
-    <script src="{{ asset('resources/assets/js/plugins/chartJs/Chart.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/chartJs/Chart.min.js') }}"></script>
     <script type="text/javascript">
 		$(function() {
 		  $('#list-table').DataTable({

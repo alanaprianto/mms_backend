@@ -198,7 +198,7 @@ class MarketPlaceController extends Controller
               $names = explode(".", $name);
               $thmbName = $names[0].'-thumbs.'.$ext;
               $image = Image::make($file);
-              $image->fit(100, 100)->save($path.$thmbName);
+              $image->fit(200, 200)->save($path.$thmbName);
 
               $dt->push([
                     'key' => $key,

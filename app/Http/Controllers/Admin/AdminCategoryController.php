@@ -42,6 +42,14 @@ class AdminCategoryController extends Controller
         return view('admin.marketplace.category.create', compact('notifs', 'cat'));
     }
 
+    public function create1()
+    {
+        $notifs = \App\Helpers\Notifs::getNotifs();
+        $cat = Category::pluck('title', 'id');
+
+        return view('admin.marketplace.category.create', compact('notifs', 'cat'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *

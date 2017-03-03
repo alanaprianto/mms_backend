@@ -1,4 +1,4 @@
-@extends('daerah.app')
+@extends('common.app')
 
 @section('active-dashboard')
   active
@@ -120,7 +120,6 @@
       <div class="ibox-content">
         <div class="feed-activity-list">
           <div id="wadahnews">
-
           </div>
           <ul id="wadahpagination" class="pagination c-theme"></ul>
         </div>
@@ -222,11 +221,12 @@
     </div>
   </div>
 </div>
+<br/><br/>
 @stop
 
 @push('scripts')
 <!-- ChartJS--> 
-<script src="{{ asset('resources/assets/js/plugins/chartJs/Chart.min.js') }}"></script>
+<script src="{{ asset('js/plugins/chartJs/Chart.min.js') }}"></script>
 <script type="text/javascript">
    window.onload = getNews(0);
     

@@ -51,6 +51,7 @@
   </a>
   <ul class="nav nav-second-level" aria-expanded="true">
       <li class="@yield('active-market-category')"><a href="{{ url('admin/marketplace/category')}}">Category</a></li>
-      <li class="@yield('active-market-slider')"><a href="{{ url('admin/marketplace/slider')}}">Slider</a></li>      
+      <li class="@yield('active-market-slider')"><a href="{{ url('admin/marketplace/slider')}}">Slider</a></li>
+    <li class="@yield('active-market-frontend')"><a href="">Frontend</a></li>
   </ul>
 </li>

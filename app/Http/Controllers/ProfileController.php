@@ -4,73 +4,187 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use Datatables;
-use App\Form_result;
-use Illuminate\Support\Facades\Auth;
-use App\Form_question_group;
-use Illuminate\Support\Str;
 use App\Form_question;
-use Image;
-use Carbon\Carbon;
+use App\Form_question_group;
+use App\Form_result;
+use App\Http\Requests;
 use App\Kta;
 use App\User;
+use Carbon\Carbon;
+use Datatables;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Image;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
-    {        
+    {
         $user = Auth::user();
-        $fr = Form_result::                
-                where('id_user', '=', $user->id)                
-                ->where('id_question', '=', "1")
-                ->first();
-
-        $required = 0;
-        $percentage = 0;
-        $completed = 0;
-
-        if ($fr) {
-            $comp = $fr->answer;
-            $btk = Str::upper($comp);
-
-            $fqg1 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->id;
-            $fq1 = Form_question::where('group_question', '=', $fqg1)->count();
-
-            $fqg2 = Form_question_group::where('name', 'like', '%Pendaftaran%')->first()->id;
-            $fq2 = Form_question::where('group_question', '=', $fqg2)->count();
-
-            $fqg3 = Form_question_group::where('name', 'like', '%Tahap 3%')->first()->id;
-            $fq3 = Form_question::where('group_question', '=', $fqg3)->count();
-
-            $required = $fq1+$fq2+$fq3;
-            $completed = Form_result::where('id_user', '=', $user->id)->count();       
-            $percentage = ($completed/$required) * 100;                
-        }         
-
-        if ($user->kta) {
-            $kta = $user->kta->kta;
-        } else {
-            $kta = "";
-        }
-        
         $name = $user->name;
-        $email = $user->email;        
+        $email = $user->email;
         $username = $user->username;
-                
-		return view('mms.profile.profile', compact('required', 'completed', 'percentage', 'kta',
-                    'name', 'email', 'username'));
+
+        $notifs = \App\Helpers\Notifs::getNotifs();
+
+        $user_caption = '';
+        if (Auth::user()->role==1) {
+            $user_caption = 'Admin';
+        } else if (Auth::user()->role==2) {
+            $user_caption = 'Member';
+        } else if (Auth::user()->role==3) {
+            $user_caption = 'Kadin Indonesia';
+        } else if (Auth::user()->role==4) {
+            $user_caption = 'Kadin Provinsi';
+        } else if (Auth::user()->role==5) {
+            $user_caption = 'Kadin Daerah';
+        } else if (Auth::user()->role==6) {
+            $user_caption = 'Extraordinary Member';
+        }
+
+        return view('common.profile.index', compact('notifs', 'name', 'email', 'username', 'user_caption'));
     }
 
-    public function edit()
-    {        
-		return view('mms.profile.edit');
-    }    
+    public function updateCAI(Request $request, $id)
+    {
+        $uname = $request['username'];
+        $unameexist = User::where('username', '=', $uname)->where('id', '<>', $id)->first();
+
+        if ($unameexist) {
+            $deleted = false;
+            $deletedMsg = "The Username Exist!";
+        } else {
+            try {
+                $user = User::findOrFail($id);
+
+                if ($user->username!=$uname) {
+                    $pathold = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
+                    $pathnew = storage_path() . '/app/uploadedfiles/'.$uname.'/';
+                    \File::copyDirectory($pathold, $pathnew);
+                    \File::deleteDirectory($pathold);
+                }
+
+                $name = "";
+                $ext = "";
+                $file = storage_path() . '/app/photoprofile'.'/';
+                $filesInFolder = \File::files($file);
+
+                foreach($filesInFolder as $path)
+                {
+                    $files = pathinfo($path);
+                    if ($files['filename'] == Auth::user()->username) {
+                        $name = $files['filename'];
+                        $ext = $files['extension'];
+
+                        $imgold = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;
+                        $imgnew = storage_path() . '/app/photoprofile'.'/'.$uname.'.'.$ext;
+                        \File::move($imgold, $imgnew);
+                    }
+                }
+
+                $name = $request['name'];
+                $email = $request['email'];
+                $uname = $request['username'];
+                $updtChat = \App\Helpers\Collaboration::updtCAI($name, $email, $uname, $user->username);
+                $user->update($request->all());
+
+                $deleted = true;
+                $deletedMsg = "Your Account is Updated";
+            } catch(\GuzzleHttp\Exception\ClientException $e) {
+                $user = User::findOrFail($id);
+
+                if ($user->username!=$uname) {
+                    $pathold = storage_path() . '/app/uploadedfiles/'.Auth::user()->username.'/';
+                    $pathnew = storage_path() . '/app/uploadedfiles/'.$uname.'/';
+                    \File::copyDirectory($pathold, $pathnew);
+                    \File::deleteDirectory($pathold);
+                }
+
+                $name = "";
+                $ext = "";
+                $file = storage_path() . '/app/photoprofile'.'/';
+                $filesInFolder = \File::files($file);
+
+                foreach($filesInFolder as $path)
+                {
+                    $files = pathinfo($path);
+                    if ($files['filename'] == Auth::user()->username) {
+                        $name = $files['filename'];
+                        $ext = $files['extension'];
+
+                        $imgold = storage_path() . '/app/photoprofile'.'/'.$name.'.'.$ext;
+                        $imgnew = storage_path() . '/app/photoprofile'.'/'.$uname.'.'.$ext;
+                        \File::move($imgold, $imgnew);
+                    }
+                }
+
+                $name = $request['name'];
+                $email = $request['email'];
+                $uname = $request['username'];
+                \App\Helpers\Collaboration::updtCAI($name, $email, $uname, $user->username);
+                $user->update($request->all());
+
+                $deleted = true;
+                $deletedMsg = "Your Account is Updated";
+            } catch(\Exception $e){
+                $deleted = false;
+                $deletedMsg = "Error while Updating Your Account!";
+            }
+        }
+
+        return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
+    }
+
+    public function updateCYP(Request $request, $id)
+    {
+        $opass = $request['oldpassword'];
+        $npass = $request['newpassword'];
+        $cpass = $request['confirmpassword'];
+
+        if ($npass!=$cpass) {
+            $deleted = false;
+            $deletedMsg = "New Password didn't Match!";
+        } else {
+            try {
+                $user = User::findOrFail($id);
+                if (Hash::check($opass, $user->password)) {
+                    $user->password = Hash::make($npass);
+                    $user->save();
+
+                    \App\Helpers\Collaboration::updtCYP($npass, $user->username);
+
+                    $deleted = true;
+                    $deletedMsg = "Your Account Password is Updated";
+                } else {
+
+                    $deleted = false;
+                    $deletedMsg = "The Old Password is not Correct!";
+                }
+            } catch(\GuzzleHttp\Exception\ClientException $e) {
+                $user = User::findOrFail($id);
+                if (Hash::check($opass, $user->password)) {
+                    $user->password = Hash::make($npass);
+                    $user->save();
+
+                    \App\Helpers\Collaboration::updtCYP($npass, $user->username);
+
+                    $deleted = true;
+                    $deletedMsg = "Your Account Password is Updated 1";
+                } else {
+
+                    $deleted = false;
+                    $deletedMsg = "The Old Password is not Correct! 1";
+                }
+            } catch(\Exception $e){
+                return $e;
+                $deleted = false;
+                $deletedMsg = "Error while Updating Your Account Password!";
+            }
+        }
+
+        return response()->json(['success' => $deleted, 'msg' => $deletedMsg]);
+    }
 
     public function indexAjax($id) {
         $fr = Form_result::

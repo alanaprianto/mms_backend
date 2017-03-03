@@ -4,26 +4,28 @@
         <title>MMS Backend</title>
                    
         <!-- Bootstrap Core CSS -->
-        <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
         <!-- Simple Sidebar CSS -->
-        <!-- <link href="{{ asset('resources/assets/css/simple-sidebar.css') }}" rel="stylesheet">        -->
+        <!-- <link href="{{ asset('css/simple-sidebar.css') }}" rel="stylesheet">        -->
         <!-- Datatables CSS -->
-        <!-- <link href="{{ asset('resources/assets/css/jquery.dataTables.min.css') }}" rel="stylesheet"> -->
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/r-2.1.1/datatables.min.css"/>
+        <!-- <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet"> -->
+        <link href="{{ asset('css/plugins/dataTables/dataTables.bootstrap.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/plugins/dataTables/dataTables.responsive.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/plugins/dataTables/dataTables.tableTools.min.css') }}" rel="stylesheet">
         <!-- Toastr -->
-        <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/css/plugins/toastr/toastr.min.css') }}">  
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/toastr/toastr.min.css') }}">  
         <!-- Font Awesome -->
-        <link href="{{ asset('resources/assets/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+        <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
         <!-- Gritter -->
-        <link href="{{ asset('resources/assets/js/plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">
+        <link href="{{ asset('js/plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">
 
-        <link href="{{ asset('resources/assets/css/animate.css') }}" rel="stylesheet">
-        <link href="{{ asset('resources/assets/css/style.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
-        <link href="{{ asset('resources/assets/css/plugins/cropper/cropper.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/plugins/cropper/cropper.min.css') }}" rel="stylesheet">
         
         <!-- Kraaje Fileinputmin CSS -->
-        <link href="{{ asset('resources/assets/css/fileinput.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/fileinput.min.css') }}" rel="stylesheet">
         @yield('head')
     </head>
     <body>                        
@@ -50,7 +52,7 @@
                             </ul>
                         </div>
                         <div class="logo-element">
-                            <img class="logo-name" src="{{ asset('resources/img/icon144-128x128-10.png') }}" height="48" width="48"/>
+                            <img class="logo-name" src="{{ asset('img/icon144-128x128-10.png') }}" height="48" width="48"/>
                         </div>
                     </li>
                     @if (Auth::user()->role==1)
@@ -66,7 +68,6 @@
                     @elseif (Auth::user()->role==6)
                         @include('alb.sidebar')
                     @endif
-                    
                 </ul>
 
             </div>
@@ -146,6 +147,7 @@
                 @yield('content')
             </div>       
             <br>
+
             @yield('iframe')
 
             <div id="div4" class="footer">
@@ -200,27 +202,23 @@
         </div>     
 
         <!-- JQuery -->
-        <script src="{{ asset('resources/assets/js/jquery-3.1.0.min.js') }}"></script>
+        <script src="{{ asset('js/jquery-3.1.0.min.js') }}"></script>
         <!-- Bootstrap JS -->
-        <script src="{{ asset('resources/assets/js/bootstrap.js') }}"></script>                
+        <script src="{{ asset('js/bootstrap.js') }}"></script>                
         <!-- DataTables -->
-        <!-- <script src="{{ asset('resources/assets/js/datatables/jquery.dataTables.min.js') }}"></script>  
-        <script src="{{ asset('resources/assets/js/datatables/dataTables.bootstrap.js') }}"></script>
-        <script src="{{ asset('resources/assets/js/datatables/dataTables.bootstrap.min.js') }}"></script> -->
-        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/r-2.1.1/datatables.min.js"></script>
+        <script src="{{ asset('js/datatables/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('js/datatables/dataTables.bootstrap.js') }}"></script>
+        <script src="{{ asset('js/datatables/dataTables.bootstrap.min.js') }}"></script>
         <!-- Toastr -->
-        <script src="{{ asset('resources/assets/js/plugins/toastr/toastr.min.js') }}"></script>
-
+        <script src="{{ asset('js/plugins/toastr/toastr.min.js') }}"></script>
         <!-- Menu & Pace -->        
-        <script src="{{ asset('resources/assets/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
-        <script src="{{ asset('resources/assets/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
-
+        <script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+        <script src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
         <!-- Custom and plugin javascript -->
-        <script src="{{ asset('resources/assets/js/inspinia.js') }}"></script>
-        <script src="{{ asset('resources/assets/js/plugins/pace/pace.min.js') }}"></script>
-
+        <script src="{{ asset('js/inspinia.js') }}"></script>
+        <script src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
         <!-- Image cropper -->
-        <script src="{{ asset('resources/assets/js/plugins/cropper/cropper.min.js') }}"></script>
+        <script src="{{ asset('js/plugins/cropper/cropper.min.js') }}"></script>
 
         <script type="text/javascript">
             function readURL(input) {

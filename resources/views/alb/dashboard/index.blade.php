@@ -1,7 +1,7 @@
-@extends('alb.app')
+@extends('common.app')
 
 @section('head')  
-  <link href="{{ asset('resources/assets/css/plugins/blueimp/css/blueimp-gallery.min.css') }}" rel="stylesheet">  
+  <link href="{{ asset('css/plugins/blueimp/css/blueimp-gallery.min.css') }}" rel="stylesheet">
 @stop
 
 @section('active-dashboard')
@@ -291,7 +291,7 @@
 @stop
 
 @push('scripts')
-<script src="{{ asset('resources/assets/js/plugins/blueimp/jquery.blueimp-gallery.min.js') }}"></script>
+<script src="{{ asset('js/plugins/blueimp/jquery.blueimp-gallery.min.js') }}"></script>
 <script type="text/javascript">
    window.onload = getNews(0);
     

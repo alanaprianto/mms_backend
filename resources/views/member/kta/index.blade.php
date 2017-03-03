@@ -1,7 +1,7 @@
-@extends('member.app')
+@extends('common.app')
 
 @section('head')
-    <!-- <link href="{{ asset('resources/assets/css/table_styles.css') }}" rel="stylesheet"> -->
+    <!-- <link href="{{ asset('css/table_styles.css') }}" rel="stylesheet"> -->
 @stop
 
 @section('active-kta')
@@ -234,6 +234,7 @@
       </div>
     </div>
   </div>
+</div>
   <br/><br/>
 @stop
 

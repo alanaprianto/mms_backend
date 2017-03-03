@@ -1,4 +1,4 @@
-@extends('provinsi.app')
+@extends('common.app')
 
 @section('active-dashboard')
 	active
@@ -182,7 +182,7 @@
 
 @push('scripts')
 <!-- ChartJS--> 
-<script src="{{ asset('resources/assets/js/plugins/chartJs/Chart.min.js') }}"></script>
+<script src="{{ asset('js/plugins/chartJs/Chart.min.js') }}"></script>
 <script type="text/javascript">
    window.onload = getNews(0);
     

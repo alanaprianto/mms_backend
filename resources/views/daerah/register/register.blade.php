@@ -1,4 +1,4 @@
-@extends('daerah.app')
+@extends('common.app')
 
 @section('active-register')
   active
@@ -25,6 +25,7 @@
 @section('iframe')
 	<iframe src="{{ url('register1frame') }}" frameborder='0' width='100%' onload='resizeIframe(this)'>	
 	</iframe>
+	<br/><br/>
 @stop
 
 @push('scripts')

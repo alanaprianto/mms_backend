@@ -1,4 +1,4 @@
-@extends('alb.app')
+@extends('common.app')
 
 @section('active-comprof')
   active

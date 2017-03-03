@@ -20,7 +20,7 @@ class LoginController extends Controller
      */
     public function show()
     {                       
-		return view('mms.login');
+		return view('frontpage.login');
     }
 
     /**

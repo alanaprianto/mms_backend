@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Form_question;
 use FontLib\Table\Type\name;
 use Mockery\Matcher\Not;
 use Request;
@@ -27,72 +28,38 @@ use App\Regnum;
 use Illuminate\Support\Collection;
 
 class MmsController extends Controller
-{  
-    /**
-     * Menampilkan Halaman Utama
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {                	
-		// return view('mms.home');
-
-      if (Auth::check()) {
-        return view('frontend.index')->with('name', Auth::user()->name)->with('loginRole', Auth::user()->role);
-      }
-      
-		  return view('frontend.index');
-    }
-
-    /**
-     * Menampilkan Halaman 404 Not Found
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function notfound()
-    {                	
-		// return view('mms.home');
-		return view('frontend.page_404');
-    }        
-
-    /**
-     * Menampilkan list provinsi
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function listProvinsi()
-    {                 
-      $prov = Provinsi::get();
-
-      return $prov;
-    }
-
-    /**
-     * Menampilkan list daerah
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function listDaerah($id)
-    {                 
-      $daerah = Daerah::where(DB::raw('CAST(id AS TEXT)'), 'like', $id.'%')->get();
-
-      return $daerah;
-    }
-
+{
     public function info(){
-      $act2 = "active";
-      return view('mms.informasi-content', compact('act2'));
-    }
-    
-    public function help(){
-      $act3 = "active";
-      return view('mms.bantuan-content', compact('act3'));
+        $act2 = "active";
+        return view('frontpage.informasi-content', compact('act2'));
     }
 
-    public function pay1()
-    {                
-        
-        return view('mms.pay1');
+    public function help(){
+        $act3 = "active";
+        return view('frontpage.bantuan-content', compact('act3'));
+    }
+
+    public function register_ab()
+    {
+        $fquestions = Form_question::whereHas('group', function ($q) {
+            $q->where('name', 'like', '%Pendaftaran%');
+        })->orderBy('order', 'asc')->get();
+
+        return view('frontpage.pendaftaran-content', compact('fquestions'));
+    }
+
+    public function register_alb()
+    {
+        $fquestions = Form_question::whereHas('group', function ($q) {
+            $q->where('name', 'like', '%Anggota Luar Biasa%');
+        })->orderBy('order', 'asc')->get();
+
+        return view('frontpage.pendaftaran2-content', compact('fquestions'));
+    }
+
+    public function notfound()
+    {
+		return view('frontend.page_404');
     }
 
     public function pay1store(Request $request)
@@ -243,20 +210,12 @@ class MmsController extends Controller
         }        
     }
 
-    public function dashboardAdmin()
-    {                       
-      $notifs = \App\Helpers\Notifs::getNotifs();      
-
-      return view('admin.dashboard.index', compact('notifs'));
-    }    
-
     public function ktatrack(Request $request) {
       $input = Request::all();
-      $code = $input['code'];          
-      return view('mms.ktatracking-content', compact('code'));
-    }
+      $code = $input['code'];
 
-    // ktatrackrequestkta
+      return view('frontpage.ktatracking-content', compact('code'));
+    }
 
     public function ktatrackcode ($code) {      
       $fr = \App\Form_result::where('trackingcode', '=', $code)->first();
@@ -302,21 +261,34 @@ class MmsController extends Controller
               }
           }
       }
-      
-      return view('mms.ktatracking-frame', compact('kta', 'exp_show', 'exp_text1', 'exp_text2', 'exp_text3', 'ext_show'));
+      return view('frontpage.ktatracking-frame', compact('kta', 'exp_show', 'exp_text1', 'exp_text2', 'exp_text3', 'ext_show'));
     }
 
-    public function kblilist(Request $request) {
-      $input = Request::all();
-      $type = $input['type'];
-      $parent = $input['parent'];
+    public function rntrack(Request $request) {
+        $input = Request::all();
+        $norn = $input['rnnumber'];
+        $code = null;
 
-      $kbli = Kbli::where('type', '=', $type)->where('parent', '=', $parent)->get();
-      return $kbli;
+        return view('frontpage.ktatracking-content', compact('code', 'norn'));
     }
 
-    public function kblilist1() {
-      $kbli = Kbli::where('type', '=', '1')->where('parent', '=', '0')->get();
-      return $kbli;
-    }    
+    public function rntrackcode($norn) {
+        $regnum = Regnum::where('regnum', '=', $norn)->first();
+
+        if (!$regnum) {
+            $rn = '';
+        } else {
+            $rn = $regnum->regnum;
+        }
+
+        return view('frontpage.rntracking-frame', compact('rn', 'norn'));
+    }
+
+    public function success() {
+        return view('frontpage.pendaftaran-success');
+    }
+
+    public function successframe() {
+        return view('frontpage.pendaftaran-successframe');
+    }
 }

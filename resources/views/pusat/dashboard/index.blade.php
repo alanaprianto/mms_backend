@@ -1,4 +1,4 @@
-@extends('pusat.app')
+@extends('common.app')
 
 @section('active-dashboard')
 	active

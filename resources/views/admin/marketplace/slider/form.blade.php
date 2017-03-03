@@ -4,7 +4,7 @@
     @if ($slider)
       <img id="image" src="{{ $slider->slider_url }}" alt="your image" class="img-responsive" width="250px"/>      
     @else
-      <img id="image" src="{{ asset('resources/assets/img/uimage.png') }}" alt="your image" class="img-responsive" width="250px"/>      
+      <img id="image" src="{{ asset('img/uimage.png') }}" alt="your image" class="img-responsive" width="250px"/>
     @endif
     <label class="contact-avatar-btn">
       <span class="icon icon-camera"></span>

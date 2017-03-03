@@ -1,4 +1,4 @@
-@extends('daerah.app')
+@extends('common.app')
 
 @section('active-groupmember')
   active
@@ -35,6 +35,10 @@
         @endif
       @endif
     @endif
+    <a href='/' class="btn btn-primary" onclick="goBack()">
+      <span class="fa fa-arrow-left fa-fw"></span>
+      &nbsp;&nbsp;Back
+    </a>
   </div>
 </div>
 @stop
@@ -414,5 +418,8 @@
 
         });
     });
+    function goBack() {
+        window.history.back();
+    }
   </script>
 @endpush

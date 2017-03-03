@@ -1,30 +1,17 @@
-@extends('admin.app')
+@extends('common.app')
 
 @section('content')
-<!-- <h1> Form Result </h1>
-<br><br> -->
-
-<div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2>New Submitted Form</h2>
-    <ol class="breadcrumb">
-      <li>
-        <a>Admin</a>
-      </li>  
-        <li>
-            <a>Notification</a>
-        </li>        
-        <li class="active">
-            <strong>New Submitted Form</strong>
-        </li>
-    </ol>
+    <h1>
+      <i class="fa fa-bell"></i>
+      &nbsp;
+      New Submitted Form
+    </h1>
   </div>
-  <div class="col-lg-2">    
-  </div>
-</div>
+@stop
 
+@section('iframe')
 <div class="wrapper wrapper-content animated fadeInRight">
-
   <div class="row">
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
@@ -74,33 +61,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="row">
-    <div class="col-lg-12">
-      <div class="ibox float-e-margins">
-        <div class="ibox-title">
-          <h5>Submitted Form</h5>
-          <div class="ibox-tools"> -->
-            <!-- any link icon -->            
-          <!-- </div>
-        </div>
-        <div class="ibox-content">
-          <table class="table table-striped table-bordered table-hover dataTables-example" id="result-table">
-            <thead>
-              <tr>
-                <th>Question</th>
-                <th>Answer Value</th>
-                <th>Submitted At</th>
-                <th>Tracking Code</th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div> -->
 </div>
 
 <!-- Modal -->

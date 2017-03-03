@@ -1,4 +1,4 @@
-@extends('member.app')
+@extends('common.app')
 
 @section('content')
 <div id="breadcrumbs-bar" class="col-lg-10">
@@ -113,7 +113,7 @@
 @stop
 
 @push('scripts')
-    @include('setkbli_script')
+    @include('scripts.setkbli_script')
 	<script type="text/javascript">
 		function resizeIframe(obj) {
 	      console.log(obj.contentWindow.document.body.scrollHeight);

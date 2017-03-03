@@ -1,5 +1,5 @@
-<html><!-- Site: HackForums.Ru | E-mail: abuse@hackforums.ru | Skype: h2osancho --><head>
-
+<html>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

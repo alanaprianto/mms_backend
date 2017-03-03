@@ -4,19 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Form_question;
 use App\Form_result;
-use Datatables;
-use Illuminate\Support\Facades\Auth;
+use App\Form_question;
+use App\Form_question_group;
+use App\Http\Requests;
+use App\Kta;
+use App\Notification;
+use App\Regnum;
 use App\User;
 use Carbon\Carbon;
-use App\Kta;
+use Datatables;
 use DB;
-use App\Notification;
-use App\Form_question_group;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use App\Regnum;
 use Illuminate\Support\Collection;
 
 class KadinPusatController extends Controller

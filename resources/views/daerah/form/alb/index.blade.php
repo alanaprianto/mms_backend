@@ -1,4 +1,4 @@
-@extends('daerah.app')
+@extends('common.app')
 
 @section('active-groupform')
   active
@@ -105,7 +105,7 @@
 
 @push('scripts')
 	<!-- ChartJS-->	
-    <script src="{{ asset('resources/assets/js/plugins/chartJs/Chart.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/chartJs/Chart.min.js') }}"></script>
     <script type="text/javascript">
 		$(function() {
 		  $('#list-table').DataTable({

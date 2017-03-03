@@ -1,4 +1,4 @@
-@extends('pusat.app')
+@extends('common.app')
 
 @section('content') 
 <div class="col-lg-10">
@@ -14,6 +14,10 @@
 </div>
 <div class="col-lg-2">
   <div class="title-action">
+    <a href='/' class="btn btn-primary" onclick="goBack()">
+      <span class="fa fa-arrow-left fa-fw"></span>
+      &nbsp;&nbsp;Back
+    </a>
   </div>
 </div>
 @stop
@@ -235,5 +239,10 @@
 <br/><br/>
 @stop
 
-@push('scripts')    
+@push('scripts')
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 @endpush

@@ -153,6 +153,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Fedeisas\LaravelMailCssInliner\LaravelMailCssInlinerServiceProvider::class,
         Zjango\Laracurl\LaracurlServiceProvider::class,
+
         /*
          * Application Service Providers...
          */

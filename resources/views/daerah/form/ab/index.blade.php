@@ -1,4 +1,4 @@
-@extends('daerah.app')
+@extends('common.app')
 
 @section('active-groupform')
   active
@@ -57,30 +57,30 @@
   </div>
 </div>
 
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-		        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        	<h4 class="modal-title" id="myModalLabel">Confirmation</h4>
-		      	</div>
-		      	<div class="modal-body">
-		        	ASDAD		       
-		      	</div>
-		      	<div class="modal-footer">        
-			        <input type="hidden" class="form-control" id="id">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-			        <button id="submit_delete" type="submit" class="btn btn-danger">Delete</button>
-		    	  </div>
-		    </div>
-		</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+	  </div>
+	  <div class="modal-body">
+		ASDAD
+	  </div>
+	  <div class="modal-footer">
+		<input type="hidden" class="form-control" id="id">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		<button id="submit_delete" type="submit" class="btn btn-danger">Delete</button>
+	  </div>
 	</div>
+  </div>
+</div>
 @stop
 
 @push('scripts')
 	<!-- ChartJS-->	
-    <script src="{{ asset('resources/assets/js/plugins/chartJs/Chart.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/chartJs/Chart.min.js') }}"></script>
     <script type="text/javascript">
 		$(function() {
 		  $('#list-table').DataTable({

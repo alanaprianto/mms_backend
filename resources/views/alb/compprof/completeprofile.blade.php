@@ -1,4 +1,4 @@
-@extends('member.app')
+@extends('common.app')
 
 @section('active-comprof')
   active
@@ -17,7 +17,11 @@
   </ol>
 </div>
 <div class="col-lg-2">
-  <div class="title-action">      
+  <div class="title-action">
+    <a href='/' class="btn btn-primary" onclick="goBack()">
+      <span class="fa fa-arrow-left fa-fw"></span>
+        &nbsp;&nbsp;Back
+    </a>
   </div>
 </div>
 @stop
@@ -479,6 +483,10 @@
               "<i class='glyphicon glyphicon-file kv-caption-icon'></i>"+
                 filename+
                 "<input name='id_question_"+id+"'' type='hidden' value='"+filename+"'>";
+        }
+
+        function goBack() {
+            window.history.back();
         }
 	</script>
 @endpush

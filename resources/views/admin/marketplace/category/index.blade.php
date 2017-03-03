@@ -1,4 +1,4 @@
-@extends('admin.app')
+@extends('common.app')
 
 @section('active-market')
   active
@@ -8,28 +8,28 @@
 @stop
 
 @section('content')
-<div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
     <h2>Category</h2>
     <ol class="breadcrumb">
-        <li>
-            <a>Admin</a>
-        </li>
-        <li>
-            <a>Marketplace</a>
-        </li>
-        <li class="active">
-            <strong>Category</strong>
-        </li>
+      <li>
+        <a>Admin</a>
+      </li>
+      <li>
+        <a>Marketplace</a>
+      </li>
+      <li class="active">
+        <strong>Category</strong>
+      </li>
     </ol>
   </div>
   <div class="col-lg-2">
     <div class="title-action">
-      <a href='category/create' class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
+      <a href='category_/create' class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
     </div>
   </div>
-</div>
+@stop
 
+@section('iframe')
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
     <div class="col-lg-12">

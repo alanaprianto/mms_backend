@@ -15,11 +15,11 @@
 				position: absolute;
 				border-style: solid;
 				border-width: 50px 50px 50px 50px;
-				-moz-border-image: url("{{ url('resources/assets/images/kadin-border.gif') }}") 68 77 71 67 fill round repeat;
-				-webkit-border-image: url("{{ url('resources/assets/images/kadin-border.gif') }}") 68 77 71 67 fill round repeat;
-				-o-border-image: url("{{ url('resources/assets/images/kadin-border.gif') }}") 68 77 71 67 fill round repeat;
-				border-image: url("{{ url('resources/assets/images/kadin-border.gif') }}") 68 77 71 67 fill round repeat;*/
-				border-image: url("{{ url('resources/assets/images/kb.gif') }}") fill round repeat;
+				-moz-border-image: url("{{ url('images/kadin-border.gif') }}") 68 77 71 67 fill round repeat;
+				-webkit-border-image: url("{{ url('images/kadin-border.gif') }}") 68 77 71 67 fill round repeat;
+				-o-border-image: url("{{ url('images/kadin-border.gif') }}") 68 77 71 67 fill round repeat;
+				border-image: url("{{ url('images/kadin-border.gif') }}") 68 77 71 67 fill round repeat;*/
+				border-image: url("{{ url('images/kb.gif') }}") fill round repeat;
 			}
 			
 			.col-centered{
@@ -58,7 +58,7 @@
 			<div style="text-align: center; margin-left: 281px;margin-top: 20px;">
 				<table>
 					<tr valign="middle">
-						<td><img src="{{ url('resources/img/icon144-128x128-10.png') }}" width="95px"></td>
+						<td><img src="{{ url('img/icon144-128x128-10.png') }}" width="95px"></td>
 						<td style="text-align: center; line-height: 25px">
 							<b style="font-size:19px;">KAMAR DAGANG DAN INDUSTRI</b><br>
 							<i style="font-size:17px;">Chamber of Commerce and Industry</i><br>

@@ -1,4 +1,4 @@
-@extends('provinsi.app')
+@extends('common.app')
 
 @section('active-valnas')
   active
@@ -51,9 +51,9 @@
 
 @push('scripts')
 	<!-- ChartJS-->	
-    <script src="{{ asset('resources/assets/js/plugins/chartJs/Chart.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/chartJs/Chart.min.js') }}"></script>
     <!-- Jquery Validate -->
-    <script src="{{ asset('resources/assets/js/plugins/validate/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/validate/jquery.validate.min.js') }}"></script>
 
     <script type="text/javascript">
 		$(function() {

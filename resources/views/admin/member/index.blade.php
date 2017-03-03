@@ -1,26 +1,26 @@
-@extends('admin.app')
+@extends('common.app')
 
 @section('active-member')
   active
 @stop
 
 @section('content')
-<div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
     <h2>Member Index</h2>
     <ol class="breadcrumb">
-        <li>
-            <a>Admin</a>
-        </li>
-        <li class="active">
-            <strong>Member</strong>
-        </li>
+      <li>
+        <a>Admin</a>
+      </li>
+      <li class="active">
+        <strong>Member</strong>
+      </li>
     </ol>
   </div>
   <div class="col-lg-2">
   </div>
-</div>
+@stop
 
+@section('iframe')
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
     <div class="col-lg-12">

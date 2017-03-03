@@ -1,4 +1,4 @@
-@extends('provinsi.app')
+@extends('common.app')
 
 @section('active-groupkta')
     active
@@ -49,7 +49,11 @@
           &nbsp;&nbsp;Cancel Request
         </a>
       @endif
-    @endif    
+    @endif
+    <a href='/' class="btn btn-primary" onclick="goBack()">
+      <span class="fa fa-arrow-left fa-fw"></span>
+      &nbsp;&nbsp;Back
+    </a>
   </div>
 </div>
 @stop
@@ -443,7 +447,7 @@
 
 @push('scripts')
 <!-- Jquery Validate -->
-<script src="{{ asset('resources/assets/js/plugins/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/plugins/validate/jquery.validate.min.js') }}"></script>
 <script type="text/javascript">
   $('#valModal').on('show.bs.modal', function (event) {  
     var button = $(event.relatedTarget) // Button that triggered the modal
@@ -647,5 +651,9 @@
       }
     });
   });
+
+  function goBack() {
+      window.history.back();
+  }
 </script>
 @endpush

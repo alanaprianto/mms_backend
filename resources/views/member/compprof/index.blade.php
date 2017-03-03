@@ -1,4 +1,4 @@
-@extends('member.app')
+@extends('common.app')
 
 @section('active-compprof')
   active

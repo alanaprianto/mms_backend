@@ -1,33 +1,16 @@
-@extends('admin.app')
+@extends('common.app')
 
 @section('content')
-<!-- <h1> Users Index </h1>
-<br><br> -->
-  
-<!-- <div class="nopadding" align="left">
-  <a href='user/create' class="btn btn-primary btn-md"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Tambah Data</a>
-</div>  
-<br> -->
-
-<div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-10">
-    <h2>Users Index</h2>
-    <ol class="breadcrumb">
-      <li>
-        <a>Admin</a>
-      </li>  
-        <li>
-            <a>Notification</a>
-        </li>        
-        <li class="active">
-            <strong>Users Index</strong>
-        </li>
-    </ol>
+    <h1>
+      <i class="fa fa-bell"></i>
+      &nbsp;
+      Notification From User
+    </h1>
   </div>
-  <div class="col-lg-2">    
-  </div>
-</div>
+@stop
 
+@section('iframe')
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="row">
     <div class="col-lg-12">

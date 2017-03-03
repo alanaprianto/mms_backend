@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Daerah;
+use App\Provinsi;
+use Illuminate\Support\Facades\DB;
+use Request;
 use App\Http\Requests;
 
 use App\Regnum;
@@ -13,6 +16,7 @@ use App\Form_result;
 use App\Gallery;
 use App\User;
 use App\Slider;
+use App\Kbli;
 use \Illuminate\Pagination\Paginator;
 
 class APIController extends Controller
@@ -93,5 +97,33 @@ class APIController extends Controller
         $owner = User::find($product->created_by);
 
         return response()->json(['product' => $product, 'gallery' => $gallery, 'owner' => $owner]);
+    }
+
+    public function kblilist(Request $request) {
+        $input = $request::all();
+        $type = $input['type'];
+        $parent = $input['parent'];
+
+        $kbli = Kbli::where('type', '=', $type)->where('parent', '=', $parent)->get();
+        return $kbli;
+    }
+
+    public function kblilist1() {
+        $kbli = Kbli::where('type', '=', '1')->where('parent', '=', '0')->get();
+        return $kbli;
+    }
+
+    public function listProvinsi()
+    {
+        $prov = Provinsi::get();
+
+        return $prov;
+    }
+
+    public function listDaerah($id)
+    {
+        $daerah = Daerah::where(DB::raw('CAST(id AS TEXT)'), 'like', $id.'%')->get();
+
+        return $daerah;
     }
 }

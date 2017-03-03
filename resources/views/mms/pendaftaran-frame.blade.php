@@ -14,10 +14,10 @@
     <title>KEANGGOTAAN KADIN</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">    
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">    
 
     <!-- Custom styles for this template -->
-    <link href="{{ asset('resources/assets/css/register/style.css') }}" rel="stylesheet">    
+    <link href="{{ asset('css/register/style.css') }}" rel="stylesheet">    
 </head>
 <body id="page-top">
 
@@ -39,9 +39,9 @@
 	</div>
   </section>
 
-<script src="{{ asset('resources/assets/js/jquery-2.1.1.js') }}"></script>
+<script src="{{ asset('js/jquery-2.1.1.js') }}"></script>
     {{ $alb = false }}
-    @include('dynamic_form_script')
+    @include('scripts.dynamic_form_script')
 </body>
 
 <!-- Site: HackForums.Ru | E-mail: abuse@hackforums.ru | Skype: h2osancho -->
