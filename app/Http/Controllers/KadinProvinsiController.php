@@ -409,7 +409,7 @@ class KadinProvinsiController extends Controller
                         $comp = Form_result::where('id_user', '=', $value->owner)
                                 ->where('id_question', '=', '8')
                                 ->first()->answer_value;
-                    } else if ($member->role==6) {
+                    } else if ($value->user->role==6) {
                         $comp = Form_result::where('id_user', '=', $value->owner)
                                 ->where('id_question', '=', '96')
                                 ->first()->answer_value;                        

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Daerah;
+use App\Mfront;
 use App\Provinsi;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Request;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Regnum;
@@ -86,6 +88,41 @@ class APIController extends Controller
 
     	$product = $product->orderBy($order, $sort)->paginate($limit);    	
     	return response()->json(['datas' => $product, 'slider' => $slider]);
+    }
+
+    public function marketplace_list1(Request $request)
+    {
+        $catid = $request['category'];
+        $sperusahaan = $request['sperusahaan'];
+        $sproduk = $request['sproduk'];
+        $crtby = $request['created_by'];
+        $order = $request['order']; // created_at atau updated_at
+        $sort = $request['sort'];
+        $offset = $request['offset']+1;
+        $limit = $request['limit'];
+
+        $dt = new Collection();
+        $mfronts = Mfront::orderBy('position', 'asc')->get();
+        foreach ($mfronts as $key => $value) {
+            $type = $value->type;
+            if (str_contains($type, 'category')) {
+                $products = Product::where('category_id', '=', $value->cat_id)
+                            ->orderBy('created_at', 'desc')
+                            ->limit(10)
+                            ->get();
+            } else {
+                $products = []; // sementara kosong
+            }
+
+            $dt->push([
+                'views' => $value->name,
+                'products' => $products,
+            ]);
+        }
+
+        $slider = Slider::get();
+
+        return response()->json(['datas' => $dt, 'slider' => $slider]);
     }
 
     public function marketplace_detail(Request $request)

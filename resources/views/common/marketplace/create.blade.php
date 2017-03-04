@@ -78,68 +78,69 @@
         <form id="cpForm" method="POST" action="#" accept-charset="UTF-8">
           <input name="_method" value="PATCH" type="hidden">          
           <input name="created_by" value="{{ Auth::user()->id }}" type="hidden">
-          <input name="_token" value="{{ csrf_token() }}" type="hidden">      
-        <table class="table" id="theTable">
-          <tr>
-            <td><strong>Judul Produk</strong></td>
-            <td>:</td>
-            <td><input type="text" class="form-control" name="title"></td>
-          </tr>
-          <tr>
-            <td><strong>Kategori Produk 1</strong></td>
-            <td>:</td>
-            <td>
-              <select id="id_category" class="form-control" name="category_id" onchange="setAnswerType(this.value, 1)">
-                <option value='0' selected>-- Pilih Kategori Produk --</option>
-                @foreach ($parent_cat as $key=>$cat)
-                  <option value='{{ $cat->id }}'>{{ $cat->title }}</option>
-                @endforeach
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Deskripsi Produk</strong></td>
-            <td>:</td>
-            <td><textarea class="form-control" name="description"> </textarea></td>
-          </tr>
-          <tr>
-            <td><strong>Range Harga</strong></td>
-            <td>:</td>
-            <td>
-              <input id="ionrange_1" />
-              <div class="row col-lg-12">
-                <div class="form-group">
-                  <label class="col-lg-4 control-label no-padding">Range Minimal</label>
-                  <div class="col-lg-6">
-                    <input type="text" name="price_min" id="range-min">
-                  </div>                  
-                </div>                
-              </div>
-              <div class="row col-lg-12">
-                <div class="form-group">
-                  <label class="col-lg-4 control-label no-padding">Range Maximal</label>
-                  <div class="col-lg-6">
-                    <input type="text" name="price_max" id="range-max">
+          <input name="_token" value="{{ csrf_token() }}" type="hidden">
+
+          <table class="table" id="theTable">
+            <tr>
+              <td><strong>Judul Produk</strong></td>
+              <td>:</td>
+              <td><input type="text" class="form-control" name="title"></td>
+            </tr>
+            <tr>
+              <td><strong>Kategori Produk 1</strong></td>
+              <td>:</td>
+              <td>
+                <select id="id_category" class="form-control" name="category_id" onchange="setAnswerType(this.value, 1)">
+                  <option value='0' selected>-- Pilih Kategori Produk --</option>
+                  @foreach ($parent_cat as $key=>$cat)
+                    <option value='{{ $cat->id }}'>{{ $cat->title }}</option>
+                  @endforeach
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Deskripsi Produk</strong></td>
+              <td>:</td>
+              <td><textarea class="form-control" name="description"> </textarea></td>
+            </tr>
+            <tr>
+              <td><strong>Range Harga</strong></td>
+              <td>:</td>
+              <td>
+                <input id="ionrange_1" />
+                <div class="row col-lg-12">
+                  <div class="form-group">
+                    <label class="col-lg-4 control-label no-padding">Range Minimal</label>
+                    <div class="col-lg-6">
+                      <input type="text" name="price_min" id="range-min">
+                    </div>
                   </div>
                 </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Galeri Produk</strong></td>
-            <td>:</td>
-            <td>
-              <div id="galeri-produk" class="col-lg-12 dropzone" action="{{ url('marketplace/create_gallery') }}">
-                <div class="dropzone-previews"></div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td align="right"><input class="btn btn-primary" id="btnSubmit" type="submit" value="Submit"></td>
-          </tr>          
-        </table>
+                <div class="row col-lg-12">
+                  <div class="form-group">
+                    <label class="col-lg-4 control-label no-padding">Range Maximal</label>
+                    <div class="col-lg-6">
+                      <input type="text" name="price_max" id="range-max">
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Galeri Produk</strong></td>
+              <td>:</td>
+              <td>
+                <div id="galeri-produk" class="col-lg-12 dropzone" action="{{ url('marketplace/create_gallery') }}">
+                  <div class="dropzone-previews"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td align="right"><input class="btn btn-primary" id="btnSubmit" type="submit" value="Submit"></td>
+            </tr>
+          </table>
         </form>
         <br><br>
       </div>

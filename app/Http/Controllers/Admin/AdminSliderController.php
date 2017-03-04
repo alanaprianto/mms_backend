@@ -90,7 +90,7 @@ class AdminSliderController extends Controller
 
             return redirect('/admin/marketplace/slider');
         } else {
-            return Redirect::to('/admin/marketplace/slider/create')->withErrors($validator);
+            return Redirect::to('/admin/marketplace/slider_/create')->withErrors($validator);
         }            
     }
 

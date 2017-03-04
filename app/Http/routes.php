@@ -134,6 +134,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
     Route::get('notifuser/{id}', 'Admin\AdminNotifController@notifuserAjax');
     Route::get('marketplace/category', 'Admin\AdminCategoryController@indexAjax');
     Route::get('marketplace/slider', 'Admin\AdminSliderController@indexAjax');
+    Route::get('marketplace/frontend', 'Admin\AdminMFrontController@indexAjax');
     Route::get('organizer/setting-', 'OrganizerSettingController@indexAjax');
     Route::get('organizer/list-', 'OrganizerListController@indexAjax');
   });
@@ -142,6 +143,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
   Route::resource('marketplace/category', 'Admin\AdminCategoryController');
   Route::get('marketplace/slider_/create', 'Admin\AdminSliderController@create');
   Route::resource('marketplace/slider', 'Admin\AdminSliderController');
+  Route::get('marketplace/frontend_/create', 'Admin\AdminMFrontController@create');
+  Route::resource('marketplace/frontend', 'Admin\AdminMFrontController');
 
   Route::resource('organizer/setting_', 'OrganizerSettingController');
   Route::get('organizer/setting/create', 'OrganizerSettingController@create');
@@ -266,7 +269,7 @@ Route::group(['prefix' => 'alb/', 'middleware' => 'auth.role.alb'], function () 
 // API
 Route::group(['prefix' => 'api/'], function() {
   Route::post('check_rn/{rn}', 'APIController@check_rn');
-  Route::post('marketplace/list', 'APIController@marketplace_list');
+  Route::post('marketplace/list', 'APIController@marketplace_list1');
   Route::post('marketplace/detail', 'APIController@marketplace_detail');
   Route::get('marketplace/category/list', 'APIController@list_category');
   Route::get('marketplace/category/{id}', 'APIController@get_category');
