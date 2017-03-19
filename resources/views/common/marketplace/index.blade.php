@@ -12,7 +12,6 @@
     $url = url('alb/marketplace/');
   }
 @endphp
-
 <div class="col-lg-10">
   <h2>Marketplace</h2>
   <ol class="breadcrumb">
@@ -33,7 +32,6 @@
 
 @section('iframe')
 <div class="row">
-
   <div class="col-lg-12 white-bg">
     <div class="panel blank-panel">
       <div class="panel-heading">      
@@ -66,7 +64,7 @@
             <ul id="wadah-barang-pg" class="pagination c-theme"></ul>
           </div>
           <div id="tab-2" class="tab-pane">
-            <table class="table table-striped table-bordered table-hover dataTables-example" id="jasa-table" width="100%">
+            <table class="display responsive" id="jasa-table" width="100%">
               <thead>
                 <tr>
                   <th class="text-center">Photo</th>
@@ -96,8 +94,8 @@
     <div class="modal-content animated bounceInRight">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-          <i class="fa fa-warning modal-icon"></i>
-          <h4 class="modal-title">Warning!</h4>
+        <i class="fa fa-warning modal-icon"></i>
+        <h4 class="modal-title">Warning!</h4>
       </div>
       <div class="modal-body">
         <p>This record will be deleted permanently.</p>
@@ -115,40 +113,40 @@
 
 @push('scripts')
 <script type="text/javascript">
-    $('#deleteModal').on('show.bs.modal', function (event) {  
-      var button = $(event.relatedTarget) // Button that triggered the modal      
-      id = button.data('id');
-      name = button.data('name');
-      
-      var modal = $(this);
-      modal.find('.recordname').text('"' + name + '"?').css('font-weight', 'bold');
-      modal.find('.modal-footer .form-control').val(id);
+  $('#deleteModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    id = button.data('id');
+    name = button.data('name');
+
+    var modal = $(this);
+    modal.find('.recordname').text('"' + name + '"?').css('font-weight', 'bold');
+    modal.find('.modal-footer .form-control').val(id);
+  });
+
+  $('#submit_delete').on('click', function (event) {
+    $.ajax({
+      url: "{{ $url }}/"+id,
+      type: "post",
+      data: {
+        _method: 'DELETE',
+        _token: "{{ csrf_token() }}",
+      }
+    }).done(function(data) {
+      console.log(data);
+
+      $('#deleteModal').modal('hide');
+
+      if (data.success) {
+        toastr.success(data.msg);
+      } else {
+        toastr.error(data.msg);
+      }
+
+      setTimeout(location.reload.bind(location), 1000);
     });
+  });
 
-    $('#submit_delete').on('click', function (event) {
-      $.ajax({
-        url: "{{ $url }}/"+id,
-        type: "post",
-        data: {
-          _method: 'DELETE', 
-          _token: "{{ csrf_token() }}",
-        }
-      }).done(function(data) {
-        console.log(data);
-
-        $('#deleteModal').modal('hide'); 
-
-        if (data.success) {
-          toastr.success(data.msg);
-        } else {
-          toastr.error(data.msg);
-        }
-
-        setTimeout(location.reload.bind(location), 1000);
-      });
-    });
-
-    $(function() {
+  $(function() {
     $('#barang-table').DataTable({
       processing: true,
       serverSide: true,
@@ -161,17 +159,17 @@
         { "data" : "id"}
       ],
       "columnDefs": [
-        {          
+        {
           "render": function ( data, type, row ) {
             if (row.gallery_id!=0) {
               return "<img src='"+row.picture_url+"' class='img img-responsive' style='width:100%;'>";
             } else {
               return "<label align='center'>-</label>";
-            }          
+            }
           },
           "targets": 0
         },
-        {          
+        {
           "render": function ( data, type, row ) {
             return "<div class='col-md-12'>"+
                     "<small class='pull-right'>"+row.crt_human+"</small>"+
@@ -181,7 +179,7 @@
           },
           "targets": 1
         },
-        {          
+        {
           "render": function ( data, type, row ) {
             return "<div class='text-center'>"+
                     row.category_title+
@@ -189,7 +187,7 @@
           },
           "targets": 2
         },
-        {          
+        {
           "render": function ( data, type, row ) {
             return "<div class='text-center'>"+
                     row.price_min+" - "+row.price_max+
@@ -197,7 +195,7 @@
           },
           "targets": 3
         },
-        {          
+        {
           "render": function ( data, type, row ) {
           return "<div class='pull-right'>"+
                   "<a href='marketplace/"+row.id+"' class='btn btn-xs btn-success'><i class='fa fa-eye'></i> View </a>&nbsp;"+
@@ -206,7 +204,7 @@
                 "</div>";
           },
           "targets": 4
-        },        
+        },
       ]
     });
   });

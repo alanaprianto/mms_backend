@@ -5,10 +5,15 @@
 	</a>
 </li>
 <li class="@yield('active-register')">
-	<a href="{{ url('daerah/pendaftaran')}}">
+	<a href="#">
 		<i class="fa fa-list-alt"></i>
 		<span class="nav-label">Pendaftaran</span>
+		<span class="fa arrow"></span>
 	</a>
+	<ul class="nav nav-second-level">
+		<li class="@yield('active-register-ab')"><a href="{{ url('daerah/pendaftaran/ab') }}">Anggota Biasa</a></li>
+		<li class="@yield('active-register-alb')"><a href="{{ url('daerah/pendaftaran/alb') }}">Anggota Luar Biasa</a></li>
+	</ul>
 </li>
 <li class="@yield('active-groupform')">
   	<a href="#">

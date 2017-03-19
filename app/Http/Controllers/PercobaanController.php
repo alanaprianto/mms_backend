@@ -23,6 +23,47 @@ use Illuminate\Support\Facades\Mail;
 
 class PercobaanController extends Controller
 {
+    public function e_register2()
+    {
+        $name = 'Syahril Rachman';
+        $code = '5K16E43516109750-ABS';
+        return view('emails.register_confirmation2', compact('name', 'code'));
+    }
+
+    public function e_register1()
+    {
+        $name = 'Syahril Rachman';
+        $code = '5K16E43516109750-ABS';
+        $date = '2017-03-09 04:06:31';
+        return view('emails.register_confirmation1', compact('name', 'code', 'date'));
+    }
+
+    public function e_register()
+    {
+        $name = 'Syahril Rachman';
+        $code = '5K16E43516109750-ABS';
+        $date = '2017-03-09 04:06:31';
+        return view('emails.register_confirmation', compact('name', 'code', 'date'));
+    }
+
+    public function e_success1()
+    {
+        $name = 'Syahril Rachman';
+        $code = '5K16E43516109750-ABS';
+        $username = 'syahril_rachman';
+        $password = '5K16E750';
+        return view('emails.register_succesfull1', compact('name', 'code', 'username', 'password'));
+    }
+
+    public function e_success()
+    {
+        $name = 'Syahril Rachman';
+        $code = '5K16E43516109750-ABS';
+        $username = 'syahril_rachman';
+        $password = '5K16E750';
+        return view('emails.register_succesfull', compact('name', 'code', 'username', 'password'));
+    }
+
     /**
      * Display a listing of the resource.
      *

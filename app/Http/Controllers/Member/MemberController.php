@@ -472,7 +472,6 @@ class MemberController extends Controller
             ->where('id_question', '=', "1")
             ->first()->answer;
         $btk = Str::upper($fr);
-        // return $btk;
 
         $tahap2 = Form_question_group::where('name', 'like', '%'.$btk.'%')->first()->id;
         $tahap3 = Form_question_group::where('name', 'like', '%Tahap 3%')->first()->id;

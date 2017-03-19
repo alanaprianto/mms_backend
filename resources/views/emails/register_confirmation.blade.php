@@ -1,4 +1,4 @@
-<!-- <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet"> -->
+<!-- <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"> -->
 
 <div role="presentation">  
   <div>
@@ -19,7 +19,7 @@
                               <tr>
                                 <td>
                                   <a rel="nofollow" target="_blank" href="https://devtes.com/mms/" style="display:block;">
-                                    <img src="https://devtes.com/mms/resources/assets/frontend/images/logo_kadin.png" alt="KADIN" title="Kamar Dagang Indonesia" border="0" height="76" width="700">
+                                    <img src="https://devtes.com/mms/frontend/images/logo_kadin.png" alt="KADIN" title="Kamar Dagang Indonesia" border="0" height="76" width="700">
                                   </a>
                                 </td>
                               </tr>

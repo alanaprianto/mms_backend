@@ -33,7 +33,7 @@
 
 		console.log("type = "+type);
 		$.ajax({
-	        url: "{{ url('crud/form/setting/') }}" + "/" + type
+	        url: "{{ url('admin/setting/') }}" + "/" + type
 	    }).done(function(datas) {
 	    	var id = "";
 	    	for (i = 0; i < datas.length; i++) {
@@ -45,7 +45,7 @@
 	    		}
 			}
 	    	$.ajax({
-	        url: "{{ url('crud/form/question/whereSetting') }}" + "/" + id
+	        url: "{{ url('admin/question/whereSetting') }}" + "/" + id
 		    }).done(function(datas) {
 		    	console.log(datas);
 		    	var element = document.getElementById("question_id");

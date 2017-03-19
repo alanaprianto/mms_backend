@@ -57,10 +57,14 @@
 
 		var element = document.getElementById("provinsi");
 	    var par = document.getElementById("provinsi_filled");
+        var par1 = document.getElementById("daerah_filled");
 
 	    if (par) {
 			par.remove();
 	    }
+        if (par1) {
+            par1.remove();
+        }
 
 	    var daerah = false;
 	    var init = false;
@@ -88,7 +92,7 @@
 					options += "<option value='"+datas[i].id+"'>"+datas[i].provinsi+"</option>";
 				}
 
-		    	$(	"<div class='form-group' id='provinsi_filled'>"+		    			
+		    	$(	"<div class='form-group' id='provinsi_filled'>"+
 						"<label for=territory class='col-sm-2 control-label'>Provinsi</label>"+
 						"<div class='col-sm-4'>"+
 							"<select class=form-control name='territory' id='provinsi' onchange='setDaerah(this.value, "+daerah+")'>"+

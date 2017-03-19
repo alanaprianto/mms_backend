@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Daerah;
 use App\Mfront;
 use App\Provinsi;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-use App\Http\Requests;
 
 use App\Regnum;
 use App\Product;
@@ -137,7 +136,7 @@ class APIController extends Controller
     }
 
     public function kblilist(Request $request) {
-        $input = $request::all();
+        $input = Request::all();
         $type = $input['type'];
         $parent = $input['parent'];
 

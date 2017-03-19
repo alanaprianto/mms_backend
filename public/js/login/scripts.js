@@ -4,10 +4,9 @@ jQuery(document).ready(function() {
     /*
         Fullscreen background
     */
-    $.backstretch("img/backgrounds/1.jpg");
-    $('#cth').backstretch("img/backgrounds/2.jpg");
-    $('#chat').backstretch("img/backgrounds/3.jpg");
-
+    $.backstretch(img1);
+    $('#cth').backstretch(img2);
+    $('#chat').backstretch(img3);
 
     /*
         Login form validation

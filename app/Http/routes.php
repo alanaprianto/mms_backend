@@ -28,22 +28,22 @@ Route::get('rntrack/{code}', 'MmsController@rntrackcode');
 Route::get('register/success', 'MmsController@success');
 Route::get('register/successframe', 'MmsController@successframe');
 
+// Payment *percobaan
+Route::get('register1pay', 'MmsController@pay1');
+Route::post('register1pay', 'MmsController@pay1store');
+
 // Auth
 Route::get('login', 'LoginController@show');
 Route::post('login', 'LoginController@login');
 Route::get('logout', 'LoginController@logout');
 
 // Register
-Route::get('register1frame', 'PendaftaranController@indexFrame'); // untuk frame pendaftaran di kadin daerah
-Route::post('register1', 'PendaftaranController@store'); // store pendaftaran anggota biasa
-Route::post('register2', 'PendaftaranController@store2'); // store pendaftaran anggota luar biasa
-//Route::get('registeriiframe', 'PendaftaranController@indexiiFrame');
-//Route::get('register/{code}', 'PendaftaranController@register');
-//Route::post('register', 'PendaftaranController@createuser');
+Route::get('register/ab/frame', 'PendaftaranController@indexAbFrame'); // untuk frame pendaftaran di kadin daerah
+Route::get('register/alb/frame', 'PendaftaranController@indexAlbFrame'); // untuk frame pendaftaran di kadin daerah
+Route::post('registerall/{frame}', 'PendaftaranController@storeall'); // store pendaftaran anggota biasa
+Route::get('register/code/{code}', 'PendaftaranController@register_code');
+Route::post('register/code', 'PendaftaranController@store_code');
 
-// Payment *percobaan
-Route::get('register1pay', 'MmsController@pay1');
-Route::post('register1pay', 'MmsController@pay1store');
 
 // Authenticated
 Route::group(['middleware' => 'auth'], function() {
@@ -56,7 +56,6 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('profile/tahapiiiAjax/{id}', 'ProfileController@tahapiiiAjax');
 
   // Register tahap 2
-  Route::get('registerii', 'PendaftaranController@indexii');
   Route::post('registerii/{idqg}', 'PendaftaranController@storeii');
 
   // Image
@@ -74,6 +73,11 @@ Route::group(['middleware' => 'auth'], function() {
 
   // Percobaan
   Route::get('percobaan', 'PercobaanController@percobaan');
+    Route::get('percobaan/email_register2', 'PercobaanController@e_register2');
+    Route::get('percobaan/email_register1', 'PercobaanController@e_register1');
+    Route::get('percobaan/email_register', 'PercobaanController@e_register');
+    Route::get('percobaan/email_success1', 'PercobaanController@e_success1');
+    Route::get('percobaan/email_success', 'PercobaanController@e_success');
   Route::post('percobaan', 'PercobaanController@percobaanstore');
   Route::post('percobaan/rchatLogin', 'PercobaanController@rchatLogin');
 });
@@ -137,6 +141,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
     Route::get('marketplace/frontend', 'Admin\AdminMFrontController@indexAjax');
     Route::get('organizer/setting-', 'OrganizerSettingController@indexAjax');
     Route::get('organizer/list-', 'OrganizerListController@indexAjax');
+    Route::get('marketplace/product/all', 'Admin\AdminMFrontController@api_product_all');
   });
   Route::get('question/whereSetting/{id}', 'Admin\FormQuestionController@whereSetting');
   Route::get('marketplace/category_/create', 'Admin\AdminCategoryController@create');
@@ -144,6 +149,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
   Route::get('marketplace/slider_/create', 'Admin\AdminSliderController@create');
   Route::resource('marketplace/slider', 'Admin\AdminSliderController');
   Route::get('marketplace/frontend_/create', 'Admin\AdminMFrontController@create');
+  Route::get('marketplace/frontend/product/detail/{id}', 'Admin\AdminMFrontController@detail_product');
   Route::resource('marketplace/frontend', 'Admin\AdminMFrontController');
 
   Route::resource('organizer/setting_', 'OrganizerSettingController');
@@ -157,7 +163,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
 Route::group(['prefix' => 'daerah/', 'middleware' => 'auth.role.daerah'], function () {
   Route::get('dashboard', 'KadinDaerahController@dashboard');
   // pendaftaran
-  Route::get('pendaftaran', 'KadinDaerahController@pendaftaran');
+  Route::get('pendaftaran/ab', 'KadinDaerahController@pendaftaran');
+  Route::get('pendaftaran/alb', 'KadinDaerahController@pendaftaran2');
   // form anggota biasa
   Route::get('submitted', 'KadinDaerahController@submittedForms'); 
   Route::get('ajax/submittedforms', 'KadinDaerahController@ajaxForms');
@@ -181,7 +188,6 @@ Route::group(['prefix' => 'daerah/', 'middleware' => 'auth.role.daerah'], functi
   Route::get('ajax/notifuser/{id}', 'KadinDaerahController@notifuserAjax');
   // payment
   Route::get('ajax/payment/{code}', 'KadinDaerahController@paymentAjax');
-  Route::post('register1', 'KadinDaerahController@store');
   // anggota luar biasa
   Route::get('submitted/alb', 'KadinDaerahController@submittedAlbForms');
   Route::get('submitted/alb/detail/{code}', 'KadinDaerahController@submittedAlbFormDetail');

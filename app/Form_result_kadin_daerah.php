@@ -62,8 +62,7 @@ protected  $table = "form_result";
     {
         $id = $this->attributes['id_question'];  
 
-        $request = ['id_question' => $id];        
-
+        $request = ['id_question' => $id];
         $validator = Validator::make($request, [
             'id_question' => 'integer',            
         ]);

@@ -3,13 +3,13 @@
 @section('active-register')
   active
 @stop
-@section('active-register-ab')
+@section('active-register-alb')
 	active
 @stop
 
 @section('content')
 <div class="col-lg-10">
-  <h2>Pendaftaran Anggota Biasa</h2>
+  <h2>Pendaftaran Anggota Luar Biasa</h2>
   <ol class="breadcrumb">
     <li>
       <a>Kadin Daerah</a>
@@ -26,7 +26,7 @@
 @stop
 
 @section('iframe')
-	<iframe src="{{ url('register/ab/frame') }}" frameborder='0' width='100%' onload='resizeIframe(this)'>
+	<iframe src="{{ url('register/alb/frame') }}" frameborder='0' width='100%' onload='resizeIframe(this)'>
 	</iframe>
 @stop
 

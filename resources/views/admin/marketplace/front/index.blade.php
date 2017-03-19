@@ -101,7 +101,7 @@ $(function() {
       {        
         "render": function ( data, type, row ) {
         return "<div class='pull-right'>"+
-                  "<a href='' class='btn btn-success btn-xs' ><span class='glyphicon glyphicon-check'></span>Produk</a>&nbsp;"+
+                  "<a href='frontend/product/detail/"+row.id+"' class='btn btn-success btn-xs' ><span class='glyphicon glyphicon-check'></span>Produk</a>&nbsp;"+
                   "<a href='frontend/"+row.id+"/edit' class='btn btn-xs btn-warning'><i class='fa fa-edit'></i> Edit </a>&nbsp;"+
                   "<a class='btn btn-xs btn-danger' data-toggle='modal' data-target='#myModal' data-id='"+row.id+"' data-name='"+row.name+"' data-url='frontend' title='Delete Item'><i class='fa fa-trash'></i> Delete </a>&nbsp;"+
                 "</div>";

@@ -2,12 +2,23 @@
     <tr>
         <td><strong>Type Tampilan</strong></td>
         <td>:</td>
-        <td>
+        <td id="wadah">
+            @if (! empty($mf))
+            <div class="row">
+                <div class="col-md-8">
+                    <input type="text" class="form-control" name="type" value="{{$mf->type}}" readonly>
+                </div>
+                <div class="col-md-4" id="btnChange">
+                    <button type="button" class="btn btn-warning" onclick="changeCat()">Change</button>
+                </div>
+            </div>
+            @else
             <select id="type" class="form-control" name="type" onchange="setType(this.value)">
                 <option value='' selected>-- Pilih Type Tampilan--</option>
                 <option value='category'>Category</option>
                 <option value='custom'>Custom</option>
             </select>
+            @endif
         </td>
     </tr>
     <tr id="category_field" hidden>
@@ -25,17 +36,23 @@
     <tr>
         <td><strong>Nama Tampilan</strong></td>
         <td>:</td>
-        <td><input type="text" name="name" id="name" class="form-control"></td>
+        <td>
+            {!! Form::text('name', null, ['class' => 'form-control', 'id' => 'name']) !!}
+        </td>
     </tr>
     <tr>
         <td><strong>Posisi</strong></td>
         <td>:</td>
-        <td><input type="text" name="position" id="position" class="form-control"></td>
+        <td>
+            {!! Form::text('position', null, ['class' => 'form-control', 'id' => 'position']) !!}
+        </td>
     </tr>
     <tr>
         <td><strong>Deskripsi</strong></td>
         <td>:</td>
-        <td><textarea name="description" id="description" class="form-control"></textarea></td>
+        <td>
+            {!! Form::textarea('description', null, ['class' => 'form-control', 'id' => 'description']) !!}
+        </td>
     </tr>
     <tr>
         <td></td>
@@ -47,6 +64,29 @@
 </table>
 
 <script>
+    function changeCat() {
+        var wadah = document.getElementById("wadah");
+        var btn = document.getElementById("btnChange");
+
+        $(  "<br/>"+
+            "<select id='type' class='form-control' name='type' onchange='setType(this.value)'>"+
+                "<option value=''>-- Pilih Type Tampilan --</option>"+
+                "<option value='category'>Category</option>"+
+                "<option value='custom'>Custom</option>"+
+            "</select>").appendTo(wadah);
+
+        btn.style.display = 'none';
+//        selectb = document.getElementById("type");
+//        displaysb = selectb.style.display;
+//
+//        if(displaysb=='none') {
+//            selectb.style.display = '';
+//        } else {
+//            selectb.style.display = 'none';
+//        }
+
+    }
+
     function setType(value) {
         if (value.indexOf('category') !== -1) {
             document.getElementById("category_field").hidden = false;
@@ -88,7 +128,7 @@
 
                         console.log('lebih');
                         console.log('deleting row '+stRow+' & '+edRow);
-                    } else if (crRow=ttRow) {
+                    } else if (crRow==ttRow) {
                         table.deleteRow(stRow);
 
                         console.log('sama');

@@ -152,11 +152,11 @@
         <p class="jhgj"></p>
         <div class="hr-line-dashed"></div>
         <div class="form-group">
-          <label>Your Correction</label>
+          <label> Correction</label>
           <input type="text" class="form-control" id="correction" readonly>
         </div>
         <div class="form-group">
-          <label>Your Commentary</label>
+          <label>Commentary</label>
           <textarea class="form-control" id="commentary" readonly></textarea>
         </div>
         <p class="val-by" style="font-size:12px;"></p>
@@ -187,11 +187,11 @@
         <p class="jhgj"></p>
         <div class="hr-line-dashed"></div>
         <div class="form-group">
-          <label>Your Correction</label>
+          <label>Correction</label>
           <input type="text" class="form-control" id="correctionimg" readonly>
         </div>
         <div class="form-group">
-          <label>Your Commentary</label>
+          <label>Commentary</label>
           <textarea class="form-control" id="commentaryimg" readonly></textarea>
         </div>
         <p class="val-by" style="font-size:12px;"></p>

@@ -62,6 +62,12 @@ class MmsController extends Controller
 		return view('frontend.page_404');
     }
 
+    public function pay1()
+    {
+
+        return view('mms.pay1');
+    }
+
     public function pay1store(Request $request)
     {                
         $input = Request::all();
@@ -118,7 +124,6 @@ class MmsController extends Controller
           } else {
             $user->chat_acc = "failed";
           }
-          $user->chat_acc = "failed";
           $user->territory = $territory;
           $user->save();          
 
@@ -130,7 +135,7 @@ class MmsController extends Controller
           $payment->payment_date = new Carbon();
           $payment->save();
 
-          Mail::send('emails.register_succesfull', ['name' => $name, 'username' => $username, 'password' => $password], function($message) use ($email) {
+          Mail::send('emails.register_succesfull1', ['name' => $name, 'username' => $username, 'password' => $password], function($message) use ($email) {
               $message->from('no-reply@kadin-indonesia.org', 'no-reply');
               $message->to($email)->subject('Kadin Registration');                    
           });
@@ -161,26 +166,12 @@ class MmsController extends Controller
 
           $admins = User::where('role', '=', '1')->get();
           foreach ($admins as $key => $admin) {
-              $notif = new Notification;
-
-              $notif->target = $admin->id;
-              $notif->senderid = $user->id;
-              $notif->value = "New User Registered";
-              $notif->active = true;
-                      
-              $notif->save();
+              \App\Helpers\Notifs::create($admin->id, $user->id, null, "New User Registered");
           }
 
           $kadinKota = User::where('role', '=', '5')->where('territory', '=', $territory)->get();
           foreach ($kadinKota as $key => $kota) {
-              $notif = new Notification;
-
-              $notif->target = $kota->id;
-              $notif->senderid = $user->id;
-              $notif->value = "New User Registered";
-              $notif->active = true;
-                      
-              $notif->save();
+              \App\Helpers\Notifs::create($kota->id, $user->id, null, "New User Registered");
           }
 
           $results = Form_result::where('trackingcode', '=', $trcode)->get();
@@ -189,14 +180,9 @@ class MmsController extends Controller
               $result->update();
           }            
 
-          $notif = new Notification;
-          $notif->target = $user->id;
-          $notif->senderid = 0;
-          $notif->value = "Welcome!, Your Account has been succesfully created.";
-          $notif->active = true;
-          $notif->save();
+          \App\Helpers\Notifs::create($user->id, $user->id, null, "Welcome!, Your Account has been succesfully created.");
 
-          return redirect('register1success');
+          return redirect('register/success');
         } catch(\Exception $e){
             $user->delete();
             $payment->delete();

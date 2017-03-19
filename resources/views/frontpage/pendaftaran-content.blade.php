@@ -14,7 +14,7 @@
 			<small>Silahkan isi data pada form dibawah ini !</small><br/><br/>
 			@include('errors.error_list')
 
-			{!! Form::open(['action' => ['PendaftaranController@store'], 'id' => 'wadah']) !!}
+			{!! Form::open(['action' => ['PendaftaranController@storeall', 'false'], 'id' => 'wadah']) !!}
 				<input type="hidden" name="alb" value="false">
 			{!! Form::close() !!}
 		</div>
@@ -24,5 +24,14 @@
 
 @push('scripts')
 	{{ $alb = false }}
-	@include('scripts.dynamic_form_script')
+	<script type="text/javascript">
+		var data = JSON.parse("{{ $fquestions }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+		var init = "{{ session()->has('result') }}";
+        if (init) {
+            var answers = JSON.parse("{{ session('result') }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+		} else {
+            var answers = [];
+		}
+	</script>
+	@include('scripts.dynamic_form_script1')
 @endpush

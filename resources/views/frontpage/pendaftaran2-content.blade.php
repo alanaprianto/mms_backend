@@ -13,7 +13,7 @@
 	  <small>Silahkan isi data pada form dibawah ini !</small><br/><br/>
 	  @include('errors.error_list')
 
-	  {!! Form::open(['action' => ['PendaftaranController@store2'], 'id' => 'wadah', 'enctype' => 'multipart/form-data']) !!}
+	  {!! Form::open(['action' => ['PendaftaranController@storeall', 'false'], 'id' => 'wadah', 'enctype' => 'multipart/form-data']) !!}
 		<input type="hidden" name="alb" value="true">
 	  {!! Form::close() !!}
 	</div>
@@ -60,12 +60,29 @@
 
 @push('scripts')
 	{{ $alb = true }}
-	@include('scripts.dynamic_form_script')
-	@include('scripts.setkbli_script')
-
 	<script>
         $('#insertModal').on('show.bs.modal', function (event) {
             document.getElementById("agree").checked = false;
         });
+
+        $('#btnsubmit').on('click', function (event) {
+            $( "#wadah" ).submit();
+        });
+
+        $(function() {
+            $('#agree').change(function() {
+                $('#btnsubmit').attr('disabled', !this.checked);
+            });
+        });
+
+        var data = JSON.parse("{{ $fquestions }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+        var init = "{{ session()->has('result') }}";
+        if (init) {
+            var answers = JSON.parse("{{ session('result') }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+        } else {
+            var answers = [];
+        }
 	</script>
+	@include('scripts.dynamic_form_script1')
+	@include('scripts.setkbli_script')
 @endpush

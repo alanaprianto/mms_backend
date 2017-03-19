@@ -24,24 +24,32 @@
   <section class="features">
     <div class="container">
 		<div class="row features-block">
-			<!--<div class="col-lg-12 features-text wow fadeInLeft">-->
-			<div class="col-lg-12 features-text wow fadeInLeft">
-				<strong>REGISTER MEMBER KEANGGOTAAN KADIN INDONESIA</strong><br/>
-				<small>Silahkan isi data pada form dibawah ini !</small><br/><br/>
-				@include('errors.error_list')
+            <div class="col-lg-12 features-text wow fadeInLeft">
+                <!-- <strong>REGISTER MEMBER KEANGGOTAAN KADIN INDONESIA</strong><br/> -->
+                <strong>REGISTER ANGGOTA BIASA KADIN INDONESIA</strong><br/>
+                <small>Silahkan isi data pada form dibawah ini !</small><br/><br/>
+                @include('errors.error_list')
 
-				{!! Form::open(['action' => ['KadinDaerahController@store'], 'id' => 'wadah']) !!}
+                {!! Form::open(['action' => ['PendaftaranController@storeall', 'true'], 'id' => 'wadah']) !!}
                     <input type="hidden" name="alb" value="false">
-
-				{!! Form::close() !!}
-			</div>
+                {!! Form::close() !!}
+            </div>
 		</div>
 	</div>
   </section>
-
+  <br/><br/>
 <script src="{{ asset('js/jquery-2.1.1.js') }}"></script>
     {{ $alb = false }}
-    @include('scripts.dynamic_form_script')
+    <script type="text/javascript">
+      var data = JSON.parse("{{ $fquestions }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+      var init = "{{ session()->has('result') }}";
+      if (init) {
+        var answers = JSON.parse("{{ session('result') }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+      } else {
+        var answers = [];
+      }
+    </script>
+    @include('scripts.dynamic_form_script1')
 </body>
 
 <!-- Site: HackForums.Ru | E-mail: abuse@hackforums.ru | Skype: h2osancho -->

@@ -8,7 +8,7 @@
         <!-- Simple Sidebar CSS -->
         <!-- <link href="{{ asset('css/simple-sidebar.css') }}" rel="stylesheet">        -->
         <!-- Datatables CSS -->
-        <!-- <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet"> -->
+{{--        <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">--}}
         <link href="{{ asset('css/plugins/dataTables/dataTables.bootstrap.css') }}" rel="stylesheet">
         <link href="{{ asset('css/plugins/dataTables/dataTables.responsive.css') }}" rel="stylesheet">
         <link href="{{ asset('css/plugins/dataTables/dataTables.tableTools.min.css') }}" rel="stylesheet">

@@ -50,7 +50,9 @@
 	    	var options = "";
 			for (i = 0; i < list_answer.length; i++) {
 			   	var answer = list_answer[i];
-				options += answer.options_tag.replace("[value]", answer.id).replace("[answer]", answer.answer)
+				options += answer.options_tag
+							.replace("[value]", answer.id)
+							.replace("[answer]", answer.answer);
 			}
 
 	    	$("<div id='answer_par'>"+	    			    		
