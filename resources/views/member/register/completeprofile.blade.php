@@ -128,5 +128,6 @@
 	    var data = JSON.parse("{{ $fquestions }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
         var answers = JSON.parse("{{ $fresults }}".replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
 	</script>
+    {{ $alb = false }}
     @include('scripts.dynamic_form_script1')
 @endpush

@@ -165,32 +165,44 @@
     var ttRow = index+6;  
 
     if (id!=0) {
+      var table = document.getElementById("theTable");
+      var crRow = table.rows.length;
+      console.log(crRow+" "+ttRow);
+
       $.ajax({
           url: "{{ url('api/marketplace/category/') }}" + "/" + id
       }).done(function(data) {
         if (data.length === 0) {
+            if (crRow<ttRow) {
 
+            } else if (crRow>ttRow) {
+                table.deleteRow(stRow);
+                table.deleteRow(edRow);
+
+                console.log('lebih');
+                console.log('deleting row '+stRow+' & '+edRow);
+            } else if (crRow=ttRow) {
+                table.deleteRow(stRow);
+
+                console.log('sama');
+            }
         } else {
           var options = "";
           for (i = 0; i < data.length; i++) {
-            var answer = data[i]; 
+            var answer = data[i];
             options += "<option value='"+answer.id+"'>"+answer.title+"</option>";
-          }        
-
-          var table = document.getElementById("theTable");
-          var crRow = table.rows.length;
-          console.log(crRow+" "+ttRow);
+          }
 
           if (crRow<ttRow) {
             
           } else if (crRow>ttRow) {
             table.deleteRow(stRow);
             table.deleteRow(edRow);
-            
+
             console.log('lebih');
             console.log('deleting row '+stRow+' & '+edRow);
           } else if (crRow=ttRow) {
-            table.deleteRow(stRow);          
+            table.deleteRow(stRow);
 
             console.log('sama');
           }
@@ -211,7 +223,7 @@
       });
     }
   }    
-  
+
 
   Dropzone.options.galeriProduk = {
     

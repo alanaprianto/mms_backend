@@ -14,6 +14,7 @@
             margin: 0 auto;
         }
     </style>
+    <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -69,18 +70,33 @@
                     </td>
                     <td width="20%">
                         <div class="col-lg-12 text-center">
-                            <button class="btn btn-default " type="button">Add All&nbsp;&nbsp;>></button><br/>
-                            <button class="btn btn-default " type="button">Add&nbsp;&nbsp;>></button>
+                            <table class="table" id="theTable">
+                                <tr>
+                                    <td>
+                                        <button id="add" class="btn btn-default " type="button">Add&nbsp;&nbsp;>></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label">Select Category</label><br/>
+                                        <select id="cat_id" class="form-control" name="cat_id" onchange="setAnswerType(this.value, 1)">
+                                            <option value='0' selected>-- Pilih Kategori Produk --</option>
+                                            @foreach ($parent_cat as $key=>$cat)
+                                                <option value='{{ $cat->id }}'>{{ $cat->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button id="remove" class="btn btn-default " type="button"><<&nbsp;&nbsp;Remove</button>
+                                    </td>
+                                </tr>
+                            </table>
                             <br/><br/>
-                            <label class="control-label">Select Category</label><br/>
-                            <select class="form-control m-b" name="account">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                            </select><br/>
-                            <button class="btn btn-default " type="button"><<&nbsp;&nbsp;Remove</button>
-                            <button class="btn btn-default " type="button"><<&nbsp;&nbsp;Remove All</button>
+
+                            <br/>
+
                         </div>
                     </td>
                     <td width="40%" valign="top">
@@ -109,13 +125,25 @@
     window.history.back();
   }
 
-  $(function() {
-      $('#table1').DataTable({
+  var type = "{{ $mf->type }}";
+  if (type.indexOf("category") !== -1) {
+      document.getElementById("add").disabled = true;
+      document.getElementById("remove").disabled = true;
+  }
+
+  $(document).ready(function() {
+      var table1 = $('#table1').DataTable({
           processing: true,
           serverSide: true,
-          ajax: "{{ url('admin/ajax/marketplace/product/all')}}",
+          ajax: {
+              "type": 'POST',
+              "url": "{{ url('admin/ajax/marketplace/frontend/product/all')}}/{{ $mf->id }}",
+              "data": function(d){
+                  d.category = getCat();
+              }
+          },
           columns: [
-              { "data" : "title" },
+              { "data" : "title" }
           ],
           "columnDefs": [
               {
@@ -139,6 +167,186 @@
               },
           ]
       });
+
+      var table2 = $('#table2').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ url('admin/ajax/marketplace/frontend/product/')}}/{{ $mf->id }}",
+          columns: [
+              { "data" : "title" },
+          ],
+          "columnDefs": [
+              {
+                  "render": function ( data, type, row ) {
+                      if (row.gallery_id!=0) {
+                          return    "<div class='feed-element'>"+
+                              "<a href='#' class='pull-left'>"+
+                              "<img alt='image' class='img-circle' src='"+row.picture_url+"'>"+
+                              "</a>"+
+                              "<div class='media-body '>"+
+                              "<small class='pull-right'>"+row.crt_human+"</small>"+
+                              row.title+" <br>"+
+                              "<small class='text-muted'>"+row.created_at+"</small>"+
+                              "</div>"+
+                              "</div>";
+                      } else {
+                          return "<label align='center'>-</label>";
+                      }
+                  },
+                  "targets": 0
+              },
+          ]
+      });
+
+      $('#table1').on( 'click', 'tr', function () {
+          $(this).toggleClass('selected');
+      });
+
+      $('#table2').on( 'click', 'tr', function () {
+          $(this).toggleClass('selected');
+      });
+
+      $('#add').on('click', function (event) {
+          var datas = table1.rows('.selected').data();
+          var products = '';
+          for (i=datas.length;i>0;i--) {
+              products += datas[i-1].id+',';
+          }
+
+          var url = "{{ url('admin/ajax/marketplace/frontend/product/add') }}";
+          $.ajax({
+              url: url,
+              type: "POST",
+              data: {
+                  _token: "{{ csrf_token() }}",
+                  products: products,
+                  id_mfront: "{{ $mf->id }}",
+                  type: type
+              }
+          }).done(function(data) {
+              if (data.success) {
+                  toastr.success(data.msg);
+              } else {
+                  toastr.error(data.msg);
+              }
+
+              var ref1 = $('#table1').DataTable();
+              var ref2 = $('#table2').DataTable();
+              ref1.ajax.reload(null, false);
+              ref2.ajax.reload(null, false);
+          });
+      });
+
+      $('#remove').on('click', function (event) {
+          var datas = table2.rows('.selected').data();
+          var products = '';
+          for (i=datas.length;i>0;i--) {
+              products += datas[i-1].id+',';
+          }
+
+          var url = "{{ url('admin/ajax/marketplace/frontend/product/remove') }}";
+          $.ajax({
+              url: url,
+              type: "POST",
+              data: {
+                  _token: "{{ csrf_token() }}",
+                  products: products,
+                  id_mfront: "{{ $mf->id }}",
+                  type: type
+              }
+          }).done(function(data) {
+              if (data.success) {
+                  toastr.success(data.msg);
+              } else {
+                  toastr.error(data.msg);
+              }
+
+              var ref1 = $('#table1').DataTable();
+              var ref2 = $('#table2').DataTable();
+              ref1.ajax.reload(null, false);
+              ref2.ajax.reload(null, false);
+          });
+      });
   });
+
+  function setAnswerType(id, index) {
+      var stRow = index+1;
+      var edRow = index+1;
+      var ttRow = index+3;
+
+      console.log(stRow+' '+edRow+' '+ttRow);
+      if (id!=0) {
+          var table = document.getElementById("theTable");
+          var crRow = table.rows.length;
+
+          $.ajax({
+              url: "{{ url('api/marketplace/category/') }}" + "/" + id
+          }).done(function(data) {
+              if (data.length === 0) {
+                  if (crRow<ttRow) {
+
+                  } else if (crRow>ttRow) {
+                      table.deleteRow(stRow);
+                      table.deleteRow(edRow);
+
+                      console.log('lebih');
+                      console.log('deleting row '+stRow+' & '+edRow);
+                  } else if (crRow==ttRow) {
+                      table.deleteRow(stRow);
+
+                      console.log('sama');
+                  }
+              } else {
+                  var options = "";
+                  for (i = 0; i < data.length; i++) {
+                      var answer = data[i];
+                      options += "<option value='"+answer.id+"'>"+answer.title+"</option>";
+                  }
+
+                  if (crRow<ttRow) {
+
+                  } else if (crRow>ttRow) {
+                      table.deleteRow(stRow);
+                      table.deleteRow(edRow);
+
+                      console.log('lebih');
+                      console.log('deleting row '+stRow+' & '+edRow);
+                  } else if (crRow==ttRow) {
+                      table.deleteRow(stRow);
+
+                      console.log('sama');
+                  }
+
+                  var count = index+1;
+                  var row = table.insertRow(stRow);
+
+                  var cell1= row.insertCell(0);
+                  cell1.innerHTML =
+                      "<strong>Select Category "+count+"</strong>"+
+                      "<select id='cat_id' class='form-control required' name='cat_id' onchange='setAnswerType(this.value, "+count+")'>"+
+                      options+
+                      "</select>";
+              }
+
+              refreshTable1(id);
+          });
+      }
+  }
+
+  function refreshTable1(id) {
+      setCat(id);
+
+      var ref1 = $('#table1').DataTable();
+      ref1.ajax.reload(null, false);
+  }
+
+  var category = 0;
+  function getCat() {
+      return category;
+  }
+
+  function setCat(cat) {
+      category = cat;
+  }
 </script>
 @endpush

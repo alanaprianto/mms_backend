@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Daerah;
 use App\Mfront;
+use App\Mfront_product;
 use App\Provinsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -110,7 +111,8 @@ class APIController extends Controller
                             ->limit(10)
                             ->get();
             } else {
-                $products = []; // sementara kosong
+                $mfp = Mfront_product::where('id_mfront', '=', $value->id)->pluck('id_product');
+                $products = Product::whereIn('id', $mfp)->get();
             }
 
             $dt->push([
@@ -136,9 +138,8 @@ class APIController extends Controller
     }
 
     public function kblilist(Request $request) {
-        $input = Request::all();
-        $type = $input['type'];
-        $parent = $input['parent'];
+        $type = $request['type'];
+        $parent = $request['parent'];
 
         $kbli = Kbli::where('type', '=', $type)->where('parent', '=', $parent)->get();
         return $kbli;

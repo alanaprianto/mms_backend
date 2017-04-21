@@ -45,7 +45,7 @@
       <div class="panel-body">
         <div class="tab-content">
           <div id="tab-1" class="tab-pane active">
-            <table class="display responsive" id="barang-table">
+            <table class="table table-striped table-bordered table-hover dataTables-example" id="barang-table">
               <thead>
                 <tr>
                   <th class="text-center">Photo</th>
@@ -64,7 +64,7 @@
             <ul id="wadah-barang-pg" class="pagination c-theme"></ul>
           </div>
           <div id="tab-2" class="tab-pane">
-            <table class="display responsive" id="jasa-table" width="100%">
+            <table class="table table-striped table-bordered table-hover dataTables-example" id="jasa-table" width="100%">
               <thead>
                 <tr>
                   <th class="text-center">Photo</th>

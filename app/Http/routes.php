@@ -141,7 +141,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
     Route::get('marketplace/frontend', 'Admin\AdminMFrontController@indexAjax');
     Route::get('organizer/setting-', 'OrganizerSettingController@indexAjax');
     Route::get('organizer/list-', 'OrganizerListController@indexAjax');
-    Route::get('marketplace/product/all', 'Admin\AdminMFrontController@api_product_all');
+    Route::post('marketplace/frontend/product/all/{id}', 'Admin\AdminMFrontController@api_product_all');
+    Route::get('marketplace/frontend/product/{id}', 'Admin\AdminMFrontController@api_product_id');
+    Route::post('marketplace/frontend/product/add', 'Admin\AdminMFrontController@func_add');
+    Route::post('marketplace/frontend/product/remove', 'Admin\AdminMFrontController@func_remove');
   });
   Route::get('question/whereSetting/{id}', 'Admin\FormQuestionController@whereSetting');
   Route::get('marketplace/category_/create', 'Admin\AdminCategoryController@create');

@@ -136,8 +136,6 @@ $('#submit_delete').on('click', function (event) {
       _token: "{{ csrf_token() }}",
     }
   }).done(function(data) {
-    console.log(data);
-
     $('#myModal').modal('hide');
 
     if (data.success) {

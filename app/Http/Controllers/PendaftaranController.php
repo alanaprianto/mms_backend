@@ -494,9 +494,9 @@ class PendaftaranController extends Controller
         $territory = "";
         foreach ($results as $key => $result) {
             $question = $result->question;
-            if (str_contains($question, "Nama Penanggung Jawab")) {
+            if (str_contains($question, "Nama Penanggung Jawab")||str_contains($question, "Nama Asosiasi/Himpunan")) {
                 $name = $result->answer;
-            } else if (str_contains($question, "Email Penanggung Jawab")) {
+            } else if (str_contains($question, "Email")) {
                 $email = $result->answer;
             } else if (str_contains($question, "Bentuk Perusahaan")) {
                 $compclass = $result->answer;

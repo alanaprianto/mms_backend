@@ -54,5 +54,6 @@
             window.history.back();
         }
 	</script>
+    {{ $alb = false }}
     @include('scripts.dynamic_form_script1')
 @endpush
