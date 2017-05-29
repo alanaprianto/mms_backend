@@ -13,10 +13,10 @@ class QuestionGroupSeeder extends Seeder
     public function run()
     {
         $question_groups = array(
-                ['name' => 'Pendaftaran', 'description' => 'Form berisi Pendaftaran', ]
-                ['name' => 'Isian Langsung', 'description' => 'Pertanyaan yang langsung diisi oleh text dari user', ]
-                ['name' => 'Laravel', 'description' => 'Group for Laravel typed question', ]
-                ['name' => 'Percobaan', 'description' => 'Percobaan Developer', ]
+                ['name' => 'Pendaftaran', 'description' => 'Form berisi Pendaftaran'],
+                ['name' => 'Isian Langsung', 'description' => 'Pertanyaan yang langsung diisi oleh text dari user'],
+                ['name' => 'Laravel', 'description' => 'Group for Laravel typed question'],
+                ['name' => 'Percobaan', 'description' => 'Percobaan Developer']
         );
             
         // Loop through each user above and create the record for them in the database
