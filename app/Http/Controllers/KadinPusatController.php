@@ -69,6 +69,13 @@ class KadinPusatController extends Controller
         return view('common.notif.indexall', compact('notifs'));
     }
 
+    public function notifAllAjax()
+    {
+        $notifs = \App\Helpers\Notifs::getNotifs();
+        
+        return Datatables::of($notifs)->make(true);
+    }
+    
     public function rnList()
     {        
         $notifs = \App\Helpers\Notifs::getNotifs();

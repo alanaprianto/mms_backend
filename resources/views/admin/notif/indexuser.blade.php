@@ -113,11 +113,11 @@ $(function() {
       { "data" : "name" },
       { "data" : "username" },
       { "data" : "email" },  
-      { "data" : "id"}      
+      { "data" : "id"}
     ],
-    "columnDefs": [            
-      {        
-        "render": function ( data, type, row ) {        
+    "columnDefs": [
+      {
+        "render": function ( data, type, row ) {
           return '<a href="'+url+'/'+row.id+'" class="btn btn-warning btn-xs">'+
                     '<span class="glyphicon glyphicon-search"></span>'+
                     '&nbsp;&nbsp;Detail'+
@@ -128,7 +128,7 @@ $(function() {
                  '</a>';
         },
         "targets": 3
-      }      
+      }
     ]
   });
 });

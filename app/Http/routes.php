@@ -100,6 +100,7 @@ Route::group(['prefix' => 'member/', 'middleware' => 'auth.role.member'], functi
   Route::resource('marketplace', 'MarketPlaceController');
   // Notif
   Route::get('notif/all', 'Member\MemberNotifController@notif_all');
+  Route::get('ajax/notifall', 'Member\MemberNotifController@notifAllAjax');
   Route::get('notif/{id}', 'Member\MemberNotifController@notif_show');
 });
 
@@ -134,6 +135,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
     Route::get('userresultAjax/{id}', 'Admin\AdminUserController@userresultAjax');
     Route::get('member', 'Admin\AdminMemberController@indexAjax');
     Route::get('memberresultAjax/{id}', 'Admin\AdminMemberController@memberresultAjax');
+    Route::get('notifall', 'Admin\AdminNotifController@notifAllAjax');
     Route::get('notifresult/{id}', 'Admin\AdminNotifController@notifresultAjax');
     Route::get('notifuser/{id}', 'Admin\AdminNotifController@notifuserAjax');
     Route::get('marketplace/category', 'Admin\AdminCategoryController@indexAjax');
@@ -186,6 +188,7 @@ Route::group(['prefix' => 'daerah/', 'middleware' => 'auth.role.daerah'], functi
   // Route::get('daerah/ajax/members/{id}', 'KadinDaerahController@ajaxMemberDetail');
   // notifikasi
   Route::get('notif/all', 'KadinDaerahController@notifall');
+  Route::get('ajax/notifall', 'KadinDaerahController@notifAllAjax');
   Route::get('notif/{id}', 'KadinDaerahController@notif');
   Route::get('ajax/notifresult/{id}', 'KadinDaerahController@notifresultAjax');
   Route::get('ajax/notifuser/{id}', 'KadinDaerahController@notifuserAjax');
@@ -225,6 +228,7 @@ Route::group(['prefix' => 'provinsi/', 'middleware' => 'auth.role.provinsi'], fu
   Route::get('ajax/ktaexpired', 'KadinProvinsiController@ajaxKtaExpired');
   Route::get('ajax/ktaext', 'KadinProvinsiController@ajaxKtaExtension');
   Route::get('notif/all', 'KadinProvinsiController@notifall');
+  Route::get('ajax/notifall', 'KadinProvinsiController@notifAllAjax');
   Route::get('notif/{id}', 'KadinProvinsiController@notif');
   Route::get('valnas', 'KadinProvinsiController@valnas');
   Route::get('ajax/valnas', 'KadinProvinsiController@ajaxvalnas');
@@ -238,6 +242,7 @@ Route::group(['prefix' => 'provinsi/', 'middleware' => 'auth.role.provinsi'], fu
 Route::group(['prefix' => 'pusat/', 'middleware' => 'auth.role.pusat'], function () {
   Route::get('dashboard', 'KadinPusatController@dashboard');
   Route::get('notif/all', 'KadinPusatController@notifall');
+  Route::get('ajax/notifall', 'KadinPusatController@notifAllAjax');
   Route::get('notif/{id}', 'KadinPusatController@notif');
   Route::get('rn/list', 'KadinPusatController@rnList');
   Route::get('rn/list/{id}', 'KadinPusatController@memberDetail');
@@ -272,6 +277,7 @@ Route::group(['prefix' => 'alb/', 'middleware' => 'auth.role.alb'], function () 
 
   // Notif
   Route::get('notif/all', 'Alb\AlbNotifController@notif_all');
+  Route::get('ajax/notifall', 'Alb\AlbNotifController@notifAllAjax');
   Route::get('notif/{id}', 'Alb\AlbNotifController@notif_show');
 });
 

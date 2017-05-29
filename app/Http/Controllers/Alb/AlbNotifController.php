@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Datatables;
 
 class AlbNotifController extends Controller
 {
@@ -15,6 +16,13 @@ class AlbNotifController extends Controller
         $notifs = \App\Helpers\Notifs::getNotifs();
 
         return view('common.notif.indexall', compact('notifs'));
+    }
+
+    public function notifAllAjax()
+    {
+        $notifs = \App\Helpers\Notifs::getNotifs();
+        
+        return Datatables::of($notifs)->make(true);
     }
 
     public function notif_show($id)
