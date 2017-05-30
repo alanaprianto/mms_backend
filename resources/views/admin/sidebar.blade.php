@@ -26,11 +26,20 @@
     <span class="nav-label">Users</span>
   </a>
 </li>
-<li class="@yield('active-member')">
-  <a href="{{ url('admin/member')}}">
-    <i class="fa fa-users"></i>
-    <span class="nav-label">Members</span>
-  </a>
+<li class="@yield('active-groupmember')">
+  <a href="#">
+      <i class="fa fa-users"></i>
+      <span class="nav-label">Members</span>
+      <span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level">
+      <li class="@yield('active-memberab')">
+        <a href="{{ url('common/member')}}">Member Anggota Biasa</a>
+      </li>
+      <li class="@yield('active-memberalb')">
+        <a href="{{ url('common/member/alb')}}">Member Anggota Luar Biasa</a>
+      </li>
+    </ul> 
 </li>
 <li class="@yield('active-organizer')">
   <a href="{{ url('admin/organizer')}}">

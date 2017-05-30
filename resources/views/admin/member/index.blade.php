@@ -90,9 +90,6 @@ $('#myModal').on('show.bs.modal', function (event) {
 });
 
 $('#submit_delete').on('click', function (event) {
-  console.log("submit clicked");
-  console.log(url+"/"+id);    
-
   $.ajax({    
     url: url+"/"+id,
     type: "post",

@@ -34,10 +34,10 @@
   	</a>
   	<ul class="nav nav-second-level">
   		<li class="@yield('active-memberab')">
-  			<a href="{{ url('daerah/member')}}">Member Anggota Biasa</a>
+  			<a href="{{ url('common/member')}}">Member Anggota Biasa</a>
   		</li>
     	<li class="@yield('active-memberalb')">
-    		<a href="{{ url('daerah/member/alb')}}">Member Anggota Luar Biasa</a>
+    		<a href="{{ url('common/member/alb')}}">Member Anggota Luar Biasa</a>
     	</li>
   	</ul>	
 </li>

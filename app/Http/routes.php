@@ -80,6 +80,20 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('percobaan/email_success', 'PercobaanController@e_success');
   Route::post('percobaan', 'PercobaanController@percobaanstore');
   Route::post('percobaan/rchatLogin', 'PercobaanController@rchatLogin');
+
+  Route::group(['prefix' => 'common/'], function () {
+  	Route::get('member/validate/{id}', 'Common\CommonMemberController@memberValidate');
+	Route::post('member/validate/{id}', 'Common\CommonMemberController@memberValidate');
+	Route::post('member/requestkta', 'Common\CommonMemberController@memberReqKta');
+	Route::post('member/postponekta/', 'Common\CommonMemberController@memberPostKta');
+
+	Route::get('member/alb', 'Common\CommonMemberController@indexAlb');
+  	Route::get('member/alb/detail/{id}', 'Common\CommonMemberController@showAlb');
+  	Route::get('ajax/member/alb', 'Common\CommonMemberController@indexAjaxAlb');
+
+  	Route::resource('member', 'Common\CommonMemberController');
+  	Route::get('ajax/member', 'Common\CommonMemberController@indexAjax');
+  });
 });
 
 // Member
@@ -110,8 +124,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
   Route::post('chart/adm_donut', 'Admin\AdminChartController@adm_donut');
   Route::post('chart/adm_dblbar', 'Admin\AdminChartController@adm_dblbar');
   Route::post('chart/adm_member', 'Admin\AdminChartController@adm_member');
-  Route::post('chart/adm_dynform', 'Admin\AdminChartController@adm_dynform');
-  
+  Route::post('chart/adm_dynform', 'Admin\AdminChartController@adm_dynform');  
   Route::resource('setting', 'Admin\FormSettingController');
   Route::resource('types', 'Admin\FormTypeController');
   Route::resource('rules', 'Admin\FormRulesController');
@@ -119,8 +132,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
   Route::resource('question_group', 'Admin\FormQuestionGroupController');
   Route::resource('answer', 'Admin\FormAnswerController');
   Route::resource('result', 'Admin\FormResultController');
-  Route::resource('user', 'Admin\AdminUserController');
-  Route::resource('member', 'Admin\AdminMemberController');
+  Route::resource('user', 'Admin\AdminUserController');  
   Route::get('notif/all', 'Admin\AdminNotifController@notifall');
   Route::get('notif/{id}', 'Admin\AdminNotifController@notif');
   Route::group(['prefix' => 'ajax/'], function () {
@@ -132,9 +144,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role.admin'], function 
     Route::get('answer', 'Admin\FormAnswerController@indexAjax');
     Route::get('result', 'Admin\FormResultController@indexAjax');
     Route::get('user', 'Admin\AdminUserController@indexAjax');
-    Route::get('userresultAjax/{id}', 'Admin\AdminUserController@userresultAjax');
-    Route::get('member', 'Admin\AdminMemberController@indexAjax');
-    Route::get('memberresultAjax/{id}', 'Admin\AdminMemberController@memberresultAjax');
+    Route::get('userresultAjax/{id}', 'Admin\AdminUserController@userresultAjax');    
+    Route::get('memberresultAjax/{id}', 'Common\CommonMemberController@memberresultAjax');
     Route::get('notifall', 'Admin\AdminNotifController@notifAllAjax');
     Route::get('notifresult/{id}', 'Admin\AdminNotifController@notifresultAjax');
     Route::get('notifuser/{id}', 'Admin\AdminNotifController@notifuserAjax');
@@ -175,17 +186,7 @@ Route::group(['prefix' => 'daerah/', 'middleware' => 'auth.role.daerah'], functi
   Route::get('ajax/submittedforms', 'KadinDaerahController@ajaxForms');
   Route::delete('submitted/delete/{code}', 'KadinDaerahController@submittedFormsDelete'); 
   Route::get('submitted/detail/{code}/a', 'KadinDaerahController@submittedFormDetail');
-  // Route::get('daerah/ajax/submittedforms/{code}', 'KadinDaerahController@ajaxFormDetail');
-  // member anggota biasa
-  Route::get('member', 'KadinDaerahController@member');
-  Route::get('ajax/members', 'KadinDaerahController@ajaxMembers');
-  Route::delete('member/delete/{id}', 'KadinDaerahController@memberDelete');
-  Route::get('member/validate/{id}', 'KadinDaerahController@memberValidate');
-  Route::post('member/validate/{id}', 'KadinDaerahController@memberValidate');
-  Route::post('member/requestkta', 'KadinDaerahController@memberReqKta');
-  Route::post('member/postponekta/', 'KadinDaerahController@memberPostKta');
-  Route::get('member/detail/{id}', 'KadinDaerahController@memberDetail');
-  // Route::get('daerah/ajax/members/{id}', 'KadinDaerahController@ajaxMemberDetail');
+  // Route::get('daerah/ajax/submittedforms/{code}', 'KadinDaerahController@ajaxFormDetail');  
   // notifikasi
   Route::get('notif/all', 'KadinDaerahController@notifall');
   Route::get('ajax/notifall', 'KadinDaerahController@notifAllAjax');
@@ -199,9 +200,9 @@ Route::group(['prefix' => 'daerah/', 'middleware' => 'auth.role.daerah'], functi
   Route::get('submitted/alb/detail/{code}', 'KadinDaerahController@submittedAlbFormDetail');
   Route::post('submitted/alb/approve', 'KadinDaerahController@submittedAlbApprove');
   Route::get('ajax/submittedforms/alb', 'KadinDaerahController@ajaxAlbForms');
-  Route::get('member/alb', 'KadinDaerahController@memberAlb');
-  Route::get('member/alb/detail/{id}', 'KadinDaerahController@memberAlbDetail');
-  Route::get('ajax/members/alb', 'KadinDaerahController@ajaxAlbMembers');
+	  // Route::get('member/alb', 'KadinDaerahController@memberAlb');
+	  // Route::get('member/alb/detail/{id}', 'KadinDaerahController@memberAlbDetail');
+	  // Route::get('ajax/members/alb', 'KadinDaerahController@ajaxAlbMembers');
   // grafik  
   Route::post('chart/sf_stat', 'DaerahChartController@sf_stat');
   Route::post('chart/member_stat', 'DaerahChartController@member_stat');
