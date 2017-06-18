@@ -255,9 +255,11 @@
           <h4>            
             @if($chat)
               Your collaboration account is available.
-              <button type="submit" class="btn btn-success pull-right">
-                Go to Collaboration
-              </button>
+              <a href="https://chat.kadin-collab.com/home">
+                <button type="submit" class="btn btn-success pull-right">
+                  Go to Collaboration
+                </button>
+              </a>
             @else
               You haven't created collaboration account.
               <button type="submit" class="btn btn-success pull-right" data-toggle="modal" data-target="#modalCAI">

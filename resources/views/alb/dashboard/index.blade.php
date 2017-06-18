@@ -226,6 +226,37 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
+        <div class="ibox-title">          
+          <h5>Collaboration Account</h5>
+        </div>
+        <div class="ibox-content">
+          <h4>            
+            @if($chat)
+              Your collaboration account is available.
+              <a href="https://chat.kadin-collab.com/home">
+                <button type="submit" class="btn btn-success pull-right">
+                  Go to Collaboration
+                </button>
+              </a>
+            @else
+              You haven't created collaboration account.
+              <button type="submit" class="btn btn-success pull-right" data-toggle="modal" data-target="#modalCAI">
+                Create Account
+              </button>
+            @endif
+            <small>
+              <a href="https://mobile.kadin-collab.com/cmis-member/cmis-member-v1.0.apk">
+                Download collaboration apps for mobile.
+              </a>
+            </small>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>  
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
         <div class="ibox-title">
           <span class="pull-right">
             <small>({{ $cdoc }}/{{ $rdoc }})</small>
@@ -293,4 +324,69 @@
 @push('scripts')
 <script src="{{ asset('js/plugins/blueimp/jquery.blueimp-gallery.min.js') }}"></script>
 <script src="{{ asset('js/getnews.js') }}"></script>
+<script src="{{ asset('js/plugins/validate/jquery.validate.min.js') }}"></script>
+<script type="text/javascript">
+  $('#modalCAI').on('show.bs.modal', function (event) {  
+
+    document.getElementById('password').value = "";
+    document.getElementById('confirmpassword').value = "";    
+    
+  });
+
+  $(document).ready(function(){
+    $("#form_account").validate({
+      rules: {        
+        name: {
+          required: true,
+        },
+        email: {
+          required: true,
+        },
+        username: {
+          required: true,
+        },
+        password: {
+          required: true,
+        }, 
+        confirmpassword: {
+          required: true,
+        }
+      }
+    });
+
+    $('#submitCAI').on('click', function (event) {
+      name = document.getElementById('name').value;
+      email = document.getElementById('email').value;
+      username = document.getElementById('username').value;
+      password = document.getElementById('password').value;
+      confirmpassword = document.getElementById('confirmpassword').value;
+
+      if ($("#form_account").valid()) {
+        $.ajax({
+          url: "{{ url('crtCollaboration') }}"+"/"+"{{ Auth::user()->id }}",
+          type: "post",
+          data: {
+            _token: "{{ csrf_token() }}",
+            name: name,
+            email: email,
+            username: username,
+            password: password,
+            confirmpassword: confirmpassword,
+          }
+        }).done(function(data) {
+          $('#modalCAI').modal('hide');
+
+          if (data.success) {
+            toastr.success(data.msg);
+          } else {
+            toastr.error(data.msg);
+          }          
+
+          // location.reload();
+          setTimeout(location.reload.bind(location), 1000);
+        });
+      }
+    });
+  });  
+</script>
 @endpush
