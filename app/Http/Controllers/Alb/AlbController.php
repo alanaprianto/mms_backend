@@ -116,9 +116,12 @@ class AlbController extends Controller
 
         $comm = Form_result::where('id_user', '=', $member->id)->where('commentary', '!=', '')->count();
         $corr = Form_result::where('id_user', '=', $member->id)->where('correction', '!=', '')->count();
+        
+        $chat = false;
+        if ($member->chat_acc=='created') $chat = true;
 
         return view('alb.dashboard.index', compact('notifs', 'member', 'kta', 'exp_show', 'exp_text1', 'exp_text2', 'rn', 
-        		'cdoc', 'rdoc', 'docs', 'detail', 'nasosiasi', 'tingkat', 'daerah', 'provinsi', 'comm', 'corr'));
+        		'cdoc', 'rdoc', 'docs', 'detail', 'nasosiasi', 'tingkat', 'daerah', 'provinsi', 'comm', 'corr', 'chat'));
     }
 
     public function kta()
