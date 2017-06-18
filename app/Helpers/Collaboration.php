@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class Collaboration
 {
-    private $base_url = "https://chat.kadin-collab.com/";
+    private $base_url = "https://chat.kadin-collab.com/api/";
 
     public static function login($client) {
         $json = "";
@@ -60,9 +60,8 @@ class Collaboration
 
     public static function crtAccount($name, $username, $email, $password) {        
         $success = false;
-        $_this = new self;
+        $_this = new Collaboration;
         $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
-        $_this = new Collaboration;        
         try {            
             $json = $_this->login($client);
             $authtoken = $json['data']['authToken'];
@@ -102,10 +101,8 @@ class Collaboration
 
     public static function updtCAI($name, $email, $username, $ousername) {        
         $success = false;
-        $_this = new self;
-        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
         $_this = new Collaboration;
-
+        $client = new \GuzzleHttp\Client(['base_uri' => $this->base_url]);
         try {            
             $json = $_this->login($client);
             $authtoken = $json['data']['authToken'];
@@ -146,9 +143,8 @@ class Collaboration
 
     public static function updtCYP($password, $ousername) {        
         $success = false;
-        $_this = new self;
-        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
         $_this = new Collaboration;
+        $client = new \GuzzleHttp\Client(['base_uri' => $this->base_url]);
 
         try {            
             $json = $_this->login($client);
@@ -190,9 +186,9 @@ class Collaboration
 
     public static function deleteAccount($username) {
         $success = false;
-        $_this = new self;
-        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
         $_this = new Collaboration;
+        $client = new \GuzzleHttp\Client(['base_uri' => $this->base_url]);
+
         try {            
             $json = $_this->login($client);
             $authtoken = $json['data']['authToken'];
@@ -233,9 +229,9 @@ class Collaboration
 
     public static function deleteAccbyEmail($email) {
         $success = false;
-        $_this = new self;
-        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
         $_this = new Collaboration;
+        $client = new \GuzzleHttp\Client(['base_uri' => $this->base_url]);
+
         try {
             $json = $_this->login($client);
             $authtoken = $json['data']['authToken'];
