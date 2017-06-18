@@ -102,7 +102,7 @@ class Collaboration
     public static function updtCAI($name, $email, $username, $ousername) {        
         $success = false;
         $_this = new Collaboration;
-        $client = new \GuzzleHttp\Client(['base_uri' => $this->base_url]);
+        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
         try {            
             $json = $_this->login($client);
             $authtoken = $json['data']['authToken'];
@@ -144,7 +144,7 @@ class Collaboration
     public static function updtCYP($password, $ousername) {        
         $success = false;
         $_this = new Collaboration;
-        $client = new \GuzzleHttp\Client(['base_uri' => $this->base_url]);
+        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
 
         try {            
             $json = $_this->login($client);
@@ -187,7 +187,7 @@ class Collaboration
     public static function deleteAccount($username) {
         $success = false;
         $_this = new Collaboration;
-        $client = new \GuzzleHttp\Client(['base_uri' => $this->base_url]);
+        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
 
         try {            
             $json = $_this->login($client);
@@ -230,7 +230,7 @@ class Collaboration
     public static function deleteAccbyEmail($email) {
         $success = false;
         $_this = new Collaboration;
-        $client = new \GuzzleHttp\Client(['base_uri' => $this->base_url]);
+        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
 
         try {
             $json = $_this->login($client);
