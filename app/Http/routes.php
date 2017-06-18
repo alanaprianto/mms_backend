@@ -29,8 +29,8 @@ Route::get('register/success', 'MmsController@success');
 Route::get('register/successframe', 'MmsController@successframe');
 
 // Payment *percobaan
-Route::get('register1pay', 'MmsController@pay1');
-Route::post('register1pay', 'MmsController@pay1store');
+// Route::get('register1pay', 'MmsController@pay1');
+// Route::post('register1pay', 'MmsController@pay1store');
 
 // Auth
 Route::get('login', 'LoginController@show');
@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('profile', 'ProfileController@index');
   Route::post('updateCAI/{id}', 'ProfileController@updateCAI');
   Route::post('updateCYP/{id}', 'ProfileController@updateCYP');
+  Route::post('crtCollaboration/{id}', 'ProfileController@crtCollaboration');
   Route::get('profile/indexAjax/{id}', 'ProfileController@indexAjax');
   Route::get('profile/tahapiiAjax/{id}', 'ProfileController@tahapiiAjax');
   Route::get('profile/tahapiiiAjax/{id}', 'ProfileController@tahapiiiAjax');

@@ -215,7 +215,7 @@
 
 @push('scripts')
 <!-- Jquery Validate -->
-<script src="{{ asset('resources/assets/js/plugins/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/plugins/validate/jquery.validate.min.js') }}"></script>
 
 <script type="text/javascript">
   $('#modalCAI').on('show.bs.modal', function (event) {
@@ -245,11 +245,11 @@
           required: true,
         },
         email: {
-          required: true,          
+          required: true,
         },
         username: {
           required: true,
-        }               
+        }
       }
     });
 
@@ -300,7 +300,7 @@
       }      
     });
 
-    $('#submitCAI').on('click', function (event) {      
+    $('#submitCAI').on('click', function (event) {
       name = document.getElementById('name').value;
       email = document.getElementById('email').value;
       username = document.getElementById('username').value;
@@ -309,7 +309,7 @@
         $.ajax({
           url: "{{ url('updateCAI') }}"+"/"+"{{ Auth::user()->id }}",
           type: "post",
-          data: {              
+          data: {
             _token: "{{ csrf_token() }}",
             name: name,
             email: email,

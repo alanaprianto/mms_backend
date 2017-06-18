@@ -4,6 +4,8 @@ namespace App\Helpers;
 
 class Collaboration
 {
+    private $base_url = "https://chat.kadin-collab.com/";
+
     public static function login($client) {
         $json = "";
         try {            
@@ -58,7 +60,8 @@ class Collaboration
 
     public static function crtAccount($name, $username, $email, $password) {        
         $success = false;
-        $client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);
+        $_this = new self;
+        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
         $_this = new Collaboration;        
         try {            
             $json = $_this->login($client);
@@ -99,7 +102,8 @@ class Collaboration
 
     public static function updtCAI($name, $email, $username, $ousername) {        
         $success = false;
-        $client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);
+        $_this = new self;
+        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
         $_this = new Collaboration;
 
         try {            
@@ -142,7 +146,8 @@ class Collaboration
 
     public static function updtCYP($password, $ousername) {        
         $success = false;
-        $client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);
+        $_this = new self;
+        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
         $_this = new Collaboration;
 
         try {            
@@ -185,7 +190,8 @@ class Collaboration
 
     public static function deleteAccount($username) {
         $success = false;
-        $client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);
+        $_this = new self;
+        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
         $_this = new Collaboration;
         try {            
             $json = $_this->login($client);
@@ -227,7 +233,8 @@ class Collaboration
 
     public static function deleteAccbyEmail($email) {
         $success = false;
-        $client = new \GuzzleHttp\Client(['base_uri' => 'https://kadin-member.cf/api/']);
+        $_this = new self;
+        $client = new \GuzzleHttp\Client(['base_uri' => $_this->base_url]);
         $_this = new Collaboration;
         try {
             $json = $_this->login($client);

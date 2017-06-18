@@ -130,9 +130,13 @@ class MemberController extends Controller
         $comm = Form_result::where('id_user', '=', $member->id)->where('commentary', '!=', '')->count();
         $corr = Form_result::where('id_user', '=', $member->id)->where('correction', '!=', '')->count();
 
+        // $chat = $member->chat_acc == 'created' : true ? false;
+        $chat = false;
+        if ($member->chat_acc=='created') $chat = true;
+
         return view('member.dashboard.index', compact('notifs', 'member', 'detail', 'required', 'completed', 
                 'percentage', 'kta', 'compclass', 'compform', 'compname', 'daerah', 'provinsi', 'cdoc', 'rdoc', 
-                'docs', 'rn', 'exp_at', 'exp_show', 'exp_text1', 'exp_text2', 'comm', 'corr'));
+                'docs', 'rn', 'exp_at', 'exp_show', 'exp_text1', 'exp_text2', 'comm', 'corr', 'chat'));
     }
 
     public function kta()

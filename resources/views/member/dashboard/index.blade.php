@@ -248,6 +248,35 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="ibox float-e-margins">
+        <div class="ibox-title">          
+          <h5>Collaboration Account</h5>
+        </div>
+        <div class="ibox-content">
+          <h4>            
+            @if($chat)
+              Your collaboration account is available.
+              <button type="submit" class="btn btn-success pull-right">
+                Go to Collaboration
+              </button>
+            @else
+              You haven't created collaboration account.
+              <button type="submit" class="btn btn-success pull-right" data-toggle="modal" data-target="#modalCAI">
+                Create Account
+              </button>
+            @endif
+            <small>
+              <a href="https://mobile.kadin-collab.com/cmis-member/cmis-member-v1.0.apk">
+                Download collaboration apps for mobile.
+              </a>
+            </small>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>  
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
         <div class="ibox-title">
           <span class="pull-right">
             <small>({{ $cdoc }}/{{ $rdoc }})</small>
@@ -310,101 +339,129 @@
 <div class="row">
 </div>
 <br><br>
+<!-- Modal Change Account Information -->
+<div class="modal inmodal fade" id="modalCAI" tabindex="-1" role="dialog" aria-labelledby="modalCAILabel">
+  <div class="modal-dialog">
+    <div class="modal-content animated bounceInRight">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Create Collaboration Account</h4><br/>
+        Your collaboration account credentials is the same as your mms credentials. <br/>
+        If you update your mms account, your collaboration account would also change.        
+      </div>
+      <div class="modal-body">
+        <form id="form_account" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Name</label>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" placeholder="Name" id="name" name="name" value="{{ Auth::user()->name }}" disabled="disabled">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Email</label>
+            <div class="col-lg-10">
+              <input type="email" class="form-control" placeholder="Email" id="email" name="email" value="{{ Auth::user()->email }}" disabled="disabled">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Username</label>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" placeholder="Username" id="username" name="username" value="{{ Auth::user()->username }}" disabled="disabled">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Password</label>
+            <div class="col-lg-10">
+              <input type="password" class="form-control" placeholder="Password" id="password" name="password" required="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Confirm Password</label>
+            <div class="col-lg-10">
+              <input type="password" class="form-control" placeholder="Password" id="confirmpassword" name="confirmpassword" required="">
+            </div>
+          </div>
+        </form>        
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" class="form-control" id="id">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="submitCAI" type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
 @stop
 
 @push('scripts')
 <script src="{{ asset('js/plugins/blueimp/jquery.blueimp-gallery.min.js') }}"></script>
+<script src="{{ asset('js/getnews.js') }}"></script>
+<script src="{{ asset('js/plugins/validate/jquery.validate.min.js') }}"></script>
 <script type="text/javascript">
-   window.onload = getNews(0);
+  $('#modalCAI').on('show.bs.modal', function (event) {  
+
+    document.getElementById('password').value = "";
+    document.getElementById('confirmpassword').value = "";    
     
-    function getNews($offset) {
-      $.ajax({    
-        url: "https://devtes.com/portal/kadin-indonesia/list/view_detail/list",
-        type: "post",
-        data: {
-          id: "berita_kadin",
-          param: "news",
-          sort: "desc",
-          order: "year",
-          limit: 20,
-          offset: $offset
+  });
+
+  $(document).ready(function(){
+    $("#form_account").validate({
+      rules: {        
+        name: {
+          required: true,
+        },
+        email: {
+          required: true,
+        },
+        username: {
+          required: true,
+        },
+        password: {
+          required: true,
+        }, 
+        confirmpassword: {
+          required: true,
         }
-      }).done(function(data) {
-        var json = JSON.parse(data);
-        var datas = json.data;
-        var enews = document.getElementById("wadahnews");
-        var epag = document.getElementById("wadahpagination");
-        
-        enews.innerHTML = "";
-        epag.innerHTML = "";
+      }
+    });
 
-        var pagination = view_pagination(json.numpage, json.ap);
-        $(pagination).appendTo(epag);
+    $('#submitCAI').on('click', function (event) {
+      name = document.getElementById('name').value;
+      email = document.getElementById('email').value;
+      username = document.getElementById('username').value;
+      password = document.getElementById('password').value;
+      confirmpassword = document.getElementById('confirmpassword').value;
 
-        for (var i = datas.length - 1; i >= 0; i--) {
-          var thedata = datas[i];
-          var news = thedata.datas;
-
-          for (var i = news.length - 1; i >= 0; i--) {
-            var thenews = news[i];
-            var link = thenews.title.replace(/\s+/g, "_");
-            var judul = thenews.title;
-            var tagline = thenews.tagline;
-            var date_publish = thenews.datepublish;
-
-            $("<div class='feed-element'>"+
-                "<div>"+
-                  "<a target=_blank href='https://devtes.com/portal/kadin-indonesia/news/berita_kadin/"+link+"'>"+
-                    "<i class='fa fa-envelope fa-fw'></i>"+
-                    "<strong>"+judul+"</strong>"+
-                  "</a>"+
-                  "<small class='pull-right text-navy'></small>"+
-                  "<div>"+tagline+"</div>"+
-                  "<small class='text-muted'>"+date_publish+"</small>"+
-                "</div>"+
-              "</div>").appendTo(enews);
+      if ($("#form_account").valid()) {
+        $.ajax({
+          url: "{{ url('crtCollaboration') }}"+"/"+"{{ Auth::user()->id }}",
+          type: "post",
+          data: {
+            _token: "{{ csrf_token() }}",
+            name: name,
+            email: email,
+            username: username,
+            password: password,
+            confirmpassword: confirmpassword,
           }
-        }
-      });
-    }
+        }).done(function(data) {
+          $('#modalCAI').modal('hide');
 
-    function view_pagination($numpage, $active)
-    {
-      var pagination = '';
-      var class_active = '';
-      var start_number = $active-2;
-      
-      var next = '';
+          if (data.success) {
+            toastr.success(data.msg);
+          } else {
+            toastr.error(data.msg);
+          }          
 
-      if ($active < 3)
-      {
-        start_number = 1;
+          // location.reload();
+          setTimeout(location.reload.bind(location), 1000);
+        });
       }
-
-      var end_number = $numpage - start_number;
-      number_list = $numpage;
-      if (end_number >= 4)
-      {
-        number_list = start_number + 4;
-        var next = '<li class="c-next"><a class="upage" href="#" onClick="getNews('+(number_list)+')" data-offset="'+(number_list)+'"><i class="fa fa-angle-right"></i></a></li>';
-      }
-
-      var prev = '';
-      if (start_number > 1)
-      {
-        var prev = '<li class="c-prev"><a class="upage" href="#" onClick="getNews('+(start_number-2)+')" data-offset="'+(start_number-2)+'"><i class="fa fa-angle-left"></i></a></li>';
-      }
-
-      for(i=start_number; i <= number_list; i++)
-      {
-        var class_active = '';
-        if (i == $active)
-        {
-          class_active = 'class="c-active"';
-        }
-        pagination = pagination+'<li '+class_active+'><a class="upage" href="#" onClick="getNews('+(i-1)+')" data-offset="'+(i-1)+'">'+i+'</a></li>';
-      }
-      return prev+pagination+next;
-    }
+    });
+  });  
 </script>
 @endpush

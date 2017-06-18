@@ -170,11 +170,11 @@ class ProfileController extends Controller
                     \App\Helpers\Collaboration::updtCYP($npass, $user->username);
 
                     $deleted = true;
-                    $deletedMsg = "Your Account Password is Updated 1";
+                    $deletedMsg = "Your Account Password is Updated";
                 } else {
 
                     $deleted = false;
-                    $deletedMsg = "The Old Password is not Correct! 1";
+                    $deletedMsg = "The Old Password is not Correct!";
                 }
             } catch(\Exception $e){
                 return $e;
@@ -246,5 +246,41 @@ class ProfileController extends Controller
         }
 
         return Datatables::of($fr)->make(true);
-    }    
+    }
+
+    public function crtCollaboration(Request $request, $id) {        
+        $pass = $request['password'];
+        $cpass = $request['confirmpassword'];        
+        
+        $stack = '';
+        if ($pass!=$cpass) {
+            $scc = false;
+            $msg = "Password didn't Match!";
+        } else {
+            $user = User::findOrFail($id);
+            if (Hash::check($pass, $user->password)) {
+                $name = $request['name'];
+                $username = $request['username'];
+                $email = $request['email'];
+
+                $crtChat = \App\Helpers\Collaboration::crtAccount($name, $username, $email, $pass);
+
+                if ($crtChat['success']) {
+                    $update['chat_acc'] = 'created';
+                    $user->update($update);
+
+                    $scc = true;
+                    $msg = "Your collaboration account is created!";
+                } else {
+                    $scc = false;
+                    $msg = "Error creating your collaboration account, please try again later.";
+                }
+            } else {
+                $scc = false;
+                $msg = "Password is not Correct!";
+            }
+        }
+
+        return response()->json(['success' => $scc, 'msg' => $msg, ]);
+    }
 }
