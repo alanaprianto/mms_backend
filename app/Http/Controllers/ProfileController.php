@@ -275,6 +275,7 @@ class ProfileController extends Controller
                     } else {
                         $scc = false;
                         $msg = "Error creating your collaboration account, please try again later.";
+                        $stack = "error creating account";
                     }
                 } else {
                     $scc = false;
@@ -283,9 +284,10 @@ class ProfileController extends Controller
             } catch (\Exception $e) {
                 $scc = false;
                 $msg = "Error creating your collaboration account, please try again later.";
+                $stack = $e->getMessage();
             }
         }
 
-        return response()->json(['success' => $scc, 'msg' => $msg, ]);
+        return response()->json(['success' => $scc, 'msg' => $msg, 'stack' => $stack]);
     }
 }
