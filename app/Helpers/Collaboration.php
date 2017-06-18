@@ -83,7 +83,7 @@ class Collaboration
                             'X-User-Id' => $userId,
                             'Content-type' => 'application/json'
                         ],
-                        'json' => ['name' => $name, 'email' => $email, 'password' => $password, 'username' => $username, 'active' => 'true']
+                        'json' => ['name' => $name, 'email' => $email, 'password' => $password, 'username' => $username, 'active' => true]
                 ]);
 
                 $usercrt = json_decode($response->getBody(true), true);
