@@ -257,27 +257,32 @@ class ProfileController extends Controller
             $scc = false;
             $msg = "Password didn't Match!";
         } else {
-            $user = User::findOrFail($id);
-            if (Hash::check($pass, $user->password)) {
-                $name = $request['name'];
-                $username = $request['username'];
-                $email = $request['email'];
+            try {
+                $user = User::findOrFail($id);
+                if (Hash::check($pass, $user->password)) {
+                    $name = $request['name'];
+                    $username = $request['username'];
+                    $email = $request['email'];
 
-                $crtChat = \App\Helpers\Collaboration::crtAccount($name, $username, $email, $pass);
+                    $crtChat = \App\Helpers\Collaboration::crtAccount($name, $username, $email, $pass);
 
-                if ($crtChat['success']) {
-                    $update['chat_acc'] = 'created';
-                    $user->update($update);
+                    if ($crtChat['success']) {
+                        $update['chat_acc'] = 'created';
+                        $user->update($update);
 
-                    $scc = true;
-                    $msg = "Your collaboration account is created!";
+                        $scc = true;
+                        $msg = "Your collaboration account is created!";
+                    } else {
+                        $scc = false;
+                        $msg = "Error creating your collaboration account, please try again later.";
+                    }
                 } else {
                     $scc = false;
-                    $msg = "Error creating your collaboration account, please try again later.";
+                    $msg = "Password is not Correct!";
                 }
-            } else {
+            } catch (\Exception $e) {
                 $scc = false;
-                $msg = "Password is not Correct!";
+                $msg = "Error creating your collaboration account, please try again later.";
             }
         }
 
