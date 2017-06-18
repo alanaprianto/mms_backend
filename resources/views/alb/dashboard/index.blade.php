@@ -319,6 +319,61 @@
 <div class="row">
 </div>
 <br/><br/>
+<!-- Modal Change Account Information -->
+<div class="modal inmodal fade" id="modalCAI" tabindex="-1" role="dialog" aria-labelledby="modalCAILabel">
+  <div class="modal-dialog">
+    <div class="modal-content animated bounceInRight">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Create Collaboration Account</h4><br/>
+        Your collaboration account credentials is the same as your mms credentials. <br/>
+        If you update your mms account, your collaboration account would also change.        
+      </div>
+      <div class="modal-body">
+        <form id="form_account" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Name</label>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" placeholder="Name" id="name" name="name" value="{{ Auth::user()->name }}" disabled="disabled">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Email</label>
+            <div class="col-lg-10">
+              <input type="email" class="form-control" placeholder="Email" id="email" name="email" value="{{ Auth::user()->email }}" disabled="disabled">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Username</label>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" placeholder="Username" id="username" name="username" value="{{ Auth::user()->username }}" disabled="disabled">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Password</label>
+            <div class="col-lg-10">
+              <input type="password" class="form-control" placeholder="Password" id="password" name="password" required="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-2 control-label">Confirm Password</label>
+            <div class="col-lg-10">
+              <input type="password" class="form-control" placeholder="Password" id="confirmpassword" name="confirmpassword" required="">
+            </div>
+          </div>
+        </form>        
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" class="form-control" id="id">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="submitCAI" type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
 @stop
 
 @push('scripts')
